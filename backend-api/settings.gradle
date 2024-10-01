@@ -1,4 +1,4 @@
-rootProject.name = 'releevante-backend'
+rootProject.name = 'backend-api'
 include 'identity-management'
 include 'identity-management:domain'
 findProject(':identity-management:domain')?.name = 'domain'
