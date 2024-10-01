@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: releevante-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/relevantedb
+    username: coex
+    password: Summer01
+    initialization-mode: always
+    initialize: true
+    continue-on-error: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: none
+        show-sql: true
+security:
+  rsa:
+    key-path:
+      public: C:\\Users\\LEGION\Documents\\rsa\\id_rsa.pub
+      private: C:\\Users\\LEGION\\Documents\\rsa\\id_rsa
+#server:
+#  servlet:
+#    context-path: /api
+
+
+
+
+

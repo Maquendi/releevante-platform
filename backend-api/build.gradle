@@ -1,0 +1,197 @@
+buildscript {
+	dependencies {
+		classpath "org.postgresql:postgresql:42.7.4"
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id "com.diffplug.spotless" version "6.19.0"
+	id "io.freefair.lombok" version "8.10"
+	id "org.flywaydb.flyway" version "9.8.1"
+}
+
+flyway {
+	url = 'jdbc:postgresql://localhost:5432/relevantedb?currentSchema=public'
+	user = 'coex'
+	password = 'Summer01'
+}
+
+group = 'com.releevante'
+version = '0.0.1-SNAPSHOT'
+
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(23)
+	}
+}
+
+ext{
+	projectVersion = '0.0.9-SNAPSHOT'
+	springBootVersion = '3.3.4'
+	springCloudVersion = '2022.0.3'
+	springBootDependencyMgmtVersion = '1.1.0'
+	vertexVersion = '4.4.1'
+	spockVersion = '2.4-M1-groovy-3.0'
+	jacksonVersion = '2.14.2'
+	jacksonDatabindVersion = '2.14.2!!'
+	mapstructVersion = '1.4.1.Final'
+	immutablesVersion = '2.8.8'
+	testcontainersVersion = '1.17.3'
+	testcontainersSpockVersion = '1.15.3'
+	junitVersion = '5.9.1'
+	lombokVersion = '1.18.26'
+	reactorVersion = '3.4.19!!'
+	reactiveStreamsVersion = '1.0.4'
+	kafkaReactorVersion = '1.3.11'
+	reactorNettyVersion = '1.0.5'
+	flywayVersion = '9.8.1'
+	hibernateVersion = '5.6.9.Final'
+	hibernateTypesVersion = '2.16.3'
+	hibernateFluentVersion = '0.3.1'
+	h2Version = '1.4.200'
+	flywaydbVersion = '8.5.1'
+	auth0Version = '1.24.0'
+	auth0JWTVersion = '3.18.1'
+	twilioVersion = '8.2.0'
+	sendGridVersion = '4.6.8'
+	logstashVersion = '6.4'
+	logbackVersion = '1.2.3'
+	slf4jVersion = '1.7.30'
+	groovyVersion = '3.0.18'
+	vertexVersion = '4.4.1'
+	jacksonVersion = '2.14.2'
+	jacksonDatabindVersion = '2.14.2!!'
+	cxfVersion = '3.5.4'
+	sunActivationVersion = '1.2.0'
+	javaxActivationVersion = '1.2.0'
+	javaxJaxbApiVersion = '2.3.1'
+	javaxJaxwsApiVersion = '2.3.1'
+	javaxJwsApiVersion = '1.1'
+	sunJaxbImplVersion = '2.3.3'
+	sunJaxbCoreVersion = '2.3.0.1'
+	sunSaajImplVersion = '1.5.2'
+	jsoupVersion = '1.15.3'
+	commonsIOVersion = '2.8.0'
+	commonsValidatorVersion = '1.7'
+	commonsTextVersion = '1.10.0'
+	commonsLang3Version = '3.11'
+	guavaVersion = '30.0-jre'
+	commonsCodecVersion = '1.15'
+	bcryptVersion = '0.9.0'
+	xirrVersion = '1.1'
+	mapstructVersion = '1.4.1.Final'
+	immutablesVersion = '2.8.8'
+	apachePOIVersion = '4.1.2'
+	awsSESVersion = '2.15.24'
+	javaxMailVersion = '1.6.2'
+	awsSNSVersion = '2.15.24'
+	awsS3Version = '2.15.24'
+	awsPinpointVersion = '2.15.24'
+	rockerVersion = '1.3.0'
+	openhtmltopdfPdfBoxVersion = '1.0.10'
+	pdfboxVersion = '2.0.24'
+	googleMapsVersion = '0.15.0'
+	googleApiSheetsVersion = 'v4-rev20220927-2.0.0'
+	resilience4jVersion = '1.7.0'
+	emailageVersion = '1.1.3'
+	opencensusVersion = '0.28.2'
+	ahoCorasickVersion = '0.4.0'
+	starkBankVersion = '2.8.2'
+	firebaseVersion = '9.0.0'
+	optaPlannerVersion = "8.20.0.Final"
+	optaPlannerTestVersion = "8.20.0.Final"
+	splitVersion = "4.5.0"
+	slackApiVersion = "1.25.1"
+	sftpApiVersion = "0.34.0"
+	hazelcastVersion = "5.2.3"
+	testcontainersVersion = '1.17.3'
+	testcontainersSpockVersion = '1.15.3'
+	kafkaJunitVersion = '2.6.0'
+	cglibVersion = '3.3.0'
+	objenesisVersion = '3.1'
+	jsonpathVersion = '2.7.0'
+	jdbi3Version = '3.32.0'
+	junitVersion = '5.9.1'
+	restAssuredVersion = '4.3.3'
+	wiremockVersion = '2.35.0'
+	assertjVersion = '3.24.2'
+	reflectionsVersion = '0.10.2'
+}
+
+
+
+
+allprojects {
+	apply plugin: "com.diffplug.spotless"
+
+	buildscript {
+		repositories {
+			mavenCentral()
+		}
+	}
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+
+	spotless {
+		java {
+			targetExclude '**/.gradle/**', '**/.idea/**', '**/build/**'
+			googleJavaFormat()
+			formatAnnotations()
+		}
+	}
+}
+
+
+subprojects {
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	apply plugin: 'java'
+	//apply plugin: 'java-library'
+	//apply plugin: 'groovy'
+	//apply plugin: 'idea'
+	apply plugin: "io.freefair.lombok"
+
+
+	dependencies {
+		implementation "com.fasterxml.jackson.core:jackson-core:${rootProject.jacksonVersion}"
+		implementation "com.fasterxml.jackson.core:jackson-databind:${rootProject.jacksonDatabindVersion}"
+		testImplementation "org.codehaus.groovy:groovy-all:${rootProject.groovyVersion}"
+
+		testImplementation "org.spockframework:spock-core:${rootProject.spockVersion}"
+		//implementation "org.projectlombok:lombok:${rootProject.lombokVersion}"
+		implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
+		testImplementation "io.projectreactor:reactor-test:${rootProject.reactorVersion}"
+		implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
+
+		compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+		annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+		testCompileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+		testAnnotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+	}
+}
+
+dependencies {
+	implementation project(path: ':types')
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation project(path: ':identity-management:domain')
+	implementation project(path: ':identity-management:application')
+    implementation project(path: ':identity-management:adapter')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	implementation 'commons-codec:commons-codec:1.9'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
