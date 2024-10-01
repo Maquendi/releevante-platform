@@ -1,0 +1,16 @@
+dependencies {
+	implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+	implementation 'com.auth0:java-jwt:4.4.0'
+	implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+	implementation 'dev.samstevens.totp:totp-spring-boot-starter:1.7.1'
+	implementation 'commons-net:commons-net:3.9.0'
+}
+group = 'com.releevante.types'
+
+bootJar {
+	enabled = false
+}
+
+jar {
+	enabled = true
+}
