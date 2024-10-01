@@ -32,12 +32,12 @@ public class DefaultUserJtwTokenService implements JtwTokenService<LoginAccount>
               var privateKey = rsaKeys.getT2();
               Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
               return JWT.create()
-                  .withIssuer("MEE")
+                  .withIssuer("mee")
                   .withAudience(audience.value())
                   .withClaim(ORG_ID, payload.orgId().value())
-                  .withClaim(ROLES, payload.roles())
+                  .withClaim(ROLES, payload.privileges())
                   .withSubject(payload.userName().value())
-                  .withExpiresAt(Instant.now().plusSeconds(60 * 24))
+                  .withExpiresAt(Instant.now().plusSeconds(3600))
                   .sign(algorithm);
             })
         .map(LoginToken::of);
@@ -54,7 +54,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService<LoginAccount>
               try {
                 JWTVerifier verifier =
                     JWT.require(algorithm)
-                        .withIssuer("meee")
+                        .withIssuer("mee")
                         .withClaimPresence(ORG_ID)
                         .withClaimPresence(ROLES)
                         .withClaimPresence(SUBJECT)

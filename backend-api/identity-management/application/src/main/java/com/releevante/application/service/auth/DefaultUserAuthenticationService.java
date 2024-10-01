@@ -29,20 +29,15 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   public Mono<LoginToken> authenticate(UserName userName, Password password, Audience audience) {
     return accountRepository
         .findBy(userName)
-        .filter(LoginAccount::isActive)
+        .map(LoginAccount::checkIsActive)
         .map(account -> account.validPasswordOrThrow(password, passwordEncoder))
         .flatMap(
             account ->
                 permissionsRepository
                     .findBy(account.roles())
                     .map(Privilege::value)
-                    .map(Role::of)
                     .collectList()
-                    .map(
-                        roles -> {
-                          roles.addAll(account.roles());
-                          return account.withRoles(roles);
-                        }))
+                    .map(account::withPermissions))
         .flatMap(payload -> tokenService.generateToken(payload, audience))
         .switchIfEmpty(Mono.error(new RuntimeException("Account not found")));
   }

@@ -33,7 +33,6 @@ public class DefaultM2MJtwTokenService implements JtwTokenService<M2MClient> {
               var privateKey = rsaKeys.getT2();
               Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
               return JWT.create()
-                  .withIssuer("mee")
                   .withAudience(audience.value())
                   .withClaim(ORG_ID, payload.orgId())
                   .withSubject(payload.clientId())
@@ -54,7 +53,6 @@ public class DefaultM2MJtwTokenService implements JtwTokenService<M2MClient> {
               try {
                 JWTVerifier verifier =
                     JWT.require(algorithm)
-                        .withIssuer("meee")
                         .withClaimPresence(ORG_ID)
                         .withClaimPresence(ROLES)
                         .withClaimPresence(SUBJECT)

@@ -28,7 +28,7 @@ public abstract class AbstractOrganization {
 
   public Organization checkIsActive() {
     if (!isActive()) {
-      throw new RuntimeException();
+      throw new RuntimeException("Org not configured");
     }
     return (Organization) this;
   }

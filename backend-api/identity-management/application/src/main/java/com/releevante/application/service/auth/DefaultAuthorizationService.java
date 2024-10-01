@@ -32,7 +32,8 @@ public class DefaultAuthorizationService implements AuthorizationService {
               return accountRepository
                   .findBy(userName)
                   .map(account -> account.checkHasAuthority(authority))
-                  .flatMap(account -> orgRepository.findBy(orgId).map(Organization::checkIsActive))
+                  .flatMap(account -> orgRepository.findBy(orgId))
+                  .map(Organization::checkIsActive)
                   .thenReturn(principal);
             });
   }

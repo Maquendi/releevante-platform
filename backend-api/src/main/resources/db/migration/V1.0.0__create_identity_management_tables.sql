@@ -4,19 +4,20 @@ CREATE TABLE identity_management.org (
   id varchar(36) NOT NULL,
   name varchar(250) NULL,
   type varchar(50) NOT NULL,
-  created_at timestamp NOT NULL,
-  updated_at timestamp NOT NULL,
+  created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  is_active boolean NOT NULL DEFAULT false,
   CONSTRAINT org_pk PRIMARY KEY(id)
 );
 
 CREATE TABLE identity_management.accounts (
 	id varchar(36) NOT NULL,
 	user_name varchar(100) NOT NULL,
-	created_at timestamp NOT NULL,
-	updated_at timestamp NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	password_hash varchar(250) NOT NULL,
 	roles text[] NOT NULL,
-	is_active BOOLEAN NOT NULL,
+	is_active BOOLEAN NOT NULL DEFAULT false,
 	org_id varchar(36) NOT NULL,
 	CONSTRAINT accounts_p_key PRIMARY KEY (id),
 	CONSTRAINT user_name_unique UNIQUE (user_name),
@@ -32,8 +33,8 @@ CREATE TABLE identity_management.users (
 	full_name varchar(250) NULL,
 	email varchar NULL,
 	phone_number varchar NULL,
-	created_at timestamp NOT NULL,
-    updated_at timestamp NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT id_pk PRIMARY KEY (id),
 	FOREIGN KEY (account_id) REFERENCES identity_management.accounts(id)
 );

@@ -40,6 +40,21 @@ public class AccountRecord {
         .roles(roles.stream().map(Role::of).collect(Collectors.toList()))
         .orgId(OrgId.of(orgId))
         .isActive(isActive)
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
         .build();
+  }
+
+  public static AccountRecord fromDomain(LoginAccount account) {
+    var record = new AccountRecord();
+    record.setId(account.accountId().value());
+    record.setUserName(account.userName().value());
+    record.setPasswordHash(account.password().value());
+    record.setActive(account.isActive());
+    record.setOrgId(account.orgId().value());
+    record.setRoles(account.roles().stream().map(Role::value).toList());
+    record.setCreatedAt(account.createdAt());
+    record.setUpdatedAt(account.updatedAt());
+    return record;
   }
 }

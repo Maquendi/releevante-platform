@@ -17,8 +17,8 @@ spring:
 security:
   rsa:
     key-path:
-      public: C:\\Users\\LEGION\Documents\\rsa\\id_rsa.pub
-      private: C:\\Users\\LEGION\\Documents\\rsa\\id_rsa
+      public: C:\\Users\\LEGION\Documents\\rsa\\public.pem
+      private: C:\\Users\\LEGION\\Documents\\rsa\\private.pem
 #server:
 #  servlet:
 #    context-path: /api

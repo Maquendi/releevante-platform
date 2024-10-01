@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.ImmutableExt;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -21,14 +23,24 @@ public abstract class AbstractLoginAccount {
 
   abstract List<Role> roles();
 
+  abstract List<String> permissions();
+
   abstract boolean isActive();
 
   abstract OrgId orgId();
 
+  abstract ZonedDateTime createdAt();
+
+  abstract ZonedDateTime updatedAt();
+
+  public List<String> privileges() {
+    var collections = roles().stream().map(Role::value).collect(Collectors.toList());
+    collections.addAll(permissions());
+    return collections;
+  }
+
   public LoginAccount validPasswordOrThrow(Password rawPassword, PasswordEncoder encoder) {
-    var password = rawPassword.value();
-    var encoded = encoder.encode(password);
-    if (encoded.equals(password().value())) {
+    if (encoder.validate(rawPassword.value(), password().value())) {
       return (LoginAccount) this;
     }
     throw new RuntimeException("Invalid credentials");
@@ -38,17 +50,14 @@ public abstract class AbstractLoginAccount {
     return true;
   }
 
-  public void checkIsActive() {
+  public LoginAccount checkIsActive() {
     if (!this.isActive()) {
-      throw new RuntimeException("");
+      throw new RuntimeException("account not configured");
     }
+    return (LoginAccount) this;
   }
 
   public boolean hasAnyAuthority(String... authorities) {
-
-    //        return Arrays.stream(authorities)
-    //                .map()
-
     return true;
   }
 
@@ -59,7 +68,7 @@ public abstract class AbstractLoginAccount {
   public LoginAccount checkHasAuthority(String authority) {
     checkIsActive();
     if (!hasAuthority(authority)) {
-      throw new RuntimeException();
+      throw new RuntimeException("insufficient privilege");
     }
     return (LoginAccount) this;
   }

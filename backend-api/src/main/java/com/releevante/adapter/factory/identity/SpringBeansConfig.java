@@ -13,7 +13,7 @@ import com.releevante.identity.domain.model.M2MClient;
 import com.releevante.identity.domain.repository.*;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.UuidGenerator;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.releevante.types.ZonedDateTimeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -74,6 +74,7 @@ public class SpringBeansConfig {
         accountRepository,
         passwordEncoder,
         UuidGenerator.instance(),
+        ZonedDateTimeGenerator.instance(),
         authorizationService);
   }
 
@@ -86,8 +87,18 @@ public class SpringBeansConfig {
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    var sha256Digest = DigestUtils.getSha256Digest();
-    return (password) -> new String(sha256Digest.digest(password.getBytes()));
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    return new PasswordEncoder() {
+      @Override
+      public String encode(String rawPassword) {
+        return bCryptPasswordEncoder.encode(rawPassword);
+      }
+
+      @Override
+      public boolean validate(String rawPassword, String hash) {
+        return bCryptPasswordEncoder.matches(rawPassword, hash);
+      }
+    };
   }
 
   @Bean()

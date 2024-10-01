@@ -15,7 +15,7 @@ import org.immutables.value.Value;
 @ImmutableExt
 public abstract class AbstractPassword extends PrimitiveVo<String> {
   static final String VALIDATE_REGEX =
-      "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+      "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=])(?=\\S+$).{8,}$";
 
   public static Password from(String rawPassword, PasswordEncoder encoder) {
     // validate password comply with rules.

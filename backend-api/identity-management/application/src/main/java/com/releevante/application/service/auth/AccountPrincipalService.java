@@ -14,6 +14,6 @@ public class AccountPrincipalService {
   Mono<AccountPrincipal> getAccountPrincipalMandatory() {
     return accountPrincipalHolder
         .getAccountPrincipal()
-        .switchIfEmpty(Mono.error(new RuntimeException("")));
+        .switchIfEmpty(Mono.error(new RuntimeException("no user in context")));
   }
 }

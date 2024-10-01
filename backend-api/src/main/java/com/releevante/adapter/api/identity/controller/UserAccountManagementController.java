@@ -2,6 +2,7 @@
 package com.releevante.adapter.api.identity.controller;
 
 import com.releevante.application.dto.AccountDto;
+import com.releevante.application.dto.AccountIdDto;
 import com.releevante.application.dto.UserDto;
 import com.releevante.application.facade.identity.IdentityServiceFacade;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,8 @@ public class UserAccountManagementController {
   }
 
   @PostMapping("/account")
-  Mono<?> registerAccount(@RequestBody AccountDto account) {
-
-    return Mono.just("created");
+  Mono<AccountIdDto> registerAccount(@RequestBody AccountDto account) {
+    return identityServiceFacade.createAccount(account);
   }
 
   @PostMapping()
