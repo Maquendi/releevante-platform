@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.ImmutableExt;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.immutables.value.Value;
@@ -18,6 +19,8 @@ public abstract class AbstractLoginAccount {
   abstract AccountId accountId();
 
   abstract UserName userName();
+
+  abstract Email email();
 
   abstract Password password();
 
@@ -57,12 +60,16 @@ public abstract class AbstractLoginAccount {
     return (LoginAccount) this;
   }
 
-  public boolean hasAnyAuthority(String... authorities) {
-    return true;
+  public LoginAccount checkHasAnyAuthority(String... authorities) {
+    checkIsActive();
+    if (Arrays.stream(authorities).noneMatch(this::hasAuthority)) {
+      throw new RuntimeException("insufficient privilege");
+    }
+    return (LoginAccount) this;
   }
 
   public boolean hasAuthority(String authority) {
-    return true;
+    return permissions().stream().anyMatch(authority::equals);
   }
 
   public LoginAccount checkHasAuthority(String authority) {

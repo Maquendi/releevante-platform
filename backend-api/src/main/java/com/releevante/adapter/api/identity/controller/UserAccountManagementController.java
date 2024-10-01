@@ -22,12 +22,12 @@ public class UserAccountManagementController {
   }
 
   @PostMapping("/account")
-  Mono<AccountIdDto> registerAccount(@RequestBody AccountDto account) {
+  Mono<AccountIdDto> register(@RequestBody AccountDto account) {
     return identityServiceFacade.createAccount(account);
   }
 
   @PostMapping()
-  Mono<ResponseEntity<?>> registerUser(@RequestBody UserDto user) {
+  Mono<ResponseEntity<?>> register(@RequestBody UserDto user) {
 
     return Mono.empty();
   }

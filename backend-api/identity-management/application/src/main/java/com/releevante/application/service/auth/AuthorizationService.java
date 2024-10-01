@@ -5,5 +5,5 @@ import com.releevante.types.AccountPrincipal;
 import reactor.core.publisher.Mono;
 
 public interface AuthorizationService {
-  Mono<AccountPrincipal> checkAccountAuthorized(String authority);
+  Mono<AccountPrincipal> checkAuthorities(String... authorities);
 }

@@ -14,12 +14,8 @@ import com.releevante.types.SequentialGenerator;
 import java.time.ZonedDateTime;
 import reactor.core.publisher.Mono;
 
-public class DefaultUserServiceImpl implements UserService {
+public class DefaultUserServiceImpl extends AccountService implements UserService {
   final UserRepository userRepository;
-  final AccountRepository accountRepository;
-  final PasswordEncoder passwordEncoder;
-  final SequentialGenerator<String> uuidGenerator;
-  final SequentialGenerator<ZonedDateTime> dateTimeGenerator;
   final AuthorizationService authorizationService;
 
   public DefaultUserServiceImpl(
@@ -29,11 +25,8 @@ public class DefaultUserServiceImpl implements UserService {
       SequentialGenerator<String> uuidGenerator,
       SequentialGenerator<ZonedDateTime> dateTimeGenerator,
       AuthorizationService authorizationService) {
+    super(accountRepository, passwordEncoder, uuidGenerator, dateTimeGenerator);
     this.userRepository = userRepository;
-    this.accountRepository = accountRepository;
-    this.passwordEncoder = passwordEncoder;
-    this.uuidGenerator = uuidGenerator;
-    this.dateTimeGenerator = dateTimeGenerator;
     this.authorizationService = authorizationService;
   }
 
@@ -46,40 +39,11 @@ public class DefaultUserServiceImpl implements UserService {
   @Override
   public Mono<AccountIdDto> createAccount(AccountDto accountDto) {
     return authorizationService
-        .checkAccountAuthorized("account:create")
-        .flatMap(
-            principal ->
-                Mono.just(UserName.of(accountDto.userName()))
-                    .flatMap(
-                        userName ->
-                            accountRepository
-                                .findBy(userName)
-                                .filterWhen(this::throwEntityExists)
-                                .switchIfEmpty(
-                                    Mono.fromCallable(
-                                        () -> {
-                                          var passwordHash =
-                                              Password.from(accountDto.password(), passwordEncoder);
-                                          var accountId = AccountId.of(uuidGenerator.next());
-                                          var orgId = OrgId.of(principal.orgId());
-                                          var createdAt = dateTimeGenerator.next();
-                                          return LoginAccount.builder()
-                                              .accountId(accountId)
-                                              .orgId(orgId)
-                                              .userName(userName)
-                                              .password(passwordHash)
-                                              .createdAt(createdAt)
-                                              .updatedAt(createdAt)
-                                              .isActive(false)
-                                              .build();
-                                        })))
-                    .flatMap(accountRepository::upsert)
-                    .map(LoginAccount::accountId)
-                    .map(AccountId::value)
-                    .map(AccountIdDto::of));
-  }
-
-  Mono<Boolean> throwEntityExists(LoginAccount account) {
-    return Mono.error(new RuntimeException("account already exists"));
+        .checkAuthorities("account:create")
+        .flatMap(principal -> createAccount(accountDto, OrgId.of(principal.orgId())))
+        .flatMap(accountRepository::upsert)
+        .map(LoginAccount::accountId)
+        .map(AccountId::value)
+        .map(AccountIdDto::of);
   }
 }

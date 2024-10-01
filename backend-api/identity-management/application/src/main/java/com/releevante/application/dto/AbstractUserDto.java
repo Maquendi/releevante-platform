@@ -19,4 +19,6 @@ public abstract class AbstractUserDto {
   abstract Optional<String> email();
 
   abstract Optional<String> phoneNumber();
+
+  abstract AccountIdDto accountI();
 }
