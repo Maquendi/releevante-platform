@@ -4,9 +4,8 @@ package com.releevante.identity.adapter.out.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.application.service.auth.JtwTokenService;
-import com.releevante.identity.domain.model.Audience;
-import com.releevante.identity.domain.model.LoginToken;
 import com.releevante.identity.domain.model.M2MClient;
 import com.releevante.types.AccountPrincipal;
 import java.time.Instant;
@@ -24,7 +23,7 @@ public class DefaultM2MJtwTokenService implements JtwTokenService<M2MClient> {
   }
 
   @Override
-  public Mono<LoginToken> generateToken(M2MClient payload, Audience audience) {
+  public Mono<LoginTokenDto> generateToken(M2MClient payload) {
 
     return Mono.zip(signingKeyProvider.publicKey(), signingKeyProvider.privateKey())
         .map(
@@ -33,17 +32,16 @@ public class DefaultM2MJtwTokenService implements JtwTokenService<M2MClient> {
               var privateKey = rsaKeys.getT2();
               Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
               return JWT.create()
-                  .withAudience(audience.value())
                   .withClaim(ORG_ID, payload.orgId())
                   .withSubject(payload.clientId())
                   .withExpiresAt(Instant.now().plusSeconds(60 * 240))
                   .sign(algorithm);
             })
-        .map(LoginToken::of);
+        .map(LoginTokenDto::of);
   }
 
   @Override
-  public Mono<AccountPrincipal> verifyToken(LoginToken loginToken) {
+  public Mono<AccountPrincipal> verifyToken(LoginTokenDto loginToken) {
     return Mono.zip(signingKeyProvider.publicKey(), signingKeyProvider.privateKey())
         .map(
             rsaKeys -> {
@@ -66,7 +64,6 @@ public class DefaultM2MJtwTokenService implements JtwTokenService<M2MClient> {
             decodedJWT ->
                 AccountPrincipal.builder()
                     .orgId(decodedJWT.getClaim(ORG_ID).asString())
-                    .audience(decodedJWT.getAudience().getFirst())
                     .subject(decodedJWT.getSubject())
                     .roles(Collections.emptyList())
                     .build());

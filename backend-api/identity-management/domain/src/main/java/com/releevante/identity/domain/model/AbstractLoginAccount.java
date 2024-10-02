@@ -16,6 +16,8 @@ import org.immutables.value.Value;
 @JsonSerialize(as = LoginAccount.class)
 @ImmutableExt
 public abstract class AbstractLoginAccount {
+  static final String SUPER_ADMIN_AUTHORITY = "super-admin";
+
   abstract AccountId accountId();
 
   abstract UserName userName();
@@ -49,10 +51,6 @@ public abstract class AbstractLoginAccount {
     throw new RuntimeException("Invalid credentials");
   }
 
-  public boolean hasAuthorities(String... authorities) {
-    return true;
-  }
-
   public LoginAccount checkIsActive() {
     if (!this.isActive()) {
       throw new RuntimeException("account not configured");
@@ -62,7 +60,9 @@ public abstract class AbstractLoginAccount {
 
   public LoginAccount checkHasAnyAuthority(String... authorities) {
     checkIsActive();
-    if (Arrays.stream(authorities).noneMatch(this::hasAuthority)) {
+    var privileges = Arrays.asList(authorities);
+    privileges.add(SUPER_ADMIN_AUTHORITY);
+    if (privileges.stream().noneMatch(this::hasAuthority)) {
       throw new RuntimeException("insufficient privilege");
     }
     return (LoginAccount) this;
@@ -70,13 +70,5 @@ public abstract class AbstractLoginAccount {
 
   public boolean hasAuthority(String authority) {
     return permissions().stream().anyMatch(authority::equals);
-  }
-
-  public LoginAccount checkHasAuthority(String authority) {
-    checkIsActive();
-    if (!hasAuthority(authority)) {
-      throw new RuntimeException("insufficient privilege");
-    }
-    return (LoginAccount) this;
   }
 }

@@ -23,6 +23,7 @@ public class AccountRecord {
   @Id private String id;
   private String userName;
   private String passwordHash;
+  private String email;
   private boolean isActive;
   private String orgId;
 
@@ -39,6 +40,7 @@ public class AccountRecord {
         .password(Password.of(passwordHash))
         .roles(roles.stream().map(Role::of).collect(Collectors.toList()))
         .orgId(OrgId.of(orgId))
+        .email(Email.of(email))
         .isActive(isActive)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
@@ -55,6 +57,7 @@ public class AccountRecord {
     record.setRoles(account.roles().stream().map(Role::value).toList());
     record.setCreatedAt(account.createdAt());
     record.setUpdatedAt(account.updatedAt());
+    record.setEmail(account.email().value());
     return record;
   }
 }

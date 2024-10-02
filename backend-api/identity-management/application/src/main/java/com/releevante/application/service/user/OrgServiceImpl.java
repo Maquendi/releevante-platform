@@ -19,11 +19,11 @@ public class OrgServiceImpl extends AccountService implements OrgService {
   final AuthorizationService authorizationService;
 
   public OrgServiceImpl(
+      OrgRepository orgRepository,
       AccountRepository accountRepository,
       PasswordEncoder passwordEncoder,
       SequentialGenerator<String> uuidGenerator,
       SequentialGenerator<ZonedDateTime> dateTimeGenerator,
-      OrgRepository orgRepository,
       AuthorizationService authorizationService) {
     super(accountRepository, passwordEncoder, uuidGenerator, dateTimeGenerator);
     this.orgRepository = orgRepository;

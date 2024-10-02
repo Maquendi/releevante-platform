@@ -1,6 +1,8 @@
 /* (C)2024 */
 package com.releevante.application.service.auth;
 
+import com.releevante.application.dto.LoginDto;
+import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.M2MClientsRepository;
 import com.releevante.types.AccountPrincipal;
@@ -17,15 +19,15 @@ public class M2MDefaultAuthenticationService implements AuthenticationService {
   }
 
   @Override
-  public Mono<LoginToken> authenticate(UserName userName, Password password, Audience audience) {
+  public Mono<LoginTokenDto> authenticate(LoginDto loginDto) {
     return m2MClientsRepository
-        .findBy(userName, password)
+        .findBy(UserName.of(loginDto.userName()), Password.of(loginDto.password()))
         .filter(M2MClient::isActive)
-        .flatMap(payload -> tokenService.generateToken(payload, audience));
+        .flatMap(tokenService::generateToken);
   }
 
   @Override
-  public Mono<AccountPrincipal> authenticate(LoginToken token) {
+  public Mono<AccountPrincipal> authenticate(LoginTokenDto token) {
     return tokenService.verifyToken(token);
   }
 }

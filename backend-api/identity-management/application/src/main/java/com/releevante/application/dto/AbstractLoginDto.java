@@ -1,4 +1,4 @@
-package com.releevante.identity.adapter.in.api;
+package com.releevante.application.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -13,6 +13,4 @@ public abstract class AbstractLoginDto {
   abstract String userName();
 
   abstract String password();
-
-  abstract String audience();
 }

@@ -13,12 +13,13 @@ CREATE TABLE identity_management.org (
 CREATE TABLE identity_management.accounts (
 	id varchar(36) NOT NULL,
 	user_name varchar(100) NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	password_hash varchar(250) NOT NULL,
+	email varchar(100) NOT NULL,
+	org_id varchar(36) NOT NULL,
 	roles text[] NOT NULL,
 	is_active BOOLEAN NOT NULL DEFAULT false,
-	org_id varchar(36) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT accounts_p_key PRIMARY KEY (id),
 	CONSTRAINT user_name_unique UNIQUE (user_name),
 	FOREIGN KEY(org_id) REFERENCES identity_management.org(id)

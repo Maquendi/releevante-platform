@@ -1,7 +1,7 @@
 /* (C)2024 */
 package com.releevante.config.security;
 
-import com.releevante.application.facade.identity.IdentityServiceFacade;
+import com.releevante.application.identity.IdentityServiceFacade;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;

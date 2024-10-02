@@ -1,6 +1,8 @@
 /* (C)2024 */
 package com.releevante.application.service.auth;
 
+import com.releevante.application.dto.LoginDto;
+import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.AccountRepository;
 import com.releevante.identity.domain.repository.PrivilegeRepository;
@@ -26,11 +28,13 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   }
 
   @Override
-  public Mono<LoginToken> authenticate(UserName userName, Password password, Audience audience) {
+  public Mono<LoginTokenDto> authenticate(LoginDto loginDto) {
     return accountRepository
-        .findBy(userName)
+        .findBy(UserName.of(loginDto.userName()))
         .map(LoginAccount::checkIsActive)
-        .map(account -> account.validPasswordOrThrow(password, passwordEncoder))
+        .map(
+            account ->
+                account.validPasswordOrThrow(Password.of(loginDto.password()), passwordEncoder))
         .flatMap(
             account ->
                 permissionsRepository
@@ -38,12 +42,12 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
                     .map(Privilege::value)
                     .collectList()
                     .map(account::withPermissions))
-        .flatMap(payload -> tokenService.generateToken(payload, audience))
+        .flatMap(tokenService::generateToken)
         .switchIfEmpty(Mono.error(new RuntimeException("Account not found")));
   }
 
   @Override
-  public Mono<AccountPrincipal> authenticate(LoginToken token) {
+  public Mono<AccountPrincipal> authenticate(LoginTokenDto token) {
     return tokenService.verifyToken(token);
   }
 }
