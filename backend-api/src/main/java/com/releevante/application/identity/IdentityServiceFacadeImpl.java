@@ -5,7 +5,9 @@ import com.releevante.application.dto.*;
 import com.releevante.application.service.auth.AuthenticationService;
 import com.releevante.application.service.user.OrgService;
 import com.releevante.application.service.user.UserService;
+import com.releevante.config.security.CustomAuthenticationException;
 import com.releevante.config.security.JwtAuthenticationToken;
+import com.releevante.types.exceptions.UserUnauthorizedException;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +58,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
                     .authenticate(loginToken)
                     .map(
                         accountPrincipal ->
-                            new JwtAuthenticationToken(accountPrincipal, loginToken)));
+                            new JwtAuthenticationToken(accountPrincipal, loginToken)))
+        .onErrorMap(UserUnauthorizedException.class, CustomAuthenticationException::new);
   }
 }

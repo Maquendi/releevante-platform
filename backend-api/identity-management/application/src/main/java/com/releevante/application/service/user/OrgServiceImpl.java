@@ -38,7 +38,7 @@ public class OrgServiceImpl extends AccountService implements OrgService {
             principal -> {
               var orgId = OrgId.of(uuidGenerator.next());
               var currentDateTime = dateTimeGenerator.next();
-              var accountDto = orgDto.accountDto();
+              var accountDto = orgDto.account();
               var orgBuilder =
                   Mono.just(
                       Organization.builder()

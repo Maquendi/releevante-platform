@@ -183,14 +183,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	//implementation project(path: ':identity-management:domain')
+
+
 	implementation project(path: ':identity-management:application')
     implementation project(path: ':identity-management:adapter')
 	implementation project(path: ':identity-management:domain')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
-	//implementation 'commons-codec:commons-codec:1.9'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+	annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+	testCompileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+	testAnnotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
 }
 
 tasks.named('test') {

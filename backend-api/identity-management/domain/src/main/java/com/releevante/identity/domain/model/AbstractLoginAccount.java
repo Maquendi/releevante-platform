@@ -5,7 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.ImmutableExt;
+import com.releevante.types.exceptions.ConfigurationException;
+import com.releevante.types.exceptions.ForbiddenException;
+import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,27 +52,27 @@ public abstract class AbstractLoginAccount {
     if (encoder.validate(rawPassword.value(), password().value())) {
       return (LoginAccount) this;
     }
-    throw new RuntimeException("Invalid credentials");
+    throw new UserUnauthorizedException();
   }
 
   public LoginAccount checkIsActive() {
     if (!this.isActive()) {
-      throw new RuntimeException("account not configured");
+      throw new ConfigurationException("Account configuration");
     }
     return (LoginAccount) this;
   }
 
   public LoginAccount checkHasAnyAuthority(String... authorities) {
     checkIsActive();
-    var privileges = Arrays.asList(authorities);
+    var privileges = new ArrayList<>(Arrays.asList(authorities));
     privileges.add(SUPER_ADMIN_AUTHORITY);
     if (privileges.stream().noneMatch(this::hasAuthority)) {
-      throw new RuntimeException("insufficient privilege");
+      throw new ForbiddenException();
     }
     return (LoginAccount) this;
   }
 
   public boolean hasAuthority(String authority) {
-    return permissions().stream().anyMatch(authority::equals);
+    return privileges().stream().anyMatch(authority::equals);
   }
 }

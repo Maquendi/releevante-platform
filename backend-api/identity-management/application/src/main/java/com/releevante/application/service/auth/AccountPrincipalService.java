@@ -2,6 +2,7 @@
 package com.releevante.application.service.auth;
 
 import com.releevante.types.AccountPrincipal;
+import com.releevante.types.exceptions.UserUnauthorizedException;
 import reactor.core.publisher.Mono;
 
 public class AccountPrincipalService {
@@ -14,6 +15,6 @@ public class AccountPrincipalService {
   Mono<AccountPrincipal> getAccountPrincipalMandatory() {
     return accountPrincipalHolder
         .getAccountPrincipal()
-        .switchIfEmpty(Mono.error(new RuntimeException("no user in context")));
+        .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
   }
 }

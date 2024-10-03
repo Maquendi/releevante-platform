@@ -13,9 +13,13 @@ import reactor.core.publisher.Mono;
 @Component
 public class JwtAuthenticationWebFilter implements WebFilter {
   final IdentityServiceFacade identityServiceFacade;
+  final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-  public JwtAuthenticationWebFilter(IdentityServiceFacade identityServiceFacade) {
+  public JwtAuthenticationWebFilter(
+      IdentityServiceFacade identityServiceFacade,
+      CustomAuthenticationEntryPoint authenticationEntryPoint) {
     this.identityServiceFacade = identityServiceFacade;
+    this.authenticationEntryPoint = authenticationEntryPoint;
   }
 
   @Override
@@ -32,7 +36,10 @@ public class JwtAuthenticationWebFilter implements WebFilter {
                                 .contextWrite(
                                     ReactiveSecurityContextHolder.withSecurityContext(
                                         Mono.just(new SecurityContextImpl(authentication))))))
-        .switchIfEmpty(chain.filter(exchange));
+        .switchIfEmpty(chain.filter(exchange))
+        .onErrorResume(
+            CustomAuthenticationException.class,
+            exception -> authenticationEntryPoint.commence(exchange, exception));
   }
 
   private Mono<String> extractJwtFromRequest(ServerWebExchange exchange) {

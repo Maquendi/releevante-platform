@@ -8,6 +8,7 @@ import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.application.service.auth.JtwTokenService;
 import com.releevante.identity.domain.model.LoginAccount;
 import com.releevante.types.AccountPrincipal;
+import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.Instant;
 import reactor.core.publisher.Mono;
 
@@ -60,14 +61,13 @@ public class DefaultUserJtwTokenService implements JtwTokenService<LoginAccount>
                 return verifier.verify(loginToken.value());
 
               } catch (Exception e) {
-                throw e;
+                throw new UserUnauthorizedException();
               }
             })
         .map(
             decodedJWT ->
                 AccountPrincipal.builder()
                     .orgId(decodedJWT.getClaim(ORG_ID).asString())
-                    .audience(decodedJWT.getAudience().getFirst())
                     .subject(decodedJWT.getSubject())
                     .roles(decodedJWT.getClaim(ROLES).asList(String.class))
                     .build());

@@ -15,7 +15,5 @@ public abstract class AbstractAccountPrincipal {
 
   abstract String subject();
 
-  abstract String audience();
-
   abstract List<String> roles();
 }

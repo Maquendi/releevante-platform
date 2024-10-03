@@ -5,6 +5,7 @@ import com.releevante.application.dto.LoginDto;
 import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.AccountRepository;
+import com.releevante.identity.domain.repository.OrgRepository;
 import com.releevante.identity.domain.repository.PrivilegeRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.AccountPrincipal;
@@ -15,16 +16,19 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   final JtwTokenService<LoginAccount> tokenService;
   final PasswordEncoder passwordEncoder;
   final PrivilegeRepository permissionsRepository;
+  final OrgRepository orgRepository;
 
   public DefaultUserAuthenticationService(
       AccountRepository accountRepository,
       JtwTokenService<LoginAccount> tokenService,
       PasswordEncoder passwordEncoder,
-      PrivilegeRepository permissionsRepository) {
+      PrivilegeRepository permissionsRepository,
+      OrgRepository orgRepository) {
     this.accountRepository = accountRepository;
     this.tokenService = tokenService;
     this.passwordEncoder = passwordEncoder;
     this.permissionsRepository = permissionsRepository;
+    this.orgRepository = orgRepository;
   }
 
   @Override
@@ -35,6 +39,12 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
         .map(
             account ->
                 account.validPasswordOrThrow(Password.of(loginDto.password()), passwordEncoder))
+        .flatMap(
+            account ->
+                orgRepository
+                    .findBy(account.orgId())
+                    .map(Organization::checkIsActive)
+                    .thenReturn(account))
         .flatMap(
             account ->
                 permissionsRepository

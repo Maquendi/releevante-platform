@@ -4,6 +4,7 @@ package com.releevante.identity.domain.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
+import com.releevante.types.exceptions.ConfigurationException;
 import java.time.ZonedDateTime;
 import org.immutables.value.Value;
 
@@ -28,7 +29,7 @@ public abstract class AbstractOrganization {
 
   public Organization checkIsActive() {
     if (!isActive()) {
-      throw new RuntimeException("Org not configured");
+      throw new ConfigurationException("Org configuration");
     }
     return (Organization) this;
   }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.PrimitiveVo;
+import com.releevante.types.exceptions.InvalidInputException;
 import java.util.regex.Pattern;
 import org.immutables.value.Value;
 
@@ -14,14 +15,14 @@ import org.immutables.value.Value;
 @ImmutableExt
 public abstract class AbstractEmail extends PrimitiveVo<String> {
   static final String VALIDATE_REGEX =
-      "^[a-zA-Z0-9_+&*-]+(?:\\\\.[a-zA-Z0-9_+&*-]+)*@[a-zA-Z0-9-]+(?:\\\\.[a-zA-Z0-9-]+)*\\\\.[a-zA-Z]{2,7}$";
+      "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,7}$";
 
   public static Email from(String email) {
     // validate email comply with rules.
     if (isValidEmail(email)) {
       return Email.of(email);
     }
-    throw new RuntimeException("Invalid Email");
+    throw new InvalidInputException("Invalid Email");
   }
 
   public static boolean isValidEmail(String email) {

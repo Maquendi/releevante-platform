@@ -41,7 +41,11 @@ public class IdentityServiceBeanFactory {
   public AuthenticationService userAuthenticationService(
       JtwTokenService<LoginAccount> userJtwTokenService, PasswordEncoder passwordEncoder) {
     return new DefaultUserAuthenticationService(
-        accountRepository, userJtwTokenService, passwordEncoder, privilegeRepository);
+        accountRepository,
+        userJtwTokenService,
+        passwordEncoder,
+        privilegeRepository,
+        orgRepository);
   }
 
   @Bean("m2mAuthenticationService")
