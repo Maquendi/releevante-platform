@@ -20,7 +20,7 @@ public class UserAuthenticationController {
   }
 
   @PostMapping("/login")
-  Mono<String> registerAccount(@RequestBody LoginDto login) {
-    return identityServiceFacade.authenticate(login).map(LoginTokenDto::value);
+  Mono<LoginTokenDto> registerAccount(@RequestBody LoginDto login) {
+    return identityServiceFacade.authenticate(login);
   }
 }

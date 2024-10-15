@@ -9,6 +9,7 @@ import com.releevante.identity.domain.repository.OrgRepository;
 import com.releevante.identity.domain.repository.PrivilegeRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.AccountPrincipal;
+import com.releevante.types.exceptions.UserUnauthorizedException;
 import reactor.core.publisher.Mono;
 
 public class DefaultUserAuthenticationService implements AuthenticationService {
@@ -53,7 +54,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
                     .collectList()
                     .map(account::withPermissions))
         .flatMap(tokenService::generateToken)
-        .switchIfEmpty(Mono.error(new RuntimeException("Account not found")));
+        .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
   }
 
   @Override
