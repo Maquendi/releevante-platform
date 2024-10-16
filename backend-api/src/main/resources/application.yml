@@ -29,6 +29,17 @@ security:
       public: C:\\Users\\LEGION\Documents\\rsa\\public.pem
       private: C:\\Users\\LEGION\\Documents\\rsa\\private.pem
 
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    config-url: /v3/api-docs/swagger-config
+    path: /swagger-ui.html
+#  api-docs:
+#    enabled: true
+#    path: /api-docs
+server:
+  port: 8181
+
 
 
 
