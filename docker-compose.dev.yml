@@ -1,0 +1,21 @@
+services:
+  ui-admin-web:
+    extends:
+      file: ui-admin-web/docker/development/docker-compose.yml
+      service: ui-admin-web
+    networks:
+      - releevante-network
+  ui-smartlib-web:
+    extends:
+      file: ui-smartlib-web/docker/development/docker-compose.yml
+      service: ui-smartlib-web
+    networks:
+      - releevante-network
+
+  # Add more containers below (nginx, postgres, etc.)
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  releevante-network:
+    external: false
