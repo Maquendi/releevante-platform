@@ -16,13 +16,15 @@ public class CustomRestControllerAdvice {
   @ExceptionHandler(UserUnauthorizedException.class)
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public CustomApiResponse<Map<String, Object>> unAuthorized(Throwable e) {
-    return CustomApiResponse.from(HttpStatus.UNAUTHORIZED.value(), Map.of("message", e.getMessage()));
+    return CustomApiResponse.from(
+        HttpStatus.UNAUTHORIZED.value(), Map.of("message", e.getMessage()));
   }
 
   @ExceptionHandler(ConfigurationException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public CustomApiResponse<Map<String, Object>> configuration(Throwable e) {
-    return CustomApiResponse.from(HttpStatus.INTERNAL_SERVER_ERROR.value(), Map.of("message", e.getMessage()));
+    return CustomApiResponse.from(
+        HttpStatus.INTERNAL_SERVER_ERROR.value(), Map.of("message", e.getMessage()));
   }
 
   @ExceptionHandler(ForbiddenException.class)
@@ -34,12 +36,14 @@ public class CustomRestControllerAdvice {
   @ExceptionHandler(InvalidInputException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public CustomApiResponse<Map<String, Object>> badRequest(Throwable e) {
-    return CustomApiResponse.from(HttpStatus.BAD_REQUEST.value(), Map.of("message", e.getMessage()));
+    return CustomApiResponse.from(
+        HttpStatus.BAD_REQUEST.value(), Map.of("message", e.getMessage()));
   }
 
   @ExceptionHandler(Throwable.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public CustomApiResponse<Map<String, Object>> exceptions(Throwable e) {
-    return CustomApiResponse.from(HttpStatus.INTERNAL_SERVER_ERROR.value(), Map.of("message", e.getMessage()));
+    return CustomApiResponse.from(
+        HttpStatus.INTERNAL_SERVER_ERROR.value(), Map.of("message", e.getMessage()));
   }
 }

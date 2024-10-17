@@ -5,9 +5,8 @@ import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.AccountRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.SequentialGenerator;
-import java.time.ZonedDateTime;
-
 import com.releevante.types.exceptions.InvalidInputException;
+import java.time.ZonedDateTime;
 import reactor.core.publisher.Mono;
 
 public class AccountService {

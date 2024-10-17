@@ -18,12 +18,6 @@ public class ApplicationConfig {
   @Autowired ServerCodecConfigurer serverCodecConfigurer;
   @Autowired RequestedContentTypeResolver requestedContentTypeResolver;
 
-  //  @Bean
-  //  CustomResponseBodyAdvice customResponseBodyAdvice() {
-  //    return new CustomResponseBodyAdvice(
-  //        serverCodecConfigurer.getWriters(), requestedContentTypeResolver);
-  //  }
-
   @Bean
   public WebProperties.Resources resources() {
     return new WebProperties.Resources();
@@ -42,21 +36,14 @@ public class ApplicationConfig {
 
   @Bean
   CorsWebFilter corsFilter() {
-
     CorsConfiguration config = new CorsConfiguration();
-
-    // Possibly...
-    // config.applyPermitDefaultValues()
-
     config.setAllowCredentials(true);
     config.addAllowedOrigin("http://localhost:3000");
     config.addAllowedOrigin("http://localhost:3001");
     config.addAllowedHeader("*");
     config.addAllowedMethod("*");
-
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
-
     return new CorsWebFilter(source);
   }
 }
