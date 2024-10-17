@@ -3,7 +3,7 @@ services:
     build:
       context: ../../
       dockerfile: docker/development/Dockerfile
-    image: ui-smartlib-web
+    image: ui-smartlib-web:${APP_VERSION}
     ports:
       - "3000:3000"
     restart: no

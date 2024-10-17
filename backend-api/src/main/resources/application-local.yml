@@ -3,10 +3,3 @@ server:
 logging:
   level:
     root: INFO
-
-
-
-
-
-
-
