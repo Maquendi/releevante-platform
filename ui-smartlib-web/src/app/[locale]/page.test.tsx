@@ -3,7 +3,6 @@ import { AbstractIntlMessages, NextIntlClientProvider } from "next-intl";
 import { expect, test } from "vitest";
 import Home from "./page";
 
-// reusable Helper to render different locales and messages
 function renderWithIntl(locale: string, messages: AbstractIntlMessages) {
   return render(
     <NextIntlClientProvider locale={locale} messages={messages}>
@@ -12,7 +11,6 @@ function renderWithIntl(locale: string, messages: AbstractIntlMessages) {
   );
 }
 
-// Test to check if the English JSON renders correctly
 test("renders Home component with translations in English", () => {
   const messagesEn = {
     HomePage: {
@@ -25,7 +23,6 @@ test("renders Home component with translations in English", () => {
   expect(screen.getByText("Welcome to the Home Page")).toBeInTheDocument();
 });
 
-// Test to check if the Frances JSON renders correctly
 test("renders Home component with translations in French", () => {
   const messagesFr = {
     HomePage: {
@@ -39,7 +36,6 @@ test("renders Home component with translations in French", () => {
 });
 
 
-// Test to check if the spanish JSON renders correctly
 test("renders Home component with translations in spanish", () => {
   const messagesEs = {
     HomePage: {
