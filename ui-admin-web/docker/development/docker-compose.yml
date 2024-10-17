@@ -1,0 +1,9 @@
+services:
+  ui-admin-web:
+    build:
+      context: ../../
+      dockerfile: docker/development/Dockerfile
+    image: ui-admin-web
+    ports:
+      - "3001:3000"
+    restart: no
