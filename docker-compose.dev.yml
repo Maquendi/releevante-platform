@@ -1,4 +1,19 @@
 services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_SECRET}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - releevante
+    restart: unless-stopped
+
   ui-admin-web:
     extends:
       file: ui-admin-web/docker/development/docker-compose.yml
@@ -11,20 +26,14 @@ services:
       service: ui-smartlib-web
     networks:
       - releevante
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-coex}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-test1234}
-      PGDATA: /data/postgres
-    volumes:
-       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
+  backend-api:
+    extends:
+      file: backend-api/docker-compose.yml
+      service: backend-api
+    depends_on:
+      - postgres
     networks:
       - releevante
-    restart: unless-stopped
   
   pgadmin:
     container_name: pgadmin_new
