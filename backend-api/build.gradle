@@ -154,9 +154,6 @@ subprojects {
 	apply plugin: 'io.spring.dependency-management'
 
 	apply plugin: 'java'
-	//apply plugin: 'java-library'
-	//apply plugin: 'groovy'
-	//apply plugin: 'idea'
 	apply plugin: "io.freefair.lombok"
 
 
@@ -166,7 +163,6 @@ subprojects {
 		testImplementation "org.codehaus.groovy:groovy-all:${rootProject.groovyVersion}"
 
 		testImplementation "org.spockframework:spock-core:${rootProject.spockVersion}"
-		//implementation "org.projectlombok:lombok:${rootProject.lombokVersion}"
 		implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
 		testImplementation "io.projectreactor:reactor-test:${rootProject.reactorVersion}"
 		implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
@@ -183,6 +179,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0"
+
 
 
 	implementation project(path: ':identity-management:application')

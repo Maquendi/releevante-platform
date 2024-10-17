@@ -18,16 +18,9 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
    * Create a new {@code AbstractErrorWebExceptionHandler}.
    *
    * @param errorAttributes the error attributes
-   * @param resources the resources configuration properties
    * @param applicationContext the application context
    * @since 2.4.0
    */
-  //  public GlobalErrorWebExceptionHandler(
-  //      ErrorAttributes errorAttributes,
-  //      WebProperties.Resources resources,
-  //      ApplicationContext applicationContext) {
-  //    super(errorAttributes, resources, applicationContext);
-  //  }
   public GlobalErrorWebExceptionHandler(
       ErrorAttributes errorAttributes,
       WebProperties webProperties,
@@ -37,11 +30,8 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
     this.setMessageWriters(serverConfigurer.getWriters());
   }
 
-  // constructors
-
   @Override
   protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
-
     return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
   }
 

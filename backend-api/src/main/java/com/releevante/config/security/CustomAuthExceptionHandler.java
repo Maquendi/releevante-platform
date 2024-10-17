@@ -2,7 +2,7 @@ package com.releevante.config.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.releevante.adapter.api.response.ApiResponse;
+import com.releevante.adapter.api.response.CustomApiResponse;
 import com.releevante.adapter.api.response.ResponseContext;
 import java.nio.charset.StandardCharsets;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class CustomAuthExceptionHandler {
               String message = ex.getMessage();
 
               var apiResponse =
-                  ApiResponse.builder()
+                  CustomApiResponse.builder()
                       .statusCode(status.value())
                       .context(ResponseContext.builder().data(message).build())
                       .build();

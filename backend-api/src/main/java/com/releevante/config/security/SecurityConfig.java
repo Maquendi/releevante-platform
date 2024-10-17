@@ -18,7 +18,12 @@ public class SecurityConfig {
     return http.authorizeExchange(
             exchanges ->
                 exchanges
-                    .pathMatchers("/auth/**")
+                    .pathMatchers(
+                        "/auth/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**",
+                        "/webjars/**")
                     .permitAll()
                     .pathMatchers("/admin/**")
                     .hasAnyAuthority("super-admin", "sys-admin", "user-admin")
