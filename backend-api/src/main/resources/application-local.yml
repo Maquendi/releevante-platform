@@ -1,41 +1,6 @@
 spring:
   profiles:
     active: local
-  datasource:
-    url: jdbc:postgresql://localhost:5432/relevantedb
-    username: coex
-    password: Summer01
-    initialization-mode: always
-    initialize: true
-    continue-on-error: true
-  sql:
-    init:
-      mode: never #always
-      data-locations: classpath:identity_initial_data_insert.sql
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        ddl-auto: none
-        show-sql: true
-security:
-  rsa:
-    key-path:
-      public: C:\\Users\\LEGION\Documents\\rsa\\public.pem
-      private: C:\\Users\\LEGION\\Documents\\rsa\\private.pem
-  basic:
-    enabled: false
-
-springdoc:
-  version: 3.0.1
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
-    url: /api/v3/api-docs
-
-#logging:
-#  level: DEBUG
 
 
 
