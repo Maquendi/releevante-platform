@@ -20,14 +20,10 @@ public class SecurityConfig {
                 exchanges
                     .pathMatchers(
                         "/auth/**",
-                        "/v1/releevante-api/**",
-                        "/swagger-ui.html/**",
                         "/swagger-ui/**",
+                        "/swagger-ui.html",
                         "/v3/api-docs/**",
-                        "/v1/api-docs/**",
-                        "/webjars/**",
-                        "/v3/api-docs/**",
-                        "/v3/api-docs.yaml/**")
+                        "/webjars/**")
                     .permitAll()
                     .pathMatchers("/admin/**")
                     .hasAnyAuthority("super-admin", "sys-admin", "user-admin")

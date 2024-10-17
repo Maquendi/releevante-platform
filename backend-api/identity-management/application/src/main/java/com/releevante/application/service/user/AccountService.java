@@ -6,6 +6,8 @@ import com.releevante.identity.domain.repository.AccountRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.SequentialGenerator;
 import java.time.ZonedDateTime;
+
+import com.releevante.types.exceptions.InvalidInputException;
 import reactor.core.publisher.Mono;
 
 public class AccountService {
@@ -54,6 +56,6 @@ public class AccountService {
   }
 
   Mono<Boolean> throwEntityExists(LoginAccount account) {
-    return Mono.error(new RuntimeException("account already exists"));
+    return Mono.error(new InvalidInputException("account already exists"));
   }
 }

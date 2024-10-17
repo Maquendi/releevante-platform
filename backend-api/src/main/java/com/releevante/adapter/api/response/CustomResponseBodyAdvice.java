@@ -27,18 +27,19 @@ public class CustomResponseBodyAdvice extends ResponseBodyResultHandler {
   public Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
 
     var responseBuilder =
-        ApiResponse.builder()
-            .statusCode(Objects.requireNonNull(exchange.getResponse().getStatusCode()).value());
+        CustomApiResponse
+                .builder()
+                .statusCode(Objects.requireNonNull(exchange.getResponse().getStatusCode()).value());
 
     if (Objects.nonNull(getAdapter(result))) {
-      Flux<ApiResponse> body =
+      Flux<CustomApiResponse> body =
           Flux.from((Publisher<?>) Objects.requireNonNull(result.getReturnValue()))
               .map(data -> ResponseContext.builder().data(data).build())
               .map(responseContext -> responseBuilder.context(responseContext).build());
       return writeBody(body, result.getReturnTypeSource().nested(), exchange);
     } else {
       var context = ResponseContext.builder().data(result.getReturnValue()).build();
-      Mono<ApiResponse> body = Mono.just(responseBuilder.context(context).build());
+      Mono<CustomApiResponse> body = Mono.just(responseBuilder.context(context).build());
       return writeBody(body, result.getReturnTypeSource().nested(), exchange);
     }
   }

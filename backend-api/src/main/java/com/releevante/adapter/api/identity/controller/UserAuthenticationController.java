@@ -1,6 +1,7 @@
 /* (C)2024 */
 package com.releevante.adapter.api.identity.controller;
 
+import com.releevante.adapter.api.response.CustomApiResponse;
 import com.releevante.application.dto.LoginDto;
 import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.application.identity.IdentityServiceFacade;
@@ -20,7 +21,7 @@ public class UserAuthenticationController {
   }
 
   @PostMapping("/login")
-  Mono<LoginTokenDto> registerAccount(@RequestBody LoginDto login) {
-    return identityServiceFacade.authenticate(login);
+  Mono<CustomApiResponse<LoginTokenDto>> registerAccount(@RequestBody LoginDto login) {
+    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 }

@@ -1,6 +1,5 @@
 package com.releevante.config.app;
 
-import com.releevante.adapter.api.response.CustomResponseBodyAdvice;
 import com.releevante.config.security.GlobalErrorWebExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -19,11 +18,11 @@ public class ApplicationConfig {
   @Autowired ServerCodecConfigurer serverCodecConfigurer;
   @Autowired RequestedContentTypeResolver requestedContentTypeResolver;
 
-  @Bean
-  CustomResponseBodyAdvice customResponseBodyAdvice() {
-    return new CustomResponseBodyAdvice(
-        serverCodecConfigurer.getWriters(), requestedContentTypeResolver);
-  }
+  //  @Bean
+  //  CustomResponseBodyAdvice customResponseBodyAdvice() {
+  //    return new CustomResponseBodyAdvice(
+  //        serverCodecConfigurer.getWriters(), requestedContentTypeResolver);
+  //  }
 
   @Bean
   public WebProperties.Resources resources() {
