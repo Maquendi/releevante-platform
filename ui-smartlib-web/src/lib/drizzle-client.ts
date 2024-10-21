@@ -4,8 +4,8 @@ import {
   ExtractTablesWithRelations,
   InferInsertModel,
 } from "drizzle-orm";
-import { db } from "../../drizzle/db";
-import * as schema from "../../drizzle/schemas";
+import { db } from "../config/drizzle/db";
+import * as schema from "../config/drizzle/schemas";
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 
@@ -24,10 +24,7 @@ export async function dbGetAll<T extends keyof TSchema>(
 ) {
   try {
     const data = await db.query[table].findMany(Opts || {});
-    return {
-      status: 200,
-      data,
-    };
+    return data;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -45,16 +42,12 @@ export async function dbGetById<T extends keyof TSchema>(
       with: Opts?.with,
       extras: Opts?.extras,
     });
+
     if (!data) {
-      return {
-        status: 404,
-        message: "Not found",
-      };
+      throw new Error("No record found");
     }
-    return {
-      status: 200,
-      data,
-    };
+
+    return data;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -65,19 +58,16 @@ export async function dbPost<T extends keyof TSchema>(
   values: InferInsertModel<(typeof schema)[T]>
 ) {
   try {
-    const [data] = await db.insert(schema[table]).values(values as any).returning();
+    const [data] = await db
+      .insert(schema[table])
+      .values(values as any)
+      .returning();
 
     if (!data) {
-      return {
-        status: 400,
-        message: "Error creating element",
-      };
+      throw new Error("Error creating element");
     }
 
-    return {
-      status: 201,
-      data,
-    };
+    return data;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -91,47 +81,32 @@ export async function dbPut<T extends keyof TSchema>(
   try {
     const [data] = await db
       .update(schema[table])
-      .set(values as Record<string,any>)
+      .set(values as Record<string, any>)
       .where(eq(schema[table].id, id))
       .returning();
 
     if (!data) {
-      return {
-        status: 404,
-        message: `Item with id:${id} not found`,
-      };
+      throw new Error("Error updating element");
     }
 
-    return {
-      status: 200,
-      data,
-    };
+    return data;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
 }
 
-export async function dbDelete<T extends keyof TSchema>(
-  table: T,
-  id: number
-) {
+export async function dbDelete<T extends keyof TSchema>(table: T, id: number) {
   try {
     const [data] = await db
       .delete(schema[table])
       .where(eq(schema[table].id, id))
       .returning();
-   
+
     if (!data) {
-      return {
-        status: 404,
-        message: `Item with id:${id} not found`,
-      };
+      throw new Error("Error deleting element");
     }
 
-    return {
-        status: 200,
-        data,
-      };
+    return data;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
