@@ -19,6 +19,6 @@ export default async function doLogin(formData: FormData) {
         path: '/',
       });
       return getLocale().then(locale => {
-        redirect(`/${locale}`);
+        redirect(`/${locale}/book-detail`);
       })
 }
