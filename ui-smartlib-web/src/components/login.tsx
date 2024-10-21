@@ -1,13 +1,8 @@
 "use client";
 
 import doLogin from "@/actions/user-actions";
-import { useLocale } from "next-intl";
-import { useFormState } from "react-dom";
 
 export default function LoginForm() {
-
-  //const [state, action] = useFormState(doLogin, undefined);
-  //const router = useRouter();
 
   return (
     <>
