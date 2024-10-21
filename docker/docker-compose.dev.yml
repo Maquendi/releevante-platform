@@ -1,4 +1,13 @@
 services:
+  flyway_server:
+    image: flyway/flyway
+    command: ${FLYWAY_COMMAND}
+    volumes:
+      - ./flyway:/flyway/sql
+    depends_on:
+      - postgres
+    networks:
+      - releevante
   postgres:
     container_name: postgres_container
     image: postgres
@@ -12,23 +21,22 @@ services:
       - "5432:5432"
     networks:
       - releevante
-    restart: unless-stopped
-
+    restart: always
   ui-admin-web:
     extends:
-      file: ui-admin-web/docker/development/docker-compose.yml
+      file: ../ui-admin-web/docker/development/docker-compose.yml
       service: ui-admin-web
     networks:
       - releevante
   ui-smartlib-web:
     extends:
-      file: ui-smartlib-web/docker/development/docker-compose.yml
+      file: ../ui-smartlib-web/docker/development/docker-compose.yml
       service: ui-smartlib-web
     networks:
       - releevante
   backend-api:
     extends:
-      file: backend-api/docker-compose.yml
+      file: ../backend-api/docker-compose.yml
       service: backend-api
     depends_on:
       - postgres

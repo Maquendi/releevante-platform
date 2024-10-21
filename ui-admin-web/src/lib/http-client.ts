@@ -32,4 +32,3 @@ export async function executePatch<T>(request: ApiRequest): Promise<T> {
     const requestUrl = buildRequestUrl(request);
     return fetch(requestUrl, {}).then();
 }
-

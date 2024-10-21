@@ -9,7 +9,9 @@ const AUTH_COOKIE = process.env.AUTH_COOKIE as string;
 // a server action.
 export default async function doLogin(formData: FormData) {
     const userpin = formData.get('userpin') as string;
-    cookies().set(AUTH_COOKIE, '123456789', {
+
+   // pages ->  facades -> services -> lib
+    cookies().set(AUTH_COOKIE, userpin, {
         httpOnly: true,
         secure: true,
         //expires: session.expiresAt,
@@ -19,6 +21,4 @@ export default async function doLogin(formData: FormData) {
       return getLocale().then(locale => {
         redirect(`/${locale}`);
       })
-
-   
 }
