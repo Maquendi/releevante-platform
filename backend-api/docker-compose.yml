@@ -1,0 +1,16 @@
+services:
+  backend-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: backend-api:${APP_VERSION}
+    environment:
+      DB_URL: ${DATABASE_URL}
+      DB_USER: ${DATABASE_USER}
+      DB_SECRET: ${DATABASE_SECRET}
+      PRIVATE_KEY_PATH: ${PRIVATE_KEY_PATH}
+      PUBLIC_KEY_PATH: ${PUBLIC_KEY_PATH}
+    ports:
+      - "8080:8080"
+  
+
