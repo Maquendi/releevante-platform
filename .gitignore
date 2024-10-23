@@ -5,3 +5,5 @@
 /check.io
 
 /docker/.env
+private.pem
+public.pem

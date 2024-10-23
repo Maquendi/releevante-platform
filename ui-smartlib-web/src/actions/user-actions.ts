@@ -1,24 +1,27 @@
-'use server'
+"use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
+import { identityService } from "@/domain/identity/facade";
+import { cookies } from "next/headers";
 
 const AUTH_COOKIE = process.env.AUTH_COOKIE as string;
 
 // a server action.
 export default async function doLogin(formData: FormData) {
-    const userpin = formData.get('userpin') as string;
+  try {
+    const passcode = formData.get("passcode") as string;
 
-   // pages ->  facades -> services -> lib
-    cookies().set(AUTH_COOKIE, userpin, {
-        httpOnly: true,
-        secure: true,
-        //expires: session.expiresAt,
-        sameSite: 'lax',
-        path: '/',
-      });
-      return getLocale().then(locale => {
-        redirect(`/${locale}/book-detail`);
-      })
+    const { token } = await identityService.doLogin(passcode);
+
+    cookies().set(AUTH_COOKIE, token, {
+      httpOnly: true,
+    });
+
+    return getLocale().then((locale) => {
+      redirect(`/${locale}/user-playgound`);
+    });
+  } catch (error: any) {
+    throw new Error("Error signin in" + error);
+  }
 }

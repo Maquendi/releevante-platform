@@ -1,4 +1,5 @@
 import {
+  BuildQueryResult,
   DBQueryConfig,
   eq,
   ExtractTablesWithRelations,
@@ -18,6 +19,12 @@ type QueryConfig<TableName extends keyof TSchema> = DBQueryConfig<
 
 type OptsQuery<T extends keyof TSchema> = QueryConfig<T>;
 
+
+type QueryResult<
+  TableName extends keyof TSchema,
+  QBConfig extends QueryConfig<TableName> 
+> = BuildQueryResult<TSchema, TSchema[TableName], QBConfig>;
+
 export async function dbGetAll<T extends keyof TSchema>(
   table: T,
   Opts?: OptsQuery<T>
@@ -25,6 +32,19 @@ export async function dbGetAll<T extends keyof TSchema>(
   try {
     const data = await db.query[table].findMany(Opts || {});
     return data;
+  } catch (error) {
+    throw new Error("Error getting data: " + error);
+  }
+}
+
+export async function dbGetOne<T extends keyof TSchema, Opts extends OptsQuery<T>>(
+  table: T,
+  opts?: Opts
+):Promise<QueryResult<T,Opts>> {
+  try {
+    const data = await db.query[table].findFirst(opts || {});
+
+    return data as QueryResult<T,Opts> ;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -61,7 +81,7 @@ export async function dbPost<T extends keyof TSchema>(
     const [data] = await db
       .insert(schema[table])
       .values(values as any)
-      .returning();
+      .returning({id:schema[table].id});
 
     if (!data) {
       throw new Error("Error creating element");
