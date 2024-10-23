@@ -1,35 +1,32 @@
-import { dbGetOne } from "@/lib/drizzle-client";
 import { authenticateUserApi } from "./authApiService";
-import { cookies } from "next/headers";
-import { authenticateUserDb, createUserLocalDb } from "./localDbService";
-
-const AUTH_COOKIE=process.env.AUTH_COOKIE as string
+import { getUser, createUserLocalDb } from "./localDbService";
+import { signToken } from "./jwt-parser";
 
 class IdentityServiceFacade {
   constructor() {}
 
-  async doLogin(passcode: string) {
-    const seccionLocalDb = await authenticateUserDb({ passcode });
+  async doLogin(passcode: string): Promise<{ token: string }> {
+    const dbUser = await getUser({ passcode });
 
-    if (seccionLocalDb?.userId) {
-      cookies().set(AUTH_COOKIE, seccionLocalDb.token!, {
-        httpOnly: true,
+    if (dbUser?.id) {
+      const token = signToken({
+        sub: dbUser.id,
+        org: dbUser.orgId,
       });
-      return;
+      return { token };
     }
 
-    const apiSeccion = await authenticateUserApi({ passcode });
+    const response = await authenticateUserApi({ passcode });
 
-    if (apiSeccion.statusCode === 200) {
-      cookies().set(AUTH_COOKIE, apiSeccion.data.token!, {
-        httpOnly: true,
+    if (response?.statusCode === 200) {
+      await createUserLocalDb({
+        passcode,
+        organization_id: response.data?.orgId,
       });
-      const organization = await dbGetOne('organization')
-      if(!organization){
-        throw new Error('Organization not found')
-      }
-      createUserLocalDb({ passcode,organization_id:organization.id});
+      return { token: response.data?.token };
     }
+
+    throw new Error("Login failed");
   }
 }
 

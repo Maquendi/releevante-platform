@@ -9,9 +9,10 @@ export interface CreateAccountRequestDto {
   password: string;
 }
 
-export type UserLoginDb = {
-  token: string | null;
-  userId: string | null;
+export type DbUser = {
+  id: string | null;
+  pin: string | null;
+  orgId?:string
 };
 
 export interface TokenPayload {
