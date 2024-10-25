@@ -12,7 +12,9 @@ public interface IdentityServiceFacade {
 
   Mono<AccountIdDto> create(AccountDto accountDto);
 
-  Mono<LoginTokenDto> authenticate(LoginDto loginDto);
+  Mono<UserAuthenticationDto> authenticate(LoginDto loginDto);
+
+  Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto);
 
   Mono<AccountIdDto> create(OrgDto orgDto);
 }

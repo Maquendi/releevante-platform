@@ -6,12 +6,9 @@ import com.releevante.application.service.user.OrgService;
 import com.releevante.application.service.user.OrgServiceImpl;
 import com.releevante.application.service.user.UserService;
 import com.releevante.config.security.JwtAuthenticationToken;
-import com.releevante.identity.adapter.out.service.DefaultM2MJtwTokenService;
 import com.releevante.identity.adapter.out.service.DefaultRsaKeyProvider;
 import com.releevante.identity.adapter.out.service.DefaultUserJtwTokenService;
 import com.releevante.identity.adapter.out.service.JwtRsaSigningKeyProvider;
-import com.releevante.identity.domain.model.LoginAccount;
-import com.releevante.identity.domain.model.M2MClient;
 import com.releevante.identity.domain.repository.*;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.UuidGenerator;
@@ -30,6 +27,7 @@ public class IdentityServiceBeanFactory {
   @Autowired private PrivilegeRepository privilegeRepository;
   @Autowired private M2MClientsRepository m2MClientsRepository;
   @Autowired private OrgRepository orgRepository;
+  @Autowired protected SmartLibraryAccessControlRepository accessControlRepository;
 
   @Value("${security.rsa.key-path.public}")
   private String rsaPublicKey;
@@ -39,31 +37,20 @@ public class IdentityServiceBeanFactory {
 
   @Bean("userAuthenticationService")
   public AuthenticationService userAuthenticationService(
-      JtwTokenService<LoginAccount> userJtwTokenService, PasswordEncoder passwordEncoder) {
+      JtwTokenService userJtwTokenService, PasswordEncoder passwordEncoder) {
     return new DefaultUserAuthenticationService(
         accountRepository,
         userJtwTokenService,
         passwordEncoder,
         privilegeRepository,
-        orgRepository);
-  }
-
-  @Bean("m2mAuthenticationService")
-  public AuthenticationService m2mAuthenticationService(
-      JtwTokenService<M2MClient> m2mJtwTokenService) {
-    return new M2MDefaultAuthenticationService(m2MClientsRepository, m2mJtwTokenService);
+        orgRepository,
+        accessControlRepository,
+        userRepository);
   }
 
   @Bean()
-  public JtwTokenService<LoginAccount> userJtwTokenService(
-      JwtRsaSigningKeyProvider rsaSigningKeyProvider) {
+  public JtwTokenService userJtwTokenService(JwtRsaSigningKeyProvider rsaSigningKeyProvider) {
     return new DefaultUserJtwTokenService(rsaSigningKeyProvider);
-  }
-
-  @Bean()
-  public JtwTokenService<M2MClient> m2mJtwTokenService(
-      JwtRsaSigningKeyProvider rsaSigningKeyProvider) {
-    return new DefaultM2MJtwTokenService(rsaSigningKeyProvider);
   }
 
   @Bean()

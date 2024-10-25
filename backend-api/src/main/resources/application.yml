@@ -26,6 +26,10 @@ security:
       private: ${PRIVATE_KEY_PATH}
   basic:
     enabled: false
+  api:
+    keys: >
+     2cd60035-059b-463e-b816-52dc08402cd9,
+     ff95f7e9-7acf-423a-8e4c-1b93bbb5c605
 
 springdoc:
   version: 3.0.1

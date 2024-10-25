@@ -16,7 +16,6 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
     this.principal = principal;
     this.loginToken = loginToken;
     setAuthenticated(true);
-    // This constructor is used after successful authentication
   }
 
   @Override

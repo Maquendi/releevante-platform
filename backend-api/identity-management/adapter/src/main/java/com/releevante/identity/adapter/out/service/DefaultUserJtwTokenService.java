@@ -7,16 +7,18 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.application.service.auth.JtwTokenService;
 import com.releevante.identity.domain.model.LoginAccount;
+import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.Instant;
 import reactor.core.publisher.Mono;
 
-public class DefaultUserJtwTokenService implements JtwTokenService<LoginAccount> {
+public class DefaultUserJtwTokenService implements JtwTokenService {
   final JwtRsaSigningKeyProvider signingKeyProvider;
   final String SUBJECT = "sub";
   final String ORG_ID = "org";
   final String ROLES = "roles";
+  final String GUEST_ACCESS = "guest";
 
   public DefaultUserJtwTokenService(JwtRsaSigningKeyProvider signingKeyProvider) {
     this.signingKeyProvider = signingKeyProvider;
@@ -25,12 +27,11 @@ public class DefaultUserJtwTokenService implements JtwTokenService<LoginAccount>
   @Override
   public Mono<LoginTokenDto> generateToken(LoginAccount payload) {
 
-    return Mono.zip(signingKeyProvider.publicKey(), signingKeyProvider.privateKey())
+    return signingKeyProvider
+        .privateKey()
         .map(
-            rsaKeys -> {
-              var publicKey = rsaKeys.getT1();
-              var privateKey = rsaKeys.getT2();
-              Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
+            privateKey -> {
+              Algorithm algorithm = Algorithm.RSA256(privateKey);
               return JWT.create()
                   .withIssuer("mee")
                   .withClaim(ORG_ID, payload.orgId().value())
@@ -43,17 +44,33 @@ public class DefaultUserJtwTokenService implements JtwTokenService<LoginAccount>
   }
 
   @Override
-  public Mono<AccountPrincipal> verifyToken(LoginTokenDto loginToken) {
-    return Mono.zip(signingKeyProvider.publicKey(), signingKeyProvider.privateKey())
+  public Mono<LoginTokenDto> generateToken(SmartLibraryAccess payload) {
+    return signingKeyProvider
+        .privateKey()
         .map(
-            rsaKeys -> {
-              var publicKey = rsaKeys.getT1();
-              var privateKey = rsaKeys.getT2();
-              Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
+            privateKey -> {
+              Algorithm algorithm = Algorithm.RSA256(privateKey);
+              return JWT.create()
+                  .withAudience(payload.slid())
+                  .withClaim(ORG_ID, payload.orgId().value())
+                  .withClaim(ROLES, GUEST_ACCESS)
+                  .withSubject(payload.id())
+                  .withExpiresAt(Instant.now().plusSeconds(1800))
+                  .sign(algorithm);
+            })
+        .map(LoginTokenDto::of);
+  }
+
+  @Override
+  public Mono<AccountPrincipal> verifyToken(LoginTokenDto loginToken) {
+    return signingKeyProvider
+        .publicKey()
+        .map(
+            publicKey -> {
+              Algorithm algorithm = Algorithm.RSA256(publicKey);
               try {
                 JWTVerifier verifier =
                     JWT.require(algorithm)
-                        .withIssuer("mee")
                         .withClaimPresence(ORG_ID)
                         .withClaimPresence(ROLES)
                         .withClaimPresence(SUBJECT)

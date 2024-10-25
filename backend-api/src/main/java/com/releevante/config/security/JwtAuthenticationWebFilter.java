@@ -2,6 +2,10 @@
 package com.releevante.config.security;
 
 import com.releevante.application.identity.IdentityServiceFacade;
+import com.releevante.types.exceptions.UserUnauthorizedException;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
@@ -14,6 +18,11 @@ import reactor.core.publisher.Mono;
 public class JwtAuthenticationWebFilter implements WebFilter {
   final IdentityServiceFacade identityServiceFacade;
   final CustomAuthenticationEntryPoint authenticationEntryPoint;
+  final String AUTHORIZATION_HEADER_KEY = "Authorization";
+  final String API_KEY_HEADER_KEY = "x-api-key";
+
+  @Value("${security.api.keys}")
+  private List<String> apiKeys = new ArrayList<>();
 
   public JwtAuthenticationWebFilter(
       IdentityServiceFacade identityServiceFacade,
@@ -24,28 +33,46 @@ public class JwtAuthenticationWebFilter implements WebFilter {
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-    return extractJwtFromRequest(exchange)
+    return verifyApiKey(exchange)
         .flatMap(
-            token ->
-                identityServiceFacade
-                    .verifyToken(token)
-                    .flatMap(
-                        authentication ->
-                            chain
-                                .filter(exchange)
-                                .contextWrite(
-                                    ReactiveSecurityContextHolder.withSecurityContext(
-                                        Mono.just(new SecurityContextImpl(authentication))))))
-        .switchIfEmpty(chain.filter(exchange))
-        .onErrorResume(
-            CustomAuthenticationException.class,
-            exception -> authenticationEntryPoint.commence(exchange, exception));
+            v ->
+                extractJwtFromRequest(exchange)
+                    .flatMap(token -> veryToken(token, exchange, chain))
+                    .switchIfEmpty(chain.filter(exchange))
+                    .onErrorResume(
+                        CustomAuthenticationException.class,
+                        exception -> authenticationEntryPoint.commence(exchange, exception)));
+  }
+
+  private Mono<Boolean> verifyApiKey(ServerWebExchange exchange) {
+    return extractApiKeyFromRequest(exchange)
+        .filter(apiKeys::contains)
+        .switchIfEmpty(
+            Mono.error(new CustomAuthenticationException(new UserUnauthorizedException())))
+        .thenReturn(true);
+  }
+
+  private Mono<Void> veryToken(String token, ServerWebExchange exchange, WebFilterChain chain) {
+    return identityServiceFacade
+        .verifyToken(token)
+        .flatMap(
+            authentication ->
+                chain
+                    .filter(exchange)
+                    .contextWrite(
+                        ReactiveSecurityContextHolder.withSecurityContext(
+                            Mono.just(new SecurityContextImpl(authentication)))));
   }
 
   private Mono<String> extractJwtFromRequest(ServerWebExchange exchange) {
     return Mono.justOrEmpty(exchange.getRequest().getHeaders())
-        .flatMap(httpHeaders -> Mono.justOrEmpty(httpHeaders.getFirst("Authorization")))
+        .flatMap(httpHeaders -> Mono.justOrEmpty(httpHeaders.getFirst(AUTHORIZATION_HEADER_KEY)))
         .filter(authHeader -> authHeader.startsWith("Bearer "))
         .map(authHeader -> authHeader.substring(7));
+  }
+
+  private Mono<String> extractApiKeyFromRequest(ServerWebExchange exchange) {
+    return Mono.justOrEmpty(exchange.getRequest().getHeaders())
+        .flatMap(httpHeaders -> Mono.justOrEmpty(httpHeaders.getFirst(API_KEY_HEADER_KEY)));
   }
 }

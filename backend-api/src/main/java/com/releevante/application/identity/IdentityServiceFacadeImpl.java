@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
-  final AuthenticationService userAuthenticationService;
+  final AuthenticationService authenticationService;
   final UserService userService;
   final OrgService orgService;
 
@@ -23,7 +23,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
       AuthenticationService userAuthenticationService,
       UserService userService,
       OrgService orgService) {
-    this.userAuthenticationService = userAuthenticationService;
+    this.authenticationService = userAuthenticationService;
     this.orgService = orgService;
     this.userService = userService;
   }
@@ -39,8 +39,13 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Mono<LoginTokenDto> authenticate(LoginDto loginDto) {
-    return userAuthenticationService.authenticate(loginDto);
+  public Mono<UserAuthenticationDto> authenticate(LoginDto loginDto) {
+    return authenticationService.authenticate(loginDto);
+  }
+
+  @Override
+  public Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto) {
+    return authenticationService.authenticate(loginDto);
   }
 
   @Transactional
@@ -54,7 +59,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
     return Mono.just(LoginTokenDto.of(token))
         .flatMap(
             loginToken ->
-                userAuthenticationService
+                authenticationService
                     .authenticate(loginToken)
                     .map(
                         accountPrincipal ->
