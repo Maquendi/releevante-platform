@@ -1,3 +1,4 @@
+'use server'
 import {
   BuildQueryResult,
   DBQueryConfig,
@@ -25,13 +26,14 @@ type QueryResult<
   QBConfig extends QueryConfig<TableName> 
 > = BuildQueryResult<TSchema, TSchema[TableName], QBConfig>;
 
-export async function dbGetAll<T extends keyof TSchema>(
+export async function dbGetAll<T extends keyof TSchema,Opts extends OptsQuery<T>>(
   table: T,
-  Opts?: OptsQuery<T>
-) {
+  opts?: Opts
+):Promise<QueryResult<T,Opts>[]>{
   try {
-    const data = await db.query[table].findMany(Opts || {});
-    return data;
+    const data = await db.query[table].findMany(opts || {});
+    return data as QueryResult<T, Opts>[]; 
+
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -50,24 +52,23 @@ export async function dbGetOne<T extends keyof TSchema, Opts extends OptsQuery<T
   }
 }
 
-export async function dbGetById<T extends keyof TSchema>(
+export async function dbGetById<T extends keyof TSchema, Opts extends OptsQuery<T>>(
   table: T,
   id: number,
-  Opts?: OptsQuery<T>
-) {
+  opts?: Opts
+):Promise<QueryResult<T,Opts>> {
   try {
     const data = await db.query[table].findFirst({
       where: eq(schema[table].id, id),
-      columns: Opts?.columns,
-      with: Opts?.with,
-      extras: Opts?.extras,
+      columns: opts?.columns,
+      with: opts?.with,
+      extras: opts?.extras,
     });
 
     if (!data) {
       throw new Error("No record found");
     }
-
-    return data;
+    return data as QueryResult<T,Opts> ;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -81,7 +82,7 @@ export async function dbPost<T extends keyof TSchema>(
     const [data] = await db
       .insert(schema[table])
       .values(values as any)
-      .returning({id:schema[table].id});
+      .returning();
 
     if (!data) {
       throw new Error("Error creating element");

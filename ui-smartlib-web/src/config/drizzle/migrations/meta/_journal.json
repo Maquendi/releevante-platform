@@ -36,6 +36,27 @@
       "when": 1729603628788,
       "tag": "0004_kind_ma_gnuci",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1729726408965,
+      "tag": "0005_complete_shinobi_shaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1729730204024,
+      "tag": "0006_fuzzy_lorna_dane",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1729730795461,
+      "tag": "0007_books_images",
+      "breakpoints": true
     }
   ]
 }
