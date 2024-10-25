@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -25,15 +24,16 @@ public abstract class AbstractSmartLibraryAccess {
 
   abstract Boolean isActive();
 
-  /** access code for accessing the smart library identified with slid */
-  abstract Optional<AccessCode> accessCode();
-
-  /** nfc hash for accessing the smart library identified with slid */
-  abstract Optional<NfcUid> nfcHash();
+  /** credential for accessing the smart library identified with slid */
+  abstract AccessCredential credential();
 
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
+
+  abstract ZonedDateTime expiresAt();
+
+  abstract Integer accessDueDays();
 
   public SmartLibraryAccess checkIsActive() {
     if (!this.isActive()) {

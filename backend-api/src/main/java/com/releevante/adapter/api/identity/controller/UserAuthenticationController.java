@@ -2,8 +2,8 @@
 package com.releevante.adapter.api.identity.controller;
 
 import com.releevante.adapter.api.response.CustomApiResponse;
-import com.releevante.application.dto.*;
-import com.releevante.application.identity.IdentityServiceFacade;
+import com.releevante.identity.application.dto.*;
+import com.releevante.identity.application.identity.IdentityServiceFacade;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +26,11 @@ public class UserAuthenticationController {
 
   @PostMapping("/pinLogin")
   Mono<CustomApiResponse<SmartLibraryAccessDto>> login(@RequestBody PinLoginDto login) {
+    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
+  }
+
+  @PostMapping("/nfcLoginDto")
+  Mono<CustomApiResponse<SmartLibraryAccessDto>> login(@RequestBody NfcLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 }

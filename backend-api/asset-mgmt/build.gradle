@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+group = 'com.releevante.asset.mgmt'
+
+subprojects {
+    bootJar {
+        enabled = false
+    }
+
+    jar {
+        enabled = true
+    }
+    dependencies {
+        implementation project(path: ':types')
+    }
+}

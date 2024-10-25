@@ -192,7 +192,8 @@ dependencies {
 	implementation project(path: ':identity-management:application')
     implementation project(path: ':identity-management:adapter')
 	implementation project(path: ':identity-management:domain')
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation project(path: ':asset-mgmt:application')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 

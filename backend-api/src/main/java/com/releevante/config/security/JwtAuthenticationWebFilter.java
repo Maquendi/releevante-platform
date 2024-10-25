@@ -1,7 +1,7 @@
 /* (C)2024 */
 package com.releevante.config.security;
 
-import com.releevante.application.identity.IdentityServiceFacade;
+import com.releevante.identity.application.identity.IdentityServiceFacade;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.ArrayList;
 import java.util.List;
