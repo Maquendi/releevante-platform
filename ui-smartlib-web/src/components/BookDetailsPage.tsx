@@ -1,7 +1,6 @@
 "use client";
 
-import { fetchBookImages } from "@/app/[locale]/bookstest/[id]/helper";
-import { getSingleBookFromIndexDb, setSingleBookInIndexDb } from "@/lib/indexDb-client";
+import { fetchBookImages, syncImagesInIndexDb } from "@/app/[locale]/bookstest/[id]/helper";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -9,14 +8,14 @@ import { useEffect, useState } from "react";
 const BookDetailsPage = ({ book }: any) => {
   const [bookImages, setBookImages] = useState<string[]>([]);
 
+ 
+
   useEffect(() => {
+    
     if (window.navigator.onLine && book) {
       const allImages = book.images;
       setBookImages(allImages);
-      getSingleBookFromIndexDb(book.id).then((data)=>{
-        if(data && book?.images?.length === data?.images?.length)return
-        setSingleBookInIndexDb(book).then()
-      })
+      syncImagesInIndexDb(book)
       return;
     }
 

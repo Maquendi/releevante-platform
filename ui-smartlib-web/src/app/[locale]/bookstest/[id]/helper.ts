@@ -1,5 +1,5 @@
 import {  createUrlFromBlob } from "@/lib/blob-parser";
-import { openIndexedDB, performDBAction } from "@/lib/indexDb-client";
+import { getSingleBookFromIndexDb, openIndexedDB, performDBAction, setSingleBookInIndexDb } from "@/lib/indexDb-client";
 
 export const fetchBookImages = async ({
   book_id,
@@ -21,5 +21,14 @@ export const fetchBookImages = async ({
     throw new Error("Error getting books from indexDb" + error);
   }
 };
+
+
+export  const syncImagesInIndexDb=async(book:any)=>{
+  const db = await openIndexedDB()
+  getSingleBookFromIndexDb(db,book.id).then((data)=>{
+    if(data && book?.images?.length === data?.images?.length)return
+    setSingleBookInIndexDb(db,book).then()
+  })
+}
 
 

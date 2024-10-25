@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { books } from "./books";
 import { books_edition_schema } from "./book_edition";
@@ -21,3 +21,5 @@ export const book_images_Relations = relations(books_images_schema, ({ one }) =>
         references: [books_edition_schema.id],
     }),
 }));
+
+export type Book_images_schema=InferSelectModel<typeof books_images_schema>
