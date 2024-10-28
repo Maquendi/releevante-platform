@@ -19,7 +19,7 @@ class CartRepositoryImpl implements CartRepository {
                 id: true,
                 status: true,
                 is_available: true,
-                compartment: true
+                compartment: true,
               },
             },
           },
@@ -37,7 +37,7 @@ class CartRepositoryImpl implements CartRepository {
     return new Cart(cartId, userId, cartItems);
   }
 
-  async update(cart: Cart): Promise<Cart> {
+  async update(cart: Cart, extras: () => Promise<Cart>): Promise<Cart> {
     const transaction: ClientTransaction = {
       execute: async function (
         tx: SQLiteTransaction<any, any, any, any>
@@ -63,7 +63,7 @@ class CartRepositoryImpl implements CartRepository {
           .set(cart_data)
           .where(eq(cartSchema.id, cart.cartId.value));
 
-        await Promise.all([...bookCopyUpdation, cartInsertion]);
+        await Promise.all([...bookCopyUpdation, cartInsertion, extras()]);
       },
     };
 

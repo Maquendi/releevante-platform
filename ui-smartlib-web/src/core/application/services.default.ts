@@ -5,6 +5,8 @@ import { CartRepository } from "../domain/repositories";
 import { BookService } from "@/book/application/services";
 import { v4 as uuidv4 } from "uuid";
 import { UserId } from "@/identity/domain/models";
+import { defaultCartRepository } from "../infrastructure/repositories-impl";
+import { defaultBookService } from "@/book/application/services-default";
 
 class DefaultCartService implements CartService {
   constructor(
@@ -41,8 +43,13 @@ class DefaultCartService implements CartService {
     return this.cartRepository.save(cart);
   }
 
-  async checkout(cart: Cart): Promise<Cart> {
+  async checkout(cart: Cart, args: () => Promise<Cart>): Promise<Cart> {
     cart.markForCheckout();
-    return this.cartRepository.update(cart);
+    return this.cartRepository.update(cart, args);
   }
 }
+
+export const defaultCartService = new DefaultCartService(
+  defaultBookService,
+  defaultCartRepository
+);

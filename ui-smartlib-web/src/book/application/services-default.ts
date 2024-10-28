@@ -1,5 +1,6 @@
 import { BookCategory, Book, BookEdition, BookCopy } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
+import { defaultBookRepository } from "../infrastructure/repositories-impl";
 import { SearchCriteria } from "./dto";
 import { BookService } from "./services";
 
@@ -33,3 +34,6 @@ class DefailtBookServiceImpl implements BookService {
     throw new Error("Method not implemented.");
   }
 }
+
+
+export const defaultBookService = new DefailtBookServiceImpl(defaultBookRepository)
