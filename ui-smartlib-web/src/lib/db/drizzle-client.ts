@@ -5,8 +5,9 @@ import {
   ExtractTablesWithRelations,
   InferInsertModel,
 } from "drizzle-orm";
-import { db } from "../config/drizzle/db";
-import * as schema from "../config/drizzle/schemas";
+import { db } from "../../config/drizzle/db";
+import * as schema from "../../config/drizzle/schemas";
+import { ClientTransaction } from "./transaction-manager";
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 
@@ -36,6 +37,7 @@ export async function dbGetAll<T extends keyof TSchema>(
     throw new Error("Error getting data: " + error);
   }
 }
+
 
 export async function dbGetOne<T extends keyof TSchema, Opts extends OptsQuery<T>>(
   table: T,
@@ -130,4 +132,18 @@ export async function dbDelete<T extends keyof TSchema>(table: T, id: number) {
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
+}
+
+
+export async function executeTransaction(transaction: ClientTransaction): Promise<void> {
+  await db.transaction(async (tx) => await transaction.execute(tx));
+}
+
+
+
+export async function initiateTransaction(transactionContext) {
+  await db.transaction(async (tx) => {
+    await transactionContext.start(tx)
+    await transactionContext.end(tx);
+  });
 }

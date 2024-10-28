@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/users/auth")
 public class UserAuthenticationController {
   final IdentityServiceFacade identityServiceFacade;
 
@@ -24,7 +24,7 @@ public class UserAuthenticationController {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 
-  @PostMapping("/pinLogin")
+  @PostMapping("/pin-login")
   Mono<CustomApiResponse<SmartLibraryAccessDto>> login(@RequestBody PinLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }

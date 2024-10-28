@@ -17,7 +17,7 @@ import lombok.Setter;
 public class SmartLibraryAccessControlRecord {
   @Id private String id;
   private String orgId;
-  private String slid; // smart library identifier.
+  private String slid;
   private String credential;
   private String credentialType;
   private boolean isActive;
