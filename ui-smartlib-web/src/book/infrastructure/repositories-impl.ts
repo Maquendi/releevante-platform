@@ -1,11 +1,18 @@
 import { dbGetAll } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
-import { Book, BookCopy, BookEdition } from "../domain/models";
+import { Book, BookCompartment, BookCopy, BookEdition } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { eq } from "drizzle-orm";
 import { bookCopieSchema } from "@/config/drizzle/schemas";
 
 class DefaultBookRepositoryImpl implements BookRepository {
+
+
+  findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  
   async findAllBookCopiesAvailable(
     bookEdition: BookEdition
   ): Promise<BookCopy[]> {
@@ -34,3 +41,6 @@ class DefaultBookRepositoryImpl implements BookRepository {
     throw new Error("Method not implemented.");
   }
 }
+
+
+export const defaultBookRepository = new DefaultBookRepositoryImpl()

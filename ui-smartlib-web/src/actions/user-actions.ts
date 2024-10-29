@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { cookies } from "next/headers";
 import { userServiceFacade } from "@/identity/application/services.facade";
+import { cartServiceFacade } from "@/core/application";
 
 const AUTH_COOKIE = process.env.AUTH_COOKIE as string;
 

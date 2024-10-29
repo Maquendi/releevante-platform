@@ -12,7 +12,7 @@ export interface CartId {
 
 export class Cart {
   public checkedOut: boolean = false;
-  public state: string = "PENDING";
+  public state: 'PENDING' | 'CHECKED_OUT' | 'STALE' = "PENDING";
   constructor(
     public cartId: CartId,
     public userId: UserId,
@@ -21,6 +21,10 @@ export class Cart {
     if (items.length == 0) {
       throw new Error("At least one item required to init cart");
     }
+  }
+
+  public addItems(items: BookCartItem[]): boolean {
+    return true;
   }
 
   public markForCheckout(): boolean {
@@ -43,6 +47,7 @@ export class Cart {
       return item;
     });
 
+    this.state = 'CHECKED_OUT'
     this.checkedOut = true;
     return this.checkedOut;
   }

@@ -28,8 +28,7 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .notNull()
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString())
-    .$onUpdateFn(() => new Date().toISOString()),
-  compartment: text("compartment"),
+    .$onUpdateFn(() => new Date().toISOString())
 });
 
 export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
