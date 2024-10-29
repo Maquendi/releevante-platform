@@ -2,10 +2,9 @@ import { hashString } from "@/lib/hash-utils";
 import { UserRepository } from "../domain/repositories";
 import { AuthCredential, UserAuthentication } from "./dto";
 import { signToken } from "@/lib/jwt-parser";
-import { DefaultUserRepositoryImpl } from "../infrastructure/repositories-impl";
-import { UserServices } from "./services";
+import { UserServiceApiClient, UserServices } from "./services.definitions";
 
-class DefaultUserServiceImpl implements UserServices {
+export class DefaultUserServiceImpl implements UserServices {
   constructor(private repository: UserRepository) {}
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
@@ -24,6 +23,17 @@ class DefaultUserServiceImpl implements UserServices {
   }
 }
 
-export const defaultUserService = new DefaultUserServiceImpl(
-  new DefaultUserRepositoryImpl()
-);
+export class UserServiceFacade implements UserServices {
+  constructor(
+    private defaultUserService: UserServices,
+    private userServiceApiClient: UserServiceApiClient
+  ) {}
+
+  async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
+    try {
+      return this.defaultUserService.authenticate(credential);
+    } catch (error) {
+      return this.userServiceApiClient.authenticate(credential);
+    }
+  }
+}

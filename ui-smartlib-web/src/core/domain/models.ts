@@ -11,8 +11,7 @@ export interface CartId {
 }
 
 export class Cart {
-  public checkedOut: boolean = false;
-  public state: 'PENDING' | 'CHECKED_OUT' | 'STALE' = "PENDING";
+  public state: "PENDING" | "CHECKED_OUT" | "STALE" = "PENDING";
   constructor(
     public cartId: CartId,
     public userId: UserId,
@@ -23,12 +22,23 @@ export class Cart {
     }
   }
 
-  public addItems(items: BookCartItem[]): boolean {
+  public addItems(newItems: BookCartItem[]): boolean {
+
+
+    newItems.forEach(newItem => {
+
+        
+
+    })
+
+
+
+
     return true;
   }
 
   public markForCheckout(): boolean {
-    if (this.checkedOut) {
+    if (this.isCheckedOut) {
       throw new Error("Cart already checked out");
     }
 
@@ -47,12 +57,15 @@ export class Cart {
       return item;
     });
 
-    this.state = 'CHECKED_OUT'
-    this.checkedOut = true;
-    return this.checkedOut;
+    this.state = "CHECKED_OUT";
+    return true;
   }
 
   get cartItems(): BookCopy[] {
     return this.items.map((cartItem) => cartItem.bookCopy);
+  }
+
+  public get isCheckedOut(): boolean {
+    return this.state === "CHECKED_OUT";
   }
 }
