@@ -19,18 +19,13 @@ public class UserAuthenticationController {
     this.identityServiceFacade = identityServiceFacade;
   }
 
-  @PostMapping("/login")
+  @PostMapping
   Mono<CustomApiResponse<UserAuthenticationDto>> login(@RequestBody LoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 
-  @PostMapping("/pin-login")
+  @PostMapping("/pin")
   Mono<CustomApiResponse<SmartLibraryAccessDto>> login(@RequestBody PinLoginDto login) {
-    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
-  }
-
-  @PostMapping("/nfcLoginDto")
-  Mono<CustomApiResponse<SmartLibraryAccessDto>> login(@RequestBody NfcLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 }

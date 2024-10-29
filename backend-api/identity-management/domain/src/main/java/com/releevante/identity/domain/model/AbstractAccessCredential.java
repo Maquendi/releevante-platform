@@ -11,24 +11,12 @@ import org.immutables.value.Value;
 @JsonSerialize(as = AccessCredential.class)
 @ImmutableExt
 public abstract class AbstractAccessCredential {
-  static final String ACCESS_TYPE_PIN = "pin";
-  static final String ACCESS_TYPE_NFC = "nfc";
-
   abstract String key();
 
   abstract String value();
 
-  public static AccessCredential from(AccessCode pin, PasswordEncoder encoder) {
-    return AccessCredential.builder()
-        .key(ACCESS_TYPE_PIN)
-        .value(encoder.encode(pin.value()))
-        .build();
-  }
-
-  public static AccessCredential from(NfcUid nfcUid, PasswordEncoder encoder) {
-    return AccessCredential.builder()
-        .key(ACCESS_TYPE_NFC)
-        .value(encoder.encode(nfcUid.value()))
-        .build();
+  public static AccessCredential from(
+      String credentialType, String credential, PasswordEncoder encoder) {
+    return AccessCredential.builder().key(credentialType).value(encoder.encode(credential)).build();
   }
 }

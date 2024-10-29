@@ -12,15 +12,11 @@ public interface IdentityServiceFacade {
 
   Mono<AccountIdDto> create(AccountDto accountDto);
 
-  Mono<SmartLibraryGrantedAccess> create(PinUserAccessDto access);
-
-  Mono<SmartLibraryGrantedAccess> create(NfcUserAccessDto access);
+  Mono<SmartLibraryGrantedAccess> create(UserAccessDto access);
 
   Mono<UserAuthenticationDto> authenticate(LoginDto loginDto);
 
   Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto);
-
-  Mono<SmartLibraryAccessDto> authenticate(NfcLoginDto loginDto);
 
   Mono<AccountIdDto> create(OrgDto orgDto);
 }

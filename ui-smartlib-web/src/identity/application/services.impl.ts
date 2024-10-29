@@ -1,11 +1,20 @@
 import { hashString } from "@/lib/hash-utils";
 import { UserRepository } from "../domain/repositories";
-import { AuthCredential, UserAuthentication } from "./dto";
+import { AuthCredential, UserAuthentication, UserDto } from "./dto";
 import { signToken } from "@/lib/jwt-parser";
-import { UserServiceApiClient, UserServices } from "./services.definitions";
+import {
+  UserServiceApiClient,
+  UserServiceFacade,
+  UserServices,
+} from "./services.definitions";
+import { User } from "../domain/models";
 
 export class DefaultUserServiceImpl implements UserServices {
   constructor(private repository: UserRepository) {}
+
+  register(userDto: UserDto): Promise<User> {
+    throw new Error("Method not implemented.");
+  }
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
     var hashedCredential = hashString(credential.value);
@@ -23,7 +32,7 @@ export class DefaultUserServiceImpl implements UserServices {
   }
 }
 
-export class UserServiceFacade implements UserServices {
+export class UserServiceFacadeImpl implements UserServiceFacade {
   constructor(
     private defaultUserService: UserServices,
     private userServiceApiClient: UserServiceApiClient
@@ -33,7 +42,9 @@ export class UserServiceFacade implements UserServices {
     try {
       return this.defaultUserService.authenticate(credential);
     } catch (error) {
-      return this.userServiceApiClient.authenticate(credential);
+      const response = await this.userServiceApiClient.authenticate(credential);
+      await this.defaultUserService.register(response?.user);
+      return response;
     }
   }
 }

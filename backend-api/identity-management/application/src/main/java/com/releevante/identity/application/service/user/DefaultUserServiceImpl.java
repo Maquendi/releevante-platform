@@ -117,30 +117,9 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   }
 
   @Override
-  public Mono<SmartLibraryGrantedAccess> create(PinUserAccessDto access) {
+  public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
     return Mono.fromCallable(
-            () -> AccessCredential.from(AccessCode.of(access.accessCode()), passwordEncoder))
-        .flatMap(
-            credentials -> {
-              var accessDueDays =
-                  access
-                      .expiresAt()
-                      .map(expiresAt -> daysDifference(ZonedDateTime.now(), expiresAt))
-                      .orElse(access.accessDueDays().orElseThrow());
-              var expiresAt =
-                  access
-                      .accessDueDays()
-                      .map(DateTimeUtils::daysToAdd)
-                      .orElse(access.expiresAt().orElseThrow());
-
-              return create(access.sLids(), expiresAt, accessDueDays, credentials);
-            });
-  }
-
-  @Override
-  public Mono<SmartLibraryGrantedAccess> create(NfcUserAccessDto access) {
-    return Mono.fromCallable(
-            () -> AccessCredential.from(NfcUid.of(access.nfcUid()), passwordEncoder))
+            () -> AccessCredential.from(access.key(), access.value(), passwordEncoder))
         .flatMap(
             credentials -> {
               var accessDueDays =

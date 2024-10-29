@@ -39,15 +39,9 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Mono<SmartLibraryGrantedAccess> create(PinUserAccessDto access) {
+  public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
     return userService.create(access);
   }
-
-  @Override
-  public Mono<SmartLibraryGrantedAccess> create(NfcUserAccessDto access) {
-    return userService.create(access);
-  }
-
   @Override
   public Mono<UserAuthenticationDto> authenticate(LoginDto loginDto) {
     return authenticationService.authenticate(loginDto);
@@ -55,11 +49,6 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
 
   @Override
   public Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto) {
-    return authenticationService.authenticate(loginDto);
-  }
-
-  @Override
-  public Mono<SmartLibraryAccessDto> authenticate(NfcLoginDto loginDto) {
     return authenticationService.authenticate(loginDto);
   }
 

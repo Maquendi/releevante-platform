@@ -91,26 +91,6 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   }
 
   @Override
-  public Mono<SmartLibraryAccessDto> authenticate(NfcLoginDto loginDto) {
-    return Mono.just(passwordEncoder.encode(loginDto.nfcKey()))
-        .map(NfcUid::of)
-        .flatMap(accessControlRepository::findBy)
-        .map(SmartLibraryAccess::checkIsActive)
-        .flatMap(
-            access ->
-                orgRepository
-                    .findBy(access.orgId())
-                    .map(Organization::checkIsActive)
-                    .thenReturn(access))
-        .flatMap(
-            access ->
-                tokenService
-                    .generateToken(access)
-                    .map(token -> SmartLibraryAccessDto.from(token, access)))
-        .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
-  }
-
-  @Override
   public Mono<AccountPrincipal> authenticate(LoginTokenDto token) {
     return tokenService.verifyToken(token);
   }

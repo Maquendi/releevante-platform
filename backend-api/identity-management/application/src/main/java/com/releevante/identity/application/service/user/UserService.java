@@ -9,7 +9,5 @@ public interface UserService {
 
   Mono<AccountIdDto> createAccount(AccountDto accountDto);
 
-  Mono<SmartLibraryGrantedAccess> create(PinUserAccessDto access);
-
-  Mono<SmartLibraryGrantedAccess> create(NfcUserAccessDto access);
+  Mono<SmartLibraryGrantedAccess> create(UserAccessDto access);
 }

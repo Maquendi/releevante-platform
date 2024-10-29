@@ -10,7 +10,5 @@ public interface AuthenticationService {
 
   Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto);
 
-  Mono<SmartLibraryAccessDto> authenticate(NfcLoginDto loginDto);
-
   Mono<AccountPrincipal> authenticate(LoginTokenDto token);
 }

@@ -9,11 +9,13 @@ import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = PinUserAccessDto.class)
-@JsonSerialize(as = PinUserAccessDto.class)
+@JsonDeserialize(as = UserAccessDto.class)
+@JsonSerialize(as = UserAccessDto.class)
 @ImmutableExt
-public abstract class AbstractPinUserAccessDto {
-  abstract String accessCode();
+public abstract class AbstractUserAccessDto {
+  abstract String key();
+
+  abstract String value();
 
   abstract Optional<String> room();
 
