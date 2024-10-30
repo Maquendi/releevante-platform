@@ -26,7 +26,7 @@ public class SmartLibraryAccessControlRepositoryImpl
   }
 
   @Override
-  public Mono<SmartLibraryAccess> findBy(AccessCredential credential) {
+  public Mono<SmartLibraryAccess> findBy(AccessCredentialValue credential) {
     return Mono.justOrEmpty(libraryAccessControlDao.findByCredential(credential.value()))
         .map(SmartLibraryAccessControlRecord::toDomain);
   }

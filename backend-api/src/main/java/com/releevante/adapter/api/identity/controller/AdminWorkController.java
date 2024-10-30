@@ -5,8 +5,6 @@ import com.releevante.identity.application.dto.AccountIdDto;
 import com.releevante.identity.application.dto.OrgDto;
 import com.releevante.identity.application.identity.IdentityServiceFacade;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
@@ -27,26 +25,14 @@ public class AdminWorkController {
     @RouterOperation(
         path = "/api/org",
         produces = {MediaType.APPLICATION_JSON_VALUE},
-        method = RequestMethod.GET,
+        method = RequestMethod.POST,
         beanMethod = "register",
         operation =
             @Operation(
                 operationId = "register a new organization",
                 responses = {
                   @ApiResponse(responseCode = "200", description = "successful operation"),
-                  @ApiResponse(
-                      responseCode = "400",
-                      description = "bad request or missing data",
-                      content =
-                          @Content(
-                              examples =
-                                  @ExampleObject(
-                                      "{\n"
-                                          + "\"statusCode\": 400,\n"
-                                          + "\"context\": {\n"
-                                          + "\"data\": \"bad request\"\n"
-                                          + "}\n"
-                                          + "}")))
+                  @ApiResponse(responseCode = "400", description = "bad request or missing data")
                 }))
   })
   @PostMapping("/org")

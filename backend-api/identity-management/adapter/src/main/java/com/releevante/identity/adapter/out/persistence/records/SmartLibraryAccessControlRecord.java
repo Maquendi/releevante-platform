@@ -32,8 +32,8 @@ public class SmartLibraryAccessControlRecord {
     record.setCreatedAt(access.createdAt());
     record.setUpdatedAt(access.updatedAt());
     record.setOrgId(access.orgId().value());
-    record.setCredential(access.credential().value());
-    record.setCredentialType(access.credential().key());
+    record.setCredential(access.credential().value().value());
+    record.setCredentialType(access.credential().key().value());
     return record;
   }
 
@@ -45,7 +45,11 @@ public class SmartLibraryAccessControlRecord {
         .isActive(isActive)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .credential(AccessCredential.builder().value(credential).key(credentialType).build())
+        .credential(
+            AccessCredential.builder()
+                .value(AccessCredentialValue.of(credential))
+                .key(AccessCredentialKey.of(credentialType))
+                .build())
         .build();
   }
 }

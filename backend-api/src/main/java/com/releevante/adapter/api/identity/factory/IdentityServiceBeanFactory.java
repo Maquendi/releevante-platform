@@ -1,6 +1,7 @@
 package com.releevante.adapter.api.identity.factory;
 
 import com.releevante.asset.mgmt.application.service.SmartLibraryService;
+import com.releevante.asset.mgmt.application.service.SmartLibraryServiceImpl;
 import com.releevante.config.security.JwtAuthenticationToken;
 import com.releevante.identity.adapter.out.service.DefaultRsaKeyProvider;
 import com.releevante.identity.adapter.out.service.DefaultUserJtwTokenService;
@@ -29,7 +30,6 @@ public class IdentityServiceBeanFactory {
   @Autowired private M2MClientsRepository m2MClientsRepository;
   @Autowired private OrgRepository orgRepository;
   @Autowired protected SmartLibraryAccessControlRepository accessControlRepository;
-  @Autowired protected SmartLibraryService smartLibraryService;
 
   @Value("${security.rsa.key-path.public}")
   private String rsaPublicKey;
@@ -62,7 +62,9 @@ public class IdentityServiceBeanFactory {
 
   @Bean()
   public UserService userService(
-      PasswordEncoder passwordEncoder, AuthorizationService authorizationService) {
+      PasswordEncoder passwordEncoder,
+      AuthorizationService authorizationService,
+      SmartLibraryService smartLibraryService) {
     return new DefaultUserServiceImpl(
         userRepository,
         accountRepository,
@@ -79,6 +81,11 @@ public class IdentityServiceBeanFactory {
       AccountPrincipalService accountPrincipalService) {
     return new DefaultAuthorizationService(
         accountRepository, orgRepository, accountPrincipalService);
+  }
+
+  @Bean()
+  public SmartLibraryService smartLibraryService() {
+    return new SmartLibraryServiceImpl();
   }
 
   @Bean

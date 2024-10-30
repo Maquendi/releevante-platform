@@ -42,6 +42,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
     return userService.create(access);
   }
+
   @Override
   public Mono<UserAuthenticationDto> authenticate(LoginDto loginDto) {
     return authenticationService.authenticate(loginDto);

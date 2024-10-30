@@ -23,7 +23,7 @@ public abstract class AbstractSmartLibraryAccessDto {
     return SmartLibraryAccessDto.builder()
         .token(tokenDto)
         .userId(access.id())
-        .hash(access.credential().value())
+        .hash(access.credential().value().value())
         .orgId(access.orgId().value())
         .build();
   }

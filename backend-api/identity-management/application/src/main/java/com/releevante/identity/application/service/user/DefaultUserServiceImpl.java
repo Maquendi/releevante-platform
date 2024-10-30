@@ -113,7 +113,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                         grantedAccesses ->
                             SmartLibraryGrantedAccess.builder()
                                 .access(grantedAccesses)
-                                .credentials(credentials.value())
+                                .credentials(credentials.value().value())
                                 .build()));
   }
 
@@ -141,7 +141,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
 
   Mono<AccessCredential> validateCredentials(AccessCredential credential) {
     return accessControlRepository
-        .findBy(credential)
+        .findBy(credential.value())
         .map(
             access -> {
               if (access.isActive()) throw new RuntimeException("access is still active");

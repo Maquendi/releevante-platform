@@ -11,12 +11,15 @@ import org.immutables.value.Value;
 @JsonSerialize(as = AccessCredential.class)
 @ImmutableExt
 public abstract class AbstractAccessCredential {
-  abstract String key();
+  abstract AccessCredentialKey key();
 
-  abstract String value();
+  abstract AccessCredentialValue value();
 
   public static AccessCredential from(
       String credentialType, String credential, PasswordEncoder encoder) {
-    return AccessCredential.builder().key(credentialType).value(encoder.encode(credential)).build();
+    return AccessCredential.builder()
+        .key(AccessCredentialKey.of(credentialType))
+        .value(AccessCredentialValue.of(encoder.encode(credential)))
+        .build();
   }
 }

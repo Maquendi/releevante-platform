@@ -73,7 +73,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   @Override
   public Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto) {
     return Mono.just(passwordEncoder.encode(loginDto.accessCode()))
-        .map(AccessCode::of)
+        .map(AccessCredentialValue::of)
         .flatMap(accessControlRepository::findBy)
         .map(SmartLibraryAccess::checkIsActive)
         .flatMap(

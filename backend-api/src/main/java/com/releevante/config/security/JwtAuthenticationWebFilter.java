@@ -45,11 +45,13 @@ public class JwtAuthenticationWebFilter implements WebFilter {
   }
 
   private Mono<Boolean> verifyApiKey(ServerWebExchange exchange) {
-    return extractApiKeyFromRequest(exchange)
-        .filter(apiKeys::contains)
-        .switchIfEmpty(
-            Mono.error(new CustomAuthenticationException(new UserUnauthorizedException())))
-        .thenReturn(true);
+
+    return Mono.just(true);
+//    return extractApiKeyFromRequest(exchange)
+//        .filter(apiKeys::contains)
+//        .switchIfEmpty(
+//            Mono.error(new CustomAuthenticationException(new UserUnauthorizedException())))
+//        .thenReturn(true);
   }
 
   private Mono<Void> veryToken(String token, ServerWebExchange exchange, WebFilterChain chain) {

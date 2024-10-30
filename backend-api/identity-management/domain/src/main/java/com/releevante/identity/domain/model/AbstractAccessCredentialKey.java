@@ -7,7 +7,7 @@ import com.releevante.types.PrimitiveVo;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = AccessCode.class)
-@JsonSerialize(as = AccessCode.class)
+@JsonDeserialize(as = AccessCredentialKey.class)
+@JsonSerialize(as = AccessCredentialKey.class)
 @ImmutableExt
-public abstract class AbstractAccessCode extends PrimitiveVo<String> {}
+public abstract class AbstractAccessCredentialKey extends PrimitiveVo<String> {}

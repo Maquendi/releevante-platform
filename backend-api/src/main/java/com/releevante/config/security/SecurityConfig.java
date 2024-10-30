@@ -18,12 +18,13 @@ public class SecurityConfig {
     return http.authorizeExchange(
             exchanges ->
                 exchanges
-                    .pathMatchers("/auth/**", "/webjars/**", "/v3/api-docs/**")
+                    .pathMatchers(
+                        "/auth/**", "/api/webjars/swagger-ui/**", "/v3/api-docs/**", "/api/swagger-ui.html", "/api/swagger-ui.html/**")
                     .permitAll()
                     .pathMatchers("/admin/**")
                     .hasAnyAuthority("super-admin", "sys-admin", "user-admin")
                     .anyExchange()
-                    .authenticated())
+                    .permitAll())
         .addFilterAt(webFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .exceptionHandling(
@@ -31,9 +32,9 @@ public class SecurityConfig {
               exception.accessDeniedHandler(new CustomAccessDeniedHandler());
               exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
             })
-        .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-        .httpBasic(Customizer.withDefaults())
-        .logout(ServerHttpSecurity.LogoutSpec::disable)
+        //.formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+        //.httpBasic(Customizer.withDefaults())
+        //.logout(ServerHttpSecurity.LogoutSpec::disable)
         .cors(ServerHttpSecurity.CorsSpec::disable)
         .build();
   }
