@@ -2,7 +2,7 @@
 package com.releevante.adapter.api.identity.controller;
 
 import com.releevante.adapter.api.response.CustomApiResponse;
-import com.releevante.adapter.api.response.ErrorResponse;
+import com.releevante.adapter.api.response.HttpErrorResponse;
 import com.releevante.identity.application.dto.*;
 import com.releevante.identity.application.identity.IdentityServiceFacade;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,21 +30,43 @@ public class UserAccessManagementController {
     return identityServiceFacade.create(account).map(CustomApiResponse::from);
   }
 
-  @Operation(summary = "Gets customer by ID", description = "Customer must exist")
+  @Operation(
+      summary = "Smart library access",
+      description = "Create a user access for a smart library")
   @ApiResponses(
       value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
         @ApiResponse(
-            responseCode = "200",
-            description = "Ok", useReturnTypeSchema = true),
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        @ApiResponse(responseCode = "404", description = "Customer not found"),
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
         @ApiResponse(
             responseCode = "500",
             description = "Internal server error",
             content = {
               @Content(
                   mediaType = "application/json",
-                  schema = @Schema(implementation = ErrorResponse.class))
+                  schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
   @PostMapping("/access")

@@ -9,7 +9,10 @@ import lombok.Getter;
 @SuppressWarnings("unchecked")
 public class CustomApiResponse<T> {
 
-  @Schema(defaultValue = "200", description = "response http status code")
+  @Schema(
+      defaultValue = "200",
+      description = "response http status code",
+      allowableValues = {"200", "201", "401", "403"})
   int statusCode;
 
   ResponseContext<T> context;

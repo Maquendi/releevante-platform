@@ -2,7 +2,6 @@
 package com.releevante.config.security;
 
 import com.releevante.identity.application.identity.IdentityServiceFacade;
-import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,13 +44,15 @@ public class JwtAuthenticationWebFilter implements WebFilter {
   }
 
   private Mono<Boolean> verifyApiKey(ServerWebExchange exchange) {
+    return extractApiKeyFromRequest(exchange)
+        .map(apiKeys::contains)
+        .filter(Boolean::booleanValue)
+        .switchIfEmpty(isSwagger(exchange))
+        .defaultIfEmpty(false);
+  }
 
-    return Mono.just(true);
-//    return extractApiKeyFromRequest(exchange)
-//        .filter(apiKeys::contains)
-//        .switchIfEmpty(
-//            Mono.error(new CustomAuthenticationException(new UserUnauthorizedException())))
-//        .thenReturn(true);
+  private Mono<Boolean> isSwagger(ServerWebExchange exchange) {
+    return Mono.just(exchange.getRequest().getPath().value().contains("swagger"));
   }
 
   private Mono<Void> veryToken(String token, ServerWebExchange exchange, WebFilterChain chain) {

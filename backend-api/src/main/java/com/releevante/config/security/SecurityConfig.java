@@ -3,7 +3,6 @@ package com.releevante.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -18,13 +17,12 @@ public class SecurityConfig {
     return http.authorizeExchange(
             exchanges ->
                 exchanges
-                    .pathMatchers(
-                        "/auth/**", "/api/webjars/swagger-ui/**", "/v3/api-docs/**", "/api/swagger-ui.html", "/api/swagger-ui.html/**")
+                    .pathMatchers("/auth/**", "/webjars/swagger-ui/**", "/v3/api-docs/**")
                     .permitAll()
                     .pathMatchers("/admin/**")
                     .hasAnyAuthority("super-admin", "sys-admin", "user-admin")
                     .anyExchange()
-                    .permitAll())
+                    .authenticated())
         .addFilterAt(webFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .exceptionHandling(
@@ -32,9 +30,8 @@ public class SecurityConfig {
               exception.accessDeniedHandler(new CustomAccessDeniedHandler());
               exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint());
             })
-        //.formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-        //.httpBasic(Customizer.withDefaults())
-        //.logout(ServerHttpSecurity.LogoutSpec::disable)
+        .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+        .logout(ServerHttpSecurity.LogoutSpec::disable)
         .cors(ServerHttpSecurity.CorsSpec::disable)
         .build();
   }
