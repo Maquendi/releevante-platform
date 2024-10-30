@@ -62,10 +62,11 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
         .map(AccountIdDto::of);
   }
 
-  protected Mono<Boolean> validateIsSameOrg(SmartLibraryDto library, AccountPrincipal principal) {
-    return Mono.just(library.orgId().equals(principal.orgId()))
-        .filter(Boolean::booleanValue)
-        .switchIfEmpty(Mono.error(new ForbiddenException()));
+  protected Boolean validateCanGrantAccess(SmartLibraryDto library, AccountPrincipal principal) {
+    if (library.orgId().equals(principal.orgId()) || principal.isSuperAdmin()) {
+      return true;
+    }
+    throw new ForbiddenException();
   }
 
   protected Mono<SmartLibraryGrantedAccess> create(
@@ -82,7 +83,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                     .map(SlidDto::of)
                     .collectList()
                     .flatMapMany(smartLibraryService::verifyAndGet)
-                    .filterWhen(library -> validateIsSameOrg(library, principal))
+                    .filter(library -> validateCanGrantAccess(library, principal))
                     .map(
                         library ->
                             SmartLibraryAccess.builder()
@@ -120,8 +121,9 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
     return Mono.fromCallable(
             () -> AccessCredential.from(access.key(), access.value(), passwordEncoder))
+        .flatMap(this::validateCredentials)
         .flatMap(
-            credentials -> {
+            credential -> {
               var accessDueDays =
                   access
                       .expiresAt()
@@ -133,7 +135,18 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                       .map(DateTimeUtils::daysToAdd)
                       .orElse(access.expiresAt().orElseThrow());
 
-              return create(access.sLids(), expiresAt, accessDueDays, credentials);
+              return create(access.sLids(), expiresAt, accessDueDays, credential);
             });
+  }
+
+  Mono<AccessCredential> validateCredentials(AccessCredential credential) {
+    return accessControlRepository
+        .findBy(credential)
+        .map(
+            access -> {
+              if (access.isActive()) throw new RuntimeException("access is still active");
+              return credential;
+            })
+        .defaultIfEmpty(credential);
   }
 }

@@ -2,10 +2,7 @@ package com.releevante.identity.adapter.out.persistence.repository;
 
 import com.releevante.identity.adapter.out.persistence.records.SmartLibraryAccessControlRecord;
 import com.releevante.identity.adapter.out.persistence.repository.components.SmartLibraryAccessControlDao;
-import com.releevante.identity.domain.model.AccessCode;
-import com.releevante.identity.domain.model.NfcUid;
-import com.releevante.identity.domain.model.Slid;
-import com.releevante.identity.domain.model.SmartLibraryAccess;
+import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.SmartLibraryAccessControlRepository;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -29,14 +26,8 @@ public class SmartLibraryAccessControlRepositoryImpl
   }
 
   @Override
-  public Mono<SmartLibraryAccess> findBy(AccessCode accessCode) {
-    return Mono.justOrEmpty(libraryAccessControlDao.findByAccessCode(accessCode.value()))
-        .map(SmartLibraryAccessControlRecord::toDomain);
-  }
-
-  @Override
-  public Mono<SmartLibraryAccess> findBy(NfcUid nfcUid) {
-    return Mono.justOrEmpty(libraryAccessControlDao.findByNfcHash(nfcUid.value()))
+  public Mono<SmartLibraryAccess> findBy(AccessCredential credential) {
+    return Mono.justOrEmpty(libraryAccessControlDao.findByCredential(credential.value()))
         .map(SmartLibraryAccessControlRecord::toDomain);
   }
 

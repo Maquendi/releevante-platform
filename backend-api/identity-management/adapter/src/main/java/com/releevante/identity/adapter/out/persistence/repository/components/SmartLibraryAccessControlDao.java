@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SmartLibraryAccessControlDao
     extends JpaRepository<SmartLibraryAccessControlRecord, String> {
-  Optional<SmartLibraryAccessControlRecord> findByAccessCode(String accessCode);
-
-  Optional<SmartLibraryAccessControlRecord> findByNfcHash(String nfcHash);
+  Optional<SmartLibraryAccessControlRecord> findByCredential(String credential);
 }

@@ -16,4 +16,8 @@ public abstract class AbstractAccountPrincipal {
   abstract String subject();
 
   abstract List<String> roles();
+
+  public boolean isSuperAdmin(){
+    return roles().stream().anyMatch(role -> role.equals(AUTHORITIES.SUPER_ADMIN.getAuthority()));
+  }
 }

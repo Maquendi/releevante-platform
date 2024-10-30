@@ -39,6 +39,10 @@ public abstract class AbstractSmartLibraryAccess {
     if (!this.isActive()) {
       throw new UserUnauthorizedException();
     }
+
+    if (ZonedDateTime.now().isAfter(expiresAt())) {
+      throw new UserUnauthorizedException();
+    }
     return (SmartLibraryAccess) this;
   }
 }
