@@ -23,8 +23,8 @@ public class AdminWorkController {
   }
 
   @Operation(
-      summary = "Smart library access",
-      description = "Create a user access for a smart library")
+      summary = "Add new organization",
+      description = "Create a new organization, only admin users can do")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),

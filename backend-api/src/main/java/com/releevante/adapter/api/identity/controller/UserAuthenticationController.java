@@ -26,8 +26,8 @@ public class UserAuthenticationController {
   }
 
   @Operation(
-      summary = "Smart library access",
-      description = "Create a user access for a smart library")
+      summary = "User login",
+      description = "authentication for users with username and password")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -70,8 +70,8 @@ public class UserAuthenticationController {
   }
 
   @Operation(
-      summary = "Smart library access",
-      description = "Create a user access for a smart library")
+      summary = "User authentication with pin/nfc/qr_code",
+      description = "Authenticate user using pin, nfg uuid or QR code")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
