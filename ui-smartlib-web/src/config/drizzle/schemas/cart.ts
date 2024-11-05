@@ -1,12 +1,20 @@
 import { relations, sql } from "drizzle-orm";
-import { integer, sqliteTable, text, index } from "drizzle-orm/sqlite-core";
-import { bookCopieSchema } from "./book_copies";
+import { integer, sqliteTable, text, index, unique } from "drizzle-orm/sqlite-core";
+import { bookCopieSchema } from "./bookCopies";
 import { v4 as uuidv4 } from "uuid";
+import { userSchema } from "./user";
+
+const cartStatusEnum= ["PENDING", "CHECKED_OUT", "CHECKING_OUT", "CHECKOUT_FAILED","STALE"] as const
+export type CartState = typeof cartStatusEnum[number];
 
 export const cartSchema = sqliteTable("cart", {
   id: text("id").primaryKey().notNull(),
-  user_id: text("user_id").notNull(),
-  state: integer("state").notNull(),
+  user_id: text("user_id").notNull().references(()=>userSchema.id),
+  state: text("state", {
+    enum: cartStatusEnum,
+  })
+    .default('PENDING')
+    .notNull(),
   created_at: text("created_at")
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString()),
@@ -19,14 +27,14 @@ export const cartSchema = sqliteTable("cart", {
 export const cartItemSchema = sqliteTable(
   "cart_item",
   {
-    id: text("cart_id")
+    id: text("id")
       .primaryKey()
       .$defaultFn(() => uuidv4()),
     book_copy_id: text("book_copy_id")
       .notNull()
       .references(() => bookCopieSchema.id),
     qty: integer("qty").notNull(),
-    cart_id: text("cart_id").notNull(),
+    cart_id: text("cart_id").notNull().references(()=>cartSchema.id),
     created_at: text("created_at")
       .notNull()
       .default(sql`(current_timestamp)`)
@@ -35,9 +43,12 @@ export const cartItemSchema = sqliteTable(
   (table) => {
     return {
       cartIdx: index("cart_idx").on(table.cart_id),
+      cartId_bookCopy_uniqueInx: unique().on(table.cart_id,table.book_copy_id),
     };
   }
 );
+
+export type CartItemSchema= typeof cartItemSchema.$inferInsert
 
 export const cartSchemaRelations = relations(cartSchema, ({ many }) => ({
   items: many(cartItemSchema),

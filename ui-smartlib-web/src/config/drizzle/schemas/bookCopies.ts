@@ -2,7 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from "uuid";
 import { bookSchema } from "./books";
-import { bookEditionSchema } from "./book_editions";
+import { bookEditionSchema } from "./bookEditions";
 
 export const bookCopieSchema = sqliteTable("books_copies", {
   id: text("id")
@@ -17,9 +17,6 @@ export const bookCopieSchema = sqliteTable("books_copies", {
   is_available: integer("is_available", { mode: "boolean" })
     .notNull()
     .default(true),
-  status: text("status")
-    .notNull()
-    .$defaultFn(() => "available"),
   created_at: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)
@@ -42,3 +39,5 @@ export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
     references: [bookEditionSchema.id],
   }),
 }));
+
+export type BookCopySchema=typeof bookCopieSchema.$inferSelect
