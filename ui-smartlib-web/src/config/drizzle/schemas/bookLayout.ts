@@ -1,7 +1,7 @@
 import {  sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from 'uuid';
 import { relations } from "drizzle-orm";
-import { bookCopieSchema } from "./book_copies";
+import { bookCopieSchema } from "./bookCopies";
 
 export const bookLayoutSchema = sqliteTable('book_layout',{
     id: text('id').primaryKey().$defaultFn(() => uuidv4()),

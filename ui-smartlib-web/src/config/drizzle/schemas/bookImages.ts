@@ -1,7 +1,7 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { bookSchema } from "./books";
-import { bookEditionSchema } from "./book_editions";
+import { bookEditionSchema } from "./bookEditions";
 
 export const bookImageSchema = sqliteTable("books_images", {
   id: integer("id", { mode: "number" })

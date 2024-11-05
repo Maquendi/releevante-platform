@@ -1,8 +1,8 @@
 import {  sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from 'uuid';
 import { relations } from "drizzle-orm";
-import { bookImageSchema } from "./book_images";
-import { bookCopieSchema } from "./book_copies";
+import { bookImageSchema } from "./bookImages";
+import { bookCopieSchema } from "./bookCopies";
 
 export const bookEditionSchema = sqliteTable('books_edition',{
     id: text('id').primaryKey().$defaultFn(() => uuidv4()),
