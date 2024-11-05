@@ -2,18 +2,20 @@ plugins {
 	id 'java'
 }
 
-group = 'com.releevante.application'
-version = '0.0.0.1-SNAPSHOT'
+group = 'com.releevante.identity.application'
+version = 'identity.0.0.1'
 
 repositories {
 	mavenCentral()
 }
 
+bootJar {
+	enabled = false
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
 dependencies {
 	implementation project(path: ':identity-management:domain')
-    implementation project(path: ':asset-mgmt:application')
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-	testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {

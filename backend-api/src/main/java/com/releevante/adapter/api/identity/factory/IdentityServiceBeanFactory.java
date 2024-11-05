@@ -1,16 +1,11 @@
 package com.releevante.adapter.api.identity.factory;
 
-import com.releevante.asset.mgmt.application.service.SmartLibraryService;
-import com.releevante.asset.mgmt.application.service.SmartLibraryServiceImpl;
+import com.releevante.application.service.auth.*;
+import com.releevante.application.service.user.*;
 import com.releevante.config.security.JwtAuthenticationToken;
 import com.releevante.identity.adapter.out.service.DefaultRsaKeyProvider;
 import com.releevante.identity.adapter.out.service.DefaultUserJtwTokenService;
 import com.releevante.identity.adapter.out.service.JwtRsaSigningKeyProvider;
-import com.releevante.identity.application.service.auth.*;
-import com.releevante.identity.application.service.user.DefaultUserServiceImpl;
-import com.releevante.identity.application.service.user.OrgService;
-import com.releevante.identity.application.service.user.OrgServiceImpl;
-import com.releevante.identity.application.service.user.UserService;
 import com.releevante.identity.domain.repository.*;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.UuidGenerator;
@@ -64,7 +59,7 @@ public class IdentityServiceBeanFactory {
   public UserService userService(
       PasswordEncoder passwordEncoder,
       AuthorizationService authorizationService,
-      SmartLibraryService smartLibraryService) {
+      SmartLibraryAccessControlService smartLibraryService) {
     return new DefaultUserServiceImpl(
         userRepository,
         accountRepository,
@@ -84,8 +79,8 @@ public class IdentityServiceBeanFactory {
   }
 
   @Bean()
-  public SmartLibraryService smartLibraryService() {
-    return new SmartLibraryServiceImpl();
+  public SmartLibraryAccessControlService smartLibraryAccessControlService() {
+    return new DefaultSmartLibraryAccessControlServiceImpl(accessControlRepository);
   }
 
   @Bean

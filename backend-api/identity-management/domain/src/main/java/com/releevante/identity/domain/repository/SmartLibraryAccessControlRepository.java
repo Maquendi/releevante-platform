@@ -1,6 +1,7 @@
 package com.releevante.identity.domain.repository;
 
 import com.releevante.identity.domain.model.*;
+import com.releevante.types.Slid;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

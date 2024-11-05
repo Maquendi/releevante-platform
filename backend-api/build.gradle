@@ -164,7 +164,6 @@ subprojects {
 	apply plugin: 'io.spring.dependency-management'
 	apply plugin: 'java'
 	apply plugin: "io.freefair.lombok"
-
 	dependencies {
 		implementation "com.fasterxml.jackson.core:jackson-core:${rootProject.jacksonVersion}"
 		implementation "com.fasterxml.jackson.core:jackson-databind:${rootProject.jacksonDatabindVersion}"
@@ -192,7 +191,8 @@ dependencies {
 	implementation project(path: ':identity-management:application')
     implementation project(path: ':identity-management:adapter')
 	implementation project(path: ':identity-management:domain')
-    implementation project(path: ':asset-mgmt:application')
+    implementation project(path: ':core:application')
+    implementation project(path: ':core:domain')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

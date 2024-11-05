@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.releevante.core.adapter'
+version = 'core.0.0.1'
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.postgresql:postgresql:42.7.4'
+    implementation project(path: ':core:domain')
+}

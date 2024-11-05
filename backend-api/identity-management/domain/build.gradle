@@ -3,7 +3,10 @@ plugins {
 }
 
 group = 'com.releevante.identity.domain'
+version = 'identity.0.0.1'
+dependencies {}
 
-dependencies {
-
+bootJar {
+	enabled = false
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }

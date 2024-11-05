@@ -14,13 +14,6 @@ jar {
 group = 'com.releevante.identity'
 
 subprojects {
-	bootJar {
-		enabled = false
-	}
-
-	jar {
-		enabled = true
-	}
 	dependencies {
 		implementation project(path: ':types')
 	}

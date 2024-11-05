@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.releevante.core.application'
+version = 'core.0.0.1'
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(path: ':core:domain')
+}
+
+test {
+    useJUnitPlatform()
+}

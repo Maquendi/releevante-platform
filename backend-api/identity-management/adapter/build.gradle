@@ -3,7 +3,12 @@ plugins {
 }
 
 group = 'com.releevante.identity.adapter'
-version = '0.0.1-SNAPSHOT'
+version = 'identity.0.0.1'
+
+bootJar {
+	enabled = false
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
 
 repositories {
 	mavenCentral()
@@ -17,8 +22,4 @@ dependencies {
 	implementation project(path: ':identity-management:application')
 	implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 	implementation 'org.postgresql:postgresql:42.7.4'
-}
-
-test {
-	useJUnitPlatform()
 }
