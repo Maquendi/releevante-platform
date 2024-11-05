@@ -1,5 +1,6 @@
 import { BookCopy } from "@/book/domain/models";
 import { UserId } from "@/identity/domain/models";
+import { inCartItemsDto } from "../application/dto";
 
 export interface BookCartItem {
   bookCopy: BookCopy;
@@ -10,29 +11,27 @@ export interface CartId {
   value: string;
 }
 
+
+
 export class Cart {
-  public state: "PENDING" | "CHECKED_OUT" | "STALE" = "PENDING";
+  public state: "PENDING" | "CHECKED_OUT" | 'CHECKING_OUT' | 'CHECKOUT_FAILED' | "STALE" = "PENDING";
   constructor(
     public cartId: CartId,
     public userId: UserId,
-    public items: BookCartItem[]
+    public items: inCartItemsDto[],
+    public isCartInit?:boolean,
+
+
   ) {
-    if (items.length == 0) {
+    if (!this.isCartInit && items.length == 0) {
       throw new Error("At least one item required to init cart");
     }
   }
 
-  public addItems(newItems: BookCartItem[]): boolean {
+  public addItems(newItems: inCartItemsDto[]): boolean {
 
 
-    newItems.forEach(newItem => {
-
-        
-
-    })
-
-
-
+   this.items=[...this.items,...newItems]
 
     return true;
   }
@@ -49,20 +48,20 @@ export class Cart {
       throw new Error("Invalid cart for checkout");
     }
 
-    this.items = this.items.map((item) => {
-      if (item.qty == 1) {
-        item.bookCopy.status = "borrowed";
-        item.bookCopy.is_available = false;
-      }
-      return item;
-    });
 
-    this.state = "CHECKED_OUT";
+    this.state = "CHECKING_OUT";
     return true;
   }
 
-  get cartItems(): BookCopy[] {
-    return this.items.map((cartItem) => cartItem.bookCopy);
+  public markFailed(): boolean {
+
+    this.state = "CHECKOUT_FAILED";
+    return true;
+  }
+
+  get cartItems(): inCartItemsDto[] {
+    // return this.items.map((cartItem) => cartItem.book_copy_id);
+    return this.items
   }
 
   public get isCheckedOut(): boolean {

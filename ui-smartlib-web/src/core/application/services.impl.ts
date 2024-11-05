@@ -1,4 +1,3 @@
-import { BookEdition } from "@/book/domain/models";
 import { Cart } from "../domain/models";
 import {
   BackendApiClient,
@@ -10,8 +9,8 @@ import { CartRepository } from "../domain/repositories";
 import { BookService } from "@/book/application/services";
 import { v4 as uuidv4 } from "uuid";
 import { BookRepository } from "@/book/domain/repositories";
-import { CartDto, CartInit } from "./dto";
-
+import { CartDto, CartInit, PrepareCart,inCartItemsDto
+} from "./dto";
 /**
  * default cart service
  */
@@ -23,41 +22,57 @@ export class DefaultCartService implements CartService {
   ) {}
 
   async initilizeCart(initial: CartInit): Promise<Cart> {
-    const bookCopies =
-      await this.bookService.findAllBookCopiesAvailableLocallyByEdition(
-        initial.bookEdition
-      );
-    // picking a copy to initialize cart.
-
-    const selectedBookCopy = bookCopies?.find(
-      (copy) => copy.status == "available"
-    );
-
-    if (!selectedBookCopy) {
-      throw new Error(`no book with title ${initial.bookEdition.title} exists`);
-    }
-
     const cartId = {
       value: uuidv4(),
     };
 
-    const initialItem = {
-      qty: 1,
-      bookCopy: selectedBookCopy,
-    };
-
-    const cart = new Cart(cartId, initial.userId, [initialItem]);
+    const cart = new Cart(cartId,initial.userId,[],true)
 
     return this.cartRepository.save(cart);
   }
 
-  async checkout(cart: Cart, extras: () => Promise<Cart>): Promise<Cart> {
+  async prepareCartItems(init: PrepareCart): Promise<inCartItemsDto[]> {
+    const cartItemPromises = init.items.map(async (item) => {
+
+      const availableBookCopies =
+        await this.bookService.findBookAvailableCopies({
+          book_id: item.book_id,
+          edition_id: item.edition_id,
+        },item.qty);
+
+     
+    if (availableBookCopies.length < item.qty!) {
+      throw new Error(`Not enough copies available for book ${item.title}`);
+    }
+
+    const cartItems = availableBookCopies.map((bookCopy) => ({
+      qty: 1, 
+      cart_id: init.cartId.value,
+      book_copy_id: bookCopy.id,
+      is_available: false,
+    }));
+
+      return cartItems;
+    });
+
+    const preparedCartItems = await Promise.all(cartItemPromises);
+
+    return preparedCartItems.flat();
+  }
+
+  async updateCartState(cart:Cart){
+    cart.markFailed()
+    await this.cartRepository.updateCartState(cart)
+  }
+
+  async checkout(cart: Cart): Promise<Cart> {
     if (cart.state !== "PENDING") {
       throw new Error("Cart invalid state for checkout.");
     }
 
     cart.markForCheckout();
-    return this.cartRepository.update(cart, extras);
+
+    return this.cartRepository.update(cart);
   }
 }
 
@@ -108,42 +123,33 @@ export class CartServiceFacade {
    * @returns
    */
   async initCart(initial: CartInit): Promise<Cart> {
-    const bookEdition = await this.bookService.findBookEdition({
-      id: initial.bookEdition.id,
-    });
-
-    if (!bookEdition) {
-      throw new Error(`no book edition ${initial}`);
-    }
-
-    if (!bookEdition.availableLocally || !bookEdition.quantity) {
-      throw new Error(`book ${initial} edition not available.`);
-    }
 
     const cart = await this.cartService.initilizeCart(initial);
-
-    try {
-      await this.bookLendingService.initilizeCart(initial);
-    } catch (error) {
-      console.log(`ignore error ${error}`);
-    }
-
     return cart;
   }
 
+ 
   /**
    *
    * @param cartDto cart dto,
    * @returns
    */
   async checkout(cartDto: CartDto): Promise<Cart> {
-    let cart = await this.cartRepository.find(cartDto.cartId);
 
-    cart.addItems(cartDto.items);
+    const cartItems = await this.cartService.prepareCartItems(cartDto)
 
-    return this.cartService.checkout(
-      cart,
-      async () => await this.bookLendingService.checkout(cart)
-    );
+    const cart = new Cart(cartDto.cartId,cartDto.userId,cartItems)
+
+    cart.addItems(cartItems);
+
+    await this.cartService.checkout(cart);
+
+    // try {
+    //   await this.bookLendingService.checkout(cart)
+
+    // } catch (error) {
+    //   // await this.cartService.updateCartState(cart)
+    // }
+    return cart
   }
 }

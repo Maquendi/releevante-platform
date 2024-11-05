@@ -1,10 +1,12 @@
-import { BookCompartment, BookEdition } from "@/book/domain/models";
+import { BookCompartment } from "@/book/domain/models";
 import { Cart } from "../domain/models";
-import { CartInit } from "./dto";
+import { CartInit,inCartItemsDto, PrepareCart } from "./dto";
 
 export interface CartService {
   initilizeCart(initial: CartInit): Promise<Cart>;
-  checkout(cart: Cart, extras: () => Promise<Cart>): Promise<Cart>;
+  checkout(cart: Cart): Promise<Cart>;
+  prepareCartItems(init:PrepareCart):Promise<inCartItemsDto[]>
+  updateCartState(cart:Cart):Promise<any>
 }
 
 export interface BookLendingService extends CartService {

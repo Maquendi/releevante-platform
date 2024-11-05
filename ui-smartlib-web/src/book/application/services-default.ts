@@ -1,3 +1,4 @@
+import { BookCopySchema } from "@/config/drizzle/schemas";
 import { BookCategory, Book, BookEdition, BookCopy } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { defaultBookRepository } from "../infrastructure/repositories-impl";
@@ -7,8 +8,8 @@ import { BookService } from "./services";
 
 class DefailtBookServiceImpl implements BookService {
   constructor(private bookRepository: BookRepository) {}
-    findBookEdition(edition: { id: string; }): Promise<BookEdition> {
-        throw new Error("Method not implemented.");
+    findBookAvailableCopies(book: { book_id: string; edition_id:string },limit?:number): Promise<BookCopySchema[]> {
+       return this.bookRepository.findCopiesBy({filter:{book_id:book.book_id,edition_id:book.edition_id,is_available:true},limit})
     }
 
   findAllBookCategory(): Promise<BookCategory[]> {
