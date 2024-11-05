@@ -1,4 +1,4 @@
-import { BookCompartment, BookEdition } from "@/book/domain/models";
+import { BookCompartment } from "@/book/domain/models";
 import { Cart } from "../domain/models";
 import { CartInit } from "./dto";
 

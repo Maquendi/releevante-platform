@@ -1,6 +1,7 @@
 import { BookCategory, Book, BookEdition, BookCopy } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { defaultBookRepository } from "../infrastructure/repositories-impl";
+import { prismaRepository } from "../infrastructure/repositories-prisma-impl";
 
 import { SearchCriteria } from "./dto";
 import { BookService } from "./services";
@@ -12,6 +13,7 @@ class DefailtBookServiceImpl implements BookService {
     }
 
   findAllBookCategory(): Promise<BookCategory[]> {
+   
     throw new Error("Method not implemented.");
   }
 
@@ -37,4 +39,5 @@ class DefailtBookServiceImpl implements BookService {
 }
 
 
-export const defaultBookService = new DefailtBookServiceImpl(defaultBookRepository)
+
+export const defaultBookService = new DefailtBookServiceImpl(prismaRepository)

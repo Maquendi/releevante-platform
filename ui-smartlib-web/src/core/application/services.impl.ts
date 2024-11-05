@@ -123,7 +123,7 @@ export class CartServiceFacade {
     const cart = await this.cartService.initilizeCart(initial);
 
     try {
-      await this.bookLendingService.initilizeCart(initial);
+     await this.bookLendingService.initilizeCart(initial);
     } catch (error) {
       console.log(`ignore error ${error}`);
     }
@@ -140,6 +140,14 @@ export class CartServiceFacade {
     let cart = await this.cartRepository.find(cartDto.cartId);
 
     cart.addItems(cartDto.items);
+
+    // 1 state = CHECKING_OUT
+    //  await this.bookLendingService.checkout(cart)
+
+    // OK,  cart STATE = CHECKED_OUT
+
+    // ERROR, cart STATE = ERROR
+    // ERRROR, Notify support/admin.
 
     return this.cartService.checkout(
       cart,
