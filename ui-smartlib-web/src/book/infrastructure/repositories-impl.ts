@@ -1,9 +1,9 @@
-import { dbGetAll } from "@/lib/db/drizzle-client";
+import { dbGetAll, dbGetOne } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
 import { Book, BookCompartment, BookCopy, BookEdition } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { eq } from "drizzle-orm";
-import { bookCopieSchema } from "@/config/drizzle/schemas";
+import { and, eq, InferInsertModel } from "drizzle-orm";
+import { bookCopieSchema, BookCopySchema } from "@/config/drizzle/schemas";
 
 class DefaultBookRepositoryImpl implements BookRepository {
 
@@ -37,9 +37,21 @@ class DefaultBookRepositoryImpl implements BookRepository {
   findBy(bookId: string): Promise<Book> {
     throw new Error("Method not implemented.");
   }
-  findCopiesBy(search: SearchCriteria): Promise<BookCopy[]> {
-    throw new Error("Method not implemented.");
-  }
+ 
+async findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
+  const conditions = Object.entries(filter.filter).map(([key, value]) => {
+    return eq(bookCopieSchema[key as keyof BookCopySchema], value);
+  });
+
+  console.log('filter server',filter)
+
+  const whereClause = and(...conditions);
+
+  return dbGetAll('bookCopieSchema', {
+    where: (whereClause),
+    limit:(filter?.limit ? filter.limit : 1)
+  });
+}
 }
 
 

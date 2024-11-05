@@ -1,12 +1,11 @@
-import { cartSchema } from "@/config/drizzle/schemas/cart";
-import { bookCopieSchema } from "@/config/drizzle/schemas/book_copies";
+import {  cartItemSchema, cartSchema } from "@/config/drizzle/schemas/cart";
+import { bookCopieSchema } from "@/config/drizzle/schemas/bookCopies";
 import { Cart, CartId } from "../domain/models";
 import { CartRepository } from "../domain/repositories";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
-import { eq } from "drizzle-orm";
-import { dbGetOne, executeTransaction } from "@/lib/db/drizzle-client";
-import { BookCopy } from "@/book/domain/models";
+import {  eq } from "drizzle-orm";
+import {  dbGetOne, dbPut, executeTransaction } from "@/lib/db/drizzle-client";
 
 class CartRepositoryImpl implements CartRepository {
   async find(cartId: CartId): Promise<Cart> {
@@ -29,14 +28,26 @@ class CartRepositoryImpl implements CartRepository {
 
     const userId = { value: cartData.user_id };
     const cartItems = cartData.items.map((item) => ({
-      bookCopy: item.bookCopy as BookCopy,
+      cart_id: item.cart_id,
       qty: item.qty,
+      book_copy_id: item.book_copy_id,
+      is_available: item.bookCopy.is_available,
     }));
 
     return new Cart(cartId, userId, cartItems);
   }
 
-  async update(cart: Cart, extras: () => Promise<Cart>): Promise<Cart> {
+ 
+
+  async updateCartState(cart: Cart): Promise<any> {
+    return dbPut({
+      table: "cartSchema",
+      where: { id: cart.cartId.value },
+      values: { state: cart.state },
+    });
+  }
+
+  async update(cart: Cart): Promise<Cart> {
     /**
      * transaction operation
      */
@@ -56,9 +67,8 @@ class CartRepositoryImpl implements CartRepository {
             .update(bookCopieSchema)
             .set({
               is_available: book.is_available,
-              status: book.status,
             })
-            .where(eq(bookCopieSchema.id, book.id));
+            .where(eq(bookCopieSchema.id, book.book_copy_id));
         });
 
         const cartInsertion = tx
@@ -66,7 +76,21 @@ class CartRepositoryImpl implements CartRepository {
           .set(cart_data)
           .where(eq(cartSchema.id, cart.cartId.value));
 
-        await Promise.all([...bookCopyUpdation, cartInsertion, extras()]);
+        const cartItemsInsertion = cart.cartItems.map((cartItem) => {
+          return tx
+            .insert(cartItemSchema)
+            .values(cartItem)
+            .onConflictDoUpdate({
+              target: [cartItemSchema.cart_id, cartItemSchema.book_copy_id],
+              set: { qty: cartItem.qty },
+            });
+        });
+
+        await Promise.all([
+          ...cartItemsInsertion,
+          ...bookCopyUpdation,
+          cartInsertion,
+        ]);
       },
     };
 
@@ -86,19 +110,9 @@ class CartRepositoryImpl implements CartRepository {
           state: cart.state,
         } as any;
 
-        const bookCopyUpdation = cart.cartItems.map(async (book) => {
-          return tx
-            .update(bookCopieSchema)
-            .set({
-              is_available: book.is_available,
-              status: book.status,
-            })
-            .where(eq(bookCopieSchema.id, book.id));
-        });
+    
+        await tx.insert(cartSchema).values(cart_data);
 
-        const cartInsertion = tx.insert(cartSchema).values(cart_data);
-
-        await Promise.all([...bookCopyUpdation, cartInsertion]);
       },
     };
 
