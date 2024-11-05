@@ -1,7 +1,5 @@
 import { UserId } from "@/identity/domain/models";
-import { BookCartItem, CartId } from "../domain/models";
-import { BookEdition } from "@/book/domain/models";
-import { CartItemSchema } from "@/config/drizzle/schemas";
+import {  CartId } from "../domain/models";
 
 
 export type CartItem={

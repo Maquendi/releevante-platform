@@ -1,9 +1,7 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
-import { BookCategory, Book, BookEdition, BookCopy } from "../domain/models";
+import { BookCategory, Book, BookItems, BookCopy, BookFilter } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { defaultBookRepository } from "../infrastructure/repositories-impl";
-
-import { SearchCriteria } from "./dto";
 import { BookService } from "./services";
 
 class DefailtBookServiceImpl implements BookService {
@@ -21,19 +19,19 @@ class DefailtBookServiceImpl implements BookService {
   }
 
   async findAllBookCopiesAvailableByEdition(
-    bookEdition: BookEdition
+    bookEdition: BookItems
   ): Promise<BookCopy[]> {
     return this.bookRepository.findAllBookCopiesAvailable(bookEdition);
   }
 
   findAllBookCopiesAvailableLocallyByEdition(
-    bookEdition: BookEdition
+    bookEdition: BookItems
   ): Promise<BookCopy[]> {
     throw new Error("Method not implemented.");
   }
 
-  findAllBookBySearchCriteria(searchCriteria: SearchCriteria): Promise<Book[]> {
-    throw new Error("Method not implemented.");
+  findAllBookBySearchCriteria(searchCriteria: BookFilter): Promise<Book> {
+    return this.bookRepository.findBy(searchCriteria)
   }
 }
 

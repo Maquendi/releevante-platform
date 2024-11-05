@@ -3,11 +3,11 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from 'uuid';
 import { bookCopieSchema } from "./bookCopies";
 import { bookImageSchema } from "./bookImages";
+import { bookCategorySchema } from "./bookCategory";
 
 export const bookSchema = sqliteTable('books',{
     id: text('id').primaryKey().$defaultFn(() => uuidv4()),
     name:text('name').notNull(),
-    price:integer('price').notNull(),
     author:text('author').notNull(),
     created_at: text('created_at')
     .notNull()
@@ -21,4 +21,5 @@ export const bookSchema = sqliteTable('books',{
 export const book_relations = relations(bookSchema, ({ many }) => ({
     copies:many(bookCopieSchema),
     images:many(bookImageSchema),
+    categories:many(bookCategorySchema)
 }));
