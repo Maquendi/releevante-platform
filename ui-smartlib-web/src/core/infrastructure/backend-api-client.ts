@@ -1,11 +1,11 @@
-import { CartInit } from "../application/dto";
-import { BackendApiClient } from "../application/service.definition";
-import { Cart } from "../domain/models";
+import { CoreApiClient } from "../application/service.definition";
+import { Cart } from "../domain/cart.model";
 
-export class CoreApiClient implements BackendApiClient {
-  async initilizeCart(initial: CartInit): Promise<any> {
-    return {};
-  }
+export class CoreApiClientImpl implements CoreApiClient {
+
+  constructor() {}
+
+
   async checkout(cart: Cart): Promise<Cart> {
     return cart;
   }

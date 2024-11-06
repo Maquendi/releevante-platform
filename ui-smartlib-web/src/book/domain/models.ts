@@ -10,13 +10,17 @@ export interface BookImage {
 
 export interface BookCopy {
   id: string;
-  status: "sold" | "borrowed" | "lost" | "available" | "InCart";
-  is_available: boolean
+  is_available: boolean;
+  at_position: string;
+  isbn: string;
 }
 
-export interface BookCompartment{
-  id: string
-  compartment: string
+export interface BookCompartment {
+  compartment: string;
+}
+
+export interface Isbn {
+  value: string;
 }
 
 export interface BookEdition {

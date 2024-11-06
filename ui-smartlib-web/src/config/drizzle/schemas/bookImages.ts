@@ -9,7 +9,7 @@ export const bookImageSchema = sqliteTable("books_images", {
     .notNull(),
   url: text("url", { mode: "text" }).notNull(),
   book_id: text("book_id").notNull(),
-  edition_id: text("edition_id").notNull(),
+  isbn: text("isbn").notNull(),
   isSincronized: integer("isSincronized", { mode: "boolean" }).default(false),
 });
 
@@ -19,7 +19,7 @@ export const bookImageRelations = relations(bookImageSchema, ({ one }) => ({
     references: [bookSchema.id],
   }),
   edition: one(bookEditionSchema, {
-    fields: [bookImageSchema.edition_id],
+    fields: [bookImageSchema.isbn],
     references: [bookEditionSchema.id],
   }),
 }));

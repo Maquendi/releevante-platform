@@ -5,7 +5,7 @@ export default defineConfig({
   schema: "./src/config/drizzle/schemas/*",
   out: "./src/config/drizzle/migrations",
   dbCredentials: {
-    url: "sqlite.db",
+    url: "sqlite-dev.db",
   },
   verbose: true,
   strict: true,

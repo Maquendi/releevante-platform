@@ -1,6 +1,6 @@
 import { DefaultAppHttpClient } from "@/lib/http/default-app-http-client";
 import { DefaultUserRepositoryImpl } from "../infrastructure/repositories-impl";
-import { UserServiceFacade, DefaultUserServiceImpl } from "./services.impl";
+import { UserServiceFacadeImpl, DefaultUserServiceImpl } from "./services.impl";
 import { UserServiceApiClientImpl } from "../infrastructure/user-service-api.client";
 
 const userServiceApiClient = new UserServiceApiClientImpl(
@@ -11,7 +11,7 @@ const defaultUserService = new DefaultUserServiceImpl(
   new DefaultUserRepositoryImpl()
 );
 
-export const userServiceFacade = new UserServiceFacade(
+export const userServiceFacade = new UserServiceFacadeImpl(
   defaultUserService,
   userServiceApiClient
 );

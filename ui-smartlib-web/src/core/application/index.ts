@@ -1,30 +1,28 @@
-import { defaultBookService } from "@/book/application/services-default";
-import { defaultBookRepository } from "@/book/infrastructure/repositories-impl";
-import { CoreApiClient } from "../infrastructure/backend-api-client";
+import { defaultBookService } from "@/book/application/book-service-impl";
+import { CoreApiClientImpl } from "../infrastructure/backend-api-client";
 import { DefaultBridgeIoApiClient } from "../infrastructure/brigde-io-client";
-import { defaultCartRepository } from "../infrastructure/repositories-impl";
-import {
-  CartServiceApiClient,
-  CartServiceFacade,
-  DefaultCartService,
-} from "./services.impl";
+import { defaultCartRepository } from "../infrastructure/cart-repository-impl";
+import { DefaultCartService } from "./cart-service.impl";
+import { CartServiceFacade } from "./facade";
+import { BookLoanServiceImpl } from "./loan-service.impl";
+import { defaultBookLoanRepositoryImpl } from "../infrastructure/book-loan-repository.impl";
 
-const coreApiClient = new CoreApiClient();
 const bridgeIoApiClient = new DefaultBridgeIoApiClient();
-const cartServiceApiClient = new CartServiceApiClient(
-  coreApiClient,
-  bridgeIoApiClient,
-  defaultBookRepository
-);
+const coreApiClient = new CoreApiClientImpl();
 
 const defaultCartService = new DefaultCartService(
   defaultBookService,
   defaultCartRepository
 );
 
-export const cartServiceFacade = new CartServiceFacade(
-  defaultCartRepository,
+const bookLoanService = new BookLoanServiceImpl(
+  defaultBookLoanRepositoryImpl,
   defaultBookService,
+  coreApiClient,
+  bridgeIoApiClient
+);
+
+export const cartServiceFacade = new CartServiceFacade(
   defaultCartService,
-  cartServiceApiClient
+  bookLoanService
 );
