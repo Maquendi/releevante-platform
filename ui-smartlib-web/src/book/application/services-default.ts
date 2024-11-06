@@ -37,3 +37,4 @@ class DefailtBookServiceImpl implements BookService {
 
 
 export const defaultBookService = new DefailtBookServiceImpl(defaultBookRepository)
+

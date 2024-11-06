@@ -1,7 +1,17 @@
-import {  BookCopySchema } from "@/config/drizzle/schemas";
-
+import { BookCopy } from "../domain/models";
 
 export interface SearchCriteria {
-   filter:Partial<BookCopySchema>,
-   limit?:number
-  }
+  filter: Partial<BookCopy>;
+  limit?: number;
+}
+
+export interface BookCopySearch {
+  isbn: string;
+  qty: number;
+}
+
+export interface BookCopySearchResults {
+  isbn: string;
+  qty: number;
+  bookCopies: BookCopy[];
+}

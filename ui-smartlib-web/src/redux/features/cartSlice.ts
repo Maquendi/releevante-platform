@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartItem {
-  book_id: string;
+  title: string;
+  image: string;
+  isbn: string;
   qty: number;
-  cart_id: string;
-  image_url:string
-  edition_id:string
-  title:string
 }
 
 interface CartState {
@@ -21,13 +19,13 @@ const initialState: CartState = {
 
 const calculateTotalQuantityById = ({
   cartHistory,
-  bookId,
+  isbn,
 }: {
   cartHistory: CartItem[];
-  bookId: string;
+  isbn: string;
 }): number => {
   return cartHistory
-    .filter((item) => item.book_id === bookId)
+    .filter((item) => item.isbn === isbn)
     .reduce((acc, item) => acc + item.qty, 0);
 };
 
@@ -36,19 +34,19 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, { payload }: PayloadAction<CartItem>) => {
-      const isBookExist= state.items.find(book=>book.book_id === payload.book_id)
-      if(isBookExist){
-        isBookExist.qty+=payload.qty
-      }else{
+      const isBookExist = state.items.find(
+        (book) => book.isbn === payload.isbn
+      );
+      if (isBookExist) {
+        isBookExist.qty += payload.qty;
+      } else {
         state.items.push(payload);
       }
       state.cartHistory.push(payload);
     },
     updateItemQuantity: (state, { payload }: PayloadAction<CartItem>) => {
-      const { qty, book_id } = payload;
-      const bookInCart = state.items.find(
-        (book) => book.book_id === book_id
-      );
+      const { qty, isbn } = payload;
+      const bookInCart = state.items.find((book) => book.isbn === isbn);
 
       state.cartHistory.push(payload);
 
@@ -58,13 +56,11 @@ const cartSlice = createSlice({
       state.items.push(bookInCart);
     },
     removeItem: (state, { payload }: PayloadAction<CartItem>) => {
-      state.items = state.items.filter(
-        (book) => book.book_id !== payload.book_id
-      );
+      state.items = state.items.filter((book) => book.isbn !== payload.isbn);
       const existingQuantityInCart =
         calculateTotalQuantityById({
           cartHistory: state.cartHistory,
-          bookId: payload.book_id,
+          isbn: payload.isbn,
         }) || 0;
       if (!existingQuantityInCart) return;
       state.cartHistory.push({ ...payload, qty: -existingQuantityInCart });

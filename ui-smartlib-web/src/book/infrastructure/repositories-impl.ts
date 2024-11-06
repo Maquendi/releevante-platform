@@ -1,49 +1,48 @@
-import { dbGetAll, dbGetOne } from "@/lib/db/drizzle-client";
+import { dbGetAll, dbPut } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
-import {
-  Book,
-  BookCompartment,
-  BookCopy,
-  BookEdition,
-  BookFilter,
-} from "../domain/models";
+import { Book, BookCompartment, BookCopy, BookFilter, Isbn } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { and, eq } from "drizzle-orm";
-import {
-  bookCategorySchema,
-  bookCopieSchema,
-  BookCopySchema,
-  bookImageSchema,
-  bookSchema,
-  categorySchema,
-} from "@/config/drizzle/schemas";
-import { db } from "@/config/drizzle/db";
+import { bookCopieSchema, BookCopySchema, bookImageSchema, bookSchema } from "@/config/drizzle/schemas";
+import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { jsonAgg } from "@/lib/db/helpers";
+import { db } from "@/config/drizzle/db";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
     throw new Error("Method not implemented.");
   }
 
-  async findAllBookCopiesAvailable(
-    bookEdition: BookEdition
-  ): Promise<BookCopy[]> {
+  async findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]> {
     const data = dbGetAll("bookCopieSchema", {
       columns: {
         id: true,
         is_available: true,
-        status: true,
+        at_position: true,
+        isbn: true,
       },
-      where: eq(bookCopieSchema.edition_id, bookEdition.id),
+      where: and(
+        eq(bookCopieSchema.isbn, isbn.value),
+        eq(bookCopieSchema.is_available, true)
+      ),
     });
 
     return data.then((results) => results.map((res) => res as BookCopy));
   }
 
-  create(book: Book): Promise<Book> {
-    throw new Error("Method not implemented.");
+  async updateCopies(bookCopies: BookCopy[]): Promise<BookCopy[]> {
+    const resultsPromise = bookCopies.map((book) => {
+      return dbPut({
+        table: "bookCopieSchema",
+        where: { id: book.id },
+        values: { is_available: book.is_available },
+      });
+    });
+
+    return await Promise.all(resultsPromise).then((res) => bookCopies);
   }
-  update(book: Book): Promise<Book> {
+
+  create(book: Book): Promise<Book> {
     throw new Error("Method not implemented.");
   }
 
@@ -82,10 +81,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return new Book(items);
   }
 
+
   async findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
     const conditions = Object.entries(filter.filter).map(([key, value]) => {
       return eq(bookCopieSchema[key as keyof BookCopySchema], value);
     });
+
 
     const whereClause = and(...conditions);
 

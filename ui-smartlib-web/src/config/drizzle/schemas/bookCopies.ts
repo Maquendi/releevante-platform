@@ -11,12 +11,13 @@ export const bookCopieSchema = sqliteTable("books_copies", {
   book_id: text("book_id")
     .notNull()
     .references(() => bookSchema.id),
-  edition_id: text("edition_id")
+  isbn: text("isbn")
     .notNull()
     .references(() => bookEditionSchema.id),
   is_available: integer("is_available", { mode: "boolean" })
     .notNull()
     .default(true),
+  at_position: text("at_position").notNull(),
   created_at: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)
@@ -25,7 +26,7 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .notNull()
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString())
-    .$onUpdateFn(() => new Date().toISOString())
+    .$onUpdateFn(() => new Date().toISOString()),
 });
 
 export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
@@ -35,9 +36,9 @@ export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
   }),
 
   bookEdition: one(bookEditionSchema, {
-    fields: [bookCopieSchema.edition_id],
+    fields: [bookCopieSchema.isbn],
     references: [bookEditionSchema.id],
   }),
 }));
 
-export type BookCopySchema=typeof bookCopieSchema.$inferSelect
+export type BookCopySchema = typeof bookCopieSchema.$inferSelect;
