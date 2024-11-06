@@ -36,12 +36,10 @@ export const checkout = async (cartItems: CartItemDto[]): Promise<any> => {
     if (!cartIdCookie) throw new Error("Cart id not valid");
 
     const userId = {
-      value: "",
+      value: "451547885-14584722-45878452",
     };
-    const cartId = {
-      value: cartIdCookie,
-    };
-    await cartServiceFacade.checkout({ cartId, items: cartItems });
+
+    await cartServiceFacade.checkout({ userId, items: cartItems });
     return;
   } catch (error) {
     console.log("error new cart action" + error);
