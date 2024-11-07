@@ -34,13 +34,8 @@ export class BookLoanRepositoryImpl implements LoanRepository {
           start_time: loan.startTime,
           total_items: loan.itemsCount,
         } as any;
-<<<<<<< HEAD
         
         const loanInsertion = tx.insert(bookLoanSchema).values(loanData)
-=======
-
-        const loanInsertion = tx.insert(bookLoanSchema).values(loanData);
->>>>>>> 47a6767cd4cf766e210630d935485abe6c0cfde6
 
         const loanDetailInsertion = loan.details.map((detail) => {
           return tx.insert(bookLoanDetailSchema).values({
@@ -51,10 +46,6 @@ export class BookLoanRepositoryImpl implements LoanRepository {
           });
         });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 47a6767cd4cf766e210630d935485abe6c0cfde6
         const bookCopiesUpdation = bookCopies.map(async (copy) => {
           return tx
             .update(bookCopieSchema)
@@ -63,13 +54,8 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         });
 
         await Promise.all([
-<<<<<<< HEAD
           loanInsertion,
           ...loanDetailInsertion,
-=======
-          ...loanDetailInsertion,
-          loanInsertion,
->>>>>>> 47a6767cd4cf766e210630d935485abe6c0cfde6
           ...bookCopiesUpdation,
           transactionCb.execute(),
         ]);

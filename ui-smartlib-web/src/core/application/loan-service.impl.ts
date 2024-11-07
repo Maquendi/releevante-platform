@@ -19,10 +19,6 @@ export class BookLoanServiceImpl implements BookLoanService {
 
   // interact with bridge.io for door/compartment opening.
   async checkout(cart: Cart): Promise<BookLoan> {
-<<<<<<< HEAD
-
-=======
->>>>>>> 47a6767cd4cf766e210630d935485abe6c0cfde6
     const bookSearch = cart.cartItems.map(({ isbn, qty }) => ({ isbn, qty }));
 
     const bookCopies = await this.bookService.findAvailableCopiesByIsbn(

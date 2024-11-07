@@ -17,13 +17,6 @@ export interface BookCopy {
 
 export interface BookCompartment {
   compartment: string;
-<<<<<<< HEAD
-=======
-}
-
-export interface Isbn {
-  value: string;
->>>>>>> 47a6767cd4cf766e210630d935485abe6c0cfde6
 }
 
 export interface Isbn {
