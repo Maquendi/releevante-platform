@@ -1,7 +1,7 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { bookSchema } from "./books";
-import { bookEditionSchema } from "./book_editions";
+import { bookEditionSchema } from "./bookEditions";
 
 export const bookImageSchema = sqliteTable("books_images", {
   id: integer("id", { mode: "number" })
@@ -9,7 +9,7 @@ export const bookImageSchema = sqliteTable("books_images", {
     .notNull(),
   url: text("url", { mode: "text" }).notNull(),
   book_id: text("book_id").notNull(),
-  edition_id: text("edition_id").notNull(),
+  isbn: text("isbn"),
   isSincronized: integer("isSincronized", { mode: "boolean" }).default(false),
 });
 
@@ -19,7 +19,7 @@ export const bookImageRelations = relations(bookImageSchema, ({ one }) => ({
     references: [bookSchema.id],
   }),
   edition: one(bookEditionSchema, {
-    fields: [bookImageSchema.edition_id],
+    fields: [bookImageSchema.isbn],
     references: [bookEditionSchema.id],
   }),
 }));

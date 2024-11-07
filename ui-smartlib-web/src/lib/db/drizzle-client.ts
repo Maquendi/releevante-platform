@@ -8,6 +8,7 @@ import {
 import { db } from "../../config/drizzle/db";
 import * as schema from "../../config/drizzle/schemas";
 import { ClientTransaction } from "./transaction-manager";
+import { PgTableWithColumns } from "drizzle-orm/pg-core";
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 
@@ -20,33 +21,32 @@ type QueryConfig<TableName extends keyof TSchema> = DBQueryConfig<
 
 type OptsQuery<T extends keyof TSchema> = QueryConfig<T>;
 
-
 type QueryResult<
   TableName extends keyof TSchema,
-  QBConfig extends QueryConfig<TableName> 
+  QBConfig extends QueryConfig<TableName>
 > = BuildQueryResult<TSchema, TSchema[TableName], QBConfig>;
 
-export async function dbGetAll<T extends keyof TSchema>(
-  table: T,
-  Opts?: OptsQuery<T>
-) {
+export async function dbGetAll<
+  T extends keyof TSchema,
+  Opts extends OptsQuery<T>
+>(table: T, opts?: Opts): Promise<QueryResult<T, Opts>[]> {
   try {
-    const data = await db.query[table].findMany(Opts || {});
-    return data;
+    const data = await db.query[table].findMany(opts || {});
+    return data as QueryResult<T, Opts>[];
   } catch (error) {
+    console.log("err", error);
     throw new Error("Error getting data: " + error);
   }
 }
 
-
-export async function dbGetOne<T extends keyof TSchema, Opts extends OptsQuery<T>>(
-  table: T,
-  opts?: Opts
-):Promise<QueryResult<T,Opts>> {
+export async function dbGetOne<
+  T extends keyof TSchema,
+  Opts extends OptsQuery<T>
+>(table: T, opts?: Opts): Promise<QueryResult<T, Opts>> {
   try {
     const data = await db.query[table].findFirst(opts || {});
 
-    return data as QueryResult<T,Opts> ;
+    return data as QueryResult<T, Opts>;
   } catch (error) {
     throw new Error("Error getting data: " + error);
   }
@@ -83,7 +83,7 @@ export async function dbPost<T extends keyof TSchema>(
     const [data] = await db
       .insert(schema[table])
       .values(values as any)
-      .returning({id:schema[table].id});
+      .returning({ id: schema[table].id });
 
     if (!data) {
       throw new Error("Error creating element");
@@ -95,16 +95,25 @@ export async function dbPost<T extends keyof TSchema>(
   }
 }
 
-export async function dbPut<T extends keyof TSchema>(
-  table: T,
-  id: number,
-  values: Partial<InferInsertModel<(typeof schema)[T]>>
-) {
+export async function dbPut<T extends keyof TSchema>({
+  table,
+  where,
+  values,
+}: {
+  table: T;
+  where: {
+    [K in keyof InferInsertModel<(typeof schema)[T]>]?: InferInsertModel<
+      (typeof schema)[T]
+    >[K];
+  };
+  values: Partial<InferInsertModel<(typeof schema)[T]>>;
+}) {
   try {
+    const [keyId, value] = Object.entries(where) as any;
     const [data] = await db
       .update(schema[table])
       .set(values as Record<string, any>)
-      .where(eq(schema[table].id, id))
+      .where(eq(schema[table][keyId], value))
       .returning();
 
     if (!data) {
@@ -134,16 +143,15 @@ export async function dbDelete<T extends keyof TSchema>(table: T, id: number) {
   }
 }
 
-
-export async function executeTransaction(transaction: ClientTransaction): Promise<void> {
+export async function executeTransaction(
+  transaction: ClientTransaction
+): Promise<void> {
   await db.transaction(async (tx) => await transaction.execute(tx));
 }
 
-
-
 export async function initiateTransaction(transactionContext) {
   await db.transaction(async (tx) => {
-    await transactionContext.start(tx)
+    await transactionContext.start(tx);
     await transactionContext.end(tx);
   });
 }

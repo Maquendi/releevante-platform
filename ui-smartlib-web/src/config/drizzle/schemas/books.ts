@@ -1,13 +1,15 @@
 import { relations, sql } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {  sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from 'uuid';
-import { bookCopieSchema } from "./book_copies";
-import { bookImageSchema } from "./book_images";
+import { bookCopieSchema } from "./bookCopies";
+import { bookImageSchema } from "./bookImages";
+import { bookCategorySchema } from "./bookCategory";
+import { bookEditionSchema } from "./bookEditions";
 
 export const bookSchema = sqliteTable('books',{
     id: text('id').primaryKey().$defaultFn(() => uuidv4()),
     name:text('name').notNull(),
-    price:integer('price').notNull(),
+    isbn:text('isbn').references(()=>bookEditionSchema.id),
     author:text('author').notNull(),
     created_at: text('created_at')
     .notNull()
@@ -18,7 +20,12 @@ export const bookSchema = sqliteTable('books',{
 })
 
 
-export const book_relations = relations(bookSchema, ({ many }) => ({
+export const book_relations = relations(bookSchema, ({ many,one}) => ({
     copies:many(bookCopieSchema),
     images:many(bookImageSchema),
+    categories:many(bookCategorySchema),
+    edition:one(bookEditionSchema,{
+        fields:[bookSchema.isbn],
+        references:[bookEditionSchema.id]
+    })
 }));

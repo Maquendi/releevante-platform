@@ -1,17 +1,11 @@
 import { UserId } from "@/identity/domain/models";
-import { BookCartItem, CartId } from "../domain/models";
-import { BookEdition } from "@/book/domain/models";
 
-
-
-export interface CartInit{
-    userId: UserId, 
-    bookEdition: BookEdition
-}
-
+export type CartItemDto = {
+  isbn: string;
+  qty: number;
+};
 
 export interface CartDto {
-    cartId: CartId,
-    userId: UserId,
-    items: BookCartItem[]
+  userId: UserId;
+  items: CartItemDto[];
 }
