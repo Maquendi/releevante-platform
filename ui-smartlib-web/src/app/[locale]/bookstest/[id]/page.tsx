@@ -7,7 +7,6 @@ import { addItem } from "@/redux/features/cartSlice";
 import { InferQueryModel } from "@/lib/db/helpers";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
-import { addItemToCart } from "@/actions/cart-actions";
 
 type Book = InferQueryModel<
   "bookSchema",
@@ -34,7 +33,6 @@ const Page = ({ params }: { params: Record<string, any> }) => {
 
   const handleAddToCart = async () => {
     try {
-      await addItemToCart()
       const bookImages = bookItem?.images?.length ? bookItem.images[0] : null;
       dispatch(
         addItem({

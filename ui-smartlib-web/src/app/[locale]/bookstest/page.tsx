@@ -1,12 +1,4 @@
-import { db } from "@/config/drizzle/db";
-import {
-  bookCategorySchema,
-  bookImageSchema,
-  bookSchema,
-} from "@/config/drizzle/schemas";
 import { dbGetAll } from "@/lib/db/drizzle-client";
-import { jsonAgg } from "@/lib/db/helpers";
-import { and, eq } from "drizzle-orm";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
