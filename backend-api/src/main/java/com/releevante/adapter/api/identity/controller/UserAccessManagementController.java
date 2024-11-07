@@ -3,8 +3,11 @@ package com.releevante.adapter.api.identity.controller;
 
 import com.releevante.adapter.api.response.CustomApiResponse;
 import com.releevante.adapter.api.response.HttpErrorResponse;
-import com.releevante.identity.application.dto.*;
-import com.releevante.identity.application.identity.IdentityServiceFacade;
+import com.releevante.application.dto.AccountDto;
+import com.releevante.application.dto.AccountIdDto;
+import com.releevante.application.dto.SmartLibraryGrantedAccess;
+import com.releevante.application.dto.UserAccessDto;
+import com.releevante.application.identity.IdentityServiceFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,45 +27,44 @@ public class UserAccessManagementController {
   public UserAccessManagementController(IdentityServiceFacade identityServiceFacade) {
     this.identityServiceFacade = identityServiceFacade;
   }
-  @Operation(
-          summary = "User account register",
-          description = "Create a new user account")
+
+  @Operation(summary = "User account register", description = "Create a new user account")
   @ApiResponses(
-          value = {
-                  @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
-                  @ApiResponse(
-                          responseCode = "400",
-                          description = "Invalid data supplied",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = HttpErrorResponse.class))
-                          }),
-                  @ApiResponse(
-                          responseCode = "401",
-                          description = "Unauthorized",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = HttpErrorResponse.class))
-                          }),
-                  @ApiResponse(
-                          responseCode = "403",
-                          description = "Forbidden access",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = HttpErrorResponse.class))
-                          }),
-                  @ApiResponse(
-                          responseCode = "500",
-                          description = "Internal server error",
-                          content = {
-                                  @Content(
-                                          mediaType = "application/json",
-                                          schema = @Schema(implementation = HttpErrorResponse.class))
-                          })
-          })
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
   @PostMapping("/account")
   Mono<CustomApiResponse<AccountIdDto>> register(@RequestBody AccountDto account) {
     return identityServiceFacade.create(account).map(CustomApiResponse::from);

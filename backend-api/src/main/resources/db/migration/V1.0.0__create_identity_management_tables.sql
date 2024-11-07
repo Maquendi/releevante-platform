@@ -39,19 +39,6 @@ CREATE TABLE identity_management.users (
 	FOREIGN KEY (account_id) REFERENCES identity_management.accounts(id)
 );
 
-CREATE TABLE identity_management.smart_library_access_ctrl (
-	id varchar(36) NOT NULL,
-	slid varchar(36) NOT NULL,
-	is_active BOOLEAN NOT NULL DEFAULT false,
-	org_id varchar(36) NOT NULL,
-	access_code varchar(100) NULL,
-	nfc_hash varchar(100) NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT slid_acc_id PRIMARY KEY (id),
-	FOREIGN KEY (org_id) REFERENCES identity_management.org(id)
-);
-
 CREATE INDEX user_account_id_index ON identity_management.users USING btree (account_id);
 
 CREATE TABLE identity_management.roles (
@@ -65,4 +52,24 @@ CREATE TABLE identity_management.auth_clients (
 	secret varchar(250) NOT NULL,
 	org_id varchar(36) NOT NULL,
 	CONSTRAINT client_id_key PRIMARY KEY (id)
+);
+
+CREATE TABLE identity_management.smart_library_access_ctrl (
+	id varchar(36) NOT NULL,
+	slid varchar(36) NOT NULL,
+	is_active BOOLEAN NOT NULL DEFAULT false,
+	org_id varchar(36) NOT NULL,
+	access_code varchar(100) NULL,
+	nfc_hash varchar(100) NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT slid_acc_id PRIMARY KEY (id),
+	FOREIGN KEY (org_id) REFERENCES identity_management.org(id)
+);
+
+CREATE TABLE identity_management.smart_library (
+	slid varchar(36) NOT NULL,
+	org_id varchar(36) NOT NULL,
+	is_active boolean NOT NULL DEFAULT false,
+	CONSTRAINT slid_key PRIMARY KEY (slid)
 );

@@ -1,0 +1,11 @@
+
+plugins {
+    id 'java'
+}
+
+group = 'com.releevante.core.domain'
+version = 'core.0.0.1'
+
+bootJar {
+    enabled = false
+}

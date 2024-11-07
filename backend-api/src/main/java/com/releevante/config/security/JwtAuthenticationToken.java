@@ -1,7 +1,7 @@
 /* (C)2024 */
 package com.releevante.config.security;
 
-import com.releevante.identity.application.dto.LoginTokenDto;
+import com.releevante.application.dto.LoginTokenDto;
 import com.releevante.types.AccountPrincipal;
 import java.util.stream.Collectors;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

@@ -3,8 +3,11 @@ package com.releevante.adapter.api.identity.controller;
 
 import com.releevante.adapter.api.response.CustomApiResponse;
 import com.releevante.adapter.api.response.HttpErrorResponse;
-import com.releevante.identity.application.dto.*;
-import com.releevante.identity.application.identity.IdentityServiceFacade;
+import com.releevante.application.dto.LoginDto;
+import com.releevante.application.dto.PinLoginDto;
+import com.releevante.application.dto.SmartLibraryAccessDto;
+import com.releevante.application.dto.UserAuthenticationDto;
+import com.releevante.application.identity.IdentityServiceFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

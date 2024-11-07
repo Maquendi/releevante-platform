@@ -13,7 +13,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
   @Bean
   public SecurityWebFilterChain securityWebFilterChain(
-      ServerHttpSecurity http, JwtAuthenticationWebFilter webFilter) {
+      ServerHttpSecurity http, ApiKeyWebFilter apiKeyWebFilter, JwtWebFilter jwtWebFilter) {
     return http.authorizeExchange(
             exchanges ->
                 exchanges
@@ -23,7 +23,8 @@ public class SecurityConfig {
                     .hasAnyAuthority("super-admin", "sys-admin", "user-admin")
                     .anyExchange()
                     .authenticated())
-        .addFilterAt(webFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+        .addFilterBefore(apiKeyWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+        .addFilterAt(jwtWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .exceptionHandling(
             (exception) -> {
