@@ -1,9 +1,67 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "869d294e-b25c-4cca-ba13-7c6d4603eb4a",
+  "id": "c8be6163-e7bf-4841-bae8-34eeef8d1ad8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "book_category": {
+      "name": "book_category",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "book_id": {
+          "name": "book_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "category_id": {
+          "name": "category_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "book_category_book_id_books_id_fk": {
+          "name": "book_category_book_id_books_id_fk",
+          "tableFrom": "book_category",
+          "tableTo": "books",
+          "columnsFrom": [
+            "book_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "book_category_category_id_category_id_fk": {
+          "name": "book_category_category_id_category_id_fk",
+          "tableFrom": "book_category",
+          "tableTo": "category",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "books_copies": {
       "name": "books_copies",
       "columns": {
@@ -87,6 +145,19 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "books_copies_at_position_books_id_fk": {
+          "name": "books_copies_at_position_books_id_fk",
+          "tableFrom": "books_copies",
+          "tableTo": "books",
+          "columnsFrom": [
+            "at_position"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -145,7 +216,7 @@
           "name": "isbn",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "isSincronized": {
@@ -340,11 +411,11 @@
           "notNull": true,
           "autoincrement": false
         },
-        "price": {
-          "name": "price",
-          "type": "integer",
+        "isbn": {
+          "name": "isbn",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "author": {
@@ -372,7 +443,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "books_isbn_books_edition_id_fk": {
+          "name": "books_isbn_books_edition_id_fk",
+          "tableFrom": "books",
+          "tableTo": "books_edition",
+          "columnsFrom": [
+            "isbn"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -417,23 +502,7 @@
           "default": "(current_timestamp)"
         }
       },
-      "indexes": {
-        "cart_idx": {
-          "name": "cart_idx",
-          "columns": [
-            "cart_id"
-          ],
-          "isUnique": false
-        },
-        "cart_item_cart_id_isbn_unique": {
-          "name": "cart_item_cart_id_isbn_unique",
-          "columns": [
-            "cart_id",
-            "isbn"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "cart_item_isbn_books_edition_id_fk": {
           "name": "cart_item_isbn_books_edition_id_fk",
@@ -524,6 +593,30 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "category": {
+      "name": "category",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
