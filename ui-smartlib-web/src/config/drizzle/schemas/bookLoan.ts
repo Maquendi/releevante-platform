@@ -26,13 +26,6 @@ export const bookLoanSchema = sqliteTable("book_loan", {
     .$onUpdateFn(() => new Date().toISOString()),
 });
 
-export interface BookLoanDetail {
-  id: string;
-  isbn: string;
-  book_copy_id: string;
-  itemPrice: number;
-}
-
 export const bookLoanDetailSchema = sqliteTable("book_loan_detail", {
   id: text("id").primaryKey().notNull(),
   isbn: text("isbn").notNull(),

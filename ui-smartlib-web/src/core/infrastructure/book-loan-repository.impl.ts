@@ -34,8 +34,8 @@ export class BookLoanRepositoryImpl implements LoanRepository {
           start_time: loan.startTime,
           total_items: loan.itemsCount,
         } as any;
-
-        const loanInsertion = tx.insert(bookLoanSchema).values(loanData);
+        
+        const loanInsertion = tx.insert(bookLoanSchema).values(loanData)
 
         const loanDetailInsertion = loan.details.map((detail) => {
           return tx.insert(bookLoanDetailSchema).values({
@@ -54,8 +54,8 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         });
 
         await Promise.all([
-          ...loanDetailInsertion,
           loanInsertion,
+          ...loanDetailInsertion,
           ...bookCopiesUpdation,
           transactionCb.execute(),
         ]);

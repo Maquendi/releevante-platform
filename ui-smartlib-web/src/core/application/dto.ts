@@ -1,5 +1,4 @@
 import { UserId } from "@/identity/domain/models";
-import { CartId } from "../domain/cart.model";
 
 export type CartItemDto = {
   isbn: string;
@@ -7,6 +6,6 @@ export type CartItemDto = {
 };
 
 export interface CartDto {
-  userId: UserId
+  userId: UserId;
   items: CartItemDto[];
 }

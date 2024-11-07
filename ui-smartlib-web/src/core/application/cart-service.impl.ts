@@ -1,4 +1,4 @@
-import { Cart, CartId } from "../domain/cart.model";
+import { Cart } from "../domain/cart.model";
 import { CartService } from "./service.definition";
 import { CartRepository } from "../domain/repositories";
 import { BookService } from "@/book/application/services";
@@ -19,16 +19,6 @@ export class DefaultCartService implements CartService {
     cart.markFailed();
 
     return await this.cartRepository.update(cart);
-  }
-
-  async initilizeCart(user: UserId): Promise<Cart> {
-    const cartId = {
-      value: uuidv4(),
-    };
-
-    const cart = new Cart(cartId, user, []);
-
-    return this.cartRepository.save(cart);
   }
 
   async checkout(dto: CartDto): Promise<Cart> {

@@ -5,7 +5,6 @@ import { UserId } from "@/identity/domain/models";
 import { BookLoan } from "../domain/loan.model";
 
 export interface CartService {
-  initilizeCart(user: UserId): Promise<Cart>;
   checkout(dto: CartDto): Promise<Cart>;
   onCheckOutFailed(cart: Cart): Promise<Cart>;
 }

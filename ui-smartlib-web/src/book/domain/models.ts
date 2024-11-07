@@ -23,36 +23,39 @@ export interface Isbn {
   value: string;
 }
 
-export interface BookEdition {
+export interface BookItems {
   id: string;
   title: string;
   publisher: string;
-  unitPrice: number;
-  quantity: number;
   images: BookImage[];
-  availableLocally: boolean;
-  bookId: string;
+}
+
+
+
+export interface BookFilter{
+  categoryId:string
+  limit?:number
 }
 
 export class Book {
   constructor(
-    public id: string,
-    private editions: BookEdition[],
-    private cagories: BookCategory[]
+    // public id: string,
+    private items: BookItems[],
+    // private cagories: BookCategory[]
   ) {}
   public numEditions(): number {
-    return this.editions.length;
+    return this.items.length;
   }
 
-  public isAvailable(): boolean {
-    return (
-      this.editions
-        .filter((item) => item.availableLocally)
-        .reduce((result, item) => result + item.quantity, 0) > 0
-    );
-  }
+  // public isAvailable(): boolean {
+  //   return (
+  //     this.items
+  //       .filter((item) => item.availableLocally)
+  //       .reduce((result, item) => result + item.quantity, 0) > 0
+  //   );
+  // }
 
-  public isOfCategory(category: BookCategory): boolean {
-    return this.cagories.indexOf(category) > 0;
-  }
+  // public isOfCategory(category: BookCategory): boolean {
+  //   return this.cagories.indexOf(category) > 0;
+  // }
 }

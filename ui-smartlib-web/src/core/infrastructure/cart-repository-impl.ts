@@ -4,7 +4,7 @@ import { CartRepository } from "../domain/repositories";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { eq } from "drizzle-orm";
-import { dbGetOne, dbPut, executeTransaction } from "@/lib/db/drizzle-client";
+import { dbGetOne,  executeTransaction } from "@/lib/db/drizzle-client";
 
 class CartRepositoryImpl implements CartRepository {
   async find(cartId: CartId): Promise<Cart> {

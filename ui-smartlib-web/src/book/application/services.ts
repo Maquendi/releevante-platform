@@ -1,4 +1,5 @@
-import { Book, BookCategory, BookCopy } from "../domain/models";
+import { BookCopySchema } from "@/config/drizzle/schemas";
+import { Book, BookCategory, BookCopy, BookFilter } from "../domain/models";
 import { BookCopySearch, SearchCriteria } from "./dto";
 
 export interface BookService {
@@ -7,4 +8,5 @@ export interface BookService {
   findAllBookBySearchCriteria(searchCriteria: SearchCriteria): Promise<Book[]>;
   findAvailableCopiesByIsbn(search: BookCopySearch[]): Promise<BookCopy[]>;
   markUnavailable(books: BookCopy[]): Promise<BookCopy[]>;
+  findCopiesBy(filter:BookFilter):Promise<BookCopySchema[]>
 }

@@ -9,7 +9,7 @@ export const bookImageSchema = sqliteTable("books_images", {
     .notNull(),
   url: text("url", { mode: "text" }).notNull(),
   book_id: text("book_id").notNull(),
-  isbn: text("isbn").notNull(),
+  isbn: text("isbn"),
   isSincronized: integer("isSincronized", { mode: "boolean" }).default(false),
 });
 

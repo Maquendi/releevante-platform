@@ -1,4 +1,3 @@
-import { BookCopy } from "@/book/domain/models";
 import { UserId } from "@/identity/domain/models";
 
 export interface CartId {
@@ -28,7 +27,6 @@ export class Cart {
     this.items = [...this.items, ...newItems];
     return true;
   }
-
 
   public markForCheckout(): boolean {
     if (this.state !== "PENDING") {

@@ -1,9 +1,23 @@
 import { dbGetAll, dbPut } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
-import { Book, BookCompartment, BookCopy, Isbn } from "../domain/models";
+import {
+  Book,
+  BookCompartment,
+  BookCopy,
+  BookFilter,
+  Isbn,
+} from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { and, eq } from "drizzle-orm";
-import { bookCopieSchema, BookCopySchema } from "@/config/drizzle/schemas";
+import {
+  bookCopieSchema,
+  BookCopySchema,
+  bookImageSchema,
+  bookSchema,
+} from "@/config/drizzle/schemas";
+import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
+import { jsonAgg } from "@/lib/db/helpers";
+import { db } from "@/config/drizzle/db";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -28,7 +42,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async updateCopies(bookCopies: BookCopy[]): Promise<BookCopy[]> {
-    var resultsPromise = bookCopies.map((book) => {
+    const resultsPromise = bookCopies.map((book) => {
       return dbPut({
         table: "bookCopieSchema",
         where: { id: book.id },
@@ -42,16 +56,46 @@ class DefaultBookRepositoryImpl implements BookRepository {
   create(book: Book): Promise<Book> {
     throw new Error("Method not implemented.");
   }
-  findBy(bookId: string): Promise<Book> {
-    throw new Error("Method not implemented.");
+
+  async findBy(filter: BookFilter): Promise<Book> {
+    const queryFilter = and(
+      filter?.categoryId
+        ? eq(bookCategorySchema.category_id, filter.categoryId)
+        : undefined
+    );
+
+    const query = db
+      .select({
+        id: bookSchema.id,
+        title: bookSchema.name,
+        publisher: bookSchema.author,
+        images: jsonAgg({
+          id: bookImageSchema.id,
+          url: bookImageSchema.url,
+        }),
+      })
+      .from(bookSchema)
+      .leftJoin(bookImageSchema, eq(bookImageSchema.book_id, bookSchema.id))
+      .where(queryFilter)
+      .groupBy(bookSchema.id)
+      .$dynamic();
+
+    if (filter?.categoryId)
+      query.leftJoin(
+        bookCategorySchema,
+        eq(bookSchema.id, bookCategorySchema.book_id)
+      );
+
+    if (filter?.limit) query.limit(filter.limit);
+
+    const items = await query;
+    return new Book(items);
   }
 
   async findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
     const conditions = Object.entries(filter.filter).map(([key, value]) => {
       return eq(bookCopieSchema[key as keyof BookCopySchema], value);
     });
-
-    console.log("filter server", filter);
 
     const whereClause = and(...conditions);
 
