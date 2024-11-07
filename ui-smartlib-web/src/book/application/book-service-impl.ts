@@ -1,12 +1,11 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
 import { BookCategory, Book, BookCopy, BookFilter } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { defaultBookRepository } from "../infrastructure/repositories-impl";
 
 import { BookCopySearch, SearchCriteria } from "./dto";
-import { BookService } from "./services";
+import { BookService } from "./service.definitions";
 
-class DefailtBookServiceImpl implements BookService {
+export class DefaultBookServiceImpl implements BookService {
   constructor(private bookRepository: BookRepository) {}
   findCopiesBy(filter: BookFilter): Promise<BookCopySchema[]> {
     throw new Error("Method not implemented.");
@@ -47,7 +46,3 @@ class DefailtBookServiceImpl implements BookService {
     throw new Error("Method not implemented.");
   }
 }
-
-export const defaultBookService = new DefailtBookServiceImpl(
-  defaultBookRepository
-);

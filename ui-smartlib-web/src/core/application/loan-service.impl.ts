@@ -1,4 +1,4 @@
-import { BookService } from "@/book/application/services";
+import { BookServiceFacade } from "@/book/application/service.definitions";
 import { Cart } from "../domain/cart.model";
 import { BookLoan, BookLoanDetail } from "../domain/loan.model";
 import {
@@ -12,17 +12,17 @@ import { LoanRepository, TransactionCallback } from "../domain/repositories";
 export class BookLoanServiceImpl implements BookLoanService {
   constructor(
     private bookLoanRepository: LoanRepository,
-    private bookService: BookService,
+    private bookService: BookServiceFacade,
     coreApiClient: CoreApiClient,
     private bridgeIoClient: BridgeIoApiClient
   ) {}
 
   // interact with bridge.io for door/compartment opening.
   async checkout(cart: Cart): Promise<BookLoan> {
-    const bookSearch = cart.cartItems.map(({ isbn, qty }) => ({ isbn, qty }));
+    const bookCopySearch = cart.cartItems.map(({ isbn, qty }) => ({ isbn, qty }));
 
     const bookCopies = await this.bookService.findAvailableCopiesByIsbn(
-      bookSearch
+      bookCopySearch
     );
 
     const loanDetails: BookLoanDetail[] = bookCopies.map(({ isbn, id }) => ({

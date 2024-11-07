@@ -10,3 +10,8 @@ export interface BookService {
   markUnavailable(books: BookCopy[]): Promise<BookCopy[]>;
   findCopiesBy(filter:BookFilter):Promise<BookCopySchema[]>
 }
+
+
+export interface BookServiceFacade {
+  findAvailableCopiesByIsbn(search: BookCopySearch[]): Promise<BookCopy[]>;
+}

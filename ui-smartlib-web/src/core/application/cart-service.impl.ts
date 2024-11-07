@@ -1,7 +1,7 @@
 import { Cart } from "../domain/cart.model";
 import { CartService } from "./service.definition";
 import { CartRepository } from "../domain/repositories";
-import { BookService } from "@/book/application/services";
+import { BookServiceFacade } from "@/book/application/service.definitions";
 import { v4 as uuidv4 } from "uuid";
 import { CartDto } from "./dto";
 import { UserId } from "@/identity/domain/models";
@@ -11,7 +11,7 @@ import { UserId } from "@/identity/domain/models";
 
 export class DefaultCartService implements CartService {
   constructor(
-    private bookService: BookService,
+    private bookService: BookServiceFacade,
     private cartRepository: CartRepository
   ) {}
 

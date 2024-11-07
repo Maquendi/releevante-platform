@@ -1,5 +1,4 @@
-import { UserId } from "@/identity/domain/models";
-import { Cart, CartId } from "../domain/cart.model";
+import { Cart } from "../domain/cart.model";
 import { CartDto } from "./dto";
 import { CartService, BookLoanService } from "./service.definition";
 

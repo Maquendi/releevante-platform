@@ -1,7 +1,6 @@
 import { BookCompartment } from "@/book/domain/models";
 import { Cart } from "../domain/cart.model";
 import { CartDto } from "./dto";
-import { UserId } from "@/identity/domain/models";
 import { BookLoan } from "../domain/loan.model";
 
 export interface CartService {
