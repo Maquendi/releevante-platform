@@ -30,32 +30,20 @@ export interface BookItems {
   images: BookImage[];
 }
 
-
-
-export interface BookFilter{
-  categoryId:string
-  limit?:number
+export interface BookFilter {
+  categoryId: string;
+  limit?: number;
 }
 
-export class Book {
-  constructor(
-    // public id: string,
-    private items: BookItems[],
-    // private cagories: BookCategory[]
-  ) {}
-  public numEditions(): number {
-    return this.items.length;
-  }
+export interface BookEdition {
+  isbn: string;
+  title: string;
+  images: BookImage[];
+}
 
-  // public isAvailable(): boolean {
-  //   return (
-  //     this.items
-  //       .filter((item) => item.availableLocally)
-  //       .reduce((result, item) => result + item.quantity, 0) > 0
-  //   );
-  // }
-
-  // public isOfCategory(category: BookCategory): boolean {
-  //   return this.cagories.indexOf(category) > 0;
-  // }
+export interface Book {
+  isbn: string;
+  bookTile: string;
+  editionTitle: string;
+  images?: BookImage[];
 }
