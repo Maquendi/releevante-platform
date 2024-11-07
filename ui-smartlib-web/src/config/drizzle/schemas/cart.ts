@@ -55,12 +55,6 @@ export const cartItemSchema = sqliteTable(
       .notNull()
       .default(sql`(current_timestamp)`)
       .$defaultFn(() => new Date().toISOString()),
-  },
-  (table) => {
-    return {
-      // cartIdx: index("cart_idx").on(table.cart_id),
-      // cartId_bookCopy_uniqueInx: unique().on(table.cart_id, table.isbn),
-    };
   }
 );
 

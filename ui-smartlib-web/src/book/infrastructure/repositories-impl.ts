@@ -1,9 +1,20 @@
 import { dbGetAll, dbPut } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
-import { Book, BookCompartment, BookCopy, BookFilter, Isbn } from "../domain/models";
+import {
+  Book,
+  BookCompartment,
+  BookCopy,
+  BookFilter,
+  Isbn,
+} from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 import { and, eq } from "drizzle-orm";
-import { bookCopieSchema, BookCopySchema, bookImageSchema, bookSchema } from "@/config/drizzle/schemas";
+import {
+  bookCopieSchema,
+  BookCopySchema,
+  bookImageSchema,
+  bookSchema,
+} from "@/config/drizzle/schemas";
 import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { jsonAgg } from "@/lib/db/helpers";
 import { db } from "@/config/drizzle/db";
@@ -81,12 +92,10 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return new Book(items);
   }
 
-
   async findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
     const conditions = Object.entries(filter.filter).map(([key, value]) => {
       return eq(bookCopieSchema[key as keyof BookCopySchema], value);
     });
-
 
     const whereClause = and(...conditions);
 

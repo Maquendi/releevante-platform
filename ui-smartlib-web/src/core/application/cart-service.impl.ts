@@ -21,28 +21,17 @@ export class DefaultCartService implements CartService {
     return await this.cartRepository.update(cart);
   }
 
-  async initilizeCart(user: UserId): Promise<Cart> {
-    const cartId = {
-      value: uuidv4(),
-    };
-
-    const cart = new Cart(cartId, user, []);
-
-    return this.cartRepository.save(cart);
-  }
-
   async checkout(dto: CartDto): Promise<Cart> {
     const cartItems = dto.items.map(({ isbn, qty }) => ({
       id: uuidv4(),
       isbn,
       qty,
-    }));    
+    }));
 
     const cartId = {
       value: uuidv4(),
     };
     const userId = dto.userId;
-
 
     const cart = new Cart(cartId, userId, cartItems);
 

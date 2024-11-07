@@ -1,10 +1,7 @@
 import { UserId } from "@/identity/domain/models";
 import { Cart, CartId } from "../domain/cart.model";
 import { CartDto } from "./dto";
-import {
-  CartService,
-  BookLoanService,
-} from "./service.definition";
+import { CartService, BookLoanService } from "./service.definition";
 
 /***
  * A cart service facade
@@ -14,15 +11,6 @@ export class CartServiceFacade {
     private cartService: CartService,
     private bookLoanService: BookLoanService
   ) {}
-
-  /**
-   *
-   * @param initial payload to initialize a cart.
-   * @returns
-   */
-  async initCart(user: UserId): Promise<CartId> {
-    return this.cartService.initilizeCart(user).then((cart) => cart.id);
-  }
 
   /**
    *

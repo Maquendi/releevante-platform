@@ -28,7 +28,6 @@ export class Cart {
     return true;
   }
 
-
   public markForCheckout(): boolean {
     if (this.state !== "PENDING") {
       throw new Error("Cart invalid state for checkout.");

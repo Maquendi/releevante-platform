@@ -6,6 +6,6 @@ export type CartItemDto = {
 };
 
 export interface CartDto {
-  userId: UserId
+  userId: UserId;
   items: CartItemDto[];
 }
