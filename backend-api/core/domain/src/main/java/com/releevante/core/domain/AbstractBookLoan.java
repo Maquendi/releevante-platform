@@ -32,5 +32,5 @@ public abstract class AbstractBookLoan {
   /** status of this book loan */
   abstract BookLoanStatus status();
 
-  abstract Cart cart();
+  abstract LazyLoader<Cart> cart();
 }

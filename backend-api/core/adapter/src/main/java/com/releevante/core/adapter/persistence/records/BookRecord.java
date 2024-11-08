@@ -9,20 +9,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "book_editions", schema = "core")
+@Table(name = "books", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class BookEditionRecord {
+public class BookRecord {
   @Id private String isbn;
   private String title;
   private BigDecimal price;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
-  public static BookEditionRecord fromDomain(BookEdition bookEdition) {
-    var record = new BookEditionRecord();
+  public static BookRecord fromDomain(BookEdition bookEdition) {
+    var record = new BookRecord();
     record.setIsbn(bookEdition.isbn().value());
     record.setTitle(bookEdition.title());
     record.setPrice(bookEdition.price());

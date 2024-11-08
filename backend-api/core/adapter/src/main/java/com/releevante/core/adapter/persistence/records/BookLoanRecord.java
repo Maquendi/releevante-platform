@@ -2,10 +2,14 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
-import com.releevante.core.domain.ClientId;
+import com.releevante.core.domain.Cart;
+import com.releevante.core.domain.LazyLoader;
 import com.releevante.types.Slid;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +21,11 @@ import lombok.Setter;
 @Entity
 public class BookLoanRecord {
   private String loanId;
-  private String clientIdStr;
-  @OneToOne private CartRecord cart;
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "cart_id")
+  private CartRecord cart;
+
   private ZonedDateTime startTime;
   private ZonedDateTime estimatedEndTime;
   private ZonedDateTime bookReturnedTime;
@@ -31,12 +38,11 @@ public class BookLoanRecord {
   public BookLoan toDomain() {
     return BookLoan.builder()
         .id(BookLoanId.of(loanId))
-        .clientId(ClientId.of(clientIdStr))
         .startTime(startTime)
         .endTime(estimatedEndTime)
         .slid(Slid.of(slid))
         .bookReturnTime(bookReturnedTime)
-        .cart(getCart().toDomain())
+        .cart(() -> getCart().toDomain())
         .build();
   }
 
@@ -44,12 +50,16 @@ public class BookLoanRecord {
 
     var record = new BookLoanRecord();
     record.setLoanId(loan.id().value());
-    record.setClientIdStr(loan.clientId().value());
-    record.setCart(CartRecord.fromDomain(loan.cart()));
+    record.setCart(CartRecord.fromDomain(loan.cart().get()));
     record.setStartTime(loan.startTime());
     record.setEstimatedEndTime(loan.endTime());
     record.setSlid(loan.slid().value());
 
     return record;
+  }
+
+  public static Set<BookLoanRecord> fromDomain(List<BookLoan> loan) {
+    
+    return null;
   }
 }

@@ -18,7 +18,7 @@ public abstract class AbstractCartItem {
 
   abstract Optional<BookCopyId> bookCopyId();
 
-  abstract BookEdition bookEdition();
+  abstract LazyLoader<BookEdition> book();
 
   abstract ZonedDateTime createdAt();
 

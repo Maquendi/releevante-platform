@@ -12,8 +12,12 @@ import org.immutables.value.Value;
 @ImmutableExt
 public abstract class AbstractClient {
   abstract ClientId id();
-  abstract List<Cart> carts();
-  abstract List<BookSale> purchases();
-  abstract List<BookLoan> loans();
-  abstract List<BookReservation> reservations();
+
+  abstract LazyLoader<List<Cart>> carts();
+
+  abstract LazyLoader<List<BookSale>> purchases();
+
+  abstract LazyLoader<List<BookLoan>> loans();
+
+  abstract LazyLoader<List<BookReservation>> reservations();
 }

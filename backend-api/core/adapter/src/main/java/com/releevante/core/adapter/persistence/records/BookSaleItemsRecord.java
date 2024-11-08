@@ -15,7 +15,7 @@ public class BookSaleItemsRecord {
   @Id private String id;
 
   @OneToOne(fetch = FetchType.EAGER)
-  private BookEditionRecord book;
+  private BookRecord book;
 
   private BigDecimal price;
 

@@ -27,7 +27,7 @@ public abstract class AbstractCartItemDto {
     return CartItem.builder()
         .itemPrice(itemPrice())
         .bookCopyId(BookCopyId.of(bookId()))
-        .bookEdition(editionDto().toDomain())
+        .book(editionDto().toDomain())
         .qty(qty())
         .build();
   }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.BookEdition;
 import com.releevante.core.domain.Isbn;
+import com.releevante.core.domain.LazyLoader;
 import com.releevante.types.ImmutableExt;
 import java.math.BigDecimal;
 import org.immutables.value.Value;
@@ -17,11 +18,8 @@ public abstract class AbstractBookEditionDto {
 
   abstract String title();
 
-  public BookEdition toDomain() {
-    return BookEdition.builder()
-        .isbn(Isbn.of(isbn()))
-        .title(title())
-        .price(BigDecimal.ZERO)
-        .build();
+  public LazyLoader<BookEdition> toDomain() {
+    return () ->
+        BookEdition.builder().isbn(Isbn.of(isbn())).title(title()).price(BigDecimal.ZERO).build();
   }
 }

@@ -36,8 +36,7 @@ public abstract class AbstractCartDto {
         .clientId(clientId)
         .createAt(createdAt())
         .updatedAt(createdAt())
-        .itemsLoader(
-            () -> cartItems().stream().map(CartItemDto::toDomain).collect(Collectors.toList()))
+        .items(() -> cartItems().stream().map(CartItemDto::toDomain).collect(Collectors.toList()))
         .state(CartState.of(cartState().name()))
         .build();
   }

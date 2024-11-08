@@ -20,5 +20,5 @@ public class BookPriceRecord {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "isbn")
-  private BookEditionRecord book;
+  private BookRecord book;
 }

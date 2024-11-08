@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import java.time.ZonedDateTime;
+import java.util.List;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -21,5 +22,5 @@ public abstract class AbstractCart {
 
   abstract ZonedDateTime updatedAt();
 
-  abstract LazyLoader itemsLoader();
+  abstract LazyLoader<List<CartItem>> items();
 }

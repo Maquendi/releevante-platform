@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Client;
-import com.releevante.core.domain.ClientId;
 import jakarta.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -15,19 +14,29 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class ClientRecord {
-  @Id
-  @Column(name = "client_id")
-  String id;
+  @Id String id;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
+  @OrderBy("createdAt DESC")
+  Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
   @OrderBy("createdAt DESC")
-  Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
+  Set<BookReservationRecord> reservations = new LinkedHashSet<>();
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
   @OrderBy("createdAt DESC")
-  Set<BookReservationRecord> reservations = new LinkedHashSet<>();
+  Set<BookRatingRecord> bookRatings = new LinkedHashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+  @OrderBy("createdAt DESC")
+  Set<ServiceRatingRecord> serviceRatings = new LinkedHashSet<>();
+
   public static ClientRecord toDomain(Client client) {
     var record = new ClientRecord();
     record.setId(client.id().value());
+    record.setBookLoans(BookLoanRecord.fromDomain(client.loans().get()));
+
     return record;
   }
 }

@@ -18,8 +18,10 @@ import lombok.Setter;
 public class CartItemRecord {
   @Id private String id;
   private String bookId;
-  @OneToOne
-  private BookEditionRecord edition;
+
+  @OneToOne(fetch = FetchType.LAZY)
+  private BookRecord book;
+
   private BigDecimal itemPrice;
   private Integer qty;
   private ZonedDateTime createdAt;
@@ -35,7 +37,7 @@ public class CartItemRecord {
         .qty(qty)
         .createdAt(createdAt)
         .bookCopyId(Optional.ofNullable(bookId).map(BookCopyId::of))
-        .bookEdition(getEdition().toDomain())
+        .book(() -> getBook().toDomain())
         .itemPrice(getItemPrice())
         .build();
   }
@@ -45,7 +47,7 @@ public class CartItemRecord {
     record.setId(cartItem.id());
     record.setCreatedAt(cartItem.createdAt());
     record.setBookId(cartItem.bookCopyId().map(BookCopyId::value).orElse(null));
-    record.setEdition(BookEditionRecord.fromDomain(cartItem.bookEdition()));
+    record.setBook(BookRecord.fromDomain(cartItem.book().get()));
     record.setQty(cartItem.qty());
     record.setItemPrice(cartItem.itemPrice());
     return record;

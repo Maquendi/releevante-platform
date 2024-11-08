@@ -15,8 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class CartRecord {
-  @Id
-  private String id;
+  @Id private String id;
   private String clientId;
   private String state;
   private ZonedDateTime createdAt;
@@ -30,12 +29,12 @@ public class CartRecord {
         .id(CartId.of(id))
         .clientId(ClientId.of(clientId))
         .state(CartState.of(state))
-        .itemsLoader(
-            new LazyLoader() {
+        .items(
+            new LazyLoader<>() {
               List<CartItem> cachedItems;
 
               @Override
-              public List<CartItem> getItems() {
+              public List<CartItem> get() {
                 if (Objects.nonNull(cachedItems)) {
                   return cachedItems;
                 }
@@ -59,9 +58,7 @@ public class CartRecord {
     record.setCreatedAt(cart.createAt());
     record.setUpdatedAt(cart.updatedAt());
     record.setCartItems(
-        cart.itemsLoader().getItems().stream()
-            .map(CartItemRecord::fromDomain)
-            .collect(Collectors.toSet()));
+        cart.items().get().stream().map(CartItemRecord::fromDomain).collect(Collectors.toSet()));
     return record;
   }
 }
