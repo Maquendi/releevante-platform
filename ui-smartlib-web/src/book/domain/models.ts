@@ -1,6 +1,7 @@
 export interface BookCategory {
   id: string;
-  title: string;
+  name: string;
+  image:string
 }
 
 export interface BookImage {
@@ -30,9 +31,9 @@ export interface BookItems {
   images: BookImage[];
 }
 
-export interface BookFilter {
-  categoryId: string;
-  limit?: number;
+export interface BooksPagination {
+  limit?: number;  
+  page?: number;    
 }
 
 export interface BookEdition {
@@ -43,7 +44,13 @@ export interface BookEdition {
 
 export interface Book {
   isbn: string;
-  bookTile: string;
+  bookTitle: string;
+  publisher: string;
   editionTitle: string;
   images?: BookImage[];
+}
+
+export interface CategoryBooks{
+  categoryName:string,
+  books:Book[]
 }

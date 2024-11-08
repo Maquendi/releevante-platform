@@ -4,12 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { bookCopieSchema } from "./bookCopies";
 import { bookImageSchema } from "./bookImages";
 import { bookCategorySchema } from "./bookCategory";
-import { bookEditionSchema } from "./bookEditions";
 
 export const bookSchema = sqliteTable('books',{
-    id: text('id').primaryKey().$defaultFn(() => uuidv4()),
-    name:text('name').notNull(),
-    isbn:text('isbn').references(()=>bookEditionSchema.id),
+    isbn: text('isbn').primaryKey().$defaultFn(() => uuidv4()),
+    book_title:text('book_title').notNull(),
+    edition_title:text('edition_title').notNull(),
     author:text('author').notNull(),
     created_at: text('created_at')
     .notNull()
@@ -20,12 +19,8 @@ export const bookSchema = sqliteTable('books',{
 })
 
 
-export const book_relations = relations(bookSchema, ({ many,one}) => ({
+export const book_relations = relations(bookSchema, ({ many}) => ({
     copies:many(bookCopieSchema),
     images:many(bookImageSchema),
     categories:many(bookCategorySchema),
-    edition:one(bookEditionSchema,{
-        fields:[bookSchema.isbn],
-        references:[bookEditionSchema.id]
-    })
 }));
