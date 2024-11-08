@@ -1,19 +1,18 @@
 
-import { Book, BookCategory, BookCompartment, BookCopy, BookFilter, Isbn } from "./models";
+import { Book, BookCategory, BookCompartment, BookCopy,  BooksPagination,  CategoryBooks, Isbn } from "./models";
 
 export interface BookRepository {
   create(book: Book): Promise<Book>;
-  findBy(filter: BookFilter): Promise<Book>;
   findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]>;
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]>;
   updateCopies(books: BookCopy[]): Promise<BookCopy[]>;
 
   // ***********
-  findAllCategories(category: string): Promise<BookCategory>;
-  findAllByCategory(): Promise<Book[]>; // return with images
-  findAllByCategory(): Promise<Book[]>; // return with images
-  findAllBy(anything: string): Promise<Book[]>; // just return book id and name,
-  findById(id: string): Promise<Book>; // return with images
+  findAllCategories(): Promise<BookCategory[]>;
+  findAllByCategory(categoryId:string): Promise<CategoryBooks>; // return with images
+  findAllBy(query: string): Promise<Book[]>; // just return book id and name,
+  findById(isbn: string): Promise<Book>; // return with images
+  findAllBooks(params:BooksPagination):Promise<Book[]>
 }
 
 

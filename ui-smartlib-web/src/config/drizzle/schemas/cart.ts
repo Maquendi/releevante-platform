@@ -3,12 +3,10 @@ import {
   integer,
   sqliteTable,
   text,
-  index,
-  unique,
 } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from "uuid";
 import { userSchema } from "./user";
-import { bookEditionSchema } from "./bookEditions";
+import { bookSchema } from "./books";
 
 const cartStatusEnum = [
   "PENDING",
@@ -46,7 +44,7 @@ export const cartItemSchema = sqliteTable(
       .$defaultFn(() => uuidv4()),
     isbn: text("isbn")
       .notNull()
-      .references(() => bookEditionSchema.id),
+      .references(() => bookSchema.isbn),
     qty: integer("qty").notNull(),
     cart_id: text("cart_id")
       .notNull()
@@ -69,8 +67,8 @@ export const cartItemRelations = relations(cartItemSchema, ({ one }) => ({
     fields: [cartItemSchema.cart_id],
     references: [cartSchema.id],
   }),
-  bookEdition: one(bookEditionSchema, {
+  book: one(bookSchema, {
     fields: [cartItemSchema.isbn],
-    references: [bookEditionSchema.id],
+    references: [bookSchema.isbn],
   }),
 }));

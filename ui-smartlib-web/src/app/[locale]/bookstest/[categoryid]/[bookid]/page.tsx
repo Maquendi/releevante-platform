@@ -1,35 +1,26 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getBook } from "./data";
+import { useDispatch } from "react-redux";
 import { addItem } from "@/redux/features/cartSlice";
-import { InferQueryModel } from "@/lib/db/helpers";
-import { RootState } from "@/redux/store";
 import Link from "next/link";
+import { FetchBookById } from "@/actions/book-actions";
+import { Book } from "@/book/domain/models";
 
-type Book = InferQueryModel<
-  "bookSchema",
-  {
-    with: {
-      copies: true;
-      images: true;
-    };
-  }
->;
+
 
 const Page = ({ params }: { params: Record<string, any> }) => {
-  const id = params?.id;
+  const id = params?.bookid;
 
   const [bookItem, setBookItem] = useState<Book | null>(null);
   const dispatch = useDispatch();
-  const state = useSelector((state: RootState) => state.cart);
 
   useEffect(() => {
-    getBook(id).then((data) => setBookItem(data));
+    FetchBookById(id).then((data) => setBookItem(data));
   }, [id]);
 
   if (!bookItem) return;
+
 
   const handleAddToCart = async () => {
     try {
@@ -38,7 +29,7 @@ const Page = ({ params }: { params: Record<string, any> }) => {
         addItem({
           qty: 1,
           image:bookImages!.url!,
-          title: bookItem!.name,
+          title: bookItem!.bookTitle,
           isbn:bookItem!.isbn!
         })
       );
@@ -46,6 +37,7 @@ const Page = ({ params }: { params: Record<string, any> }) => {
       console.error("Error al agregar el artículo al carrito:", error);
     }
   };
+
 
   return (
     <div className="flex justify-center gap-10 mt-10 p-4">
@@ -61,10 +53,10 @@ const Page = ({ params }: { params: Record<string, any> }) => {
         </figure>
       </div>
       <div className="space-y-3">
-        <h2 className="text-2xl font-semibold">{bookItem?.name}</h2>
-        <p>
-          Copias <span>{bookItem?.copies?.length}</span>
-        </p>
+        <h2 className="text-2xl font-semibold">{bookItem?.bookTitle}</h2>
+        <h2 className="text-2xl font-semibold">{bookItem.editionTitle}</h2>
+
+       
         <div className="space-y-2 mt-10">
           <button
             onClick={handleAddToCart}

@@ -1,13 +1,14 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
-import { BookCategory, Book, BookCopy, BookFilter } from "../domain/models";
+import { BookCategory, Book, BookCopy, BooksPagination, CategoryBooks } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
 import { BookCopySearch, SearchCriteria } from "./dto";
 import { BookService } from "./service.definitions";
+import { defaultBookRepository } from "../infrastructure/repositories-impl";
 
-export class DefaultBookServiceImpl implements BookService {
+ class DefaultBookServiceImpl implements BookService {
   constructor(private bookRepository: BookRepository) {}
-  findCopiesBy(filter: BookFilter): Promise<BookCopySchema[]> {
+  findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
     throw new Error("Method not implemented.");
   }
 
@@ -34,15 +35,27 @@ export class DefaultBookServiceImpl implements BookService {
     return (await Promise.all(seachPromises)).flat();
   }
 
-  findAllBookCategory(): Promise<BookCategory[]> {
-    throw new Error("Method not implemented.");
+
+  async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {
+    return await this.bookRepository.findAllBy(searchCriteria)
   }
 
-  findAllBookByCategory(category: BookCategory): Promise<Book[]> {
-    throw new Error("Method not implemented.");
+  async findAllBookByCategory(categoryId:string):Promise<CategoryBooks>{
+    return await this.bookRepository.findAllByCategory(categoryId)
   }
 
-  findAllBookBySearchCriteria(searchCriteria: SearchCriteria): Promise<Book[]> {
-    throw new Error("Method not implemented.");
+  async findAllBookCategory():Promise<BookCategory[]>{
+    return await this.bookRepository.findAllCategories()
+  }
+
+
+  async findBookById(isbn:string):Promise<Book>{
+    return await this.bookRepository.findById(isbn)
+  }
+
+  async findAllBooks(params:BooksPagination):Promise<Book[]>{
+    return await this.bookRepository.findAllBooks(params)
   }
 }
+
+export const DefaultBookService= new DefaultBookServiceImpl(defaultBookRepository)

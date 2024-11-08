@@ -8,7 +8,7 @@ export const bookCategorySchema = sqliteTable("book_category", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => uuidv4()),
-  book_id: text("book_id").references(() => bookSchema.id),
+  book_isbn: text("book_isbn").references(() => bookSchema.isbn),
   category_id: text("category_id").references(() => categorySchema.id),
 });
 
@@ -16,8 +16,8 @@ export const bookCategoriesRelations = relations(
   bookCategorySchema,
   ({ one }) => ({
     book: one(bookSchema, {
-      fields: [bookCategorySchema.book_id],
-      references: [bookSchema.id],
+      fields: [bookCategorySchema.book_isbn],
+      references: [bookSchema.isbn],
     }),
     category: one(categorySchema, {
       fields: [bookCategorySchema.category_id],

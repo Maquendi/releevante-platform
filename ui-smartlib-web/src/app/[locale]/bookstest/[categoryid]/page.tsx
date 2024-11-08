@@ -1,19 +1,26 @@
-import { FetchAllBooks } from '@/actions/book-actions'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import { FetchAllBookByCategory } from "@/actions/book-actions";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import React from "react";
 
-const page = async() => {
-  const allBooks = await FetchAllBooks()
+const Page = async ({ params }:{params:any}) => {
+
+  const categoryId=params.categoryid
+  if(!categoryId)notFound()
+
+  const categoryBooks = await FetchAllBookByCategory(categoryId)
+
   return (
-    <div className='px-10 mt-10 mb-5'>
-      <h2 className='text-3xl'>All books</h2>
+    <div className="px-10 pt-10 space-y-4">
       <div>
+        <h2 className="text-2xl font-semibold">Books for {categoryBooks.categoryName}</h2>
+      </div>
       <div className=" grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-2">
-        {allBooks?.map((book) => (
+        {categoryBooks.books?.map((book) => (
           <Link
             key={book?.isbn}
-            href={`/en/bookstest/n/${book?.isbn}`}
+            href={`/en/bookstest/${categoryId}/${book?.isbn}`}
             className="p-3 rounded-xl text-center space-y-2 text-xl"
           >
             <figure>
@@ -33,9 +40,8 @@ const page = async() => {
           </Link>
         ))}
       </div>
-      </div>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;
