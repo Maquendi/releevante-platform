@@ -5,11 +5,10 @@ import {
   BooksPagination,
   CategoryBooks,
 } from "../domain/models";
-import { DefaultBookService } from "./book-service-impl";
 import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
 
- class BookServiceFacadeImpl implements BookServiceFacade {
+ export class BookServiceFacadeImpl implements BookServiceFacade {
   constructor(private bookService: BookService) {}
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
@@ -33,5 +32,3 @@ import { BookService, BookServiceFacade } from "./service.definitions";
     return this.bookService.findAvailableCopiesByIsbn(bookSearch);
   }
 }
-
-export const DefaultBookServiceFacade= new BookServiceFacadeImpl(DefaultBookService)

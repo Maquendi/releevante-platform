@@ -4,9 +4,8 @@ import { BookRepository } from "../domain/repositories";
 
 import { BookCopySearch, SearchCriteria } from "./dto";
 import { BookService } from "./service.definitions";
-import { defaultBookRepository } from "../infrastructure/repositories-impl";
 
- class DefaultBookServiceImpl implements BookService {
+ export class DefaultBookServiceImpl implements BookService {
   constructor(private bookRepository: BookRepository) {}
   findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
     throw new Error("Method not implemented.");
@@ -57,5 +56,3 @@ import { defaultBookRepository } from "../infrastructure/repositories-impl";
     return await this.bookRepository.findAllBooks(params)
   }
 }
-
-export const DefaultBookService= new DefaultBookServiceImpl(defaultBookRepository)

@@ -14,6 +14,7 @@ import lombok.Setter;
 public class BookReservationDetailRecord {
   @Id private String id;
   private Integer qty;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "isbn")
   @Column(name = "isbn")
