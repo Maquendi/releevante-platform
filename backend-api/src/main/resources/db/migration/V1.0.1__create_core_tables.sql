@@ -1,6 +1,6 @@
 CREATE SCHEMA core AUTHORIZATION coex;
 
-CREATE TABLE core.book_editions (
+CREATE TABLE core.books (
   isbn varchar(36) NOT NULL,
   title varchar(250) NULL,
   price numeric NOT NULL,

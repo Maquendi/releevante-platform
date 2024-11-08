@@ -5,7 +5,9 @@ import com.releevante.core.domain.ClientId;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,7 +34,6 @@ public class BookReservationRecord {
 
   public static BookReservationRecord fromDomain(BookReservation reservation) {
     var record = new BookReservationRecord();
-
     // todo: ojo con eso.
     record.setId(reservation.id());
     var clientRecord = new ClientRecord();
@@ -44,6 +45,10 @@ public class BookReservationRecord {
     record.setUpdatedAt(reservation.updateAt());
     record.setReservationItems(BookReservationItemRecord.fromDomain(record, reservation));
     return record;
+  }
+
+  public static Set<BookReservationRecord> fromDomain(List<BookReservation> reservations) {
+    return reservations.stream().map(BookReservationRecord::fromDomain).collect(Collectors.toSet());
   }
 
   public BookReservation toDomain() {

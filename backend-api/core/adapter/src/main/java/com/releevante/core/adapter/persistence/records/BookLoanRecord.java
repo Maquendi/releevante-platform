@@ -2,14 +2,12 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
-import com.releevante.core.domain.Cart;
-import com.releevante.core.domain.LazyLoader;
 import com.releevante.types.Slid;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class BookLoanRecord {
+
   private String loanId;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -27,8 +26,11 @@ public class BookLoanRecord {
   private CartRecord cart;
 
   private ZonedDateTime startTime;
-  private ZonedDateTime estimatedEndTime;
-  private ZonedDateTime bookReturnedTime;
+
+  private ZonedDateTime endTime;
+
+  private ZonedDateTime returnedAt;
+
   private String slid;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -39,27 +41,25 @@ public class BookLoanRecord {
     return BookLoan.builder()
         .id(BookLoanId.of(loanId))
         .startTime(startTime)
-        .endTime(estimatedEndTime)
+        .endTime(endTime)
         .slid(Slid.of(slid))
-        .bookReturnTime(bookReturnedTime)
+        .bookReturnTime(returnedAt)
         .cart(() -> getCart().toDomain())
         .build();
   }
 
   public static BookLoanRecord fromDomain(BookLoan loan) {
-
     var record = new BookLoanRecord();
     record.setLoanId(loan.id().value());
     record.setCart(CartRecord.fromDomain(loan.cart().get()));
     record.setStartTime(loan.startTime());
-    record.setEstimatedEndTime(loan.endTime());
+    record.setEndTime(loan.endTime());
     record.setSlid(loan.slid().value());
-
+    record.setClient(ClientRecord.from(loan.clientId()));
     return record;
   }
 
-  public static Set<BookLoanRecord> fromDomain(List<BookLoan> loan) {
-    
-    return null;
+  public static Set<BookLoanRecord> fromDomain(List<BookLoan> loans) {
+    return loans.stream().map(BookLoanRecord::fromDomain).collect(Collectors.toSet());
   }
 }

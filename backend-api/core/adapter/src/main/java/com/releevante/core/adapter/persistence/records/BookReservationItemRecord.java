@@ -28,11 +28,11 @@ public class BookReservationItemRecord {
   @JoinColumn(name = "id")
   private BookReservationRecord reservation;
 
-  public static BookReservationItemRecord fromDomain(BookReservationItem item) {
+  private static BookReservationItemRecord fromDomain(BookReservationItem item) {
     var record = new BookReservationItemRecord();
     record.setId(item.id());
     record.setQty(item.qty());
-    record.setBook(BookRecord.fromDomain(item.book()));
+    record.setBook(BookRecord.fromDomain(item.book().get()));
     return record;
   }
 
@@ -55,7 +55,7 @@ public class BookReservationItemRecord {
     return BookReservationItem.builder()
         .id(getId())
         .qty(getQty())
-        .book(getBook().toDomain())
+        .book(() -> getBook().toDomain())
         .build();
   }
 

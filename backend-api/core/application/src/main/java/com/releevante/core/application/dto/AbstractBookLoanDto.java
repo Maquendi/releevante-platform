@@ -32,7 +32,7 @@ public abstract class AbstractBookLoanDto {
         .startTime(startTime())
         .endTime(endTime())
         .clientId(ClientId.of(clientId()))
-        .cart(cartDto().toDomain(ClientId.of(clientId())))
+        .cart(() -> cartDto().toDomain(ClientId.of(clientId())))
         .build();
   }
 }

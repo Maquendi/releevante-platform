@@ -23,6 +23,6 @@ public class SmartLibraryRecord {
   private ZonedDateTime updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "org_id")
+  @JoinColumn(name = "id")
   private OrgRecord org;
 }

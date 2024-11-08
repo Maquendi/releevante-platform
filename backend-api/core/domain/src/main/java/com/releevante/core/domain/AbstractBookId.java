@@ -3,16 +3,11 @@ package com.releevante.core.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
+import com.releevante.types.PrimitiveVo;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = BookReservationItem.class)
-@JsonSerialize(as = BookReservationItem.class)
+@JsonDeserialize(as = BookId.class)
+@JsonSerialize(as = BookId.class)
 @ImmutableExt
-public abstract class AbstractBookReservationItem {
-  abstract String id();
-
-  abstract Integer qty();
-
-  abstract LazyLoader<BookEdition> book();
-}
+public abstract class AbstractBookId extends PrimitiveVo<String> {}
