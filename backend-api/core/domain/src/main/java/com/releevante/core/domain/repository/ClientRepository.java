@@ -16,4 +16,6 @@ public interface ClientRepository {
   Mono<Client> savePurchase(Client client);
 
   Mono<Client> saveReservations(Client client);
+
+  Mono<Client> saveCarts(Client client);
 }

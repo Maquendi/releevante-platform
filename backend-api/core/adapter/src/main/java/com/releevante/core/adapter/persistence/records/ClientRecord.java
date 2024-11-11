@@ -6,6 +6,7 @@ import com.releevante.core.domain.LazyLoaderInit;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,23 +24,27 @@ public class ClientRecord {
 
   ZonedDateTime updatedAt;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
   ServiceRatingRecord serviceRating;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
   Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
   @OrderBy("createdAt DESC")
   Set<BookReservationRecord> reservations = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
   @OrderBy("createdAt DESC")
   Set<BookRatingRecord> bookRatings = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
   @OrderBy("createdAt DESC")
   Set<BookSaleRecord> purchases = new LinkedHashSet<>();
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
+  @OrderBy("createdAt DESC")
+  Set<CartRecord> carts = new LinkedHashSet<>();
 
   protected static ClientRecord fromDomain(Client client) {
     var record = new ClientRecord();
@@ -59,49 +64,37 @@ public class ClientRecord {
 
   public static ClientRecord bookLoans(Client client) {
     var clientRecord = fromDomain(client);
-    client.loans().get().stream()
-        .map(BookLoanRecord::fromDomain)
-        .forEach(
-            bookLoan -> {
-              bookLoan.setClient(clientRecord);
-              clientRecord.getBookLoans().add(bookLoan);
-            });
+    var loanRecords = BookLoanRecord.fromDomain(clientRecord, client.loans().get());
+    clientRecord.getBookLoans().addAll(loanRecords);
     return clientRecord;
   }
 
   public static ClientRecord bookReservations(Client client) {
     var clientRecord = fromDomain(client);
-    client.reservations().get().stream()
-        .map(BookReservationRecord::fromDomain)
-        .forEach(
-            reservation -> {
-              reservation.setClient(clientRecord);
-              clientRecord.getReservations().add(reservation);
-            });
+    var reservationRecords =
+        BookReservationRecord.fromDomain(clientRecord, client.reservations().get());
+    clientRecord.getReservations().addAll(reservationRecords);
     return clientRecord;
   }
 
   public static ClientRecord bookRatings(Client client) {
     var clientRecord = fromDomain(client);
-    client.bookRatings().get().stream()
-        .map(BookRatingRecord::fromDomain)
-        .forEach(
-            rating -> {
-              rating.setClient(clientRecord);
-              clientRecord.getBookRatings().add(rating);
-            });
+    var ratingRecords = BookRatingRecord.fromDomain(clientRecord, client.bookRatings().get());
+    clientRecord.getBookRatings().addAll(ratingRecords);
     return clientRecord;
   }
 
   public static ClientRecord bookPurchases(Client client) {
     var clientRecord = fromDomain(client);
-    client.purchases().get().stream()
-        .map(BookSaleRecord::fromDomain)
-        .forEach(
-            saleRecord -> {
-              saleRecord.setClient(clientRecord);
-              clientRecord.getPurchases().add(saleRecord);
-            });
+    var bookSaleRecords = BookSaleRecord.fromDomain(clientRecord, client.purchases().get());
+    clientRecord.getPurchases().addAll(bookSaleRecords);
+    return clientRecord;
+  }
+
+  public static ClientRecord carts(Client client) {
+    var clientRecord = fromDomain(client);
+    var bookSaleRecords = CartRecord.fromDomain(clientRecord, client.carts().get());
+    clientRecord.getCarts().addAll(bookSaleRecords);
     return clientRecord;
   }
 
@@ -116,5 +109,18 @@ public class ClientRecord {
         .purchases(new LazyLoaderInit<>(() -> BookSaleRecord.toDomain(getPurchases())))
         .serviceRating(new LazyLoaderInit<>(() -> getServiceRating().toDomain()))
         .build();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ClientRecord that = (ClientRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

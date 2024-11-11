@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -17,12 +18,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class BookSaleRecord {
-  @Column(name = "sale_id")
-  @Id
-  private String id;
+  @Id private String id;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @Column(name = "cart_id")
+  @MapsId
   private CartRecord cart;
 
   private BigDecimal total;
@@ -49,13 +48,31 @@ public class BookSaleRecord {
     return records.stream().map(BookSaleRecord::toDomain).collect(Collectors.toList());
   }
 
-  protected static BookSaleRecord fromDomain(BookSale sale) {
+  private static BookSaleRecord fromDomain(ClientRecord client, BookSale sale) {
     var record = new BookSaleRecord();
     record.setId(sale.id().value());
     record.setTotal(sale.total());
     record.setCreatedAt(sale.createdAt());
     record.setUpdatedAt(sale.updatedAt());
-    record.setCart(CartRecord.fromDomain(sale.cart().get()));
+    record.setCart(CartRecord.fromDomain(client, sale.cart().get()));
+    record.setClient(client);
     return record;
+  }
+
+  protected static Set<BookSaleRecord> fromDomain(ClientRecord client, List<BookSale> sales) {
+    return sales.stream().map(sale -> fromDomain(client, sale)).collect(Collectors.toSet());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BookSaleRecord that = (BookSaleRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

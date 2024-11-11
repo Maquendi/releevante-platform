@@ -27,4 +27,6 @@ public abstract class AbstractClient {
   abstract LazyLoaderInit<List<BookRating>> bookRatings();
 
   abstract LazyLoaderInit<ServiceRating> serviceRating();
+
+  abstract LazyLoaderInit<List<Cart>> carts();
 }

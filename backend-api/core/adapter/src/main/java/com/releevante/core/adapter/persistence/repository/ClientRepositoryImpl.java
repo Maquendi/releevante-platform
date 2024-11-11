@@ -79,4 +79,11 @@ public class ClientRepositoryImpl implements ClientRepository {
         .map(clientHibernateDao::save)
         .thenReturn(client);
   }
+
+  @Override
+  public Mono<Client> saveCarts(Client client) {
+    return Mono.fromCallable(() -> ClientRecord.carts(client))
+        .map(clientHibernateDao::save)
+        .thenReturn(client);
+  }
 }

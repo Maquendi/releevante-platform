@@ -12,6 +12,9 @@ import org.immutables.value.Value;
 @JsonSerialize(as = SmartLibraryStatus.class)
 @ImmutableExt
 public abstract class AbstractSmartLibraryStatus {
+
+  abstract String id();
+
   abstract SmartLibraryState state();
 
   abstract ZonedDateTime createdAt();

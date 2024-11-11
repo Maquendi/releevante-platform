@@ -14,7 +14,7 @@ import org.immutables.value.Value;
 public abstract class AbstractCart {
   abstract CartId id();
 
-  abstract ClientId clientId();
+  abstract LazyLoaderInit<Client> client();
 
   abstract CartState state();
 

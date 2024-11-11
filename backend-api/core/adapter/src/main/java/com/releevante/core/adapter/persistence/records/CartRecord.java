@@ -16,7 +16,11 @@ import lombok.Setter;
 @Entity
 public class CartRecord {
   @Id private String id;
-  private String clientId;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id")
+  private ClientRecord client;
+
   private String state;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
@@ -27,7 +31,7 @@ public class CartRecord {
   public Cart toDomain() {
     return Cart.builder()
         .id(CartId.of(id))
-        .clientId(ClientId.of(clientId))
+        .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
         .state(CartState.of(state))
         .items(
             new LazyLoaderInit<>(
@@ -40,15 +44,32 @@ public class CartRecord {
         .build();
   }
 
-  public static CartRecord fromDomain(Cart cart) {
+  protected static CartRecord fromDomain(ClientRecord client, Cart cart) {
     var record = new CartRecord();
     record.setId(cart.id().value());
-    record.setClientId(cart.clientId().value());
+    record.setClient(client);
     record.setState(cart.state().value());
     record.setCreatedAt(cart.createAt());
     record.setUpdatedAt(cart.updatedAt());
     record.setCartItems(
         cart.items().get().stream().map(CartItemRecord::fromDomain).collect(Collectors.toSet()));
     return record;
+  }
+
+  protected static Set<CartRecord> fromDomain(ClientRecord client, List<Cart> carts) {
+    return carts.stream().map(cart -> fromDomain(client, cart)).collect(Collectors.toSet());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CartRecord that = (CartRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

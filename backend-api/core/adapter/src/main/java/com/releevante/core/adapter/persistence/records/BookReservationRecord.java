@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -33,18 +34,23 @@ public class BookReservationRecord {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.PERSIST)
   private Set<BookReservationItemRecord> reservationItems = new HashSet<>();
 
-  protected static BookReservationRecord fromDomain(BookReservation reservation) {
+  protected static Set<BookReservationRecord> fromDomain(
+      ClientRecord client, List<BookReservation> reservations) {
+    return reservations.stream()
+        .map(reservation -> fromDomain(client, reservation))
+        .collect(Collectors.toSet());
+  }
+
+  private static BookReservationRecord fromDomain(
+      ClientRecord client, BookReservation reservation) {
     var record = new BookReservationRecord();
-    // todo: ojo con eso.
     record.setId(reservation.id());
-    var clientRecord = new ClientRecord();
-    clientRecord.setId(reservation.clientId().value());
-    record.setClient(clientRecord);
     record.setStartTime(reservation.startTime());
     record.setEndTime(reservation.endTime());
     record.setCreatedAt(reservation.createdAt());
     record.setUpdatedAt(reservation.updateAt());
     record.setReservationItems(BookReservationItemRecord.fromDomain(record, reservation));
+    record.setClient(client);
     return record;
   }
 
@@ -63,5 +69,18 @@ public class BookReservationRecord {
 
   public static List<BookReservation> toDomain(Set<BookReservationRecord> records) {
     return records.stream().map(BookReservationRecord::toDomain).collect(Collectors.toList());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BookReservationRecord that = (BookReservationRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

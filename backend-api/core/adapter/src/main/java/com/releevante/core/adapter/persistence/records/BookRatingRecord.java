@@ -4,6 +4,7 @@ import com.releevante.core.domain.BookRating;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -32,13 +33,18 @@ public class BookRatingRecord {
 
   private int rating;
 
-  protected static BookRatingRecord fromDomain(BookRating rating) {
+  private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
     var record = new BookRatingRecord();
     var book = rating.book().get();
     record.setId(rating.id());
     record.setRating(rating.rating());
     record.setBook(BookRecord.from(book.isbn()));
+    record.setClient(client);
     return record;
+  }
+
+  protected static Set<BookRatingRecord> fromDomain(ClientRecord client, List<BookRating> ratings) {
+    return ratings.stream().map(rating -> fromDomain(client, rating)).collect(Collectors.toSet());
   }
 
   public BookRating toDomain() {
@@ -52,5 +58,18 @@ public class BookRatingRecord {
 
   public static List<BookRating> toDomain(Set<BookRatingRecord> records) {
     return records.stream().map(BookRatingRecord::toDomain).collect(Collectors.toList());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BookRatingRecord that = (BookRatingRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

@@ -1,11 +1,10 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.CartItem;
-import com.releevante.types.BookCopyId;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Optional;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,6 @@ import lombok.Setter;
 @Entity
 public class CartItemRecord {
   @Id private String id;
-  private String bookId;
 
   @OneToOne(fetch = FetchType.LAZY)
   private BookRecord book;
@@ -36,7 +34,6 @@ public class CartItemRecord {
         .id(id)
         .qty(qty)
         .createdAt(createdAt)
-        .bookCopyId(Optional.ofNullable(bookId).map(BookCopyId::of))
         .book(() -> getBook().toDomain())
         .itemPrice(getItemPrice())
         .build();
@@ -46,10 +43,22 @@ public class CartItemRecord {
     var record = new CartItemRecord();
     record.setId(cartItem.id());
     record.setCreatedAt(cartItem.createdAt());
-    record.setBookId(cartItem.bookCopyId().map(BookCopyId::value).orElse(null));
     record.setBook(BookRecord.fromDomain(cartItem.book().get()));
     record.setQty(cartItem.qty());
     record.setItemPrice(cartItem.itemPrice());
     return record;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CartItemRecord that = (CartItemRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

@@ -2,6 +2,7 @@ package com.releevante.core.adapter.persistence.records;
 
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,4 +28,17 @@ public class OrgLibraryRecord {
   private ZonedDateTime updatedAt;
 
   private boolean isActive;
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    OrgLibraryRecord that = (OrgLibraryRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 }

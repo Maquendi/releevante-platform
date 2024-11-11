@@ -4,6 +4,7 @@ import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.BookReservationItem;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -62,5 +63,18 @@ public class BookReservationItemRecord {
   public BookReservationItemRecord with(BookReservationRecord reservation) {
     this.setReservation(reservation);
     return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BookReservationItemRecord that = (BookReservationItemRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

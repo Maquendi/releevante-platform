@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.immutables.value.Value;
 
@@ -33,4 +34,10 @@ public abstract class AbstractBookLoan {
   abstract BookLoanStatus status();
 
   abstract LazyLoaderInit<Cart> cart();
+
+  abstract LazyLoaderInit<List<LoanDetail>> loanDetails();
+
+  abstract ZonedDateTime createdAt();
+
+  abstract ZonedDateTime updatedAt();
 }

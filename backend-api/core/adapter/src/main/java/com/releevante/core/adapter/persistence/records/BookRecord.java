@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,5 +50,18 @@ public class BookRecord {
         .price(price)
         .title(title)
         .build();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    BookRecord that = (BookRecord) o;
+    return Objects.equals(isbn, that.isbn);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }

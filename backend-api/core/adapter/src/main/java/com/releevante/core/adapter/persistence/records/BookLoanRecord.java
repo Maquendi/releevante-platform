@@ -6,6 +6,7 @@ import com.releevante.core.domain.LazyLoaderInit;
 import com.releevante.types.Slid;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,11 +22,14 @@ import lombok.Setter;
 @Entity
 public class BookLoanRecord {
 
-  private String loanId;
+  @Id private String id;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "cart_id")
+  @MapsId
   private CartRecord cart;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "loan", cascade = CascadeType.PERSIST)
+  private Set<LoanDetailRecord> loanDetails = new LinkedHashSet<>();
 
   private ZonedDateTime startTime;
 
@@ -35,29 +39,43 @@ public class BookLoanRecord {
 
   private String slid;
 
+  private ZonedDateTime createdAt;
+
+  private ZonedDateTime updatedAt;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id")
   private ClientRecord client;
 
   public BookLoan toDomain() {
     return BookLoan.builder()
-        .id(BookLoanId.of(loanId))
+        .id(BookLoanId.of(id))
         .startTime(startTime)
         .endTime(endTime)
         .slid(Slid.of(slid))
         .bookReturnTime(returnedAt)
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
         .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
         .cart(new LazyLoaderInit<>(() -> getCart().toDomain()))
         .build();
   }
 
-  protected static BookLoanRecord fromDomain(BookLoan loan) {
+  protected static Set<BookLoanRecord> fromDomain(ClientRecord client, List<BookLoan> loans) {
+    return loans.stream().map(loan -> fromDomain(client, loan)).collect(Collectors.toSet());
+  }
+
+  private static BookLoanRecord fromDomain(ClientRecord client, BookLoan loan) {
     var record = new BookLoanRecord();
-    record.setLoanId(loan.id().value());
-    record.setCart(CartRecord.fromDomain(loan.cart().get()));
+    record.setId(loan.id().value());
+    record.setCart(CartRecord.fromDomain(client, loan.cart().get()));
+    record.setLoanDetails(LoanDetailRecord.fromDomain(record, loan.loanDetails().get()));
     record.setStartTime(loan.startTime());
     record.setEndTime(loan.endTime());
     record.setSlid(loan.slid().value());
+    record.setCreatedAt(loan.createdAt());
+    record.setUpdatedAt(loan.updatedAt());
+    record.setClient(client);
     return record;
   }
 
@@ -70,7 +88,7 @@ public class BookLoanRecord {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     BookLoanRecord that = (BookLoanRecord) o;
-    return Objects.equals(loanId, that.loanId);
+    return Objects.equals(id, that.id);
   }
 
   @Override

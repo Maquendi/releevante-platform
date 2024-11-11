@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Component
 public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
@@ -25,5 +26,12 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
             smartLibraryDao.findAllById(
                 sLids.stream().map(Slid::value).collect(Collectors.toSet())))
         .map(SmartLibraryRecord::toDomain);
+  }
+
+  @Override
+  public Mono<SmartLibrary> saveEvent(SmartLibrary smartLibrary) {
+    return Mono.fromCallable(() -> SmartLibraryRecord.events(smartLibrary))
+        .map(smartLibraryDao::save)
+        .thenReturn(smartLibrary);
   }
 }

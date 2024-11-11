@@ -4,6 +4,7 @@ import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ServiceRating;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,5 +44,18 @@ public class ServiceRatingRecord {
         .updatedAt(updatedAt)
         .rating(rating)
         .build();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ServiceRatingRecord that = (ServiceRatingRecord) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
   }
 }
