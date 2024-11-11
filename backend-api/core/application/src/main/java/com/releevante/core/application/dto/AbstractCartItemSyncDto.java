@@ -6,13 +6,9 @@ import com.releevante.types.ImmutableExt;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = BookReservationItemDto.class)
-@JsonSerialize(as = BookReservationItemDto.class)
+@JsonDeserialize(as = CartItemSyncDto.class)
+@JsonSerialize(as = CartItemSyncDto.class)
 @ImmutableExt
-public abstract class AbstractBookReservationItemDto {
+public abstract class AbstractCartItemSyncDto extends AbstractCartItemDto {
   abstract String id();
-
-  abstract Integer qty();
-
-  abstract String bookId();
 }

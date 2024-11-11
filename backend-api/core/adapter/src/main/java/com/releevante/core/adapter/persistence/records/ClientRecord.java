@@ -5,12 +5,12 @@ import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.LazyLoaderInit;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import reactor.core.publisher.Mono;
 
 @Table(name = "clients", schema = "core")
 @Getter
@@ -49,60 +49,86 @@ public class ClientRecord {
   protected static ClientRecord fromDomain(Client client) {
     var record = new ClientRecord();
     record.setId(client.id().value());
-    record.setCreatedAt(client.createdAt());
-    record.setUpdatedAt(client.updatedAt());
     return record;
   }
 
-  public static ClientRecord serviceRating(Client client) {
-    var clientRecord = fromDomain(client);
-    var rating = ServiceRatingRecord.fromDomain(client);
-    rating.setClient(clientRecord);
-    clientRecord.setServiceRating(rating);
-    return clientRecord;
+  public static Mono<ClientRecord> serviceRating(Client client) {
+    return Mono.just(client.serviceRating().get())
+        .filter(Objects::nonNull)
+        .map(
+            rating -> {
+              var clientRecord = fromDomain(client);
+              var ratingRecord = ServiceRatingRecord.fromDomain(rating);
+              ratingRecord.setClient(clientRecord);
+              clientRecord.setServiceRating(ratingRecord);
+              return clientRecord;
+            });
   }
 
-  public static ClientRecord bookLoans(Client client) {
-    var clientRecord = fromDomain(client);
-    var loanRecords = BookLoanRecord.fromDomain(clientRecord, client.loans().get());
-    clientRecord.getBookLoans().addAll(loanRecords);
-    return clientRecord;
+  public static Mono<ClientRecord> bookLoans(Client client) {
+    return Mono.just(client.loans().get())
+        .filter(Predicate.not(List::isEmpty))
+        .map(
+            loans -> {
+              var clientRecord = fromDomain(client);
+              var loanRecords = BookLoanRecord.fromDomain(clientRecord, loans);
+              clientRecord.getBookLoans().addAll(loanRecords);
+              return clientRecord;
+            });
   }
 
-  public static ClientRecord bookReservations(Client client) {
-    var clientRecord = fromDomain(client);
-    var reservationRecords =
-        BookReservationRecord.fromDomain(clientRecord, client.reservations().get());
-    clientRecord.getReservations().addAll(reservationRecords);
-    return clientRecord;
+  public static Mono<ClientRecord> bookReservations(Client client) {
+    return Mono.just(client.reservations().get())
+        .filter(Predicate.not(List::isEmpty))
+        .map(
+            bookReservations -> {
+              var clientRecord = fromDomain(client);
+              var reservationRecords =
+                  BookReservationRecord.fromDomain(clientRecord, bookReservations);
+              clientRecord.getReservations().addAll(reservationRecords);
+              return clientRecord;
+            });
   }
 
-  public static ClientRecord bookRatings(Client client) {
-    var clientRecord = fromDomain(client);
-    var ratingRecords = BookRatingRecord.fromDomain(clientRecord, client.bookRatings().get());
-    clientRecord.getBookRatings().addAll(ratingRecords);
-    return clientRecord;
+  public static Mono<ClientRecord> bookRatings(Client client) {
+    return Mono.just(client.bookRatings().get())
+        .filter(Predicate.not(List::isEmpty))
+        .map(
+            ratings -> {
+              var clientRecord = fromDomain(client);
+              var ratingRecords = BookRatingRecord.fromDomain(clientRecord, ratings);
+              clientRecord.getBookRatings().addAll(ratingRecords);
+              return clientRecord;
+            });
   }
 
-  public static ClientRecord bookPurchases(Client client) {
-    var clientRecord = fromDomain(client);
-    var bookSaleRecords = BookSaleRecord.fromDomain(clientRecord, client.purchases().get());
-    clientRecord.getPurchases().addAll(bookSaleRecords);
-    return clientRecord;
+  public static Mono<ClientRecord> bookPurchases(Client client) {
+    return Mono.just(client.purchases().get())
+        .filter(Predicate.not(List::isEmpty))
+        .map(
+            sales -> {
+              var clientRecord = fromDomain(client);
+              var bookSaleRecords = BookSaleRecord.fromDomain(clientRecord, sales);
+              clientRecord.getPurchases().addAll(bookSaleRecords);
+              return clientRecord;
+            });
   }
 
-  public static ClientRecord carts(Client client) {
-    var clientRecord = fromDomain(client);
-    var bookSaleRecords = CartRecord.fromDomain(clientRecord, client.carts().get());
-    clientRecord.getCarts().addAll(bookSaleRecords);
-    return clientRecord;
+  public static Mono<ClientRecord> carts(Client client) {
+    return Mono.just(client.carts().get())
+        .filter(Predicate.not(List::isEmpty))
+        .map(
+            carts -> {
+              var clientRecord = fromDomain(client);
+              var bookSaleRecords = CartRecord.fromDomain(clientRecord, carts);
+              clientRecord.getCarts().addAll(bookSaleRecords);
+              return clientRecord;
+            });
   }
 
   public Client toDomain() {
     return Client.builder()
         .id(ClientId.of(id))
-        .createdAt(createdAt)
-        .updatedAt(updatedAt)
         .loans(new LazyLoaderInit<>(() -> BookLoanRecord.toDomain(getBookLoans())))
         .reservations(new LazyLoaderInit<>(() -> BookReservationRecord.toDomain(getReservations())))
         .bookRatings(new LazyLoaderInit<>(() -> BookRatingRecord.toDomain(getBookRatings())))

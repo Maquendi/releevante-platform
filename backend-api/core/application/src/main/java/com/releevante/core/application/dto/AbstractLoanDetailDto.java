@@ -2,17 +2,20 @@ package com.releevante.core.application.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.releevante.core.domain.LoanDetail;
 import com.releevante.types.ImmutableExt;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = BookReservationItemDto.class)
-@JsonSerialize(as = BookReservationItemDto.class)
+@JsonDeserialize(as = LoanDetailDto.class)
+@JsonSerialize(as = LoanDetailDto.class)
 @ImmutableExt
-public abstract class AbstractBookReservationItemDto {
+public abstract class AbstractLoanDetailDto {
   abstract String id();
 
-  abstract Integer qty();
+  abstract String bookCopy();
 
-  abstract String bookId();
+  public LoanDetail toDomain() {
+    return LoanDetail.builder().id(id()).bookCopy(bookCopy()).build();
+  }
 }

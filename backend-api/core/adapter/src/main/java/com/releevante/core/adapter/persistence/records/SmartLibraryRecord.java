@@ -20,6 +20,8 @@ import lombok.Setter;
 public class SmartLibraryRecord {
   @Id private String slid;
 
+  private String orgId;
+
   private String modelName;
 
   private ZonedDateTime makeDate;
@@ -27,8 +29,6 @@ public class SmartLibraryRecord {
   private ZonedDateTime createdAt;
 
   private ZonedDateTime updatedAt;
-
-  private String orgId;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "library")
   private Set<SmartLibraryEventRecord> libraryEvents = new LinkedHashSet<>();

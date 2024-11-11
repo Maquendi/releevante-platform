@@ -3,16 +3,17 @@ package com.releevante.core.application.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
+import java.util.List;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = BookReservationItemDto.class)
-@JsonSerialize(as = BookReservationItemDto.class)
+@JsonDeserialize(as = ClientDto.class)
+@JsonSerialize(as = ClientDto.class)
 @ImmutableExt
-public abstract class AbstractBookReservationItemDto {
+public abstract class AbstractClientDto {
   abstract String id();
 
-  abstract Integer qty();
+  abstract List<CartDto> cartsDto();
 
-  abstract String bookId();
+  abstract List<BookReservationDto> reservations();
 }

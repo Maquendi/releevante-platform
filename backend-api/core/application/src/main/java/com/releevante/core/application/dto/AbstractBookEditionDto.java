@@ -2,6 +2,7 @@ package com.releevante.core.application.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.releevante.core.domain.Book;
 import com.releevante.core.domain.Isbn;
 import com.releevante.core.domain.LazyLoader;
 import com.releevante.core.domain.LazyLoaderInit;
@@ -18,13 +19,8 @@ public abstract class AbstractBookEditionDto {
 
   abstract String title();
 
-  public LazyLoader<BookEdition> toDomain() {
+  public LazyLoader<Book> toDomain() {
     return new LazyLoaderInit<>(
-        () ->
-            BookEdition.builder()
-                .isbn(Isbn.of(isbn()))
-                .title(title())
-                .price(BigDecimal.ZERO)
-                .build());
+        () -> Book.builder().isbn(Isbn.of(isbn())).title(title()).price(BigDecimal.ZERO).build());
   }
 }
