@@ -1,13 +1,23 @@
 export interface BookCategory {
   id: string;
-  name: string;
-  image:string
+   name: string;
 }
 
 export interface BookImage {
   id: string;
   url: string;
 }
+
+export interface BooksByCategory {
+  subCategory: string;
+  books: {
+    isbn: string;
+    bookTitle: string;
+    author: string;
+    imageUrl: string;
+  }[];
+}
+
 
 export interface BookCopy {
   id: string;
@@ -45,7 +55,7 @@ export interface BookEdition {
 export interface Book {
   isbn: string;
   bookTitle: string;
-  publisher: string;
+  author: string;
   editionTitle: string;
   images?: BookImage[];
 }

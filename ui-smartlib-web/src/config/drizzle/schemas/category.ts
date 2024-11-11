@@ -6,9 +6,8 @@ import { bookCategorySchema } from "./bookCategory";
 export const categorySchema = sqliteTable('category',{
     id: text('id').primaryKey().$defaultFn(() => uuidv4()),
     name: text('name').notNull(),
-    image:text('image').notNull()
 })
 
-export const bookLayoutSchemaRelations = relations(categorySchema, ({ many }) => ({
+export const categorySchemaRelations = relations(categorySchema, ({ many }) => ({
     bookCategory: many(bookCategorySchema)
 }));

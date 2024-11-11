@@ -3,24 +3,23 @@ import { v4 as uuidv4 } from "uuid";
 import { relations } from "drizzle-orm";
 import { bookSchema } from "./books";
 import { categorySchema } from "./category";
-
 export const bookCategorySchema = sqliteTable("book_category", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => uuidv4()),
-  book_isbn: text("book_isbn").references(() => bookSchema.isbn),
-  category_id: text("category_id").references(() => categorySchema.id),
+  bookIsbn: text("book_isbn").references(() => bookSchema.isbn).notNull(),
+  categoryId: text("category_id").references(() => categorySchema.id).notNull(),
 });
 
-export const bookCategoriesRelations = relations(
-  bookCategorySchema,
+export const bookCategoryRelations = relations(
+    bookCategorySchema,
   ({ one }) => ({
     book: one(bookSchema, {
-      fields: [bookCategorySchema.book_isbn],
+      fields: [bookCategorySchema.bookIsbn],
       references: [bookSchema.isbn],
     }),
     category: one(categorySchema, {
-      fields: [bookCategorySchema.category_id],
+      fields: [bookCategorySchema.categoryId],
       references: [categorySchema.id],
     }),
   })

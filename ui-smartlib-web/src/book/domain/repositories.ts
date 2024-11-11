@@ -1,5 +1,5 @@
 
-import { Book, BookCategory, BookCompartment, BookCopy,  BooksPagination,  CategoryBooks, Isbn } from "./models";
+import { Book, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,  CategoryBooks, Isbn } from "./models";
 
 export interface BookRepository {
   create(book: Book): Promise<Book>;
@@ -9,7 +9,7 @@ export interface BookRepository {
 
   // ***********
   findAllCategories(): Promise<BookCategory[]>;
-  findAllByCategory(categoryId:string): Promise<CategoryBooks>; // return with images
+  findAllByCategory(categoryId:string): Promise<BooksByCategory[]>; // return with images
   findAllBy(query: string): Promise<Book[]>; // just return book id and name,
   findById(isbn: string): Promise<Book>; // return with images
   findAllBooks(params:BooksPagination):Promise<Book[]>

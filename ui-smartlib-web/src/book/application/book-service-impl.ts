@@ -39,8 +39,8 @@ import { BookService } from "./service.definitions";
     return await this.bookRepository.findAllBy(searchCriteria)
   }
 
-  async findAllBookByCategory(categoryId:string):Promise<CategoryBooks>{
-    return await this.bookRepository.findAllByCategory(categoryId)
+  async findAllBookByCategory(category:string,subCategory:string):Promise<CategoryBooks>{
+    return await this.bookRepository.findAllByCategory(category,subCategory)
   }
 
   async findAllBookCategory():Promise<BookCategory[]>{
