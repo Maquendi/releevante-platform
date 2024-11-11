@@ -25,15 +25,9 @@ public class SmartLibraryController {
     this.smartLibraryService = smartLibraryService;
   }
 
-  @PostMapping("/user/{user_id}/explore")
-  public Mono<?> libraryExplore() {
-
-    return null;
-  }
-
   @Operation(
-      summary = "Synchronize book loans",
-      description = "Synchronizes the given book loans from smart library to local db")
+      summary = "Synchronize clients",
+      description = "Synchronizes the given clients from smart library to server")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -70,8 +64,8 @@ public class SmartLibraryController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/synchronize/loan")
-  public Mono<CustomApiResponse<Boolean>> synchronizeLoan(
+  @PostMapping("/synchronize/clients")
+  public Mono<CustomApiResponse<Boolean>> synchronizeClients(
       @RequestBody SmartLibrarySyncDto loanSynchronizeDto) {
     return smartLibraryService.synchronize(loanSynchronizeDto).map(CustomApiResponse::from);
   }

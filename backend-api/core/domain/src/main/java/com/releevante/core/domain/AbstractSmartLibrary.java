@@ -37,7 +37,7 @@ public abstract class AbstractSmartLibrary {
   }
 
   public void validateIsAuthorized(AccountPrincipal principal) {
-    if (!orgId().value().equals(principal.orgId())) {
+    if (!orgId().value().equals(principal.orgId()) && !principal.isSuperAdmin()) {
       throw new UserUnauthorizedException();
     }
   }

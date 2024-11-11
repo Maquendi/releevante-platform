@@ -1,7 +1,7 @@
 package com.main.application.identity;
 
 import com.main.config.security.JwtAuthenticationToken;
-import com.releevante.application.dto.*;
+import com.releevante.identity.application.dto.*;
 import lombok.NonNull;
 import reactor.core.publisher.Mono;
 
