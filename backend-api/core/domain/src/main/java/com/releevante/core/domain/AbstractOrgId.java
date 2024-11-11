@@ -1,16 +1,13 @@
-package com.releevante.application.dto;
+package com.releevante.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
+import com.releevante.types.PrimitiveVo;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = SmartLibraryDto.class)
-@JsonSerialize(as = SmartLibraryDto.class)
+@JsonDeserialize(as = OrgId.class)
+@JsonSerialize(as = OrgId.class)
 @ImmutableExt
-public abstract class AbstractSmartLibraryDto {
-  abstract String slid();
-
-  abstract String org();
-}
+public abstract class AbstractOrgId extends PrimitiveVo<String> {}

@@ -1,7 +1,8 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.BookEdition;
+import com.releevante.core.domain.Book;
 import com.releevante.core.domain.Isbn;
+import com.releevante.core.domain.LazyLoaderInit;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -27,12 +28,11 @@ public class BookRecord {
   @OrderBy("createdAt DESC")
   private Set<BookRatingRecord> ratings = new LinkedHashSet<>();
 
-  public static BookRecord fromDomain(BookEdition book) {
+  public static BookRecord fromDomain(Book book) {
     var record = new BookRecord();
     record.setIsbn(book.isbn().value());
     record.setTitle(book.title());
     record.setPrice(book.price());
-    record.setRatings(BookRatingRecord.fromDomain(book.ratings().get()));
     return record;
   }
 
@@ -42,7 +42,12 @@ public class BookRecord {
     return record;
   }
 
-  public BookEdition toDomain() {
-    return BookEdition.builder().isbn(Isbn.of(isbn)).price(price).title(title).build();
+  public Book toDomain() {
+    return Book.builder()
+        .isbn(Isbn.of(isbn))
+        .ratings(new LazyLoaderInit<>(() -> BookRatingRecord.toDomain(getRatings())))
+        .price(price)
+        .title(title)
+        .build();
   }
 }

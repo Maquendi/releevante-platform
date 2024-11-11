@@ -2,6 +2,7 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.ClientId;
+import com.releevante.core.domain.LazyLoaderInit;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class BookReservationRecord {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.PERSIST)
   private Set<BookReservationItemRecord> reservationItems = new HashSet<>();
 
-  public static BookReservationRecord fromDomain(BookReservation reservation) {
+  protected static BookReservationRecord fromDomain(BookReservation reservation) {
     var record = new BookReservationRecord();
     // todo: ojo con eso.
     record.setId(reservation.id());
@@ -47,10 +48,6 @@ public class BookReservationRecord {
     return record;
   }
 
-  public static Set<BookReservationRecord> fromDomain(List<BookReservation> reservations) {
-    return reservations.stream().map(BookReservationRecord::fromDomain).collect(Collectors.toSet());
-  }
-
   public BookReservation toDomain() {
     return BookReservation.builder()
         .id(id)
@@ -59,7 +56,12 @@ public class BookReservationRecord {
         .endTime(endTime)
         .createdAt(createdAt)
         .updateAt(updatedAt)
-        .items(() -> BookReservationItemRecord.toDomain(getReservationItems()))
+        .items(
+            new LazyLoaderInit<>(() -> BookReservationItemRecord.toDomain(getReservationItems())))
         .build();
+  }
+
+  public static List<BookReservation> toDomain(Set<BookReservationRecord> records) {
+    return records.stream().map(BookReservationRecord::toDomain).collect(Collectors.toList());
   }
 }

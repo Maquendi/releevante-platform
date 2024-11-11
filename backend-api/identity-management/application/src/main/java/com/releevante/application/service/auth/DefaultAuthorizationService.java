@@ -23,8 +23,7 @@ public class DefaultAuthorizationService implements AuthorizationService {
 
   @Override
   public Mono<AccountPrincipal> checkAuthorities(String... authorities) {
-    return accountPrincipalService
-        .getAccountPrincipalMandatory()
+    return getAccountPrincipal()
         .flatMap(
             principal -> {
               var userName = UserName.of(principal.subject());
@@ -36,5 +35,10 @@ public class DefaultAuthorizationService implements AuthorizationService {
                   .map(Organization::checkIsActive)
                   .thenReturn(principal);
             });
+  }
+
+  @Override
+  public Mono<AccountPrincipal> getAccountPrincipal() {
+    return accountPrincipalService.getAccountPrincipalMandatory();
   }
 }

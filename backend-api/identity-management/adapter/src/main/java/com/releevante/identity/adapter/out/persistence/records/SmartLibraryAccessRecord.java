@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class SmartLibraryAccessControlRecord {
+public class SmartLibraryAccessRecord {
   @Id private String id;
   private String orgId;
   private String slid;
@@ -24,8 +24,8 @@ public class SmartLibraryAccessControlRecord {
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
-  public static SmartLibraryAccessControlRecord fromDomain(SmartLibraryAccess access) {
-    var record = new SmartLibraryAccessControlRecord();
+  public static SmartLibraryAccessRecord fromDomain(SmartLibraryAccess access) {
+    var record = new SmartLibraryAccessRecord();
     record.setId(access.id());
     record.setSlid(access.slid());
     record.setActive(access.isActive());

@@ -10,7 +10,7 @@ import org.immutables.value.Value;
 @JsonSerialize(as = BookLoanItem.class)
 @ImmutableExt
 public abstract class AbstractBookLoanItem {
-  abstract BookEdition bookEdition();
+  abstract Book bookEdition();
 
   abstract Integer qty();
 }

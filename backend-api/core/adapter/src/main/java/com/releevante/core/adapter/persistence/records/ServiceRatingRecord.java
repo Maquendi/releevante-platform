@@ -1,10 +1,9 @@
 package com.releevante.core.adapter.persistence.records;
 
+import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ServiceRating;
 import jakarta.persistence.*;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,23 +14,34 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class ServiceRatingRecord {
-  private String id;
+  @Id private String id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @OneToOne(fetch = FetchType.LAZY)
+  @MapsId
   private ClientRecord client;
 
   private int rating;
 
-  public static ServiceRatingRecord fromDomain(ServiceRating rating) {
+  ZonedDateTime createdAt;
+
+  ZonedDateTime updatedAt;
+
+  protected static ServiceRatingRecord fromDomain(Client client) {
     var record = new ServiceRatingRecord();
+    var rating = client.serviceRating().get();
     record.setId(rating.id());
     record.setRating(rating.rating());
-    record.setClient(ClientRecord.from(rating.clientId()));
+    record.setCreatedAt(rating.createdAt());
+    record.setUpdatedAt(rating.updatedAt());
     return record;
   }
 
-  public static Set<ServiceRatingRecord> fromDomain(List<ServiceRating> serviceRatings) {
-    return serviceRatings.stream().map(ServiceRatingRecord::fromDomain).collect(Collectors.toSet());
+  public ServiceRating toDomain() {
+    return ServiceRating.builder()
+        .id(id)
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
+        .rating(rating)
+        .build();
   }
 }

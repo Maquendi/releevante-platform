@@ -57,9 +57,7 @@ public class IdentityServiceBeanFactory {
 
   @Bean()
   public UserService userService(
-      PasswordEncoder passwordEncoder,
-      AuthorizationService authorizationService,
-      SmartLibraryAccessControlService smartLibraryService) {
+      PasswordEncoder passwordEncoder, AuthorizationService authorizationService) {
     return new DefaultUserServiceImpl(
         userRepository,
         accountRepository,
@@ -67,8 +65,7 @@ public class IdentityServiceBeanFactory {
         UuidGenerator.instance(),
         ZonedDateTimeGenerator.instance(),
         authorizationService,
-        accessControlRepository,
-        smartLibraryService);
+        accessControlRepository);
   }
 
   @Bean()
@@ -76,11 +73,6 @@ public class IdentityServiceBeanFactory {
       AccountPrincipalService accountPrincipalService) {
     return new DefaultAuthorizationService(
         accountRepository, orgRepository, accountPrincipalService);
-  }
-
-  @Bean()
-  public SmartLibraryAccessControlService smartLibraryAccessControlService() {
-    return new DefaultSmartLibraryAccessControlServiceImpl(accessControlRepository);
   }
 
   @Bean

@@ -22,5 +22,5 @@ public abstract class AbstractCart {
 
   abstract ZonedDateTime updatedAt();
 
-  abstract LazyLoader<List<CartItem>> items();
+  abstract LazyLoaderInit<List<CartItem>> items();
 }

@@ -23,7 +23,6 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   final UserRepository userRepository;
   final AuthorizationService authorizationService;
   final SmartLibraryAccessControlRepository accessControlRepository;
-  final SmartLibraryAccessControlService smartLibraryService;
 
   public DefaultUserServiceImpl(
       UserRepository userRepository,
@@ -32,13 +31,11 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
       SequentialGenerator<String> uuidGenerator,
       SequentialGenerator<ZonedDateTime> dateTimeGenerator,
       AuthorizationService authorizationService,
-      SmartLibraryAccessControlRepository accessControlRepository,
-      SmartLibraryAccessControlService smartLibraryService) {
+      SmartLibraryAccessControlRepository accessControlRepository) {
     super(accountRepository, passwordEncoder, uuidGenerator, dateTimeGenerator);
     this.userRepository = userRepository;
     this.authorizationService = authorizationService;
     this.accessControlRepository = accessControlRepository;
-    this.smartLibraryService = smartLibraryService;
   }
 
   @Override
@@ -70,17 +67,15 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
             principal ->
                 Flux.fromIterable(sLids)
                     .map(Slid::of)
-                    .collectList()
-                    .flatMapMany(list -> smartLibraryService.verifyActive(list, principal))
                     .map(
-                        library ->
+                        slid ->
                             SmartLibraryAccess.builder()
                                 .id(uuidGenerator.next())
                                 .credential(credentials)
                                 .orgId(OrgId.of(principal.orgId()))
                                 .createdAt(dateTimeGenerator.next())
                                 .updatedAt(dateTimeGenerator.next())
-                                .slid(library.slid())
+                                .slid(slid.value())
                                 .isActive(true)
                                 .expiresAt(expiresAt)
                                 .accessDueDays(accessDueDays)

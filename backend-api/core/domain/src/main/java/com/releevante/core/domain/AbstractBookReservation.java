@@ -17,7 +17,7 @@ public abstract class AbstractBookReservation {
 
   abstract String id();
 
-  abstract BookEdition bookEdition();
+  abstract Book bookEdition();
 
   abstract ZonedDateTime createdAt();
 
@@ -27,5 +27,5 @@ public abstract class AbstractBookReservation {
 
   abstract ZonedDateTime endTime();
 
-  abstract LazyLoader<List<BookReservationItem>> items();
+  abstract LazyLoaderInit<List<BookReservationItem>> items();
 }

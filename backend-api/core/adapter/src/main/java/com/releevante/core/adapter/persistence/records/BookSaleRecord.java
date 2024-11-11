@@ -1,11 +1,12 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.BookSale;
-import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.SaleId;
+import com.releevante.core.domain.*;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,9 +21,16 @@ public class BookSaleRecord {
   @Id
   private String id;
 
-  @OneToOne private CartRecord cart;
+  @OneToOne(fetch = FetchType.LAZY)
+  @Column(name = "cart_id")
+  private CartRecord cart;
+
   private BigDecimal total;
-  private String clientId;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id")
+  private ClientRecord client;
+
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
@@ -30,21 +38,24 @@ public class BookSaleRecord {
     return BookSale.builder()
         .id(SaleId.of(id))
         .total(total)
-        .clientId(ClientId.of(clientId))
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .cart(getCart().toDomain())
+        .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
+        .cart(new LazyLoaderInit<>(() -> getCart().toDomain()))
         .build();
   }
 
-  public static BookSaleRecord fromDomain(BookSale sale) {
+  public static List<BookSale> toDomain(Set<BookSaleRecord> records) {
+    return records.stream().map(BookSaleRecord::toDomain).collect(Collectors.toList());
+  }
+
+  protected static BookSaleRecord fromDomain(BookSale sale) {
     var record = new BookSaleRecord();
     record.setId(sale.id().value());
     record.setTotal(sale.total());
-    record.setClientId(sale.clientId().value());
     record.setCreatedAt(sale.createdAt());
     record.setUpdatedAt(sale.updatedAt());
-    record.setCart(CartRecord.fromDomain(sale.cart()));
+    record.setCart(CartRecord.fromDomain(sale.cart().get()));
     return record;
   }
 }

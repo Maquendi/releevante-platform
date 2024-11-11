@@ -32,16 +32,25 @@ public class BookRatingRecord {
 
   private int rating;
 
-  public static BookRatingRecord fromDomain(BookRating rating) {
+  protected static BookRatingRecord fromDomain(BookRating rating) {
     var record = new BookRatingRecord();
+    var book = rating.book().get();
     record.setId(rating.id());
     record.setRating(rating.rating());
-    record.setClient(ClientRecord.from(rating.clientId()));
-    record.setBook(BookRecord.from(rating.isbn()));
+    record.setBook(BookRecord.from(book.isbn()));
     return record;
   }
 
-  public static Set<BookRatingRecord> fromDomain(List<BookRating> ratings) {
-    return ratings.stream().map(BookRatingRecord::fromDomain).collect(Collectors.toSet());
+  public BookRating toDomain() {
+    return BookRating.builder()
+        .id(id)
+        .rating(rating)
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
+        .build();
+  }
+
+  public static List<BookRating> toDomain(Set<BookRatingRecord> records) {
+    return records.stream().map(BookRatingRecord::toDomain).collect(Collectors.toList());
   }
 }

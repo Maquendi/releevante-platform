@@ -30,21 +30,11 @@ public class CartRecord {
         .clientId(ClientId.of(clientId))
         .state(CartState.of(state))
         .items(
-            new LazyLoader<>() {
-              List<CartItem> cachedItems;
-
-              @Override
-              public List<CartItem> get() {
-                if (Objects.nonNull(cachedItems)) {
-                  return cachedItems;
-                }
-                cachedItems =
+            new LazyLoaderInit<>(
+                () ->
                     getCartItems().stream()
                         .map(CartItemRecord::toDomain)
-                        .collect(Collectors.toList());
-                return cachedItems;
-              }
-            })
+                        .collect(Collectors.toList())))
         .updatedAt(updatedAt)
         .createAt(createdAt)
         .build();

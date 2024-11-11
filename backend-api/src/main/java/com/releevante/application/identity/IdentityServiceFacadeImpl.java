@@ -1,13 +1,17 @@
 /* (C)2024 */
 package com.releevante.application.identity;
 
+import com.releevante.application.core.SmartLibraryServiceFacade;
 import com.releevante.application.dto.*;
 import com.releevante.application.service.auth.AuthenticationService;
+import com.releevante.application.service.auth.AuthorizationService;
 import com.releevante.application.service.user.OrgService;
 import com.releevante.application.service.user.UserService;
 import com.releevante.config.security.CustomAuthenticationException;
 import com.releevante.config.security.JwtAuthenticationToken;
+import com.releevante.types.Slid;
 import com.releevante.types.exceptions.UserUnauthorizedException;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,14 +22,21 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   final AuthenticationService authenticationService;
   final UserService userService;
   final OrgService orgService;
+  final AuthorizationService authorizationService;
+
+  final SmartLibraryServiceFacade smartLibraryServiceFacade;
 
   public IdentityServiceFacadeImpl(
       AuthenticationService userAuthenticationService,
       UserService userService,
-      OrgService orgService) {
+      OrgService orgService,
+      AuthorizationService authorizationService,
+      SmartLibraryServiceFacade smartLibraryServiceFacade) {
     this.authenticationService = userAuthenticationService;
     this.orgService = orgService;
     this.userService = userService;
+    this.authorizationService = authorizationService;
+    this.smartLibraryServiceFacade = smartLibraryServiceFacade;
   }
 
   @Override
@@ -40,7 +51,16 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
 
   @Override
   public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
-    return userService.create(access);
+    return authorizationService
+        .getAccountPrincipal()
+        .flatMap(
+            principal -> {
+              return smartLibraryServiceFacade
+                  .validateAccess(
+                      principal, access.sLids().stream().map(Slid::of).collect(Collectors.toList()))
+                  .collectList()
+                  .flatMap(smartLibrary -> userService.create(access));
+            });
   }
 
   @Override

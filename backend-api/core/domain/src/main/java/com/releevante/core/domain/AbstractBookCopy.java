@@ -13,5 +13,5 @@ import org.immutables.value.Value;
 public abstract class AbstractBookCopy {
   abstract BookCopyId id();
 
-  abstract BookEdition edition();
+  abstract Book book();
 }

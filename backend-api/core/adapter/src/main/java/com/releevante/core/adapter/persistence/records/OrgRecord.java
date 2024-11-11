@@ -1,7 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
 import jakarta.persistence.*;
-import java.util.HashSet;
+import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.Getter;
@@ -14,9 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class OrgRecord {
-  @Id
-  private String id;
+  @Id private String id;
+  private String name;
+  private ZonedDateTime createdAt;
+  private ZonedDateTime updatedAt;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "org")
-  private Set<SmartLibraryRecord> smartLibraries = new LinkedHashSet<>();
+  private Set<OrgLibraryRecord> smartLibraries = new LinkedHashSet<>();
 }

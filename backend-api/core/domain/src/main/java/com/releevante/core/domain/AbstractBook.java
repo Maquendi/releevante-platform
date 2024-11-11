@@ -8,15 +8,15 @@ import java.util.List;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = BookEdition.class)
-@JsonSerialize(as = BookEdition.class)
+@JsonDeserialize(as = Book.class)
+@JsonSerialize(as = Book.class)
 @ImmutableExt
-public abstract class AbstractBookEdition {
+public abstract class AbstractBook {
   abstract Isbn isbn();
 
   abstract String title();
 
   abstract BigDecimal price();
 
-  abstract LazyLoader<List<BookRating>> ratings();
+  abstract LazyLoaderInit<List<BookRating>> ratings();
 }

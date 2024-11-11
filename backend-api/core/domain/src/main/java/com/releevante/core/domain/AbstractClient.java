@@ -18,15 +18,13 @@ public abstract class AbstractClient {
 
   abstract ZonedDateTime updatedAt();
 
-  abstract LazyLoader<List<Cart>> carts();
+  abstract LazyLoaderInit<List<BookSale>> purchases();
 
-  abstract LazyLoader<List<BookSale>> purchases();
-
-  abstract LazyLoader<List<BookLoan>> loans();
+  abstract LazyLoaderInit<List<BookLoan>> loans();
 
   abstract LazyLoader<List<BookReservation>> reservations();
 
-  abstract LazyLoader<List<BookRating>> bookRatings();
+  abstract LazyLoaderInit<List<BookRating>> bookRatings();
 
-  abstract LazyLoader<List<ServiceRating>> serviceRatings();
+  abstract LazyLoaderInit<ServiceRating> serviceRating();
 }
