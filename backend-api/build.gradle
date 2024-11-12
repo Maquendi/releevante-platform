@@ -192,6 +192,7 @@ dependencies {
     implementation project(path: ':identity-management:adapter')
 	implementation project(path: ':identity-management:domain')
     implementation project(path: ':core:application')
+	implementation project(path: ':core:adapter')
     implementation project(path: ':core:domain')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'

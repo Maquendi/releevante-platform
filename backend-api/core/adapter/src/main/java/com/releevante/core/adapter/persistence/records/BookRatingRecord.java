@@ -17,21 +17,23 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class BookRatingRecord {
-  private String id;
 
-  private ZonedDateTime createdAt;
-
-  private ZonedDateTime updatedAt;
+  @Id private String id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "client_id")
   private ClientRecord client;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "isbn")
   private BookRecord book;
 
   private int rating;
+
+  private String orgId;
+
+  private ZonedDateTime createdAt;
+  private ZonedDateTime updatedAt;
 
   private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
     var record = new BookRatingRecord();

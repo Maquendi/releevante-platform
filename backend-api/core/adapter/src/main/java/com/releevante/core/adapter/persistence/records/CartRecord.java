@@ -18,7 +18,7 @@ public class CartRecord {
   @Id private String id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "client_id")
   private ClientRecord client;
 
   private String state;
@@ -51,8 +51,8 @@ public class CartRecord {
     record.setState(cart.state().value());
     record.setCreatedAt(cart.createAt());
     record.setUpdatedAt(cart.updatedAt());
-    record.setCartItems(
-        cart.items().get().stream().map(CartItemRecord::fromDomain).collect(Collectors.toSet()));
+    var cartItemRecords = CartItemRecord.fromDomain(record, cart.items().get());
+    record.setCartItems(cartItemRecords);
     return record;
   }
 

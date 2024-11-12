@@ -13,11 +13,9 @@ import org.immutables.value.Value;
 @ImmutableExt
 public abstract class AbstractBookReservation {
 
-  abstract ClientId clientId();
-
   abstract String id();
 
-  abstract Book bookEdition();
+  abstract ClientId clientId();
 
   abstract ZonedDateTime createdAt();
 

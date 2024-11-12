@@ -1,10 +1,13 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.CartItem;
+import com.releevante.core.domain.Isbn;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,36 +20,31 @@ import lombok.Setter;
 public class CartItemRecord {
   @Id private String id;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  private BookRecord book;
-
-  private BigDecimal itemPrice;
+  private String isbn;
   private Integer qty;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "cart_id")
   private CartRecord cart;
 
   public CartItem toDomain() {
-    return CartItem.builder()
-        .id(id)
-        .qty(qty)
-        .createdAt(createdAt)
-        .book(() -> getBook().toDomain())
-        .itemPrice(getItemPrice())
-        .build();
+    return CartItem.builder().id(id).qty(qty).createdAt(createdAt).isbn(Isbn.of(isbn)).build();
   }
 
-  public static CartItemRecord fromDomain(CartItem cartItem) {
+  protected static CartItemRecord fromDomain(CartRecord cart, CartItem cartItem) {
     var record = new CartItemRecord();
     record.setId(cartItem.id());
     record.setCreatedAt(cartItem.createdAt());
-    record.setBook(BookRecord.fromDomain(cartItem.book().get()));
+    record.setIsbn(cartItem.isbn().value());
     record.setQty(cartItem.qty());
-    record.setItemPrice(cartItem.itemPrice());
+    record.setCart(cart);
     return record;
+  }
+
+  protected static Set<CartItemRecord> fromDomain(CartRecord cart, List<CartItem> cartItems) {
+    return cartItems.stream().map(item -> fromDomain(cart, item)).collect(Collectors.toSet());
   }
 
   @Override

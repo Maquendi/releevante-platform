@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.immutables.value.Value;
 
@@ -17,6 +18,10 @@ public abstract class AbstractBook {
   abstract String title();
 
   abstract BigDecimal price();
+
+  abstract ZonedDateTime createdAt();
+
+  abstract ZonedDateTime updatedAt();
 
   abstract LazyLoaderInit<List<BookRating>> ratings();
 }

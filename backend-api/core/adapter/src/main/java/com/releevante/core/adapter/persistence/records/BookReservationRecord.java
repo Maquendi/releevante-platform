@@ -23,7 +23,7 @@ public class BookReservationRecord {
   @Id private String id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "client_id")
   private ClientRecord client;
 
   private ZonedDateTime startTime;
@@ -32,7 +32,7 @@ public class BookReservationRecord {
   private ZonedDateTime updatedAt;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.PERSIST)
-  private Set<BookReservationItemRecord> reservationItems = new HashSet<>();
+  private Set<BookReservationItemsRecord> reservationItems = new HashSet<>();
 
   protected static Set<BookReservationRecord> fromDomain(
       ClientRecord client, List<BookReservation> reservations) {
@@ -49,7 +49,7 @@ public class BookReservationRecord {
     record.setEndTime(reservation.endTime());
     record.setCreatedAt(reservation.createdAt());
     record.setUpdatedAt(reservation.updateAt());
-    record.setReservationItems(BookReservationItemRecord.fromDomain(record, reservation));
+    record.setReservationItems(BookReservationItemsRecord.fromDomain(record, reservation));
     record.setClient(client);
     return record;
   }
@@ -63,7 +63,7 @@ public class BookReservationRecord {
         .createdAt(createdAt)
         .updateAt(updatedAt)
         .items(
-            new LazyLoaderInit<>(() -> BookReservationItemRecord.toDomain(getReservationItems())))
+            new LazyLoaderInit<>(() -> BookReservationItemsRecord.toDomain(getReservationItems())))
         .build();
   }
 

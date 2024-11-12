@@ -1,6 +1,5 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ServiceRating;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
@@ -15,9 +14,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class ServiceRatingRecord {
-  @Id private String id;
+  @Id
+  @Column(name = "client_id")
+  private String id;
+
+  private String orgId;
 
   @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "client_id", nullable = false)
   @MapsId
   private ClientRecord client;
 
@@ -27,9 +31,8 @@ public class ServiceRatingRecord {
 
   ZonedDateTime updatedAt;
 
-  protected static ServiceRatingRecord fromDomain(Client client) {
+  protected static ServiceRatingRecord fromDomain(ServiceRating rating) {
     var record = new ServiceRatingRecord();
-    var rating = client.serviceRating().get();
     record.setId(rating.id());
     record.setRating(rating.rating());
     record.setCreatedAt(rating.createdAt());

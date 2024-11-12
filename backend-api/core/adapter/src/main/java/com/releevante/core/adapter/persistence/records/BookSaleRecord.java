@@ -4,6 +4,7 @@ import com.releevante.core.domain.*;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -19,19 +20,17 @@ import lombok.Setter;
 @Entity
 public class BookSaleRecord {
   @Id private String id;
-
-  @OneToOne(fetch = FetchType.LAZY)
-  @MapsId
-  private CartRecord cart;
-
   private BigDecimal total;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "client_id")
   private ClientRecord client;
 
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "sale", cascade = CascadeType.PERSIST)
+  private Set<SaleItemsRecord> saleItems = new LinkedHashSet<>();
 
   public BookSale toDomain() {
     return BookSale.builder()
@@ -40,7 +39,6 @@ public class BookSaleRecord {
         .createdAt(createdAt)
         .updatedAt(updatedAt)
         .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
-        .cart(new LazyLoaderInit<>(() -> getCart().toDomain()))
         .build();
   }
 
@@ -54,7 +52,6 @@ public class BookSaleRecord {
     record.setTotal(sale.total());
     record.setCreatedAt(sale.createdAt());
     record.setUpdatedAt(sale.updatedAt());
-    record.setCart(CartRecord.fromDomain(client, sale.cart().get()));
     record.setClient(client);
     return record;
   }

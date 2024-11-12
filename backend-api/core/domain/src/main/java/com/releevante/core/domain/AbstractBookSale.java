@@ -21,6 +21,4 @@ public abstract class AbstractBookSale {
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
-
-  abstract LazyLoaderInit<Cart> cart();
 }

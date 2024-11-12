@@ -24,40 +24,32 @@ public class BookLoanRecord {
 
   @Id private String id;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  @MapsId
-  private CartRecord cart;
+  private String slid;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "loan", cascade = CascadeType.PERSIST)
-  private Set<LoanDetailRecord> loanDetails = new LinkedHashSet<>();
+  private Set<LoanItemsRecord> loanDetails = new LinkedHashSet<>();
 
-  private ZonedDateTime startTime;
-
-  private ZonedDateTime endTime;
+  private ZonedDateTime returnsAt;
 
   private ZonedDateTime returnedAt;
-
-  private String slid;
 
   private ZonedDateTime createdAt;
 
   private ZonedDateTime updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "client_id")
   private ClientRecord client;
 
   public BookLoan toDomain() {
     return BookLoan.builder()
         .id(BookLoanId.of(id))
-        .startTime(startTime)
-        .endTime(endTime)
         .slid(Slid.of(slid))
-        .bookReturnTime(returnedAt)
+        .returnedAt(returnedAt)
+        .returnsAt(returnsAt)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
         .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
-        .cart(new LazyLoaderInit<>(() -> getCart().toDomain()))
         .build();
   }
 
@@ -68,13 +60,12 @@ public class BookLoanRecord {
   private static BookLoanRecord fromDomain(ClientRecord client, BookLoan loan) {
     var record = new BookLoanRecord();
     record.setId(loan.id().value());
-    record.setCart(CartRecord.fromDomain(client, loan.cart().get()));
-    record.setLoanDetails(LoanDetailRecord.fromDomain(record, loan.loanDetails().get()));
-    record.setStartTime(loan.startTime());
-    record.setEndTime(loan.endTime());
+    record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails().get()));
     record.setSlid(loan.slid().value());
     record.setCreatedAt(loan.createdAt());
     record.setUpdatedAt(loan.updatedAt());
+    record.setReturnsAt(loan.returnsAt());
+    record.setReturnedAt(loan.returnedAt().orElse(null));
     record.setClient(client);
     return record;
   }
