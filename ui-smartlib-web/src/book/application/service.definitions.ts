@@ -1,5 +1,5 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
-import { Book, BookCategory, BookCopy, BooksByCategory, BooksPagination, CategoryBooks } from "../domain/models";
+import { Book, BookCategory, BookCopy, BooksByCategory, BooksPagination } from "../domain/models";
 import { BookCopySearch, SearchCriteria } from "./dto";
 
 export interface BookService {

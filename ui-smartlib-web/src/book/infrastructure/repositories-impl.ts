@@ -10,7 +10,7 @@ import {
   Isbn,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, eq, inArray, like, or } from "drizzle-orm";
+import { and, eq,  like, or } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,

@@ -1,4 +1,4 @@
-import { FetchAllBookByCategory, FetchAllBooks } from '@/actions/book-actions'
+import {  FetchAllBooks } from '@/actions/book-actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'

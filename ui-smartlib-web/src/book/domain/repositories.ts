@@ -1,5 +1,5 @@
 
-import { Book, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,  CategoryBooks, Isbn } from "./models";
+import { Book, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,   Isbn } from "./models";
 
 export interface BookRepository {
   create(book: Book): Promise<Book>;
