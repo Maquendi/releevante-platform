@@ -4,9 +4,12 @@ import com.releevante.core.adapter.persistence.dao.*;
 import com.releevante.core.adapter.persistence.records.*;
 import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
+import com.releevante.core.domain.LoanDetail;
 import com.releevante.core.domain.repository.CartRepository;
 import com.releevante.core.domain.repository.ClientRepository;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -90,8 +93,15 @@ public class ClientRepositoryImpl implements ClientRepository {
         .defaultIfEmpty(client);
   }
 
+  @Transactional
   @Override
   public Mono<Client> synchronize(Client client) {
+
+    client.loans().get().stream()
+        .flatMap(loan -> loan.loanDetails().get().stream())
+        .map(LoanDetail::bookCopy)
+        .collect(Collectors.toSet());
+
     return Mono.zip(saveCarts(client), saveBookLoan(client)).thenReturn(client);
   }
 }

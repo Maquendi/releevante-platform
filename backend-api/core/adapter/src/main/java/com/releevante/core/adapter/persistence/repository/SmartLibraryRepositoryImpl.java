@@ -1,13 +1,19 @@
 package com.releevante.core.adapter.persistence.repository;
 
+import com.releevante.core.adapter.persistence.dao.LibraryInventoryHibernateDao;
 import com.releevante.core.adapter.persistence.dao.SmartLibraryHibernateDao;
 import com.releevante.core.adapter.persistence.records.SmartLibraryRecord;
+import com.releevante.core.domain.BookCopyStatus;
+import com.releevante.core.domain.Client;
+import com.releevante.core.domain.LoanDetail;
 import com.releevante.core.domain.SmartLibrary;
+import com.releevante.core.domain.repository.ClientRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.Slid;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -16,8 +22,17 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final SmartLibraryHibernateDao smartLibraryDao;
 
-  public SmartLibraryRepositoryImpl(SmartLibraryHibernateDao smartLibraryDao) {
+  final ClientRepository clientRepository;
+
+  final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
+
+  public SmartLibraryRepositoryImpl(
+      SmartLibraryHibernateDao smartLibraryDao,
+      ClientRepository clientRepository,
+      LibraryInventoryHibernateDao libraryInventoryHibernateDao) {
     this.smartLibraryDao = smartLibraryDao;
+    this.clientRepository = clientRepository;
+    this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
   }
 
   @Override
@@ -33,5 +48,36 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
     return Mono.fromCallable(() -> SmartLibraryRecord.events(smartLibrary))
         .map(smartLibraryDao::save)
         .thenReturn(smartLibrary);
+  }
+
+  @Override
+  public Mono<SmartLibrary> findBy(Slid slid) {
+    return null;
+  }
+
+  @Transactional
+  @Override
+  public Mono<SmartLibrary> synchronizeClients(SmartLibrary library) {
+
+    var clientFlux = Flux.fromIterable(library.clients());
+
+    var synchronizing = clientFlux.flatMap(clientRepository::synchronize);
+
+    var markAsBorrowed = clientFlux.flatMap(this::markInventoryAsBorrowed);
+
+    return Flux.zip(synchronizing, markAsBorrowed).collectList().thenReturn(library);
+  }
+
+  public Mono<Integer> markInventoryAsBorrowed(Client client) {
+    return Mono.fromCallable(
+            () ->
+                client.loans().get().stream()
+                    .flatMap(loan -> loan.loanDetails().get().stream())
+                    .map(LoanDetail::bookCopy)
+                    .collect(Collectors.toSet()))
+        .map(
+            bookCopies ->
+                libraryInventoryHibernateDao.updateInventoryStatusByCpy(
+                    BookCopyStatus.BORROWED, bookCopies));
   }
 }

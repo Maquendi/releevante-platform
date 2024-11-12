@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.BookCopyId;
 import com.releevante.types.ImmutableExt;
+import com.releevante.types.Slid;
+import java.time.ZonedDateTime;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -13,5 +15,15 @@ import org.immutables.value.Value;
 public abstract class AbstractBookCopy {
   abstract BookCopyId id();
 
-  abstract Book book();
+  abstract Isbn isbn();
+
+  abstract Slid slid();
+
+  abstract Boolean isSync();
+
+  abstract BookCopyStatus status();
+
+  abstract ZonedDateTime createdAt();
+
+  abstract ZonedDateTime updatedAt();
 }

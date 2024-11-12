@@ -1,9 +1,9 @@
 /* (C)2024 */
 package com.main.application.identity;
 
-import com.main.application.core.SmartLibraryServiceFacade;
 import com.main.config.security.CustomAuthenticationException;
 import com.main.config.security.JwtAuthenticationToken;
+import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.identity.application.dto.*;
 import com.releevante.identity.application.service.auth.AuthenticationService;
 import com.releevante.identity.application.service.auth.AuthorizationService;
@@ -24,19 +24,19 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   final OrgService orgService;
   final AuthorizationService authorizationService;
 
-  final SmartLibraryServiceFacade smartLibraryServiceFacade;
+  private final SmartLibraryService smartLibraryService;
 
   public IdentityServiceFacadeImpl(
       AuthenticationService userAuthenticationService,
       UserService userService,
       OrgService orgService,
       AuthorizationService authorizationService,
-      SmartLibraryServiceFacade smartLibraryServiceFacade) {
+      SmartLibraryService smartLibraryService) {
     this.authenticationService = userAuthenticationService;
     this.orgService = orgService;
     this.userService = userService;
     this.authorizationService = authorizationService;
-    this.smartLibraryServiceFacade = smartLibraryServiceFacade;
+    this.smartLibraryService = smartLibraryService;
   }
 
   @Override
@@ -55,7 +55,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
         .getAccountPrincipal()
         .flatMap(
             principal ->
-                smartLibraryServiceFacade
+                smartLibraryService
                     .validateAccess(
                         principal,
                         access.sLids().stream().map(Slid::of).collect(Collectors.toList()))

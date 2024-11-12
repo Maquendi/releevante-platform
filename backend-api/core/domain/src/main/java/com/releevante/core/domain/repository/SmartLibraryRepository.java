@@ -10,4 +10,8 @@ public interface SmartLibraryRepository {
   Flux<SmartLibrary> findById(List<Slid> sLids);
 
   Mono<SmartLibrary> saveEvent(SmartLibrary smartLibrary);
+
+  Mono<SmartLibrary> findBy(Slid slid);
+
+  Mono<SmartLibrary> synchronizeClients(SmartLibrary smartLibrary);
 }

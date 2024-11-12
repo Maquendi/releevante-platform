@@ -14,9 +14,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class ServiceRatingRecord {
-  @Id private String id;
+  @Id
+  @Column(name = "client_id")
+  private String id;
+
+  private String orgId;
 
   @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "client_id", nullable = false)
   @MapsId
   private ClientRecord client;
 

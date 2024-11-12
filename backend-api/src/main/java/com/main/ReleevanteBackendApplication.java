@@ -11,15 +11,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories(
     basePackages = {
-      "com.releevante.identity.adapter.out.persistence.repository",
       "com.releevante.core.adapter.persistence.repository",
-      "com.releevante.core.adapter.persistence.dao"
+      "com.releevante.core.adapter.persistence.dao",
+      "com.releevante.identity.adapter.persistence.repository"
     })
 @EntityScan({
-  "com.releevante.identity.adapter.out.persistence.records",
+  "com.releevante.identity.adapter.persistence.records",
   "com.releevante.core.adapter.persistence.records"
 })
-@ComponentScan("com.releevante")
+@ComponentScan(value = {"com.releevante", "com.main", "com.releevante.core.adapter.persistence"})
 @OpenAPIDefinition
 public class ReleevanteBackendApplication {
   public static void main(String[] args) {

@@ -20,7 +20,7 @@ public abstract class AbstractClientSyncDto {
 
   abstract String id();
 
-  abstract List<CartSyncDto> cartSyncDto();
+  abstract List<CartSyncDto> carts();
 
   abstract List<BookLoanDto> loans();
 
@@ -30,7 +30,7 @@ public abstract class AbstractClientSyncDto {
         .carts(
             new LazyLoaderInit<>(
                 () ->
-                    cartSyncDto().stream()
+                    carts().stream()
                         .map(AbstractCartSyncDto::toDomain)
                         .collect(Collectors.toList())))
         .loans(

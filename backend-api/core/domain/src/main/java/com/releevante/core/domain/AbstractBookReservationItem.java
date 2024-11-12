@@ -14,5 +14,5 @@ public abstract class AbstractBookReservationItem {
 
   abstract Integer qty();
 
-  abstract LazyLoader<Book> book();
+  abstract Isbn isbn();
 }

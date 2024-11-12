@@ -43,8 +43,6 @@ public abstract class AbstractCartSyncDto {
                     .qty(itemDto.qty())
                     .createdAt(createdAt())
                     .updated(updatedAt())
-                    .isbn(itemDto.isbn())
-                    .itemPrice(itemDto.itemPrice())
                     .build())
         .collect(Collectors.toList());
   }

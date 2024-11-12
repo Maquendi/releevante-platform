@@ -30,9 +30,14 @@ public class DefaultLibraryService implements SmartLibraryService {
 
   @Override
   public Mono<Boolean> synchronize(SmartLibrarySyncDto syncDto) {
-    return Flux.fromIterable(syncDto.domainClients())
-        .flatMap(clientRepository::synchronize)
-        .collectList()
+    return smartLibraryRepository
+        .findBy(Slid.of(syncDto.slid()))
+        .flatMap(
+            smartLibrary -> {
+              smartLibrary.validateIsActive();
+              return smartLibraryRepository.synchronizeClients(
+                  smartLibrary.withClients(syncDto.domainClients()));
+            })
         .thenReturn(true);
   }
 

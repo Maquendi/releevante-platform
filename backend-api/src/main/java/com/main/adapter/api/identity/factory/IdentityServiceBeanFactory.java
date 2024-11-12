@@ -1,9 +1,9 @@
 package com.main.adapter.api.identity.factory;
 
 import com.main.config.security.JwtAuthenticationToken;
-import com.releevante.identity.adapter.out.service.DefaultRsaKeyProvider;
-import com.releevante.identity.adapter.out.service.DefaultUserJtwTokenService;
-import com.releevante.identity.adapter.out.service.JwtRsaSigningKeyProvider;
+import com.releevante.identity.adapter.service.DefaultRsaKeyProvider;
+import com.releevante.identity.adapter.service.DefaultUserJtwTokenService;
+import com.releevante.identity.adapter.service.JwtRsaSigningKeyProvider;
 import com.releevante.identity.application.service.auth.*;
 import com.releevante.identity.application.service.user.DefaultUserServiceImpl;
 import com.releevante.identity.application.service.user.OrgService;

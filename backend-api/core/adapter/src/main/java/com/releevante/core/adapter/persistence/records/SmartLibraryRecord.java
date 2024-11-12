@@ -22,10 +22,6 @@ public class SmartLibraryRecord {
 
   private String orgId;
 
-  private String modelName;
-
-  private ZonedDateTime makeDate;
-
   private ZonedDateTime createdAt;
 
   private ZonedDateTime updatedAt;

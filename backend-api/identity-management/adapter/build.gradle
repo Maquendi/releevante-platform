@@ -7,7 +7,6 @@ version = 'identity.0.0.1'
 
 bootJar {
 	enabled = false
-	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
 
 repositories {
@@ -15,11 +14,10 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'com.auth0:java-jwt:4.4.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation project(path: ':identity-management:domain')
-	implementation project(path: ':identity-management:application')
-	implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 	implementation 'org.postgresql:postgresql:42.7.4'
+	implementation project(path: ':identity-management:domain')
+	implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+	implementation project(path: ':identity-management:application')
 }

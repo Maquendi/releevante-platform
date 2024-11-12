@@ -9,6 +9,6 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = CartItemSyncDto.class)
 @JsonSerialize(as = CartItemSyncDto.class)
 @ImmutableExt
-public abstract class AbstractCartItemSyncDto extends AbstractCartItemDto {
+public abstract class AbstractCartItemSyncDto implements ICartItem {
   abstract String id();
 }

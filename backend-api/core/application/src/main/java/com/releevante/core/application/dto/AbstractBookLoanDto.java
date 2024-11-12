@@ -19,11 +19,9 @@ import org.immutables.value.Value;
 public abstract class AbstractBookLoanDto {
   abstract String id();
 
-  abstract CartSyncDto cartDto();
+  abstract List<LoanDetailDto> items();
 
-  abstract List<LoanDetailDto> loanDetails();
-
-  abstract ZonedDateTime startTime();
+  abstract ZonedDateTime returnsAt();
 
   abstract ZonedDateTime createdAt();
 
@@ -37,15 +35,10 @@ public abstract class AbstractBookLoanDto {
         .id(BookLoanId.of(id()))
         .createdAt(createdAt())
         .updatedAt(updatedAt())
-        .startTime(startTime())
-        .endTime(endTime())
-        .cart(new LazyLoaderInit<>(() -> cartDto().toDomain()))
+        .returnsAt(returnsAt())
         .loanDetails(
             new LazyLoaderInit<>(
-                () ->
-                    loanDetails().stream()
-                        .map(AbstractLoanDetailDto::toDomain)
-                        .collect(Collectors.toList())))
+                () -> items().stream().map(LoanDetailDto::toDomain).collect(Collectors.toList())))
         .build();
   }
 }

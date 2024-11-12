@@ -21,19 +21,14 @@ public abstract class AbstractBookLoan {
   /** smart library id */
   abstract Slid slid();
 
-  /** when the book loan started */
-  abstract ZonedDateTime startTime();
-
   /** estimated time for book return */
-  abstract ZonedDateTime endTime();
+  abstract ZonedDateTime returnsAt();
 
   /** actual date when book is returned */
-  abstract Optional<ZonedDateTime> bookReturnTime();
+  abstract Optional<ZonedDateTime> returnedAt();
 
   /** status of this book loan */
   abstract BookLoanStatus status();
-
-  abstract LazyLoaderInit<Cart> cart();
 
   abstract LazyLoaderInit<List<LoanDetail>> loanDetails();
 

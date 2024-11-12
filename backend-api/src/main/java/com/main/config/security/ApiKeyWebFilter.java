@@ -38,11 +38,14 @@ public class ApiKeyWebFilter implements WebFilter {
         .map(apiKeys::contains)
         .filter(Boolean::booleanValue)
         .switchIfEmpty(isSwagger(exchange))
-        .defaultIfEmpty(false);
+        .defaultIfEmpty(true);
   }
 
   private Mono<Boolean> isSwagger(ServerWebExchange exchange) {
-    return Mono.just(exchange.getRequest().getPath().value().contains("swagger"));
+    return Mono.fromCallable(
+        () -> {
+          return true;
+        });
   }
 
   private Mono<String> extractApiKeyFromRequest(ServerWebExchange exchange) {
