@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.dao;
 
 import com.releevante.core.adapter.persistence.records.LibraryInventoryRecord;
-import com.releevante.core.domain.BookCopyStatus;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

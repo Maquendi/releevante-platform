@@ -25,7 +25,10 @@ public class SmartLibraryEventRecord {
   private String slid;
 
   public SmartLibraryStatus toDomain() {
-    return SmartLibraryStatus.builder().state(SmartLibraryState.valueOf(type)).createdAt(createdAt).build();
+    return SmartLibraryStatus.builder()
+        .state(SmartLibraryState.valueOf(type))
+        .createdAt(createdAt)
+        .build();
   }
 
   protected static List<SmartLibraryStatus> toDomain(Set<SmartLibraryEventRecord> events) {
