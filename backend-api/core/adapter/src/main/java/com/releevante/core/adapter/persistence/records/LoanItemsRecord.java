@@ -19,9 +19,7 @@ public class LoanItemsRecord {
   @Id private String id;
   private String cpy;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "loan_id")
-  private BookLoanRecord loan;
+  private String loanId;
 
   @Override
   public boolean equals(Object o) {
@@ -47,7 +45,7 @@ public class LoanItemsRecord {
     var record = new LoanItemsRecord();
     record.setId(loanDetail.id());
     record.setCpy(loanDetail.bookCopy());
-    record.setLoan(loan);
+    record.setLoanId(loan.getId());
     return record;
   }
 }

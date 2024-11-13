@@ -110,7 +110,8 @@ public class UserAccessManagementController {
             })
       })
   @PostMapping("/access")
-  Mono<CustomApiResponse<SmartLibraryGrantedAccess>> register(@RequestBody UserAccessDto access) {
+  public Mono<CustomApiResponse<SmartLibraryGrantedAccess>> register(
+      @RequestBody UserAccessDto access) {
     return identityServiceFacade.create(access).map(CustomApiResponse::from);
   }
 }

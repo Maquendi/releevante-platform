@@ -34,7 +34,7 @@ public class DefaultLibraryService implements SmartLibraryService {
         .findBy(Slid.of(syncDto.slid()))
         .flatMap(
             smartLibrary -> {
-              smartLibrary.validateIsActive();
+              // smartLibrary.validateIsActive();
               return smartLibraryRepository.synchronizeClients(
                   smartLibrary.withClients(syncDto.domainClients()));
             })

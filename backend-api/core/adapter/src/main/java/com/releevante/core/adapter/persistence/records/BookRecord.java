@@ -25,9 +25,7 @@ public class BookRecord {
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "book", cascade = CascadeType.PERSIST)
-  @OrderBy("createdAt DESC")
-  private Set<BookRatingRecord> ratings = new LinkedHashSet<>();
+  @Transient private Set<BookRatingRecord> ratings = new LinkedHashSet<>();
 
   public static BookRecord fromDomain(Book book) {
     var record = new BookRecord();

@@ -2,8 +2,8 @@ import {
   Book,
   BookCategory,
   BookCopy,
+  BooksByCategory,
   BooksPagination,
-  CategoryBooks,
 } from "../domain/models";
 import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
@@ -13,7 +13,7 @@ import { BookService, BookServiceFacade } from "./service.definitions";
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
   }
-  async findAllBookByCategory(categoryId: string): Promise<CategoryBooks> {
+  async findAllBookByCategory(categoryId: string): Promise<BooksByCategory[]> {
     return await this.bookService.findAllBookByCategory(categoryId);
   }
   async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {

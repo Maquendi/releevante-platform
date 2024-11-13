@@ -1,5 +1,5 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
-import { BookCategory, Book, BookCopy, BooksPagination, CategoryBooks } from "../domain/models";
+import { BookCategory, Book, BookCopy, BooksPagination, BooksByCategory } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
 import { BookCopySearch, SearchCriteria } from "./dto";
@@ -39,7 +39,7 @@ import { BookService } from "./service.definitions";
     return await this.bookRepository.findAllBy(searchCriteria)
   }
 
-  async findAllBookByCategory(categoryId:string):Promise<CategoryBooks>{
+  async findAllBookByCategory(categoryId:string):Promise<BooksByCategory[]>{
     return await this.bookRepository.findAllByCategory(categoryId)
   }
 

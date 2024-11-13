@@ -13,9 +13,9 @@ import org.immutables.value.Value;
 public abstract class AbstractLoanDetailDto {
   abstract String id();
 
-  abstract String bookCopy();
+  abstract String cpy();
 
   public LoanDetail toDomain() {
-    return LoanDetail.builder().id(id()).bookCopy(bookCopy()).build();
+    return LoanDetail.builder().id(id()).bookCopy(cpy()).build();
   }
 }

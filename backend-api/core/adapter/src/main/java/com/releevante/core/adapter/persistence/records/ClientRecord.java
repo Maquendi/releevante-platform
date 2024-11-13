@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.LazyLoaderInit;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -24,31 +23,23 @@ public class ClientRecord {
 
   ZonedDateTime updatedAt;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-  ServiceRatingRecord serviceRating;
+  @Transient ServiceRatingRecord serviceRating;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
-  Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
+  @Transient Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
-  @OrderBy("createdAt DESC")
-  Set<BookReservationRecord> reservations = new LinkedHashSet<>();
+  @Transient Set<BookReservationRecord> reservations = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
-  @OrderBy("createdAt DESC")
-  Set<BookRatingRecord> bookRatings = new LinkedHashSet<>();
+  @Transient Set<BookRatingRecord> bookRatings = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
-  @OrderBy("createdAt DESC")
-  Set<BookSaleRecord> purchases = new LinkedHashSet<>();
+  @Transient Set<BookSaleRecord> purchases = new LinkedHashSet<>();
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = CascadeType.PERSIST)
-  @OrderBy("createdAt DESC")
-  Set<CartRecord> carts = new LinkedHashSet<>();
+  @Transient Set<CartRecord> carts = new LinkedHashSet<>();
 
   protected static ClientRecord fromDomain(Client client) {
     var record = new ClientRecord();
     record.setId(client.id().value());
+    record.setCreatedAt(client.createdAt());
+    record.setUpdatedAt(client.updatedAt());
     return record;
   }
 
@@ -58,15 +49,14 @@ public class ClientRecord {
         .map(
             rating -> {
               var clientRecord = fromDomain(client);
-              var ratingRecord = ServiceRatingRecord.fromDomain(rating);
-              ratingRecord.setClient(clientRecord);
+              var ratingRecord = ServiceRatingRecord.fromDomain(clientRecord, rating);
               clientRecord.setServiceRating(ratingRecord);
               return clientRecord;
             });
   }
 
   public static Mono<ClientRecord> bookLoans(Client client) {
-    return Mono.just(client.loans().get())
+    return Mono.just(client.loans())
         .filter(Predicate.not(List::isEmpty))
         .map(
             loans -> {
@@ -78,7 +68,7 @@ public class ClientRecord {
   }
 
   public static Mono<ClientRecord> bookReservations(Client client) {
-    return Mono.just(client.reservations().get())
+    return Mono.just(client.reservations())
         .filter(Predicate.not(List::isEmpty))
         .map(
             bookReservations -> {
@@ -91,7 +81,7 @@ public class ClientRecord {
   }
 
   public static Mono<ClientRecord> bookRatings(Client client) {
-    return Mono.just(client.bookRatings().get())
+    return Mono.just(client.bookRatings())
         .filter(Predicate.not(List::isEmpty))
         .map(
             ratings -> {
@@ -103,7 +93,7 @@ public class ClientRecord {
   }
 
   public static Mono<ClientRecord> bookPurchases(Client client) {
-    return Mono.just(client.purchases().get())
+    return Mono.just(client.purchases())
         .filter(Predicate.not(List::isEmpty))
         .map(
             sales -> {
@@ -115,7 +105,7 @@ public class ClientRecord {
   }
 
   public static Mono<ClientRecord> carts(Client client) {
-    return Mono.just(client.carts().get())
+    return Mono.just(client.carts())
         .filter(Predicate.not(List::isEmpty))
         .map(
             carts -> {
@@ -127,14 +117,7 @@ public class ClientRecord {
   }
 
   public Client toDomain() {
-    return Client.builder()
-        .id(ClientId.of(id))
-        .loans(new LazyLoaderInit<>(() -> BookLoanRecord.toDomain(getBookLoans())))
-        .reservations(new LazyLoaderInit<>(() -> BookReservationRecord.toDomain(getReservations())))
-        .bookRatings(new LazyLoaderInit<>(() -> BookRatingRecord.toDomain(getBookRatings())))
-        .purchases(new LazyLoaderInit<>(() -> BookSaleRecord.toDomain(getPurchases())))
-        .serviceRating(new LazyLoaderInit<>(() -> getServiceRating().toDomain()))
-        .build();
+    return Client.builder().id(ClientId.of(id)).build();
   }
 
   @Override

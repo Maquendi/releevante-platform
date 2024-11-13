@@ -3,7 +3,6 @@ package com.releevante.core.adapter.persistence.records;
 import com.releevante.core.domain.CartItem;
 import com.releevante.core.domain.Isbn;
 import jakarta.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,24 +21,19 @@ public class CartItemRecord {
 
   private String isbn;
   private Integer qty;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "cart_id")
-  private CartRecord cart;
+  private String cartId;
 
   public CartItem toDomain() {
-    return CartItem.builder().id(id).qty(qty).createdAt(createdAt).isbn(Isbn.of(isbn)).build();
+    return CartItem.builder().id(id).qty(qty).isbn(Isbn.of(isbn)).build();
   }
 
   protected static CartItemRecord fromDomain(CartRecord cart, CartItem cartItem) {
     var record = new CartItemRecord();
     record.setId(cartItem.id());
-    record.setCreatedAt(cartItem.createdAt());
     record.setIsbn(cartItem.isbn().value());
     record.setQty(cartItem.qty());
-    record.setCart(cart);
+    record.setCartId(cart.getId());
     return record;
   }
 

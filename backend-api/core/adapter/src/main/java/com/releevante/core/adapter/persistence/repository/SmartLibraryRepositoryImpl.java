@@ -11,12 +11,15 @@ import com.releevante.core.domain.repository.ClientRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.Slid;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Transactional
 @Component
 public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
@@ -52,10 +55,10 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Override
   public Mono<SmartLibrary> findBy(Slid slid) {
-    return null;
+    return Mono.justOrEmpty(smartLibraryDao.findById(slid.value()))
+        .map(SmartLibraryRecord::toDomain);
   }
 
-  @Transactional
   @Override
   public Mono<SmartLibrary> synchronizeClients(SmartLibrary library) {
 
@@ -71,13 +74,15 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   public Mono<Integer> markInventoryAsBorrowed(Client client) {
     return Mono.fromCallable(
             () ->
-                client.loans().get().stream()
-                    .flatMap(loan -> loan.loanDetails().get().stream())
+                client.loans().stream()
+                    .flatMap(loan -> loan.loanDetails().stream())
                     .map(LoanDetail::bookCopy)
                     .collect(Collectors.toSet()))
+        .filter(Predicate.not(Set::isEmpty))
         .map(
             bookCopies ->
                 libraryInventoryHibernateDao.updateInventoryStatusByCpy(
-                    BookCopyStatus.BORROWED, bookCopies));
+                    BookCopyStatus.BORROWED.name(), bookCopies))
+        .defaultIfEmpty(0);
   }
 }

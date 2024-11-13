@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
-import com.releevante.core.domain.LazyLoaderInit;
 import com.releevante.types.Slid;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
@@ -26,9 +25,6 @@ public class BookLoanRecord {
 
   private String slid;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "loan", cascade = CascadeType.PERSIST)
-  private Set<LoanItemsRecord> loanDetails = new LinkedHashSet<>();
-
   private ZonedDateTime returnsAt;
 
   private ZonedDateTime returnedAt;
@@ -37,9 +33,9 @@ public class BookLoanRecord {
 
   private ZonedDateTime updatedAt;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id")
-  private ClientRecord client;
+  private String clientId;
+
+  @Transient private Set<LoanItemsRecord> loanDetails = new LinkedHashSet<>();
 
   public BookLoan toDomain() {
     return BookLoan.builder()
@@ -49,7 +45,6 @@ public class BookLoanRecord {
         .returnsAt(returnsAt)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
         .build();
   }
 
@@ -60,13 +55,13 @@ public class BookLoanRecord {
   private static BookLoanRecord fromDomain(ClientRecord client, BookLoan loan) {
     var record = new BookLoanRecord();
     record.setId(loan.id().value());
-    record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails().get()));
+    record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails()));
     record.setSlid(loan.slid().value());
     record.setCreatedAt(loan.createdAt());
     record.setUpdatedAt(loan.updatedAt());
     record.setReturnsAt(loan.returnsAt());
     record.setReturnedAt(loan.returnedAt().orElse(null));
-    record.setClient(client);
+    record.setClientId(client.getId());
     return record;
   }
 

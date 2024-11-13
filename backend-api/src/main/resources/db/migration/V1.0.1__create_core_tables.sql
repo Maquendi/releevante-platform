@@ -31,8 +31,6 @@ CREATE TABLE core.cart_items (
 	isbn varchar(36) NULL,
 	qty numeric NOT NULL,
 	cart_id varchar(36) NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT cart_items_pk PRIMARY KEY (id),
 	FOREIGN KEY(cart_id) REFERENCES core.carts(id),
 	FOREIGN KEY(isbn) REFERENCES core.books(isbn)

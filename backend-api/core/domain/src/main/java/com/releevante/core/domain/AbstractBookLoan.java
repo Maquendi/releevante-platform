@@ -16,8 +16,6 @@ import org.immutables.value.Value;
 public abstract class AbstractBookLoan {
   abstract BookLoanId id();
 
-  abstract LazyLoaderInit<Client> client();
-
   /** smart library id */
   abstract Slid slid();
 
@@ -30,7 +28,7 @@ public abstract class AbstractBookLoan {
   /** status of this book loan */
   abstract BookLoanStatus status();
 
-  abstract LazyLoaderInit<List<LoanDetail>> loanDetails();
+  abstract List<LoanDetail> loanDetails();
 
   abstract ZonedDateTime createdAt();
 

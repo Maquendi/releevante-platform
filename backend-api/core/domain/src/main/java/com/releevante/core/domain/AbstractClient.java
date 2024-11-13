@@ -3,7 +3,9 @@ package com.releevante.core.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -13,15 +15,19 @@ import org.immutables.value.Value;
 public abstract class AbstractClient {
   abstract ClientId id();
 
-  abstract LazyLoaderInit<List<BookSale>> purchases();
+  abstract ZonedDateTime createdAt();
 
-  abstract LazyLoaderInit<List<BookLoan>> loans();
+  abstract ZonedDateTime updatedAt();
 
-  abstract LazyLoader<List<BookReservation>> reservations();
+  abstract List<BookSale> purchases();
 
-  abstract LazyLoaderInit<List<BookRating>> bookRatings();
+  abstract List<BookLoan> loans();
 
-  abstract LazyLoaderInit<ServiceRating> serviceRating();
+  abstract List<BookReservation> reservations();
 
-  abstract LazyLoaderInit<List<Cart>> carts();
+  abstract List<BookRating> bookRatings();
+
+  abstract Optional<ServiceRating> serviceRating();
+
+  abstract List<Cart> carts();
 }

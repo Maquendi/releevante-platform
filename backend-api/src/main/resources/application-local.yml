@@ -2,4 +2,20 @@ server:
   port: 8080
 logging:
   level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: TRACE
     root: INFO
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+
+
+
+

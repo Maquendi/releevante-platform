@@ -5,23 +5,23 @@ import {
   BookCategory,
   BookCompartment,
   BookCopy,
-  BookImage,
+  BooksByCategory,
   BooksPagination,
-  CategoryBooks,
   Isbn,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, eq, ilike, like, or } from "drizzle-orm";
+import { and, eq,  like, or } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,
+  bookFtagSchema,
   bookImageSchema,
   bookSchema,
-  categorySchema,
+  ftagsSchema,
 } from "@/config/drizzle/schemas";
-import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { jsonAgg } from "@/lib/db/helpers";
 import { db } from "@/config/drizzle/db";
+import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -74,82 +74,56 @@ class DefaultBookRepositoryImpl implements BookRepository {
     });
   }
 
-  async findAllByCategory(categoryId: string): Promise<CategoryBooks> {
-    const results = await db
+  async findAllCategories(): Promise<BookCategory[]> {
+    return dbGetAll('categorySchema',{
+      columns:{
+        id:true,
+        name:true
+      }
+    })    
+  }
+
+  async findAllByCategory(categoryId: string): Promise<BooksByCategory[]> {
+    const results=await db
       .select({
-        categoryName: categorySchema.name,
-        isbn: bookSchema.isbn,
-        bookTitle: bookSchema.book_title,
-        publisher: bookSchema.author,
-        editionTitle: bookSchema.edition_title,
-        images: jsonAgg({
-          id: bookImageSchema.id,
-          url: bookImageSchema.url,
+        subCategory: ftagsSchema.tagValue,
+        books: jsonAgg({
+          isbn: bookSchema.isbn,
+          bookTitle: bookSchema.bookTitle,
+          publisher: bookSchema.author,
+          imageUrl: bookImageSchema.url,
         }),
       })
       .from(bookSchema)
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.isbn))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .leftJoin(bookImageSchema, eq(bookImageSchema.book_isbn, bookSchema.isbn))
       .leftJoin(
         bookCategorySchema,
-        eq(bookSchema.isbn, bookCategorySchema.book_isbn)
+        eq(bookCategorySchema.bookIsbn, bookSchema.isbn)
       )
-      .leftJoin(
-        categorySchema,
-        eq(categorySchema.id, bookCategorySchema.category_id)
-      )
-      .where(eq(bookCategorySchema.category_id, categoryId))
-      .groupBy(bookSchema.isbn);
-
-    const transformedData = results.reduce<{
-      categoryName: string;
-      books: Book[];
-    }>(
-      (acc, { categoryName, ...book }) => {
-        if (!acc.categoryName) acc.categoryName = categoryName!;
-        acc.books.push(book as Book);
-        return acc;
-      },
-      { categoryName: "", books: [] }
-    );
-
-    return transformedData;
-  }
-
-  async findAllCategories(): Promise<BookCategory[]> {
-    return dbGetAll("categorySchema", {
-      columns: {
-        id: true,
-        name: true,
-        image: true,
-      },
-    });
+      .where(and(eq(bookCategorySchema.categoryId, categoryId)))
+      .groupBy(ftagsSchema.tagValue);
+      
+      return results as BooksByCategory[]
   }
 
   async findAllBy(query: string): Promise<Book[]> {
     const results = await dbGetAll("bookSchema", {
       where: or(
-        like(bookSchema.book_title, `%${query}%`),
+        like(bookSchema.bookTitle, `%${query}%`),
         like(bookSchema.author, `%${query}%`),
-        like(bookSchema.edition_title, `%${query}%`)
+        like(bookSchema.editionTitle, `%${query}%`)
       ),
       columns: {
         isbn: true,
-        book_title: true,
+        bookTitle: true,
         author: true,
-        edition_title: true,
+        editionTitle: true,
       },
     });
 
-    const formattedResults = results.map(
-      ({ isbn, book_title, author, edition_title }) => ({
-        isbn: isbn,
-        bookTitle: book_title,
-        publisher: author,
-        editionTitle: edition_title,
-      })
-    );
-
-    return formattedResults as Book[];
+    return results as Book[];
   }
 
   async findById(isbn: string): Promise<Book> {
@@ -157,9 +131,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
       where: eq(bookSchema.isbn, isbn),
       columns: {
         isbn: true,
-        book_title: true,
+        bookTitle: true,
         author: true,
-        edition_title: true,
+        editionTitle: true,
       },
       with: {
         images: {
@@ -171,15 +145,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
       },
     });
 
-    const formattedResult: Book = {
-      isbn: result.isbn,
-      bookTitle: result.book_title,
-      publisher: result.author,
-      editionTitle: result.edition_title,
-      images: result.images,
-    };
-
-    return formattedResult;
+    return result;
   }
 
   async findAllBooks(bookFiler: BooksPagination): Promise<Book[]> {
@@ -189,9 +155,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
     const results: any = await dbGetAll("bookSchema", {
       columns: {
         isbn: true,
-        book_title: true,
+        bookTitle: true,
         author: true,
-        edition_title: true,
+        editionTitle: true,
       },
       with: {
         images: {
@@ -205,17 +171,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
       offset,
     });
 
-    const formattedResults: Book[] = results.map(
-      ({ isbn, book_title, author, edition_title, images }) => ({
-        isbn: isbn,
-        bookTitle: book_title,
-        publisher: author,
-        editionTitle: edition_title,
-        images,
-      })
-    );
-
-    return formattedResults;
+    return results;
   }
 }
 

@@ -21,10 +21,7 @@ public class BookReservationItemsRecord {
   @Id private String id;
   private Integer qty;
   private String isbn;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "reservation_id")
-  private BookReservationRecord reservation;
+  private String reservationId;
 
   private static BookReservationItemsRecord fromDomain(BookReservationItem item) {
     var record = new BookReservationItemsRecord();
@@ -54,7 +51,7 @@ public class BookReservationItemsRecord {
   }
 
   public BookReservationItemsRecord with(BookReservationRecord reservation) {
-    this.setReservation(reservation);
+    this.setReservationId(reservation.getId());
     return this;
   }
 

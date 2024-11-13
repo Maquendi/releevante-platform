@@ -1,10 +1,11 @@
-import { FetchAllBooks } from '@/actions/book-actions'
+import {  FetchAllBooks } from '@/actions/book-actions'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 const page = async() => {
   const allBooks = await FetchAllBooks()
+
   return (
     <div className='px-10 mt-10 mb-5'>
       <h2 className='text-3xl'>All books</h2>

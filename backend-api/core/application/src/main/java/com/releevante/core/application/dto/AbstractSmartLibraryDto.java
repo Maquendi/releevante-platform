@@ -16,8 +16,6 @@ public abstract class AbstractSmartLibraryDto {
 
   abstract String org();
 
-  abstract String desc();
-
   abstract SmartLibraryStatus status();
 
   public static SmartLibraryDto fromDomain(SmartLibrary smartLibrary) {
@@ -25,7 +23,6 @@ public abstract class AbstractSmartLibraryDto {
     return SmartLibraryDto.builder()
         .slid(smartLibrary.id().value())
         .org(smartLibrary.orgId().value())
-        .desc(smartLibrary.desc())
         .status(smartLibrary.currentStatus())
         .build();
   }
