@@ -17,6 +17,7 @@ import {
   bookFtagSchema,
   bookImageSchema,
   bookSchema,
+  categorySchema,
   ftagsSchema,
 } from "@/config/drizzle/schemas";
 import { jsonAgg } from "@/lib/db/helpers";
@@ -78,7 +79,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return dbGetAll('categorySchema',{
       columns:{
         id:true,
-        name:true
+        name:true,
+        imageUrl:true
       }
     })    
   }
@@ -86,6 +88,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
   async findAllByCategory(categoryId: string): Promise<BooksByCategory[]> {
     const results=await db
       .select({
+        category:categorySchema.name,
         subCategory: ftagsSchema.tagValue,
         books: jsonAgg({
           isbn: bookSchema.isbn,
@@ -101,6 +104,10 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .leftJoin(
         bookCategorySchema,
         eq(bookCategorySchema.bookIsbn, bookSchema.isbn)
+      )
+      .leftJoin(
+        categorySchema,
+        eq(bookCategorySchema.categoryId, categorySchema.id)
       )
       .where(and(eq(bookCategorySchema.categoryId, categoryId)))
       .groupBy(ftagsSchema.tagValue);
