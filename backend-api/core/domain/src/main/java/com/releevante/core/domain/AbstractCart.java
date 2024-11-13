@@ -14,8 +14,6 @@ import org.immutables.value.Value;
 public abstract class AbstractCart {
   abstract CartId id();
 
-  abstract LazyLoaderInit<Client> client();
-
   abstract CartState state();
 
   abstract ZonedDateTime createAt();

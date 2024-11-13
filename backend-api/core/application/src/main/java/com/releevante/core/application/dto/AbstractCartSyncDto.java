@@ -40,9 +40,8 @@ public abstract class AbstractCartSyncDto {
             itemDto ->
                 CartItem.builder()
                     .id(itemDto.id())
+                    .isbn(Isbn.of(itemDto.isbn()))
                     .qty(itemDto.qty())
-                    .createdAt(createdAt())
-                    .updated(updatedAt())
                     .build())
         .collect(Collectors.toList());
   }

@@ -20,13 +20,9 @@ public class BookRatingRecord {
 
   @Id private String id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id")
-  private ClientRecord client;
+  private String clientId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "isbn")
-  private BookRecord book;
+  private String isbn;
 
   private int rating;
 
@@ -40,8 +36,8 @@ public class BookRatingRecord {
     var book = rating.book().get();
     record.setId(rating.id());
     record.setRating(rating.rating());
-    record.setBook(BookRecord.from(book.isbn()));
-    record.setClient(client);
+    record.setIsbn(book.isbn().value());
+    record.setClientId(client.getId());
     return record;
   }
 

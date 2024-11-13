@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "library_book_inventories", schema = "core")
+@Table(name = "library_inventories", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +23,7 @@ public class LibraryInventoryRecord {
   private String slid;
   private boolean isSync;
   private BigDecimal price;
-  private BookCopyStatus status;
+  private String status;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
@@ -45,7 +45,7 @@ public class LibraryInventoryRecord {
     record.setCpy(bookCopy.id().value());
     record.setIsbn(bookCopy.isbn().value());
     record.setSlid(bookCopy.slid().value());
-    record.setStatus(bookCopy.status());
+    record.setStatus(bookCopy.status().name());
     record.setCreatedAt(bookCopy.createdAt());
     record.setUpdatedAt(bookCopy.updatedAt());
     return record;

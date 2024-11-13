@@ -22,8 +22,6 @@ public abstract class AbstractSmartLibrary {
 
   abstract OrgId orgId();
 
-  abstract String desc();
-
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();

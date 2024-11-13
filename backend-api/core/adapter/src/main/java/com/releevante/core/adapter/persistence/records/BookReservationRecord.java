@@ -22,17 +22,14 @@ import lombok.Setter;
 public class BookReservationRecord {
   @Id private String id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id")
-  private ClientRecord client;
+  private String clientId;
 
   private ZonedDateTime startTime;
   private ZonedDateTime endTime;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.PERSIST)
-  private Set<BookReservationItemsRecord> reservationItems = new HashSet<>();
+  @Transient private Set<BookReservationItemsRecord> reservationItems = new HashSet<>();
 
   protected static Set<BookReservationRecord> fromDomain(
       ClientRecord client, List<BookReservation> reservations) {
@@ -50,14 +47,14 @@ public class BookReservationRecord {
     record.setCreatedAt(reservation.createdAt());
     record.setUpdatedAt(reservation.updateAt());
     record.setReservationItems(BookReservationItemsRecord.fromDomain(record, reservation));
-    record.setClient(client);
+    record.setClientId(client.getId());
     return record;
   }
 
   public BookReservation toDomain() {
     return BookReservation.builder()
         .id(id)
-        .clientId(ClientId.of(getClient().getId()))
+        .clientId(ClientId.of(getClientId()))
         .startTime(startTime)
         .endTime(endTime)
         .createdAt(createdAt)

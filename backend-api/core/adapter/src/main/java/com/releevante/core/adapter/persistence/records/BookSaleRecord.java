@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "book_sale", schema = "core")
+@Table(name = "book_sales", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,15 +22,12 @@ public class BookSaleRecord {
   @Id private String id;
   private BigDecimal total;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id")
-  private ClientRecord client;
+  private String clientId;
 
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "sale", cascade = CascadeType.PERSIST)
-  private Set<SaleItemsRecord> saleItems = new LinkedHashSet<>();
+  @Transient private Set<SaleItemsRecord> saleItems = new LinkedHashSet<>();
 
   public BookSale toDomain() {
     return BookSale.builder()
@@ -38,7 +35,6 @@ public class BookSaleRecord {
         .total(total)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
         .build();
   }
 
@@ -52,7 +48,7 @@ public class BookSaleRecord {
     record.setTotal(sale.total());
     record.setCreatedAt(sale.createdAt());
     record.setUpdatedAt(sale.updatedAt());
-    record.setClient(client);
+    record.setClientId(client.getId());
     return record;
   }
 

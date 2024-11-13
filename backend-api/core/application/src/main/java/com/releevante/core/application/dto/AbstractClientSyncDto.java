@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.LazyLoaderInit;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +20,10 @@ public abstract class AbstractClientSyncDto {
 
   abstract String id();
 
+  abstract ZonedDateTime createdAt();
+
+  abstract ZonedDateTime updatedAt();
+
   abstract List<CartSyncDto> carts();
 
   abstract List<BookLoanDto> loans();
@@ -27,20 +31,13 @@ public abstract class AbstractClientSyncDto {
   public Client toDomain(Slid slid) {
     return Client.builder()
         .id(ClientId.of(id()))
-        .carts(
-            new LazyLoaderInit<>(
-                () ->
-                    carts().stream()
-                        .map(AbstractCartSyncDto::toDomain)
-                        .collect(Collectors.toList())))
-        .loans(
-            new LazyLoaderInit<>(
-                () ->
-                    loans().stream().map(loan -> loan.toDomain(slid)).collect(Collectors.toList())))
-        .serviceRating(new LazyLoaderInit<>(() -> null))
-        .purchases(new LazyLoaderInit<>(Collections::emptyList))
-        .reservations(new LazyLoaderInit<>(Collections::emptyList))
-        .bookRatings(new LazyLoaderInit<>(Collections::emptyList))
+        .createdAt(createdAt())
+        .updatedAt(updatedAt())
+        .carts(carts().stream().map(CartSyncDto::toDomain).collect(Collectors.toList()))
+        .loans(loans().stream().map(loan -> loan.toDomain(slid)).collect(Collectors.toList()))
+        .purchases(Collections.emptyList())
+        .reservations(Collections.emptyList())
+        .bookRatings(Collections.emptyList())
         .build();
   }
 }

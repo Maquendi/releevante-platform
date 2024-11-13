@@ -19,15 +19,13 @@ import lombok.Setter;
 @Entity
 public class SmartLibraryEventRecord {
   @Id String id;
-  SmartLibraryState type;
+  String type;
   ZonedDateTime createdAt;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "slid")
-  private SmartLibraryRecord library;
+  private String slid;
 
   public SmartLibraryStatus toDomain() {
-    return SmartLibraryStatus.builder().state(type).createdAt(createdAt).build();
+    return SmartLibraryStatus.builder().state(SmartLibraryState.valueOf(type)).createdAt(createdAt).build();
   }
 
   protected static List<SmartLibraryStatus> toDomain(Set<SmartLibraryEventRecord> events) {
@@ -44,9 +42,9 @@ public class SmartLibraryEventRecord {
 
     var record = new SmartLibraryEventRecord();
     record.setId(status.id());
-    record.setType(status.state());
+    record.setType(status.state().name());
     record.setCreatedAt(status.createdAt());
-    record.setLibrary(smartLibraryRecord);
+    record.setSlid(smartLibraryRecord.getSlid());
 
     return record;
   }

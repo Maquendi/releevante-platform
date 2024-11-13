@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
-import com.releevante.core.domain.LazyLoaderInit;
+import com.releevante.core.domain.BookLoanStatus;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
@@ -29,6 +29,8 @@ public abstract class AbstractBookLoanDto {
 
   abstract ZonedDateTime endTime();
 
+  abstract BookLoanStatus status();
+
   public BookLoan toDomain(Slid slid) {
     return BookLoan.builder()
         .slid(slid)
@@ -36,9 +38,8 @@ public abstract class AbstractBookLoanDto {
         .createdAt(createdAt())
         .updatedAt(updatedAt())
         .returnsAt(returnsAt())
-        .loanDetails(
-            new LazyLoaderInit<>(
-                () -> items().stream().map(LoanDetailDto::toDomain).collect(Collectors.toList())))
+        .status(status())
+        .loanDetails(items().stream().map(LoanDetailDto::toDomain).collect(Collectors.toList()))
         .build();
   }
 }

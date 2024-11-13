@@ -1,9 +1,9 @@
 /* (C)2024 */
 package com.main.application.identity;
 
+import com.main.application.core.SmartLibraryServiceFacade;
 import com.main.config.security.CustomAuthenticationException;
 import com.main.config.security.JwtAuthenticationToken;
-import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.identity.application.dto.*;
 import com.releevante.identity.application.service.auth.AuthenticationService;
 import com.releevante.identity.application.service.auth.AuthorizationService;
@@ -24,14 +24,14 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   final OrgService orgService;
   final AuthorizationService authorizationService;
 
-  private final SmartLibraryService smartLibraryService;
+  private final SmartLibraryServiceFacade smartLibraryService;
 
   public IdentityServiceFacadeImpl(
       AuthenticationService userAuthenticationService,
       UserService userService,
       OrgService orgService,
       AuthorizationService authorizationService,
-      SmartLibraryService smartLibraryService) {
+      SmartLibraryServiceFacade smartLibraryService) {
     this.authenticationService = userAuthenticationService;
     this.orgService = orgService;
     this.userService = userService;

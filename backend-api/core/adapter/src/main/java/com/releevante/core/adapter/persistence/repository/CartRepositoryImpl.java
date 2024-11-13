@@ -3,10 +3,12 @@ package com.releevante.core.adapter.persistence.repository;
 import com.releevante.core.adapter.persistence.dao.CartHibernateDao;
 import com.releevante.core.adapter.persistence.dao.CartItemHibernateDao;
 import com.releevante.core.domain.Cart;
+import com.releevante.core.domain.Client;
 import com.releevante.core.domain.repository.CartRepository;
 import com.releevante.types.UserId;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Component
 public class CartRepositoryImpl implements CartRepository {
@@ -25,6 +27,11 @@ public class CartRepositoryImpl implements CartRepository {
 
     cartHibernateDao.findById(user.value());
 
+    return null;
+  }
+
+  @Override
+  public Mono<Client> save(Client client) {
     return null;
   }
 }

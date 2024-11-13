@@ -1,10 +1,12 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.LazyLoaderInit;
+import com.releevante.core.domain.OrgId;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.Slid;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -26,8 +28,7 @@ public class SmartLibraryRecord {
 
   private ZonedDateTime updatedAt;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "library")
-  private Set<SmartLibraryEventRecord> libraryEvents = new LinkedHashSet<>();
+  @Transient private Set<SmartLibraryEventRecord> libraryEvents = new LinkedHashSet<>();
 
   public static SmartLibraryRecord fromDomain(SmartLibrary smartLibrary) {
     var record = new SmartLibraryRecord();
@@ -51,9 +52,11 @@ public class SmartLibraryRecord {
   public SmartLibrary toDomain() {
     return SmartLibrary.builder()
         .id(Slid.of(slid))
+        .orgId(OrgId.of(orgId))
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .statuses(new LazyLoaderInit<>(() -> SmartLibraryEventRecord.toDomain(getLibraryEvents())))
+        .statuses(new LazyLoaderInit<>(Collections::emptyList))
+        .clients(Collections.emptyList())
         .build();
   }
 

@@ -2,8 +2,8 @@ package com.main.adapter.api.core.controllers;
 
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
+import com.main.application.core.SmartLibraryServiceFacade;
 import com.releevante.core.application.dto.SmartLibrarySyncDto;
-import com.releevante.core.application.service.SmartLibraryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,9 +19,9 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/aggregator/{slid}")
 public class SmartLibraryController {
 
-  private final SmartLibraryService smartLibraryService;
+  private final SmartLibraryServiceFacade smartLibraryService;
 
-  public SmartLibraryController(SmartLibraryService smartLibraryService) {
+  public SmartLibraryController(SmartLibraryServiceFacade smartLibraryService) {
     this.smartLibraryService = smartLibraryService;
   }
 

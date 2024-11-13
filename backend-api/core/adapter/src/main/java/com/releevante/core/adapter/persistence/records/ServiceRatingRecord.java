@@ -20,20 +20,15 @@ public class ServiceRatingRecord {
 
   private String orgId;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id", nullable = false)
-  @MapsId
-  private ClientRecord client;
-
   private int rating;
 
   ZonedDateTime createdAt;
 
   ZonedDateTime updatedAt;
 
-  protected static ServiceRatingRecord fromDomain(ServiceRating rating) {
+  protected static ServiceRatingRecord fromDomain(ClientRecord client, ServiceRating rating) {
     var record = new ServiceRatingRecord();
-    record.setId(rating.id());
+    record.setId(client.getId());
     record.setRating(rating.rating());
     record.setCreatedAt(rating.createdAt());
     record.setUpdatedAt(rating.updatedAt());

@@ -17,21 +17,19 @@ import lombok.Setter;
 public class CartRecord {
   @Id private String id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "client_id")
-  private ClientRecord client;
+  private String clientId;
 
   private String state;
+
   private ZonedDateTime createdAt;
+
   private ZonedDateTime updatedAt;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart")
-  private Set<CartItemRecord> cartItems = new HashSet<>();
+  @Transient private Set<CartItemRecord> cartItems = new HashSet<>();
 
   public Cart toDomain() {
     return Cart.builder()
         .id(CartId.of(id))
-        .client(new LazyLoaderInit<>(() -> getClient().toDomain()))
         .state(CartState.of(state))
         .items(
             new LazyLoaderInit<>(
@@ -47,7 +45,7 @@ public class CartRecord {
   protected static CartRecord fromDomain(ClientRecord client, Cart cart) {
     var record = new CartRecord();
     record.setId(cart.id().value());
-    record.setClient(client);
+    record.setClientId(client.getId());
     record.setState(cart.state().value());
     record.setCreatedAt(cart.createAt());
     record.setUpdatedAt(cart.updatedAt());

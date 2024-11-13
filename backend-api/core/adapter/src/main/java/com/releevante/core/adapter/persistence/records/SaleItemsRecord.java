@@ -17,8 +17,5 @@ public class SaleItemsRecord {
   private String isbn;
   private String cpy;
   private BigDecimal price;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "sale_id")
-  private BookSaleRecord sale;
+  private String saleId;
 }

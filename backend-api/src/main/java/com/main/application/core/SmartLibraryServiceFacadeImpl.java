@@ -6,9 +6,11 @@ import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
 import java.util.List;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Component
 public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade {
   private final SmartLibraryService smartLibraryService;
 
