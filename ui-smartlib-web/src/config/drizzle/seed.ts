@@ -51,7 +51,7 @@ async function seed() {
     const books: any[] = [];
     for (let i = 0; i < 10; i++) {
       const bookData = {
-        isbn: uuidv4(),
+        id: uuidv4(),
         bookTitle: faker.commerce.productName(),
         editionTitle: faker.commerce.product(),
         author: faker.person.firstName(),
@@ -63,14 +63,14 @@ async function seed() {
 
     const bookCategoriesData = books.map((book, index) => {
       return {
-        bookIsbn: book.isbn,
+        bookIsbn: book.id,
         categoryId: categories[index].id,
       };
     });
 
     const bookFtagsData = books.map((book, index) => {
       return {
-        bookIsbn: book.isbn,
+        bookIsbn: book.id,
         ftagId: ftags[index].id,
       };
     });
@@ -78,14 +78,14 @@ async function seed() {
     const bookImagesData = books.map((book) => {
       return {
         url: faker.image.url(),
-        book_isbn: book.isbn,
+        book_isbn: book.id,
         isSincronized: faker.datatype.boolean(),
       };
     });
 
     const bookCopiesData = books.map((book) => {
       return {
-        book_isbn: book.isbn,
+        book_isbn: book.id,
         is_available: faker.datatype.boolean(),
         at_position: faker.book.series(),
         created_at: new Date().toISOString(),
