@@ -6,7 +6,10 @@ import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.repository.ClientRepository;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +23,8 @@ public class ClientRepositoryImpl implements ClientRepository {
   final BookLoanHibernateDao bookLoanHibernateDao;
 
   final LoanItemHibernateDao loanItemHibernateDao;
+
+  final LoanStatusHibernateDao loanStatusHibernateDao;
 
   final BookRatingHibernateDao bookRatingHibernateDao;
 
@@ -40,6 +45,7 @@ public class ClientRepositoryImpl implements ClientRepository {
       ServiceRatingHibernateDao serviceRatingHibernateDao,
       BookLoanHibernateDao bookLoanHibernateDao,
       LoanItemHibernateDao loanItemHibernateDao,
+      LoanStatusHibernateDao loanStatusHibernateDao,
       BookRatingHibernateDao bookRatingHibernateDao,
       BookSaleHibernateDao bookSaleHibernateDao,
       SaleItemHibernateDao saleItemHibernateDao,
@@ -51,6 +57,7 @@ public class ClientRepositoryImpl implements ClientRepository {
     this.serviceRatingHibernateDao = serviceRatingHibernateDao;
     this.bookLoanHibernateDao = bookLoanHibernateDao;
     this.loanItemHibernateDao = loanItemHibernateDao;
+    this.loanStatusHibernateDao = loanStatusHibernateDao;
     this.bookRatingHibernateDao = bookRatingHibernateDao;
     this.bookSaleHibernateDao = bookSaleHibernateDao;
     this.saleItemHibernateDao = saleItemHibernateDao;
@@ -68,11 +75,12 @@ public class ClientRepositoryImpl implements ClientRepository {
   @Override
   public Mono<Client> saveServiceRating(Client client) {
     return ClientRecord.serviceRating(client)
-        .map(
+        .flatMap(
             clientRecord ->
                 clientHibernateDao
                     .save(clientRecord)
-                    .map(ignore -> serviceRatingHibernateDao.save(clientRecord.getServiceRating()))
+                    .flatMap(
+                        ignore -> serviceRatingHibernateDao.save(clientRecord.getServiceRating()))
                     .thenReturn(client))
         .thenReturn(client);
   }
@@ -82,21 +90,47 @@ public class ClientRepositoryImpl implements ClientRepository {
     return ClientRecord.bookLoans(client)
         .flatMap(
             clientRecord -> {
-              clientRecord.setIsNew(false);
               var loanRecords = clientRecord.getBookLoans();
+
               var loanItemRecords =
                   loanRecords.stream()
                       .map(BookLoanRecord::getLoanDetails)
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
-              return clientHibernateDao
-                  .save(clientRecord)
-                  .flatMapMany(ignore -> bookLoanHibernateDao.saveAll(loanRecords))
-                  .collectList()
-                  .flatMapMany(ignore -> loanItemHibernateDao.saveAll(loanItemRecords))
-                  .collectList()
+
+              var loanStatusRecords =
+                  loanRecords.stream()
+                      .map(BookLoanRecord::getLoanStatus)
+                      .flatMap(Set::stream)
+                      .collect(Collectors.toSet());
+
+              return saveClient(clientRecord)
+                  .flatMap(
+                      (ignored) -> saveMultipleRecords(loanRecords, bookLoanHibernateDao::saveAll))
+                  .flatMap(
+                      ignore -> saveMultipleRecords(loanItemRecords, loanItemHibernateDao::saveAll))
+                  .flatMap(
+                      ignored ->
+                          saveMultipleRecords(loanStatusRecords, loanStatusHibernateDao::saveAll))
                   .thenReturn(client);
             })
+        .defaultIfEmpty(client);
+  }
+
+  protected <E> Mono<Set<E>> saveMultipleRecords(
+      Set<E> entityRecords, Function<Set<E>, Publisher<E>> publisher) {
+    return Mono.just(entityRecords)
+        .filter(Predicate.not(Set::isEmpty))
+        .flatMapMany(publisher)
+        .collectList()
+        .thenReturn(entityRecords)
+        .defaultIfEmpty(entityRecords);
+  }
+
+  protected Mono<ClientRecord> saveClient(ClientRecord client) {
+    return Mono.just(client)
+        .filter(PersistableEntity::isNew)
+        .flatMap(clientHibernateDao::save)
         .defaultIfEmpty(client);
   }
 
@@ -105,10 +139,11 @@ public class ClientRepositoryImpl implements ClientRepository {
     return ClientRecord.bookRatings(client)
         .flatMap(
             clientRecord ->
-                clientHibernateDao
-                    .save(clientRecord)
+                saveClient(clientRecord)
                     .flatMapMany(
-                        ignore -> bookRatingHibernateDao.saveAll(clientRecord.getBookRatings()))
+                        ignore ->
+                            saveMultipleRecords(
+                                clientRecord.getBookRatings(), bookRatingHibernateDao::saveAll))
                     .collectList()
                     .thenReturn(client))
         .defaultIfEmpty(client);
@@ -127,11 +162,13 @@ public class ClientRepositoryImpl implements ClientRepository {
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
 
-              return clientHibernateDao
-                  .save(clientRecord)
-                  .flatMapMany(ignore -> bookSaleHibernateDao.saveAll(purchaseRecords))
+              return saveClient(clientRecord)
+                  .flatMapMany(
+                      ignore -> saveMultipleRecords(purchaseRecords, bookSaleHibernateDao::saveAll))
                   .collectList()
-                  .flatMapMany(ignore -> saleItemHibernateDao.saveAll(salesItemRecords))
+                  .flatMapMany(
+                      ignore ->
+                          saveMultipleRecords(salesItemRecords, saleItemHibernateDao::saveAll))
                   .collectList()
                   .thenReturn(client);
             })
@@ -150,11 +187,16 @@ public class ClientRepositoryImpl implements ClientRepository {
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
 
-              return clientHibernateDao
-                  .save(clientRecord)
-                  .flatMapMany(ignore -> bookReservationHibernateDao.saveAll(reservationRecords))
+              return saveClient(clientRecord)
+                  .flatMapMany(
+                      ignore ->
+                          saveMultipleRecords(
+                              reservationRecords, bookReservationHibernateDao::saveAll))
                   .collectList()
-                  .flatMapMany(ignore -> bookReservationItemHibernateDao.saveAll(reservationItems))
+                  .flatMapMany(
+                      ignore ->
+                          saveMultipleRecords(
+                              reservationItems, bookReservationItemHibernateDao::saveAll))
                   .collectList()
                   .thenReturn(client);
             })
@@ -172,21 +214,17 @@ public class ClientRepositoryImpl implements ClientRepository {
                       .map(CartRecord::getCartItems)
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
-              return clientHibernateDao
-                  .save(clientRecord)
-                  .flatMapMany(ignore -> cartHibernateDao.saveAll(cartRecords))
+              return saveClient(clientRecord)
+                  .flatMapMany(
+                      ignore -> saveMultipleRecords(cartRecords, cartHibernateDao::saveAll))
                   .collectList()
-                  .flatMapMany(ignore -> cartItemHibernateDao.saveAll(cartItemsRecords))
+                  .flatMapMany(
+                      ignore ->
+                          saveMultipleRecords(cartItemsRecords, cartItemHibernateDao::saveAll))
                   .collectList()
                   .map(ignored -> client)
                   .onErrorResume((error) -> Mono.just(client));
             })
         .defaultIfEmpty(client);
-  }
-
-  @Override
-  public Mono<Client> synchronize(Client client) {
-    // return saveCarts(client);
-    return Mono.zip(saveCarts(client), saveBookLoan(client)).thenReturn(client);
   }
 }

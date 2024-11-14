@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.immutables.value.Value;
@@ -14,6 +15,8 @@ import org.immutables.value.Value;
 @JsonSerialize(as = BookLoan.class)
 @ImmutableExt
 public abstract class AbstractBookLoan {
+  abstract BookLoanId externalId();
+
   abstract BookLoanId id();
 
   /** smart library id */
@@ -25,12 +28,22 @@ public abstract class AbstractBookLoan {
   /** actual date when book is returned */
   abstract Optional<ZonedDateTime> returnedAt();
 
-  /** status of this book loan */
-  abstract BookLoanStatus status();
+  @Value.Default
+  List<LoanDetail> loanDetails() {
+    return Collections.emptyList();
+  }
 
-  abstract List<LoanDetail> loanDetails();
+  @Value.Default
+  List<LoanStatus> loanStatus() {
+    return Collections.emptyList();
+  }
 
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
+
+  @Value.Default
+  Boolean isNew() {
+    return true;
+  }
 }

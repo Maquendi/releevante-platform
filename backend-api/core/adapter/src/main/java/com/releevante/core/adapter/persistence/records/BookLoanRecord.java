@@ -4,10 +4,7 @@ import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
 import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,8 @@ public class BookLoanRecord extends PersistableEntity {
 
   private String slid;
 
+  private String externalId;
+
   private ZonedDateTime returnsAt;
 
   private ZonedDateTime returnedAt;
@@ -36,7 +35,9 @@ public class BookLoanRecord extends PersistableEntity {
 
   private String clientId;
 
-  @Transient private Set<LoanItemsRecord> loanDetails = new LinkedHashSet<>();
+  @Transient private Set<LoanItemsRecord> loanDetails = new HashSet<>();
+
+  @Transient private Set<LoanStatusRecord> loanStatus = new HashSet<>();
 
   public BookLoan toDomain() {
     return BookLoan.builder()
@@ -46,6 +47,7 @@ public class BookLoanRecord extends PersistableEntity {
         .returnsAt(returnsAt)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
+        .externalId(BookLoanId.of(externalId))
         .build();
   }
 
@@ -62,7 +64,10 @@ public class BookLoanRecord extends PersistableEntity {
     record.setUpdatedAt(loan.updatedAt());
     record.setReturnsAt(loan.returnsAt());
     record.setReturnedAt(loan.returnedAt().orElse(null));
+    record.setIsNew(loan.isNew());
     record.setClientId(client.getId());
+    record.setLoanStatus(LoanStatusRecord.fromDomain(record, loan.loanStatus()));
+    record.setExternalId(loan.externalId().value());
     return record;
   }
 

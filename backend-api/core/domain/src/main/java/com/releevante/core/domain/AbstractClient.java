@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.immutables.value.Value;
@@ -15,19 +16,41 @@ import org.immutables.value.Value;
 public abstract class AbstractClient {
   abstract ClientId id();
 
+  abstract ClientId externalId();
+
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
 
-  abstract List<BookSale> purchases();
+  @Value.Default
+  List<BookSale> purchases() {
+    return Collections.emptyList();
+  }
 
-  abstract List<BookLoan> loans();
+  @Value.Default
+  List<BookLoan> loans() {
+    return Collections.emptyList();
+  }
 
-  abstract List<BookReservation> reservations();
+  @Value.Default
+  List<BookReservation> reservations() {
+    return Collections.emptyList();
+  }
 
-  abstract List<BookRating> bookRatings();
+  @Value.Default
+  List<BookRating> bookRatings() {
+    return Collections.emptyList();
+  }
 
   abstract Optional<ServiceRating> serviceRating();
 
-  abstract List<Cart> carts();
+  @Value.Default
+  List<Cart> carts() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
+  public Boolean isNew() {
+    return true;
+  }
 }

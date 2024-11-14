@@ -6,9 +6,10 @@ import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
+import com.releevante.types.UuidGenerator;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
@@ -18,26 +19,26 @@ import org.immutables.value.Value;
 @ImmutableExt
 public abstract class AbstractClientSyncDto {
 
-  abstract String id();
+  abstract Optional<String> id();
+
+  abstract String externalId();
 
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
 
-  abstract List<CartSyncDto> carts();
-
   abstract List<BookLoanDto> loans();
 
   public Client toDomain(Slid slid) {
+    var clientId = ClientId.of(id().orElse(UuidGenerator.instance().next()));
+    var externalId = ClientId.of(externalId());
     return Client.builder()
-        .id(ClientId.of(id()))
+        .id(clientId)
+        .externalId(externalId)
+        .isNew(id().isEmpty())
         .createdAt(createdAt())
         .updatedAt(updatedAt())
-        .carts(carts().stream().map(CartSyncDto::toDomain).collect(Collectors.toList()))
         .loans(loans().stream().map(loan -> loan.toDomain(slid)).collect(Collectors.toList()))
-        .purchases(Collections.emptyList())
-        .reservations(Collections.emptyList())
-        .bookRatings(Collections.emptyList())
         .build();
   }
 }

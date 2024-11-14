@@ -58,7 +58,7 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   public Mono<SmartLibrary> synchronizeClients(SmartLibrary library) {
     var clients = library.clients();
     return Flux.fromIterable(clients)
-        .flatMap(clientRepository::synchronize)
+        .flatMap(clientRepository::saveBookLoan)
         .collectList()
         .flatMap(ignore -> markInventoryAsBorrowed(clients))
         .thenReturn(library);

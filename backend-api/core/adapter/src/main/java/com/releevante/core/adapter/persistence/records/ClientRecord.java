@@ -20,6 +20,8 @@ import reactor.core.publisher.Mono;
 public class ClientRecord extends PersistableEntity {
   @Id String id;
 
+  String externalId;
+
   ZonedDateTime createdAt;
 
   ZonedDateTime updatedAt;
@@ -41,6 +43,8 @@ public class ClientRecord extends PersistableEntity {
     record.setId(client.id().value());
     record.setCreatedAt(client.createdAt());
     record.setUpdatedAt(client.updatedAt());
+    record.setIsNew(client.isNew());
+    record.setExternalId(client.externalId().value());
     return record;
   }
 
@@ -119,7 +123,13 @@ public class ClientRecord extends PersistableEntity {
   }
 
   public Client toDomain() {
-    return Client.builder().id(ClientId.of(id)).build();
+    return Client.builder()
+        .externalId(Optional.ofNullable(externalId).map(ClientId::of).orElse(ClientId.of(getId())))
+        .isNew(false)
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
+        .id(ClientId.of(id))
+        .build();
   }
 
   @Override
