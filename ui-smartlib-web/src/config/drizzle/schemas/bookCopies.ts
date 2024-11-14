@@ -11,9 +11,6 @@ export const bookCopieSchema = sqliteTable("books_copies", {
   book_isbn: text("book_isbn")
     .notNull()
     .references(() => bookSchema.isbn),
-  isbn: text("isbn")
-    .notNull()
-    .references(() => bookSchema.isbn),
   is_available: integer("is_available", { mode: "boolean" })
     .notNull()
     .default(true),

@@ -1,6 +1,8 @@
 export interface BookCategory {
   id: string;
    name: string;
+   imageUrl:string
+
 }
 
 export interface BookImage {
@@ -9,6 +11,7 @@ export interface BookImage {
 }
 
 export interface BooksByCategory {
+  category:string
   subCategory: string;
   books: {
     isbn: string;

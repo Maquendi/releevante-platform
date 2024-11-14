@@ -15,10 +15,11 @@ const LandingPage = async() => {
         <div className="flex gap-5 flex-wrap justify-center" >
             {bookCategories.map(category=>(
                <Link key={category.id} href={`/en/bookstest/${category.id}`}>
-                <article >
-                    <Image width={300} height={300} src={category.image} alt="image"></Image>
-                    <p className="text-center">{category.name}</p>
+                <article className="relative w-[300px] h-[300px]" >
+                    <Image fill src={category.imageUrl} alt="image"></Image>
                 </article>
+                <p className="text-center">{category.name}</p>
+
                </Link>
             ))}
         </div>

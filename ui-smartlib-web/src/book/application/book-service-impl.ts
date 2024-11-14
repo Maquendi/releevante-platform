@@ -47,7 +47,6 @@ import { BookService } from "./service.definitions";
     return await this.bookRepository.findAllCategories()
   }
 
-
   async findBookById(isbn:string):Promise<Book>{
     return await this.bookRepository.findById(isbn)
   }
