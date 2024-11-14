@@ -5,19 +5,19 @@ import { DefaultCartService } from "./cart-service.impl";
 import { CartServiceFacade } from "./facade";
 import { BookLoanServiceImpl } from "./loan-service.impl";
 import { defaultBookLoanRepositoryImpl } from "../infrastructure/book-loan-repository.impl";
-import { defaultBookServiceFacade } from "@/book/application";
+import { bookServiceFacade } from "@/book/application";
 
 const bridgeIoApiClient = new DefaultBridgeIoApiClient();
 const coreApiClient = new CoreApiClientImpl();
 
 const defaultCartService = new DefaultCartService(
-  defaultBookServiceFacade,
+  bookServiceFacade,
   defaultCartRepository
 );
 
 const bookLoanService = new BookLoanServiceImpl(
   defaultBookLoanRepositoryImpl,
-  defaultBookServiceFacade,
+  bookServiceFacade,
   coreApiClient,
   bridgeIoApiClient
 );

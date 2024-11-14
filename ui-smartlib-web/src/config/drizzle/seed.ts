@@ -1,5 +1,5 @@
 const faker = require("@faker-js/faker").faker;
-const { v4: uuidv4 } = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
 const {
   bookCategorySchema,
@@ -17,7 +17,7 @@ const { db } = require("./db");
 
 async function seed() {
   try {
-    const organizations = [];
+    const organizations: any[] = [];
     for (let i = 0; i < 10; i++) {
       const orgData = {
         name: faker.company.name(),
@@ -25,7 +25,7 @@ async function seed() {
       organizations.push(orgData);
     }
 
-    const users = [];
+    const users: any[] = [];
     for (let i = 0; i < 10; i++) {
       const userData = {
         id: uuidv4(),
@@ -38,7 +38,7 @@ async function seed() {
       users.push(userData);
     }
 
-    const ftags = [];
+    const ftags: any[] = [];
     for (let i = 0; i < 10; i++) {
       const ftagData = {
         id: uuidv4(),
@@ -48,7 +48,7 @@ async function seed() {
       ftags.push(ftagData);
     }
 
-    const categories = [];
+    const categories: any[] = [];
     for (let i = 0; i < 10; i++) {
       const categoryData = {
         id: uuidv4(),
@@ -58,7 +58,7 @@ async function seed() {
       categories.push(categoryData);
     }
 
-    const books = [];
+    const books: any[] = [];
     for (let i = 0; i < 10; i++) {
       const bookData = {
         isbn: uuidv4(),
