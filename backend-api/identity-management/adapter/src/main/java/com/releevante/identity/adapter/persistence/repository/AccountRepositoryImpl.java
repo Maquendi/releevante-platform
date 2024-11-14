@@ -21,24 +21,23 @@ public class AccountRepositoryImpl implements AccountRepository {
 
   @Override
   public Mono<LoginAccount> findBy(AccountId accountId) {
-    return Mono.justOrEmpty(accountDao.findById(accountId.value())).map(AccountRecord::toDomain);
+    return accountDao.findById(accountId.value()).map(AccountRecord::toDomain);
   }
 
   @Override
   public Mono<LoginAccount> findBy(UserName userName) {
-    return Mono.justOrEmpty(accountDao.findByUserName(userName.value()))
-        .map(AccountRecord::toDomain);
+    return accountDao.findByUserName(userName.value()).map(AccountRecord::toDomain);
   }
 
   @Override
   public Mono<LoginAccount> findBy(UserName userName, Password password) {
-    return Mono.justOrEmpty(
-            accountDao.findByUserNameAndPasswordHash(userName.value(), password.value()))
+    return accountDao
+        .findByUserNameAndPasswordHash(userName.value(), password.value())
         .map(AccountRecord::toDomain);
   }
 
   @Override
   public Mono<LoginAccount> upsert(LoginAccount account) {
-    return Mono.just(accountDao.save(AccountRecord.fromDomain(account))).thenReturn(account);
+    return Mono.from(accountDao.save(AccountRecord.fromDomain(account))).thenReturn(account);
   }
 }

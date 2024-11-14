@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.SmartLibraryStatus;
 import com.releevante.core.domain.types.SmartLibraryState;
-import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -11,13 +10,14 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "library_events", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class SmartLibraryEventRecord {
+public class SmartLibraryEventRecord extends PersistableEntity {
   @Id String id;
   String type;
   ZonedDateTime createdAt;
@@ -47,7 +47,7 @@ public class SmartLibraryEventRecord {
     record.setId(status.id());
     record.setType(status.state().name());
     record.setCreatedAt(status.createdAt());
-    record.setSlid(smartLibraryRecord.getSlid());
+    record.setSlid(smartLibraryRecord.getId());
 
     return record;
   }

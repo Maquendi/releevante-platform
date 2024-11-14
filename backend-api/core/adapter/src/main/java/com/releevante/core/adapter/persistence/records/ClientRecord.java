@@ -2,22 +2,25 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
-import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Predicate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 import reactor.core.publisher.Mono;
 
 @Table(name = "clients", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class ClientRecord {
+public class ClientRecord extends PersistableEntity {
   @Id String id;
+
+  String externalId;
 
   ZonedDateTime createdAt;
 
@@ -40,12 +43,15 @@ public class ClientRecord {
     record.setId(client.id().value());
     record.setCreatedAt(client.createdAt());
     record.setUpdatedAt(client.updatedAt());
+    record.setIsNew(client.isNew());
+    record.setExternalId(client.externalId().value());
     return record;
   }
 
   public static Mono<ClientRecord> serviceRating(Client client) {
-    return Mono.just(client.serviceRating().get())
-        .filter(Objects::nonNull)
+    return Mono.just(client.serviceRating())
+        .filter(Optional::isPresent)
+        .map(Optional::get)
         .map(
             rating -> {
               var clientRecord = fromDomain(client);
@@ -117,7 +123,13 @@ public class ClientRecord {
   }
 
   public Client toDomain() {
-    return Client.builder().id(ClientId.of(id)).build();
+    return Client.builder()
+        .externalId(Optional.ofNullable(externalId).map(ClientId::of).orElse(ClientId.of(getId())))
+        .isNew(false)
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
+        .id(ClientId.of(id))
+        .build();
   }
 
   @Override

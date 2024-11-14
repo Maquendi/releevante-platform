@@ -3,7 +3,6 @@ package com.releevante.core.adapter.persistence.records;
 import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.LazyLoaderInit;
-import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -13,13 +12,15 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "book_reservations", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class BookReservationRecord {
+public class BookReservationRecord extends PersistableEntity {
   @Id private String id;
 
   private String clientId;

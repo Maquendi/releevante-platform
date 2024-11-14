@@ -19,8 +19,7 @@ public abstract class AbstractSmartLibrarySyncDto {
   abstract List<ClientSyncDto> clients();
 
   public List<Client> domainClients() {
-    return clients().stream()
-        .map(clientSyncDto -> clientSyncDto.toDomain(Slid.of(slid())))
-        .collect(Collectors.toList());
+    var slid = Slid.of(slid());
+    return clients().stream().map(client -> client.toDomain(slid)).collect(Collectors.toList());
   }
 }

@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.*;
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
@@ -12,13 +11,15 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "book_sales", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class BookSaleRecord {
+public class BookSaleRecord extends PersistableEntity {
   @Id private String id;
   private BigDecimal total;
 

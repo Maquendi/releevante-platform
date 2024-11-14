@@ -19,11 +19,11 @@ public class UserRepositoryImpl implements UserRepository {
 
   @Override
   public Mono<User> upsert(User user) {
-    return Mono.just(UserRecord.from(user)).map(userDao::save).thenReturn(user);
+    return Mono.just(UserRecord.from(user)).flatMap(userDao::save).thenReturn(user);
   }
 
   @Override
   public Mono<User> findBy(AccountId accountId) {
-    return Mono.justOrEmpty(userDao.findByAccountId(accountId.value())).map(UserRecord::toDomain);
+    return userDao.findByAccountId(accountId.value()).map(UserRecord::toDomain);
   }
 }

@@ -1,9 +1,9 @@
 package com.releevante.core.domain;
 
-public enum BookLoanStatus {
+public enum BookLoanStatusValues {
   RETURNED_ON_TIME,
-  RETURNED_AFTER_TIME,
   RETURNED_BEFORE_TIME,
+  RETURNED_OVERDUE,
   CURRENT,
-  EXPIRED
+  OVERDUE
 }

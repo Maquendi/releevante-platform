@@ -24,6 +24,6 @@ public class OrgRepositoryImpl implements OrgRepository {
 
   @Override
   public Mono<Organization> findBy(OrgId orgId) {
-    return Mono.justOrEmpty(orgDao.findById(orgId.value())).map(OrgRecord::toDomain);
+    return orgDao.findById(orgId.value()).map(OrgRecord::toDomain);
   }
 }

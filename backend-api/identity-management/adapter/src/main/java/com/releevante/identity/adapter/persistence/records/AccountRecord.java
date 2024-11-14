@@ -2,23 +2,19 @@
 package com.releevante.identity.adapter.persistence.records;
 
 import com.releevante.identity.domain.model.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "accounts", schema = "identity_management")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 public class AccountRecord {
   @Id private String id;
   private String userName;
@@ -27,8 +23,7 @@ public class AccountRecord {
   private boolean isActive;
   private String orgId;
 
-  @JdbcTypeCode(SqlTypes.ARRAY)
-  private List<String> roles;
+  private Set<String> roles;
 
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
@@ -54,7 +49,7 @@ public class AccountRecord {
     record.setPasswordHash(account.password().value());
     record.setActive(account.isActive());
     record.setOrgId(account.orgId().value());
-    record.setRoles(account.roles().stream().map(Role::value).toList());
+    record.setRoles(account.roles().stream().map(Role::value).collect(Collectors.toSet()));
     record.setCreatedAt(account.createdAt());
     record.setUpdatedAt(account.updatedAt());
     record.setEmail(account.email().value());

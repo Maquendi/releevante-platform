@@ -2,19 +2,17 @@ package com.releevante.identity.adapter.persistence.records;
 
 import com.releevante.identity.domain.model.OrgId;
 import com.releevante.identity.domain.model.Organization;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "org", schema = "identity_management")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 public class OrgRecord {
   @Id private String id;
   private String name;

@@ -1,21 +1,22 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.ServiceRating;
-import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "service_ratings", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class ServiceRatingRecord {
+public class ServiceRatingRecord extends PersistableEntity {
   @Id
-  @Column(name = "client_id")
+  @Column("client_id")
   private String id;
 
   private String orgId;

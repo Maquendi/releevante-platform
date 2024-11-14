@@ -42,17 +42,12 @@ CREATE TABLE identity_management.users (
 CREATE INDEX user_account_id_index ON identity_management.users USING btree (account_id);
 
 CREATE TABLE identity_management.roles (
+    id varchar(36) NOT NULL,
 	role varchar(50) NOT NULL,
 	privilege varchar(100) NOT NULL,
-	CONSTRAINT role_p_key PRIMARY KEY (role, privilege)
+	CONSTRAINT role_p_k PRIMARY KEY (id)
 );
 
-CREATE TABLE identity_management.auth_clients (
-	id varchar(50) NOT NULL,
-	secret varchar(250) NOT NULL,
-	org_id varchar(36) NOT NULL,
-	CONSTRAINT client_id_key PRIMARY KEY (id)
-);
 
 CREATE TABLE identity_management.smart_library_access_ctrl (
 	id varchar(36) NOT NULL,

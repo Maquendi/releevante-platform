@@ -4,7 +4,6 @@ import com.releevante.core.domain.LazyLoaderInit;
 import com.releevante.core.domain.OrgId;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.Slid;
-import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -13,14 +12,19 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "smart_libraries", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class SmartLibraryRecord {
-  @Id private String slid;
+public class SmartLibraryRecord extends PersistableEntity {
+  @Column("slid")
+  @Id
+  private String id;
 
   private String orgId;
 
@@ -33,7 +37,7 @@ public class SmartLibraryRecord {
   public static SmartLibraryRecord fromDomain(SmartLibrary smartLibrary) {
     var record = new SmartLibraryRecord();
 
-    record.setSlid(smartLibrary.id().value());
+    record.setId(smartLibrary.id().value());
     record.setCreatedAt(smartLibrary.createdAt());
     record.setUpdatedAt(smartLibrary.updatedAt());
     record.setOrgId(smartLibrary.orgId().value());
@@ -51,7 +55,7 @@ public class SmartLibraryRecord {
 
   public SmartLibrary toDomain() {
     return SmartLibrary.builder()
-        .id(Slid.of(slid))
+        .id(Slid.of(id))
         .orgId(OrgId.of(orgId))
         .createdAt(createdAt)
         .updatedAt(updatedAt)
@@ -65,7 +69,7 @@ public class SmartLibraryRecord {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     SmartLibraryRecord that = (SmartLibraryRecord) o;
-    return Objects.equals(slid, that.slid);
+    return Objects.equals(id, that.id);
   }
 
   @Override

@@ -3,6 +3,7 @@ package com.releevante.identity.domain.repository;
 import com.releevante.identity.domain.model.*;
 import com.releevante.types.Slid;
 import java.util.List;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface SmartLibraryAccessControlRepository {
@@ -12,5 +13,5 @@ public interface SmartLibraryAccessControlRepository {
 
   Mono<SmartLibraryAccess> upsert(SmartLibraryAccess access);
 
-  Mono<List<SmartLibraryAccess>> upsert(List<SmartLibraryAccess> access);
+  Flux<SmartLibraryAccess> upsert(List<SmartLibraryAccess> access);
 }

@@ -18,6 +18,4 @@ public interface ClientRepository {
   Mono<Client> saveReservations(Client client);
 
   Mono<Client> saveCarts(Client client);
-
-  Mono<Client> synchronize(Client client);
 }

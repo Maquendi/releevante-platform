@@ -3,22 +3,23 @@ spring:
     name: releevante-api
   webflux:
     base-path: /api
-  datasource:
+  r2dbc:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_SECRET}
-    initialization-mode: always
-    initialize: true
-    continue-on-error: true
-  sql:
-    init:
-      mode: never #always
-      data-locations: classpath:identity_initial_data_insert.sql
-  jpa:
-    properties:
-      hibernate:
-        ddl-auto: none
-        show-sql: true
+#    initialization-mode: always
+#    initialize: true
+#    continue-on-error: true
+#    pool:
+#      enabled: true
+#      max-size: 20
+#      validation-query: SELECT 1
+#      initial-size: 5
+#      max-idle-time: 30m
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
 security:
   rsa:
     key-path:
@@ -43,6 +44,11 @@ springdoc:
 #  level: DEBUG
 server:
   port: 8080
+
+logging:
+  level:
+    org:
+      springframework: INFO
 
 
 

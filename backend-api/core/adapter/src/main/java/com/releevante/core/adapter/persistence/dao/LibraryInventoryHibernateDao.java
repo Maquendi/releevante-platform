@@ -2,20 +2,19 @@ package com.releevante.core.adapter.persistence.dao;
 
 import com.releevante.core.adapter.persistence.records.LibraryInventoryRecord;
 import java.util.Set;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.r2dbc.repository.Modifying;
+import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
-@Transactional
 @Repository
 public interface LibraryInventoryHibernateDao
-    extends JpaRepository<LibraryInventoryRecord, String> {
+    extends ReactiveCrudRepository<LibraryInventoryRecord, String> {
 
   @Modifying
-  @Query("update LibraryInventoryRecord lir set lir.status = :status where lir.cpy in (:copies)")
-  int updateInventoryStatusByCpy(
+  @Query("update core.library_inventories set status = :status where cpy in (:copies)")
+  Mono<Void> updateInventoryStatusByCpy(
       @Param("status") String status, @Param("copies") Set<String> copies);
 }

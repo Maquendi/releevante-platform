@@ -15,7 +15,6 @@ import com.releevante.types.Slid;
 import com.releevante.types.utils.DateTimeUtils;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.function.Function;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -81,8 +80,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                                 .accessDueDays(accessDueDays)
                                 .build())
                     .collectList()
-                    .flatMap(accessControlRepository::upsert)
-                    .flatMapIterable(Function.identity())
+                    .flatMapMany(accessControlRepository::upsert)
                     .map(
                         libraryAccess ->
                             GrantedAccess.builder()
