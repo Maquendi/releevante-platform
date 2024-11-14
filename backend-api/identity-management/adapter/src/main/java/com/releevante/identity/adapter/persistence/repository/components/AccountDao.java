@@ -2,13 +2,11 @@
 package com.releevante.identity.adapter.persistence.repository.components;
 
 import com.releevante.identity.adapter.persistence.records.AccountRecord;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import reactor.core.publisher.Mono;
 
-@Repository
-public interface AccountDao extends JpaRepository<AccountRecord, String> {
-  Optional<AccountRecord> findByUserName(String userName);
+public interface AccountDao extends R2dbcRepository<AccountRecord, String> {
+  Mono<AccountRecord> findByUserName(String userName);
 
-  Optional<AccountRecord> findByUserNameAndPasswordHash(String userName, String passwordHash);
+  Mono<AccountRecord> findByUserNameAndPasswordHash(String userName, String passwordHash);
 }

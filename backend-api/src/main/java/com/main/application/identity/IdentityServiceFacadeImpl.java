@@ -14,7 +14,6 @@ import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -73,7 +72,6 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
     return authenticationService.authenticate(loginDto);
   }
 
-  @Transactional
   @Override
   public Mono<AccountIdDto> create(OrgDto orgDto) {
     return orgService.createOrg(orgDto);

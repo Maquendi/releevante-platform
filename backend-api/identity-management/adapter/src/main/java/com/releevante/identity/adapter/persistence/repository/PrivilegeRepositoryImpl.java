@@ -22,7 +22,7 @@ public class PrivilegeRepositoryImpl implements PrivilegeRepository {
   @Override
   public Flux<Privilege> findBy(List<Role> roles) {
     return Mono.just(roles.stream().map(Role::value).collect(Collectors.toList()))
-        .flatMapIterable(roleDao::findByRoleIn)
+        .flatMapMany(roleDao::findByRoleIn)
         .map(RoleRecord::toPrivilege);
   }
 }

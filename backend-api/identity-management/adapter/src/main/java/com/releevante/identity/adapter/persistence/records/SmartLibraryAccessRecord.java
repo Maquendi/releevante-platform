@@ -1,19 +1,17 @@
 package com.releevante.identity.adapter.persistence.records;
 
 import com.releevante.identity.domain.model.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "smart_library_access_ctrl", schema = "identity_management")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 public class SmartLibraryAccessRecord {
   @Id private String id;
   private String orgId;

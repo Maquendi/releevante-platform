@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookRating;
-import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -10,13 +9,14 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "book_ratings", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class BookRatingRecord {
+public class BookRatingRecord extends PersistableEntity {
 
   @Id private String id;
 

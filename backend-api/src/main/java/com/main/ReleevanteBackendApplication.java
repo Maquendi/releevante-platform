@@ -4,26 +4,30 @@ package com.main;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(
-    basePackages = {
-      "com.releevante.core.adapter.persistence.repository",
-      "com.releevante.core.adapter.persistence.dao",
-      "com.releevante.identity.adapter.persistence.repository"
+@ComponentScan(
+    value = {
+      "com.releevante",
+      "com.main.config.app",
+      "com.main",
+      "com.releevante.core.adapter.persistence"
     })
-@EntityScan({
-  "com.releevante.identity.adapter.persistence.records",
-  "com.releevante.core.adapter.persistence.records"
-})
-@ComponentScan(value = {"com.releevante", "com.main", "com.releevante.core.adapter.persistence"})
 @OpenAPIDefinition
-@EnableTransactionManagement
+@EnableR2dbcRepositories(
+    basePackages = {
+      "com.releevante.identity.adapter.persistence.repository.components",
+      "com.releevante.core.adapter.persistence.dao"
+    })
 public class ReleevanteBackendApplication {
+
+  //  @Bean
+  //  public R2dbcEntityTemplate r2dbcEntityTemplate(ConnectionFactory connectionFactory) {
+  //    return new R2dbcEntityTemplate(connectionFactory);
+  //  }
+
   public static void main(String[] args) {
     SpringApplication.run(ReleevanteBackendApplication.class, args);
   }

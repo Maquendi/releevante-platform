@@ -25,7 +25,6 @@ public class IdentityServiceBeanFactory {
   @Autowired private AccountRepository accountRepository;
   @Autowired private UserRepository userRepository;
   @Autowired private PrivilegeRepository privilegeRepository;
-  @Autowired private M2MClientsRepository m2MClientsRepository;
   @Autowired private OrgRepository orgRepository;
   @Autowired protected SmartLibraryAccessControlRepository accessControlRepository;
 
