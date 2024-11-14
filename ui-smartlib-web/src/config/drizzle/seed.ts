@@ -1,19 +1,9 @@
-const faker = require("@faker-js/faker").faker;
+import { faker } from '@faker-js/faker';
 import { v4 as uuidv4 } from "uuid";
 
-const {
-  bookCategorySchema,
-  bookCopieSchema,
-  bookFtagSchema,
-  bookImageSchema,
-  bookSchema,
-  categorySchema,
-  ftagsSchema,
-  organizationSchema,
-  userSchema,
-} = require("./schemas");
+import { bookCategorySchema, bookCopieSchema, bookFtagSchema, bookImageSchema, bookSchema, categorySchema, ftagsSchema, organizationSchema, userSchema } from "./schemas";
 
-const { db } = require("./db");
+import { db } from "./db";
 
 async function seed() {
   try {
