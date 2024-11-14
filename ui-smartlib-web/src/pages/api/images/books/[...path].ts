@@ -19,6 +19,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const imageStream = createReadStream(filePath);
     imageStream.pipe(res);
   } catch (error) {
-    res.status(404).send('Image not found');
+    res.status(404).send('Image not found' + error);
   }
 }

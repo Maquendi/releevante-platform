@@ -10,7 +10,7 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .$defaultFn(() => uuidv4()),
   book_isbn: text("book_isbn")
     .notNull()
-    .references(() => bookSchema.isbn),
+    .references(() => bookSchema.id),
   is_available: integer("is_available", { mode: "boolean" })
     .notNull()
     .default(true),
@@ -30,7 +30,7 @@ export const bookCopieSchema = sqliteTable("books_copies", {
 export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
   book: one(bookSchema, {
     fields: [bookCopieSchema.book_isbn],
-    references: [bookSchema.isbn],
+    references: [bookSchema.id],
   }),
   bookPosition: one(bookLayoutSchema, {
     fields: [bookCopieSchema.at_position],

@@ -31,10 +31,10 @@ export class DefaultUserRepositoryImpl implements UserRepository {
   }
 
   create(user: User): Promise<User> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented." + user);
   }
 
   update(user: User): Promise<User> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented." + user);
   }
 }

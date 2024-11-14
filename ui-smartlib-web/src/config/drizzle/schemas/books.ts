@@ -6,7 +6,7 @@ import { bookImageSchema } from "./bookImages";
 import { bookFtagSchema } from "./bookFtags";
 
 export const bookSchema = sqliteTable('books',{
-    isbn: text('isbn').primaryKey().$defaultFn(() => uuidv4()),
+    id: text('id').primaryKey().$defaultFn(() => uuidv4()),
     bookTitle:text('book_title').notNull(),
     editionTitle:text('edition_title').notNull(),
     author:text('author').notNull(),

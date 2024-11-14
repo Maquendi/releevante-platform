@@ -47,7 +47,7 @@ const Page = ({ params }: { params: Record<string, any> }) => {
           <Image
             width={500}
             height={500}
-            src={bookItem?.images[0].url!}
+            src={bookItem.images?.length ? bookItem.images[0].url : ''}
             alt="book image"
           ></Image>
         </figure>

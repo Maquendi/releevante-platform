@@ -8,7 +8,7 @@ import { BookService } from "./service.definitions";
  export class DefaultBookServiceImpl implements BookService {
   constructor(private bookRepository: BookRepository) {}
   findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented." + filter.filter);
   }
 
   async markUnavailable(bookCopies: BookCopy[]): Promise<BookCopy[]> {

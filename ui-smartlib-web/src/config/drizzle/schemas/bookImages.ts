@@ -7,14 +7,14 @@ export const bookImageSchema = sqliteTable("books_images", {
     .primaryKey({ autoIncrement: true })
     .notNull(),
   url: text("url", { mode: "text" }).notNull(),
-  book_isbn: text("book_isbn").notNull().references(()=>bookSchema.isbn),
+  book_isbn: text("book_isbn").notNull().references(()=>bookSchema.id),
   isSincronized: integer("isSincronized", { mode: "boolean" }).default(false),
 });
 
 export const bookImageRelations = relations(bookImageSchema, ({ one }) => ({
   book: one(bookSchema, {
     fields: [bookImageSchema.book_isbn],
-    references: [bookSchema.isbn],
+    references: [bookSchema.id],
   }),
 }));
 

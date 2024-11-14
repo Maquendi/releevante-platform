@@ -26,7 +26,7 @@ import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented." + books);
   }
 
   async findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]> {
@@ -38,7 +38,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: true,
       },
       where: and(
-        eq(bookCopieSchema.isbn, isbn.value),
+        eq(bookCopieSchema.book_isbn, isbn.value),
         eq(bookCopieSchema.is_available, true)
       ),
     });
@@ -55,11 +55,11 @@ class DefaultBookRepositoryImpl implements BookRepository {
       });
     });
 
-    return await Promise.all(resultsPromise).then((res) => bookCopies);
+    return await Promise.all(resultsPromise).then(() => bookCopies);
   }
 
   create(book: Book): Promise<Book> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented." + book.bookTitle);
   }
 
   async findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
@@ -91,19 +91,19 @@ class DefaultBookRepositoryImpl implements BookRepository {
         category:categorySchema.name,
         subCategory: ftagsSchema.tagValue,
         books: jsonAgg({
-          isbn: bookSchema.isbn,
+          isbn: bookSchema.id,
           bookTitle: bookSchema.bookTitle,
           publisher: bookSchema.author,
           imageUrl: bookImageSchema.url,
         }),
       })
       .from(bookSchema)
-      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.isbn))
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .leftJoin(bookImageSchema, eq(bookImageSchema.book_isbn, bookSchema.isbn))
+      .leftJoin(bookImageSchema, eq(bookImageSchema.book_isbn, bookSchema.id))
       .leftJoin(
         bookCategorySchema,
-        eq(bookCategorySchema.bookIsbn, bookSchema.isbn)
+        eq(bookCategorySchema.bookIsbn, bookSchema.id)
       )
       .leftJoin(
         categorySchema,
@@ -135,7 +135,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
 
   async findById(isbn: string): Promise<Book> {
     const result: any = await dbGetOne("bookSchema", {
-      where: eq(bookSchema.isbn, isbn),
+      where: eq(bookSchema.id, isbn),
       columns: {
         isbn: true,
         bookTitle: true,

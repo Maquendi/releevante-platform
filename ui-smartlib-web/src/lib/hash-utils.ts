@@ -1,4 +1,3 @@
 export const hashString = (value: string): string => {
-
-    return '';
+    return value;
 }

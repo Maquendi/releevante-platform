@@ -44,7 +44,7 @@ export const cartItemSchema = sqliteTable(
       .$defaultFn(() => uuidv4()),
     isbn: text("isbn")
       .notNull()
-      .references(() => bookSchema.isbn),
+      .references(() => bookSchema.id),
     qty: integer("qty").notNull(),
     cart_id: text("cart_id")
       .notNull()
@@ -69,6 +69,6 @@ export const cartItemRelations = relations(cartItemSchema, ({ one }) => ({
   }),
   book: one(bookSchema, {
     fields: [cartItemSchema.isbn],
-    references: [bookSchema.isbn],
+    references: [bookSchema.id],
   }),
 }));

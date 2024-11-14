@@ -8,7 +8,6 @@ import {
 import { db } from "../../config/drizzle/db";
 import * as schema from "../../config/drizzle/schemas";
 import { ClientTransaction } from "./transaction-manager";
-import { PgTableWithColumns } from "drizzle-orm/pg-core";
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
 

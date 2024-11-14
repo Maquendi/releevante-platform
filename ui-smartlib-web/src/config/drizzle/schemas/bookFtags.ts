@@ -7,7 +7,7 @@ export const bookFtagSchema = sqliteTable("book_ftag", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => uuidv4()),
-  bookIsbn: text("book_isbn").references(() => bookSchema.isbn,{onDelete:'cascade'}).notNull(),
+  bookIsbn: text("book_isbn").references(() => bookSchema.id,{onDelete:'cascade'}).notNull(),
   ftagId: text("ftag_id").references(() => ftagsSchema.id,{onDelete:'cascade'}).notNull(),
 });
 
@@ -16,7 +16,7 @@ export const bookFtagRelations = relations(
   ({ one }) => ({
     book: one(bookSchema, {
       fields: [bookFtagSchema.bookIsbn],
-      references: [bookSchema.isbn],
+      references: [bookSchema.id],
     }),
     tags: one(ftagsSchema, {
       fields: [bookFtagSchema.ftagId],

@@ -7,7 +7,7 @@ export const bookRatingsSchema = sqliteTable("book_ratings", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => uuidv4()),
-  isbn: text("isbn").notNull().references(()=>bookSchema.isbn),
+  isbn: text("isbn").notNull().references(()=>bookSchema.id),
   clientId: text("client_id").notNull().references(()=>userSchema.id),
   rating: integer("rating").notNull(),
   createdAt: text("created_at")
@@ -21,7 +21,7 @@ export const bookRatingSchemaRelations = relations(
   ({ one }) => ({
     book: one(bookSchema, {
       fields: [bookRatingsSchema.isbn],
-      references: [bookSchema.isbn],
+      references: [bookSchema.id],
     }),
     user: one(userSchema, {
         fields: [bookRatingsSchema.clientId],

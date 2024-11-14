@@ -4,7 +4,6 @@ import { CartRepository } from "../domain/repositories";
 import { BookServiceFacade } from "@/book/application/service.definitions";
 import { v4 as uuidv4 } from "uuid";
 import { CartDto } from "./dto";
-import { UserId } from "@/identity/domain/models";
 /**
  * default cart service
  */

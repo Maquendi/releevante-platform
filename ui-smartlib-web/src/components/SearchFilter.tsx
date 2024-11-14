@@ -22,7 +22,7 @@ const SearchFilter = () => {
     setIsError(false);
     FetchAllBookBySearchCriteria(queryTerm)
       .then((data) => setResults(data))
-      .catch((err) => setIsError(true))
+      .catch(() => setIsError(true))
       .finally(() => setIsPending(false));
   }, [queryTerm]);
 

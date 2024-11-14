@@ -13,11 +13,11 @@ export class DefaultUserServiceImpl implements UserServices {
   constructor(private repository: UserRepository) {}
 
   register(userDto: UserDto): Promise<User> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented." + userDto.hash);
   }
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
-    var hashedCredential = hashString(credential.value);
+    const hashedCredential = hashString(credential.value);
     const user = await this.repository.findBy(hashedCredential);
     const jwtToken = signToken({
       sub: user.data.id,
@@ -42,6 +42,7 @@ export class UserServiceFacadeImpl implements UserServiceFacade {
     try {
       return this.defaultUserService.authenticate(credential);
     } catch (error) {
+      console.log(error)
       const response = await this.userServiceApiClient.authenticate(credential);
       await this.defaultUserService.register(response?.user);
       return response;

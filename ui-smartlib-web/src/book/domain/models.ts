@@ -61,6 +61,7 @@ export interface Book {
   author: string;
   editionTitle: string;
   images?: BookImage[];
+  publisher?: string
 }
 
 export interface CategoryBooks{

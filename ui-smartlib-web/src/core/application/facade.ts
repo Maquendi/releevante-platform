@@ -22,6 +22,7 @@ export class CartServiceFacade {
     try {
       await this.bookLoanService.checkout(cart);
     } catch (error) {
+      console.log(error)
       await this.cartService.onCheckOutFailed(cart);
     }
     return cart;
