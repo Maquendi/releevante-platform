@@ -7,4 +7,12 @@ public class CustomAuthenticationException extends AuthenticationException {
   public CustomAuthenticationException(UserUnauthorizedException exception) {
     super(exception.getMessage());
   }
+
+  public CustomAuthenticationException() {
+    super("Unauthorized");
+  }
+
+  public CustomAuthenticationException(String message) {
+    super(message);
+  }
 }

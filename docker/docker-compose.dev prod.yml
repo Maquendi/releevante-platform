@@ -23,6 +23,18 @@ services:
     networks:
       - releevante
     restart: always
+  ui-admin-web:
+    extends:
+      file: ../ui-admin-web/docker/development/docker-compose.yml
+      service: ui-admin-web
+    networks:
+      - releevante
+  ui-smartlib-web:
+    extends:
+      file: ../ui-smartlib-web/docker/development/docker-compose.yml
+      service: ui-smartlib-web
+    networks:
+      - releevante
   backend-api:
     extends:
       file: ../backend-api/docker-compose.yml
