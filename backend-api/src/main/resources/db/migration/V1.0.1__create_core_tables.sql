@@ -3,6 +3,7 @@ CREATE SCHEMA core AUTHORIZATION coex;
 
 CREATE TABLE core.clients (
 	id varchar(36) NOT NULL,
+	external_id varchar(36) NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT clients_pk PRIMARY KEY (id)
@@ -126,6 +127,7 @@ CREATE TABLE core.book_ratings (
 
 CREATE TABLE core.book_loans (
 	id varchar(36) NOT NULL,
+	external_id varchar(36) NOT NULL,
 	slid varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
 	returns_at timestamp NOT NULL,
@@ -143,6 +145,15 @@ CREATE TABLE core.loan_items (
 	loan_id varchar(36) NOT NULL,
 	CONSTRAINT loan_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
+	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
+);
+
+CREATE TABLE core.loan_status (
+	id varchar(36) NOT NULL,
+	loan_id varchar(36) NOT NULL,
+	status varchar(50),
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT loan_status_pk PRIMARY KEY (id),
 	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
 );
 

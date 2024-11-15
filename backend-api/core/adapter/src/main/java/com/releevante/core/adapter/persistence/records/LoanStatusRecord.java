@@ -33,10 +33,10 @@ public class LoanStatusRecord extends PersistableEntity {
 
   private static LoanStatusRecord fromDomain(BookLoanRecord loan, LoanStatus loanStatus) {
     var record = new LoanStatusRecord();
-    record.setId(loan.getId());
+    record.setId(loanStatus.id());
     record.setCreatedAt(loanStatus.createdAt());
     record.setStatus(loanStatus.status().name());
-    record.setLoanId(loanStatus.id());
+    record.setLoanId(loan.getId());
     record.setIsNew(true);
     return record;
   }
