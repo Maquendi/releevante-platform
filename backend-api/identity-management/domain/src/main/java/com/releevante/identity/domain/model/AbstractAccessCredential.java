@@ -2,8 +2,8 @@ package com.releevante.identity.domain.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.ImmutableExt;
+import com.releevante.types.utils.HashUtils;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -15,11 +15,10 @@ public abstract class AbstractAccessCredential {
 
   abstract AccessCredentialValue value();
 
-  public static AccessCredential from(
-      String credentialType, String credential, PasswordEncoder encoder) {
+  public static AccessCredential from(String credentialType, String credential) {
     return AccessCredential.builder()
         .key(AccessCredentialKey.of(credentialType))
-        .value(AccessCredentialValue.of(encoder.encode(credential)))
+        .value(AccessCredentialValue.of(HashUtils.createSHAHash(credential)))
         .build();
   }
 }

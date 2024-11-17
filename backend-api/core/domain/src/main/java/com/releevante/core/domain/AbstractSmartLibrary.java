@@ -9,6 +9,8 @@ import com.releevante.types.Slid;
 import com.releevante.types.exceptions.ConfigurationException;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.immutables.value.Value;
 
@@ -26,14 +28,19 @@ public abstract class AbstractSmartLibrary {
 
   abstract ZonedDateTime updatedAt();
 
-  abstract LazyLoaderInit<List<SmartLibraryStatus>> statuses();
+  abstract List<SmartLibraryStatus> statuses();
 
   abstract List<Client> clients();
 
   public SmartLibraryStatus currentStatus() {
-    var data = statuses().get();
-    data.sort((s1, s2) -> s2.createdAt().compareTo(s1.createdAt()));
-    return data.get(0);
+    var data = new ArrayList<>(statuses());
+    data.sort(Comparator.comparing(SmartLibraryStatus::createdAt));
+
+    if (data.size() == 0) {
+      throw new ConfigurationException("library invalid status");
+    }
+
+    return data.get(data.size() - 1);
   }
 
   public void validateIsAuthorized(AccountPrincipal principal) {
@@ -46,7 +53,7 @@ public abstract class AbstractSmartLibrary {
     var status = currentStatus();
     if (status.state().equals(SmartLibraryState.never)
         || status.state().equals(SmartLibraryState.disconnected)) {
-      throw new ConfigurationException("smart library not configured");
+      throw new ConfigurationException("library not configured");
     }
   }
 

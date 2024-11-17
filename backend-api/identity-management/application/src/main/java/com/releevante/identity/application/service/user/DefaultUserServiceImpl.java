@@ -11,7 +11,6 @@ import com.releevante.identity.domain.repository.SmartLibraryAccessControlReposi
 import com.releevante.identity.domain.repository.UserRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.SequentialGenerator;
-import com.releevante.types.Slid;
 import com.releevante.types.utils.DateTimeUtils;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -65,7 +64,6 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
         .flatMap(
             principal ->
                 Flux.fromIterable(sLids)
-                    .map(Slid::of)
                     .map(
                         slid ->
                             SmartLibraryAccess.builder()
@@ -74,13 +72,13 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                                 .orgId(OrgId.of(principal.orgId()))
                                 .createdAt(dateTimeGenerator.next())
                                 .updatedAt(dateTimeGenerator.next())
-                                .slid(slid.value())
+                                .slid(slid)
                                 .isActive(true)
                                 .expiresAt(expiresAt)
                                 .accessDueDays(accessDueDays)
                                 .build())
                     .collectList()
-                    .flatMapMany(accessControlRepository::upsert)
+                    .flatMapMany(accessControlRepository::save)
                     .map(
                         libraryAccess ->
                             GrantedAccess.builder()
@@ -95,13 +93,13 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                             SmartLibraryGrantedAccess.builder()
                                 .access(grantedAccesses)
                                 .credentials(credentials.value().value())
+                                .credentialType(credentials.key().value())
                                 .build()));
   }
 
   @Override
   public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
-    return Mono.fromCallable(
-            () -> AccessCredential.from(access.key(), access.value(), passwordEncoder))
+    return Mono.fromCallable(() -> AccessCredential.from(access.key(), access.value()))
         .flatMap(this::validateCredentials)
         .flatMap(
             credential -> {
@@ -109,12 +107,12 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                   access
                       .expiresAt()
                       .map(expiresAt -> daysDifference(ZonedDateTime.now(), expiresAt))
-                      .orElse(access.accessDueDays().orElseThrow());
+                      .orElseGet(() -> access.accessDueDays().orElseThrow());
               var expiresAt =
                   access
                       .accessDueDays()
                       .map(DateTimeUtils::daysToAdd)
-                      .orElse(access.expiresAt().orElseThrow());
+                      .orElseGet(() -> access.expiresAt().orElseThrow());
 
               return create(access.sLids(), expiresAt, accessDueDays, credential);
             });

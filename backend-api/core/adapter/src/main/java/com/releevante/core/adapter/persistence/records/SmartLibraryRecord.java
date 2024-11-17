@@ -1,14 +1,10 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.LazyLoaderInit;
 import com.releevante.core.domain.OrgId;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,7 +28,7 @@ public class SmartLibraryRecord extends PersistableEntity {
 
   private ZonedDateTime updatedAt;
 
-  @Transient private Set<SmartLibraryEventRecord> libraryEvents = new LinkedHashSet<>();
+  @Transient private Set<SmartLibraryEventRecord> libraryEvents = new HashSet<>();
 
   public static SmartLibraryRecord fromDomain(SmartLibrary smartLibrary) {
     var record = new SmartLibraryRecord();
@@ -47,7 +43,7 @@ public class SmartLibraryRecord extends PersistableEntity {
 
   public static SmartLibraryRecord events(SmartLibrary smartLibrary) {
     var record = fromDomain(smartLibrary);
-    var events = SmartLibraryEventRecord.fromDomain(record, smartLibrary.statuses().get());
+    var events = SmartLibraryEventRecord.fromDomain(record, smartLibrary.statuses());
     record.getLibraryEvents().addAll(events);
 
     return record;
@@ -59,7 +55,7 @@ public class SmartLibraryRecord extends PersistableEntity {
         .orgId(OrgId.of(orgId))
         .createdAt(createdAt)
         .updatedAt(updatedAt)
-        .statuses(new LazyLoaderInit<>(Collections::emptyList))
+        .statuses(Collections.emptyList())
         .clients(Collections.emptyList())
         .build();
   }

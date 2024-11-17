@@ -53,13 +53,13 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
     return authorizationService
         .getAccountPrincipal()
         .flatMap(
-            principal ->
-                smartLibraryService
-                    .validateAccess(
-                        principal,
-                        access.sLids().stream().map(Slid::of).collect(Collectors.toList()))
-                    .collectList()
-                    .flatMap(smartLibrary -> userService.create(access)));
+            principal -> {
+              var slidSet = access.sLids().stream().map(Slid::of).collect(Collectors.toSet());
+              return smartLibraryService
+                  .smartLibrariesValidated(principal, slidSet)
+                  .collectList()
+                  .flatMap(ignored -> userService.create(access));
+            });
   }
 
   @Override

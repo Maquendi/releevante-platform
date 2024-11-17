@@ -6,5 +6,7 @@ public class InvalidInputException extends RuntimeException {
     super(msg);
   }
 
-  public InvalidInputException() {}
+  public InvalidInputException() {
+    super("Bad request");
+  }
 }

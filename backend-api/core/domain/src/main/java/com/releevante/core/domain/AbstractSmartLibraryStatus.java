@@ -15,6 +15,8 @@ public abstract class AbstractSmartLibraryStatus {
 
   abstract String id();
 
+  abstract String slid();
+
   abstract SmartLibraryState state();
 
   abstract ZonedDateTime createdAt();

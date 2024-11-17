@@ -2,12 +2,12 @@ package com.releevante.core.domain.repository;
 
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.Slid;
-import java.util.List;
+import java.util.Set;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface SmartLibraryRepository {
-  Flux<SmartLibrary> findById(List<Slid> sLids);
+  Flux<SmartLibrary> findById(Set<Slid> sLids);
 
   Mono<SmartLibrary> saveEvent(SmartLibrary smartLibrary);
 

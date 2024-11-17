@@ -33,14 +33,14 @@ public class SmartLibraryAccessRepositoryImpl implements SmartLibraryAccessContr
   }
 
   @Override
-  public Mono<SmartLibraryAccess> upsert(SmartLibraryAccess access) {
+  public Mono<SmartLibraryAccess> save(SmartLibraryAccess access) {
     return Mono.just(SmartLibraryAccessRecord.fromDomain(access))
         .flatMap(libraryAccessControlDao::save)
         .thenReturn(access);
   }
 
   @Override
-  public Flux<SmartLibraryAccess> upsert(List<SmartLibraryAccess> accesses) {
+  public Flux<SmartLibraryAccess> save(List<SmartLibraryAccess> accesses) {
     return Mono.just(
             accesses.stream()
                 .map(SmartLibraryAccessRecord::fromDomain)

@@ -14,7 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserRecord extends PersistableEntity{
+public class UserRecord extends PersistableEntity {
   @Id private String id;
   private String fullName;
   private String accountId;

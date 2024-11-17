@@ -19,13 +19,14 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 public class SmartLibraryEventRecord extends PersistableEntity {
   @Id String id;
+  String slid;
   String type;
   ZonedDateTime createdAt;
 
-  private String slid;
-
   public SmartLibraryStatus toDomain() {
     return SmartLibraryStatus.builder()
+        .id(id)
+        .slid(slid)
         .state(SmartLibraryState.valueOf(type))
         .createdAt(createdAt)
         .build();

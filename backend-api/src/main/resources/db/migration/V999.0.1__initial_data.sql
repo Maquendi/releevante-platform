@@ -43,3 +43,13 @@
 
     INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,price,status)
     VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4a33', '4e47b8d6-c330-4cd6-9d46-e484a79f0b66', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 145.52, 'AVAILABLE');
+
+    INSERT INTO core.library_events
+    (id, "type", slid, created_at)
+    VALUES('4e47b8d6-c330-4cd6-9d46-e484a79f0b85', 'never', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', '2024-11-16 11:43:36.113');
+    INSERT INTO core.library_events
+    (id, "type", slid, created_at)
+    VALUES('4e47b8d6-c330-4cd6-9d46-e484a79f0b96', 'online', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', '2024-11-17 11:43:36.113');
+    INSERT INTO core.library_events
+    (id, "type", slid, created_at)
+    VALUES('4e47b8d6-c330-4cd6-9d46-e484a79f8b44', 'online', '4e47b8d6-c330-4cd6-9d46-e484a79f8b99', '2024-11-17 11:43:36.113');

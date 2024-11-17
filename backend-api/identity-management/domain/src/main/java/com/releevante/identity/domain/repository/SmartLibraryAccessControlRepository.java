@@ -11,7 +11,7 @@ public interface SmartLibraryAccessControlRepository {
 
   Mono<SmartLibraryAccess> findBy(AccessCredentialValue credential);
 
-  Mono<SmartLibraryAccess> upsert(SmartLibraryAccess access);
+  Mono<SmartLibraryAccess> save(SmartLibraryAccess access);
 
-  Flux<SmartLibraryAccess> upsert(List<SmartLibraryAccess> access);
+  Flux<SmartLibraryAccess> save(List<SmartLibraryAccess> access);
 }

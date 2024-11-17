@@ -1,5 +1,6 @@
 package com.releevante.types.utils;
 
+import com.releevante.types.ZonedDateTimeGenerator;
 import java.time.ZonedDateTime;
 
 public class DateTimeUtils {
@@ -17,6 +18,7 @@ public class DateTimeUtils {
   }
 
   public static ZonedDateTime daysToAdd(Integer plusDays) {
-    return ZonedDateTime.now().plusDays(plusDays);
+
+    return ZonedDateTimeGenerator.instance().next().plusDays(plusDays);
   }
 }

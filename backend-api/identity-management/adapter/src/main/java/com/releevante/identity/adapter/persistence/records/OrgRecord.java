@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrgRecord extends PersistableEntity{
+public class OrgRecord extends PersistableEntity {
   @Id private String id;
   private String name;
   private String type;

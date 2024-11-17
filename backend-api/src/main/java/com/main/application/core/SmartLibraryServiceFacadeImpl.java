@@ -5,7 +5,7 @@ import com.releevante.core.application.dto.SmartLibrarySyncDto;
 import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
-import java.util.List;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +24,8 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Flux<SmartLibraryDto> validateAccess(AccountPrincipal principal, List<Slid> sLids) {
-    return smartLibraryService.validateAccess(principal, sLids);
+  public Flux<SmartLibraryDto> smartLibrariesValidated(
+      AccountPrincipal principal, Set<Slid> sLids) {
+    return smartLibraryService.smartLibrariesValidated(principal, sLids);
   }
 }
