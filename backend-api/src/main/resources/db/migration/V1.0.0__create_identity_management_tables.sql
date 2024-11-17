@@ -48,14 +48,13 @@ CREATE TABLE identity_management.roles (
 	CONSTRAINT role_p_k PRIMARY KEY (id)
 );
 
-
 CREATE TABLE identity_management.smart_library_access_ctrl (
 	id varchar(36) NOT NULL,
-	slid varchar(36) NOT NULL,
-	is_active BOOLEAN NOT NULL DEFAULT false,
 	org_id varchar(36) NOT NULL,
-	access_code varchar(100) NULL,
-	nfc_hash varchar(100) NULL,
+	slid varchar(36) NOT NULL,
+	credential varchar(100) NULL,
+	credential_type varchar(100) NULL,
+	is_active BOOLEAN NOT NULL DEFAULT false,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT slid_acc_id PRIMARY KEY (id),

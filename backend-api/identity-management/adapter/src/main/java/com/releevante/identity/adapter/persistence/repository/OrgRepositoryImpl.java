@@ -19,7 +19,7 @@ public class OrgRepositoryImpl implements OrgRepository {
 
   @Override
   public Mono<Organization> upsert(Organization organization) {
-    return Mono.just(OrgRecord.from(organization)).map(orgDao::save).thenReturn(organization);
+    return orgDao.save(OrgRecord.from(organization)).thenReturn(organization);
   }
 
   @Override

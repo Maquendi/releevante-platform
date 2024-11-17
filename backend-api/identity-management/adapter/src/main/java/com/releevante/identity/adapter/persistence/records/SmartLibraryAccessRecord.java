@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SmartLibraryAccessRecord {
+public class SmartLibraryAccessRecord extends PersistableEntity{
   @Id private String id;
   private String orgId;
   private String slid;

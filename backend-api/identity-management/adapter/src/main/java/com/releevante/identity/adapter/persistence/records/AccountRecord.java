@@ -15,7 +15,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AccountRecord {
+public class AccountRecord extends PersistableEntity{
   @Id private String id;
   private String userName;
   private String passwordHash;
@@ -33,7 +33,7 @@ public class AccountRecord {
         .accountId(AccountId.of(id))
         .userName(UserName.of(userName))
         .password(Password.of(passwordHash))
-        .roles(roles.stream().map(Role::of).collect(Collectors.toList()))
+        .roles(roles.stream().map(Role::of).collect(Collectors.toSet()))
         .orgId(OrgId.of(orgId))
         .email(Email.of(email))
         .isActive(isActive)

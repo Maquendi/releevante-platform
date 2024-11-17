@@ -38,6 +38,6 @@ public class AccountRepositoryImpl implements AccountRepository {
 
   @Override
   public Mono<LoginAccount> upsert(LoginAccount account) {
-    return Mono.from(accountDao.save(AccountRecord.fromDomain(account))).thenReturn(account);
+    return accountDao.save(AccountRecord.fromDomain(account)).thenReturn(account);
   }
 }

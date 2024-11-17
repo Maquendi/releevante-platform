@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoleRecord {
+public class RoleRecord extends PersistableEntity{
   private String id;
   private String role;
   private String privilege;
