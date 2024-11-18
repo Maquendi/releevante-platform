@@ -1,39 +1,54 @@
-"use client";
-
+'use client'
 import { FetchAllBookBySearchCriteria } from "@/actions/book-actions";
 import { Book } from "@/book/domain/models";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
+import { useEffect, useState, useRef } from "react";
+import { useDebounce } from "use-debounce";
+import VirtualKeyboard from "./VirtualKeyboard";
 
 const SearchFilter = () => {
   const [queryTerm, setQueryTerm] = useState<string>("");
   const [results, setResults] = useState<Book[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
+  const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement | null>(null); 
 
-  const handleDebouncedInputChange = useDebouncedCallback((value) => {
-    setQueryTerm(value);
-  }, 300);
+  const [value] = useDebounce(queryTerm, 300);
 
   useEffect(() => {
-    if (!queryTerm) return;
+    if (!value) return;
     setIsPending(true);
     setIsError(false);
-    FetchAllBookBySearchCriteria(queryTerm)
+    FetchAllBookBySearchCriteria(value)
       .then((data) => setResults(data))
       .catch(() => setIsError(true))
       .finally(() => setIsPending(false));
-  }, [queryTerm]);
+  }, [value]);
+
+  const handleQueryTerm = (param: string) => {
+    setQueryTerm(param);
+  };
+
+  const handleFocus = () => {
+    setShowKeyboard(true);
+  };
+
+  const handleBlur = () => {
+    setShowKeyboard(false); 
+  };
+
 
   return (
     <div className="relative w-full max-w-md mx-auto">
       <input
+        ref={inputRef}
         type="text"
         placeholder="Buscar libros..."
-        onChange={(e) =>
-          handleDebouncedInputChange(e.target.value.toLocaleLowerCase())
-        }
+        value={queryTerm}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onChange={(e) => handleQueryTerm(e.target.value)}
         className="w-full text-slate-950 px-4 py-2 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
@@ -60,6 +75,12 @@ const SearchFilter = () => {
           ))}
         </div>
       )}
+
+      <VirtualKeyboard
+        handleInputChangeFn={handleQueryTerm}
+        open={showKeyboard}
+        state={queryTerm}
+      />
     </div>
   );
 };

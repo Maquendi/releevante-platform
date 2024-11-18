@@ -25,3 +25,9 @@ body {
     text-wrap: balance;
   }
 }
+
+
+.simple-keyboard {
+  color:black;
+  padding: 50px;
+}
