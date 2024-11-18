@@ -11,6 +11,7 @@ import com.releevante.identity.domain.repository.SmartLibraryAccessControlReposi
 import com.releevante.identity.domain.repository.UserRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.SequentialGenerator;
+import com.releevante.types.ZonedDateTimeGenerator;
 import com.releevante.types.utils.DateTimeUtils;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -57,7 +58,8 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
       List<String> sLids,
       ZonedDateTime expiresAt,
       Integer accessDueDays,
-      AccessCredential credentials) {
+      AccessCredential credentials,
+      String userId) {
 
     return authorizationService
         .checkAuthorities("smart-library-access:create")
@@ -72,6 +74,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                                 .orgId(OrgId.of(principal.orgId()))
                                 .createdAt(dateTimeGenerator.next())
                                 .updatedAt(dateTimeGenerator.next())
+                                .userId(userId)
                                 .slid(slid)
                                 .isActive(true)
                                 .expiresAt(expiresAt)
@@ -92,8 +95,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                         grantedAccesses ->
                             SmartLibraryGrantedAccess.builder()
                                 .access(grantedAccesses)
-                                .credentials(credentials.value().value())
-                                .credentialType(credentials.key().value())
+                                .clientId(userId)
                                 .build()));
   }
 
@@ -103,10 +105,11 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
         .flatMap(this::validateCredentials)
         .flatMap(
             credential -> {
+              var now = ZonedDateTimeGenerator.instance().next();
               var accessDueDays =
                   access
                       .expiresAt()
-                      .map(expiresAt -> daysDifference(ZonedDateTime.now(), expiresAt))
+                      .map(expiresAt -> daysDifference(now, expiresAt))
                       .orElseGet(() -> access.accessDueDays().orElseThrow());
               var expiresAt =
                   access
@@ -114,7 +117,9 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                       .map(DateTimeUtils::daysToAdd)
                       .orElseGet(() -> access.expiresAt().orElseThrow());
 
-              return create(access.sLids(), expiresAt, accessDueDays, credential);
+              var userId = uuidGenerator.next();
+
+              return create(access.sLids(), expiresAt, accessDueDays, credential, userId);
             });
   }
 
@@ -126,6 +131,8 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
               if (access.isActive()) throw new RuntimeException("access is still active");
               return credential;
             })
+        .last()
+        .thenReturn(credential)
         .defaultIfEmpty(credential);
   }
 }

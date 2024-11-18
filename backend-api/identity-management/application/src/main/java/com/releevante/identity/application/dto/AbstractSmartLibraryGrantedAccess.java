@@ -11,9 +11,8 @@ import org.immutables.value.Value;
 @JsonSerialize(as = SmartLibraryGrantedAccess.class)
 @ImmutableExt
 public abstract class AbstractSmartLibraryGrantedAccess {
-  abstract String credentialType();
 
-  abstract String credentials();
+  abstract String clientId();
 
   abstract List<GrantedAccess> access();
 }

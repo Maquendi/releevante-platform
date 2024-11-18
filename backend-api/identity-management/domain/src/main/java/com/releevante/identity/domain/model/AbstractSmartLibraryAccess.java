@@ -22,6 +22,8 @@ public abstract class AbstractSmartLibraryAccess {
   /** smart library identifier */
   abstract String slid();
 
+  abstract String userId();
+
   abstract Boolean isActive();
 
   /** credential for accessing the smart library identified with slid */

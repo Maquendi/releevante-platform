@@ -1,12 +1,12 @@
 package com.releevante.identity.adapter.persistence.repository.components;
 
-import com.releevante.identity.adapter.persistence.records.SmartLibraryAccessRecord;
+import com.releevante.identity.adapter.persistence.records.SmartLibraryAccessControlRecord;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 @Repository
 public interface SmartLibraryAccessDao
-    extends ReactiveCrudRepository<SmartLibraryAccessRecord, String> {
-  Mono<SmartLibraryAccessRecord> findByCredential(String credential);
+    extends ReactiveCrudRepository<SmartLibraryAccessControlRecord, String> {
+  Flux<SmartLibraryAccessControlRecord> findByCredential(String credential);
 }

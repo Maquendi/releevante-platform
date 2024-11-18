@@ -11,4 +11,6 @@ import org.immutables.value.Value;
 @ImmutableExt
 public abstract class AbstractPinLoginDto {
   abstract String accessCode();
+
+  abstract String slid();
 }

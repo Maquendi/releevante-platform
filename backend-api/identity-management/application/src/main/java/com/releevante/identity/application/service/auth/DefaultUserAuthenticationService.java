@@ -7,6 +7,7 @@ import com.releevante.identity.domain.repository.*;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.exceptions.UserUnauthorizedException;
+import com.releevante.types.utils.HashUtils;
 import reactor.core.publisher.Mono;
 
 public class DefaultUserAuthenticationService implements AuthenticationService {
@@ -72,10 +73,13 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
 
   @Override
   public Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto) {
-    return Mono.just(passwordEncoder.encode(loginDto.accessCode()))
+    return Mono.just(HashUtils.createSHAHash(loginDto.accessCode()))
         .map(AccessCredentialValue::of)
-        .flatMap(accessControlRepository::findBy)
-        .map(SmartLibraryAccess::checkIsActive)
+        .flatMapMany(accessControlRepository::findBy)
+        .filter(access -> access.slid().equals(loginDto.slid()))
+        .filter(SmartLibraryAccess::isActive)
+        .switchIfEmpty(Mono.error(new UserUnauthorizedException()))
+        .single()
         .flatMap(
             access ->
                 orgRepository

@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public interface SmartLibraryAccessControlRepository {
   Mono<SmartLibraryAccess> findBy(Slid slid);
 
-  Mono<SmartLibraryAccess> findBy(AccessCredentialValue credential);
+  Flux<SmartLibraryAccess> findBy(AccessCredentialValue credential);
 
   Mono<SmartLibraryAccess> save(SmartLibraryAccess access);
 

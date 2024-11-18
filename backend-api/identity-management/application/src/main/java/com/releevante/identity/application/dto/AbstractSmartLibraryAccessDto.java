@@ -17,13 +17,10 @@ public abstract class AbstractSmartLibraryAccessDto {
 
   abstract String userId();
 
-  abstract String hash();
-
   public static SmartLibraryAccessDto from(LoginTokenDto tokenDto, SmartLibraryAccess access) {
     return SmartLibraryAccessDto.builder()
         .token(tokenDto)
-        .userId(access.id())
-        .hash(access.credential().value().value())
+        .userId(access.userId())
         .orgId(access.orgId().value())
         .build();
   }

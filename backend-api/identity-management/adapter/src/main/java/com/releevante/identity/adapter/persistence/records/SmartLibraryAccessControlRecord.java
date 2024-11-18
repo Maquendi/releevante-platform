@@ -12,20 +12,21 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SmartLibraryAccessRecord extends PersistableEntity {
+public class SmartLibraryAccessControlRecord extends PersistableEntity {
   @Id private String id;
   private String orgId;
   private String slid;
   private String credential;
   private String credentialType;
+  private String userId;
   private boolean isActive;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
   private ZonedDateTime expiresAt;
   private int accessDueDays;
 
-  public static SmartLibraryAccessRecord fromDomain(SmartLibraryAccess access) {
-    var record = new SmartLibraryAccessRecord();
+  public static SmartLibraryAccessControlRecord fromDomain(SmartLibraryAccess access) {
+    var record = new SmartLibraryAccessControlRecord();
     record.setId(access.id());
     record.setSlid(access.slid());
     record.setActive(access.isActive());
@@ -36,6 +37,7 @@ public class SmartLibraryAccessRecord extends PersistableEntity {
     record.setCredentialType(access.credential().key().value());
     record.setExpiresAt(access.expiresAt());
     record.setAccessDueDays(access.accessDueDays());
+    record.setUserId(access.userId());
     return record;
   }
 
@@ -49,6 +51,7 @@ public class SmartLibraryAccessRecord extends PersistableEntity {
         .updatedAt(updatedAt)
         .accessDueDays(accessDueDays)
         .expiresAt(expiresAt)
+        .userId(userId)
         .credential(
             AccessCredential.builder()
                 .value(AccessCredentialValue.of(credential))

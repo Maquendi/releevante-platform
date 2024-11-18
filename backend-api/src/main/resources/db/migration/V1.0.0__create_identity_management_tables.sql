@@ -54,6 +54,7 @@ CREATE TABLE identity_management.smart_library_access_ctrl (
 	slid varchar(36) NOT NULL,
 	credential varchar(100) NULL,
 	credential_type varchar(100) NULL,
+	user_id varchar(36) NOT NULL,
 	access_due_days numeric NULL,
 	expires_at timestamp NOT NULL,
 	is_active BOOLEAN NOT NULL DEFAULT false,

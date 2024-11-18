@@ -1,6 +1,6 @@
 package com.releevante.identity.adapter.persistence.repository;
 
-import com.releevante.identity.adapter.persistence.records.SmartLibraryAccessRecord;
+import com.releevante.identity.adapter.persistence.records.SmartLibraryAccessControlRecord;
 import com.releevante.identity.adapter.persistence.repository.components.SmartLibraryAccessDao;
 import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.SmartLibraryAccessControlRepository;
@@ -22,19 +22,21 @@ public class SmartLibraryAccessRepositoryImpl implements SmartLibraryAccessContr
 
   @Override
   public Mono<SmartLibraryAccess> findBy(Slid slid) {
-    return libraryAccessControlDao.findById(slid.value()).map(SmartLibraryAccessRecord::toDomain);
+    return libraryAccessControlDao
+        .findById(slid.value())
+        .map(SmartLibraryAccessControlRecord::toDomain);
   }
 
   @Override
-  public Mono<SmartLibraryAccess> findBy(AccessCredentialValue credential) {
+  public Flux<SmartLibraryAccess> findBy(AccessCredentialValue credential) {
     return libraryAccessControlDao
         .findByCredential(credential.value())
-        .map(SmartLibraryAccessRecord::toDomain);
+        .map(SmartLibraryAccessControlRecord::toDomain);
   }
 
   @Override
   public Mono<SmartLibraryAccess> save(SmartLibraryAccess access) {
-    return Mono.just(SmartLibraryAccessRecord.fromDomain(access))
+    return Mono.just(SmartLibraryAccessControlRecord.fromDomain(access))
         .flatMap(libraryAccessControlDao::save)
         .thenReturn(access);
   }
@@ -43,7 +45,7 @@ public class SmartLibraryAccessRepositoryImpl implements SmartLibraryAccessContr
   public Flux<SmartLibraryAccess> save(List<SmartLibraryAccess> accesses) {
     return Mono.just(
             accesses.stream()
-                .map(SmartLibraryAccessRecord::fromDomain)
+                .map(SmartLibraryAccessControlRecord::fromDomain)
                 .collect(Collectors.toList()))
         .flatMapMany(libraryAccessControlDao::saveAll)
         .thenMany(Flux.fromIterable(accesses));
