@@ -11,10 +11,11 @@ const Page = async ({ params }:{params:any}) => {
 
   const categoryBooks = await FetchAllBookByCategory(categoryId)
 
+
   return (
     <div className="px-10 pt-10 space-y-4">
       <div>
-        <h2 className="text-2xl font-semibold">Books for  {categoryBooks[0].category}</h2>
+        <h2 className="text-2xl font-semibold">Books for  {categoryBooks.length?categoryBooks[0].category:undefined}</h2>
       </div>
       <div className="bg-gray-100 rounded-md p-2 text-black">
         {categoryBooks.map(({subCategory,books}) => (
