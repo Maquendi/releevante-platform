@@ -7,32 +7,35 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import Image from "next/image";
+
 export default async function Home() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["ALL_BOOKS"],
-    queryFn: () => FetchAllBooks({limit:25}),
+    queryFn: () => FetchAllBooks({ limit: 25 }),
   });
 
   return (
-    <div className="relative min-h-[80vh]">
-      <div className=" fixed -top-0  -right-48 h-[140px] w-full z-0  ">
-        <figure className=" relative w-full h-full ">
+    <div className="relative min-h-[80vh] overflow-hidden">
+      <div className="fixed -top-0 -right-48 h-[140px] w-full z-0">
+        <figure className="relative w-full h-full">
           <Image
             fill
             src="/images/reelevante-initial-top.svg"
             className="z-0"
             alt="reelevante initial"
-          ></Image>
+            sizes="w-[100vw]"
+          />
         </figure>
       </div>
       <header>
         <figure className="relative w-[300px] h-[142px] m-auto">
           <Image
             fill
-            className=" object-contain"
+            className="object-contain"
             src="/images/releevante.svg"
             alt="relevant title image"
+            sizes="300px"
           />
         </figure>
       </header>
@@ -46,14 +49,15 @@ export default async function Home() {
           Search a book
         </Button>
       </div>
-      <div className=" fixed -bottom-12 -left-16 h-[600px] w-full z-0  ">
-        <figure className=" relative w-full h-full ">
+      <div className="fixed -bottom-12 -left-16 h-[600px] w-full z-0">
+        <figure className="relative w-full h-full">
           <Image
             fill
             src="/images/releevante-initial.svg"
             className="z-0"
             alt="reelevante initial"
-          ></Image>
+            sizes="w-[100vw]"
+          />
         </figure>
       </div>
     </div>
