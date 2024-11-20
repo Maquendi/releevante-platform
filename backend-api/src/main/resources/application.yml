@@ -47,6 +47,11 @@ server:
 
 logging:
   level:
+    io:
+      r2dbc:
+        postgresql:
+          QUERY: DEBUG
+          PARAM: DEBUG
     org:
       springframework: INFO
 

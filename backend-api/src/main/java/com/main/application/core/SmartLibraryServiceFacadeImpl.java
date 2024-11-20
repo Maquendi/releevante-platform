@@ -1,7 +1,6 @@
 package com.main.application.core;
 
-import com.releevante.core.application.dto.SmartLibraryDto;
-import com.releevante.core.application.dto.SmartLibrarySyncDto;
+import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
@@ -19,13 +18,23 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<Boolean> synchronize(SmartLibrarySyncDto synchronizeDto) {
-    return smartLibraryService.synchronize(synchronizeDto);
+  public Mono<LibrarySyncResponse> synchronizeClients(SmartLibrarySyncDto synchronizeDto) {
+    return smartLibraryService.synchronizeClients(synchronizeDto);
   }
 
   @Override
   public Flux<SmartLibraryDto> smartLibrariesValidated(
       AccountPrincipal principal, Set<Slid> sLids) {
     return smartLibraryService.smartLibrariesValidated(principal, sLids);
+  }
+
+  @Override
+  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset) {
+    return smartLibraryService.synchronizeLibrary(slid, offset);
+  }
+
+  @Override
+  public Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid) {
+    return smartLibraryService.synchronizeLibrarySettings(slid);
   }
 }

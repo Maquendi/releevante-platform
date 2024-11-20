@@ -1,6 +1,6 @@
 package com.releevante.core.domain.repository;
 
-import com.releevante.core.domain.SmartLibrary;
+import com.releevante.core.domain.*;
 import com.releevante.types.Slid;
 import java.util.Set;
 import reactor.core.publisher.Flux;
@@ -14,4 +14,10 @@ public interface SmartLibraryRepository {
   Mono<SmartLibrary> findBy(Slid slid);
 
   Mono<SmartLibrary> synchronizeClients(SmartLibrary smartLibrary);
+
+  Flux<BookCopy> synchronizeBooks(Slid slid, int offset);
+
+  Flux<LibrarySetting> synchronizeSetting(Slid slid);
+
+  Flux<BookImage> getImages(Set<Isbn> isbnSet);
 }

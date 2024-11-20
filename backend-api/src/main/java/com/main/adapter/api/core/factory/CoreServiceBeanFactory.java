@@ -20,6 +20,6 @@ public class CoreServiceBeanFactory {
 
   @Bean()
   public SmartLibraryService smartLibraryService() {
-    return new DefaultLibraryService(bookLoanRepository, smartLibraryRepository, clientRepository);
+    return new DefaultLibraryService(smartLibraryRepository);
   }
 }

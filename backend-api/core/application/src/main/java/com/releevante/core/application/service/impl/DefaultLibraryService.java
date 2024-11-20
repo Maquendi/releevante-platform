@@ -1,46 +1,39 @@
 package com.releevante.core.application.service.impl;
 
-import com.releevante.core.application.dto.BookLoanDto;
-import com.releevante.core.application.dto.SmartLibraryDto;
-import com.releevante.core.application.dto.SmartLibrarySyncDto;
+import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.repository.BookLoanRepository;
-import com.releevante.core.domain.repository.ClientRepository;
+import com.releevante.core.domain.Isbn;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.InvalidInputException;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class DefaultLibraryService implements SmartLibraryService {
-  private final BookLoanRepository bookLoanRepository;
   private final SmartLibraryRepository smartLibraryRepository;
-  private final ClientRepository clientRepository;
 
-  public DefaultLibraryService(
-      BookLoanRepository bookLoanRepository,
-      SmartLibraryRepository smartLibraryRepository,
-      ClientRepository clientRepository) {
-    this.bookLoanRepository = bookLoanRepository;
+  public DefaultLibraryService(SmartLibraryRepository smartLibraryRepository) {
     this.smartLibraryRepository = smartLibraryRepository;
-    this.clientRepository = clientRepository;
   }
 
   @Override
-  public Mono<Boolean> synchronize(SmartLibrarySyncDto syncDto) {
+  public Mono<LibrarySyncResponse> synchronizeClients(SmartLibrarySyncDto syncDto) {
     return smartLibraryRepository
         .findBy(Slid.of(syncDto.slid()))
         .flatMap(
             smartLibrary -> {
               smartLibrary.validateIsActive();
-              return smartLibraryRepository.synchronizeClients(
-                  smartLibrary.withClients(syncDto.domainClients()));
-            })
-        .thenReturn(true);
+              var clients = syncDto.domainClients();
+              return smartLibraryRepository
+                  .synchronizeClients(smartLibrary.withClients(clients))
+                  .map(ClientSyncResponse::fromDomain);
+            });
   }
 
   @Override
@@ -62,13 +55,45 @@ public class DefaultLibraryService implements SmartLibraryService {
                     .map(
                         smartLibrary -> {
                           smartLibrary.validateCanAccess(principal);
-                          return SmartLibraryDto.fromDomain(smartLibrary);
+                          return SmartLibraryDto.from(smartLibrary);
                         }))
         .switchIfEmpty(Mono.error(new InvalidInputException("no slid with provided input")));
   }
 
   @Override
   public Flux<SmartLibraryDto> findAll(Set<Slid> sLids) {
-    return smartLibraryRepository.findById(sLids).map(SmartLibraryDto::fromDomain);
+    return smartLibraryRepository.findById(sLids).map(SmartLibraryDto::from);
+  }
+
+  @Override
+  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset) {
+    return smartLibraryRepository
+        .synchronizeBooks(slid, offset)
+        .map(BookCopyDto::from)
+        .collectList()
+        .filter(Predicate.not(List::isEmpty))
+        .flatMap(
+            bookCopies -> {
+              var bookIsbnSet =
+                  bookCopies.stream()
+                      .map(BookCopyDto::isbn)
+                      .map(Isbn::of)
+                      .collect(Collectors.toSet());
+              return smartLibraryRepository
+                  .getImages(bookIsbnSet)
+                  .map(BookImageDto::from)
+                  .collectList()
+                  .map(bookImages -> LibrarySyncResponse.from(bookCopies, bookImages));
+            })
+        .defaultIfEmpty(LibrarySyncResponse.fromEmpty());
+  }
+
+  @Override
+  public Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid) {
+    return smartLibraryRepository
+        .synchronizeSetting(slid)
+        .map(LibrarySettingsDto::from)
+        .collectList()
+        .map(LibrarySyncResponse::fromSettings);
   }
 }

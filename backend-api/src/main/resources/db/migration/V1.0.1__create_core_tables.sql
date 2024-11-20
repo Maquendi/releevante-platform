@@ -91,6 +91,20 @@ CREATE TABLE core.library_inventories (
 	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid)
 );
 
+CREATE TABLE core.library_settings (
+	id varchar(36) NOT NULL,
+	slid varchar(36) NOT NULL,
+	max_books_per_loan numeric NOT NULL,
+	book_price_discount_percentage numeric NOT NULL DEFAULT 0,
+	book_price_surcharge_percentage numeric NOT NULL DEFAULT 0,
+	book_price_reduction_threshold numeric NOT NULL DEFAULT 3,
+	book_price_reduction_rate_on_threshold_reached numeric NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_sync BOOLEAN NOT NULL DEFAULT false,
+	CONSTRAINT setting_id_pk PRIMARY KEY (id),
+	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid)
+);
+
 CREATE TABLE core.library_events (
 	id varchar(36) NOT NULL,
 	type varchar(36) NOT NULL,
@@ -123,6 +137,17 @@ CREATE TABLE core.book_ratings (
 	FOREIGN KEY (org_id) REFERENCES core.org(id),
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn),
 	FOREIGN KEY (client_id) REFERENCES core.clients(id)
+);
+
+CREATE TABLE core.book_image (
+	id varchar(36) NOT NULL,
+	isbn varchar(36) NOT NULL,
+	url varchar(250) NOT NULL,
+	source_url varchar(1080) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT book_image_pk PRIMARY KEY (id),
+	FOREIGN KEY (isbn) REFERENCES core.books(isbn)
 );
 
 CREATE TABLE core.book_loans (

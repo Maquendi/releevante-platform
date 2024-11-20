@@ -2,11 +2,8 @@ package com.releevante.core.adapter.persistence.repository;
 
 import static java.util.stream.Collectors.groupingBy;
 
-import com.releevante.core.adapter.persistence.dao.LibraryInventoryHibernateDao;
-import com.releevante.core.adapter.persistence.dao.SmartLibraryEventsHibernateDao;
-import com.releevante.core.adapter.persistence.dao.SmartLibraryHibernateDao;
-import com.releevante.core.adapter.persistence.records.SmartLibraryEventRecord;
-import com.releevante.core.adapter.persistence.records.SmartLibraryRecord;
+import com.releevante.core.adapter.persistence.dao.*;
+import com.releevante.core.adapter.persistence.records.*;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.ClientRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
@@ -30,15 +27,23 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
 
+  final LibrarySettingsHibernateDao librarySettingsHibernateDao;
+
+  final BookImageHibernateDao bookImageHibernateDao;
+
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
       SmartLibraryEventsHibernateDao smartLibraryEventsHibernateDao,
       ClientRepository clientRepository,
-      LibraryInventoryHibernateDao libraryInventoryHibernateDao) {
+      LibraryInventoryHibernateDao libraryInventoryHibernateDao,
+      LibrarySettingsHibernateDao librarySettingsHibernateDao,
+      BookImageHibernateDao bookImageHibernateDao) {
     this.smartLibraryDao = smartLibraryDao;
     this.smartLibraryEventsHibernateDao = smartLibraryEventsHibernateDao;
     this.clientRepository = clientRepository;
     this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
+    this.librarySettingsHibernateDao = librarySettingsHibernateDao;
+    this.bookImageHibernateDao = bookImageHibernateDao;
   }
 
   @Override
@@ -112,6 +117,28 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
         .collectList()
         .flatMap(ignore -> markInventoryAsBorrowed(clients))
         .thenReturn(library);
+  }
+
+  @Override
+  public Flux<BookCopy> synchronizeBooks(Slid slid, int offset) {
+    return libraryInventoryHibernateDao
+        .findAllCopiesUnSynced(slid.value(), offset)
+        .map(LibraryInventoryRecord::fromProjection);
+  }
+
+  @Override
+  public Flux<LibrarySetting> synchronizeSetting(Slid slid) {
+    return Flux.from(
+            librarySettingsHibernateDao.findOneBySlidAndIsSyncIsFalseOrderByCreatedAtDesc(
+                slid.value()))
+        .map(LibrarySettingsRecord::toDomain);
+  }
+
+  @Override
+  public Flux<BookImage> getImages(Set<Isbn> isbnSet) {
+    return bookImageHibernateDao
+        .findAllByIsbnIn(isbnSet.stream().map(Isbn::value).collect(Collectors.toSet()))
+        .map(BookImageRecord::toDomain);
   }
 
   public Mono<Void> markInventoryAsBorrowed(List<Client> clients) {
