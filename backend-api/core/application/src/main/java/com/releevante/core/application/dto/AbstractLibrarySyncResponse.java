@@ -1,5 +1,6 @@
 package com.releevante.core.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
@@ -12,21 +13,22 @@ import org.immutables.value.Value;
 @JsonSerialize(as = LibrarySyncResponse.class)
 @ImmutableExt
 public abstract class AbstractLibrarySyncResponse {
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<ClientSyncResponse> clients() {
     return Collections.emptyList();
   }
-
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookCopyDto> books() {
     return Collections.emptyList();
   }
-
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookImageDto> bookImages() {
     return Collections.emptyList();
   }
-
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<LibrarySettingsDto> settings() {
     return Collections.emptyList();

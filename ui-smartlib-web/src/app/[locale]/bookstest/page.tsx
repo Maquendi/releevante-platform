@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 
 const page = async() => {
-  const allBooks = await FetchAllBooks()
+  const allBooks = await FetchAllBooks({})
 
   return (
     <div className='px-10 mt-10 mb-5'>
