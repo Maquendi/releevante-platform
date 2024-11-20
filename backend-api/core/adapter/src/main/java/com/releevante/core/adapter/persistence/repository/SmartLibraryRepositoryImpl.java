@@ -141,6 +141,14 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
         .map(BookImageRecord::toDomain);
   }
 
+  @Override
+  public Mono<Boolean> setSynchronized(Slid slid) {
+    return Mono.zip(
+            libraryInventoryHibernateDao.setSynchronized(slid.value()),
+            librarySettingsHibernateDao.setSynchronized(slid.value()))
+        .map(ignore -> Boolean.TRUE);
+  }
+
   public Mono<Void> markInventoryAsBorrowed(List<Client> clients) {
     return Mono.fromCallable(
             () ->

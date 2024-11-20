@@ -16,4 +16,6 @@ public interface SmartLibraryServiceFacade {
   Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset, int pageSize);
 
   Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid);
+
+  Mono<Boolean> setSynchronized(Slid slid);
 }

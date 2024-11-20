@@ -59,7 +59,7 @@ public class JwtServerAuthenticationConverter implements ServerAuthenticationCon
                     Mono.just(exchange.getRequest().getPath().value())
                         .map(path -> path.contains(swaggerUi) || path.contains(swaggerDoc))
                         .filter(Boolean::booleanValue)
-                        .switchIfEmpty(Mono.error(new UserUnauthorizedException()))));
+                        .switchIfEmpty(Mono.error(new CustomAuthenticationException()))));
   }
 
   private Mono<String> extractAuthTokenFromRequest(ServerWebExchange exchange) {

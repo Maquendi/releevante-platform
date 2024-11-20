@@ -37,4 +37,9 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   public Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid) {
     return smartLibraryService.synchronizeLibrarySettings(slid);
   }
+
+  @Override
+  public Mono<Boolean> setSynchronized(Slid slid) {
+    return smartLibraryService.setSynchronized(slid);
+  }
 }

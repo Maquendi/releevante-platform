@@ -42,4 +42,7 @@ public interface LibraryInventoryHibernateDao
               + "limit :size offset :offset")
   Flux<BookCopyData> findAllCopiesUnSynced(
       @Param("slid") String slid, @Param("offset") int offset, @Param("size") int size);
+
+  @Query("update core.library_inventories \n" + "set is_sync = true \n" + "where slid = :slid")
+  Mono<Integer> setSynchronized(@Param("slid") String slid);
 }

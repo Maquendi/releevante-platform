@@ -20,4 +20,6 @@ public interface SmartLibraryRepository {
   Flux<LibrarySetting> synchronizeSetting(Slid slid);
 
   Flux<BookImage> getImages(Set<Isbn> isbnSet);
+
+  Mono<Boolean> setSynchronized(Slid slid);
 }

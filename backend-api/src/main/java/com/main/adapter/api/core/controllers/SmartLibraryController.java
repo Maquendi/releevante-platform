@@ -70,6 +70,51 @@ public class SmartLibraryController {
   }
 
   @Operation(
+      summary = "library is synchronized",
+      description = "Synchronizes the given clients from smart library to server")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PutMapping("/synchronize")
+  public Mono<CustomApiResponse<Boolean>> setLibrarySynchronized(
+      @PathVariable("slid") String slid) {
+    return smartLibraryService.setSynchronized(Slid.of(slid)).map(CustomApiResponse::from);
+  }
+
+  @Operation(
       summary = "Synchronize books, images, etc",
       description = "retrieve all book copies and their images that belongs to the given library")
   @ApiResponses(

@@ -96,4 +96,9 @@ public class DefaultLibraryService implements SmartLibraryService {
         .collectList()
         .map(LibrarySyncResponse::fromSettings);
   }
+
+  @Override
+  public Mono<Boolean> setSynchronized(Slid slid) {
+    return smartLibraryRepository.setSynchronized(slid);
+  }
 }
