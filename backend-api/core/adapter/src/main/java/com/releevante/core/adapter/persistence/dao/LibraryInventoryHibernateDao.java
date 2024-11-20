@@ -39,6 +39,7 @@ public interface LibraryInventoryHibernateDao
               + "\tli.slid=:slid\n"
               + "\tand li.is_sync = false\n"
               + "order by li.created_at asc \n"
-              + "limit 200 offset :offset*200;")
-  Flux<BookCopyData> findAllCopiesUnSynced(@Param("slid") String slid, @Param("offset") int offset);
+              + "limit :size offset :offset")
+  Flux<BookCopyData> findAllCopiesUnSynced(
+      @Param("slid") String slid, @Param("offset") int offset, @Param("size") int size);
 }

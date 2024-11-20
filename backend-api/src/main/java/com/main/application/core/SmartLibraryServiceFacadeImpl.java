@@ -29,8 +29,8 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset) {
-    return smartLibraryService.synchronizeLibrary(slid, offset);
+  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset, int pageSize) {
+    return smartLibraryService.synchronizeLibrary(slid, offset, pageSize);
   }
 
   @Override

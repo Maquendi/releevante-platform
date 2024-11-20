@@ -17,7 +17,7 @@ public interface SmartLibraryService {
 
   Flux<SmartLibraryDto> findAll(Set<Slid> sLids);
 
-  Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset);
+  Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset, int pageSize);
 
   Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid);
 }

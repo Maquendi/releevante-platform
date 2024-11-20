@@ -66,9 +66,9 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset) {
+  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset, int pageSize) {
     return smartLibraryRepository
-        .synchronizeBooks(slid, offset)
+        .synchronizeBooks(slid, offset, pageSize)
         .map(BookCopyDto::from)
         .collectList()
         .filter(Predicate.not(List::isEmpty))

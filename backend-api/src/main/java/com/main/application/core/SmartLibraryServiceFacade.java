@@ -13,7 +13,7 @@ public interface SmartLibraryServiceFacade {
 
   Mono<LibrarySyncResponse> synchronizeClients(SmartLibrarySyncDto synchronizeDto);
 
-  Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset);
+  Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset, int pageSize);
 
   Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid);
 }

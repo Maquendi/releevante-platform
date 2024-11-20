@@ -1,6 +1,7 @@
 package com.main.config.security;
 
 import com.main.application.identity.IdentityServiceFacade;
+import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,12 +15,16 @@ import reactor.util.function.Tuple2;
 
 @Component
 public class JwtServerAuthenticationConverter implements ServerAuthenticationConverter {
-
-  final String AUTHORIZATION_HEADER_KEY = "Authorization";
   final String API_KEY_HEADER_KEY = "x-api-key";
 
   @Value("${security.api.keys}")
   private List<String> apiKeys = new ArrayList<>();
+
+  @Value("${springdoc.swagger-ui.custom-url}")
+  private String swaggerUi;
+
+  @Value("${springdoc.api-docs.path}")
+  private String swaggerDoc;
 
   final IdentityServiceFacade identityService;
   private static final String BEARER = "Bearer ";
@@ -45,7 +50,16 @@ public class JwtServerAuthenticationConverter implements ServerAuthenticationCon
   }
 
   private Mono<Boolean> verifyApiKeyHeader(ServerWebExchange exchange) {
-    return extractApiKeyFromRequest(exchange).map(apiKeys::contains);
+    return extractApiKeyFromRequest(exchange)
+        .map(apiKeys::contains)
+        .filter(Boolean::booleanValue)
+        .switchIfEmpty(
+            Mono.defer(
+                () ->
+                    Mono.just(exchange.getRequest().getPath().value())
+                        .map(path -> path.contains(swaggerUi) || path.contains(swaggerDoc))
+                        .filter(Boolean::booleanValue)
+                        .switchIfEmpty(Mono.error(new UserUnauthorizedException()))));
   }
 
   private Mono<String> extractAuthTokenFromRequest(ServerWebExchange exchange) {

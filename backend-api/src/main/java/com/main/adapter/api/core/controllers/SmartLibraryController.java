@@ -110,8 +110,10 @@ public class SmartLibraryController {
       })
   @GetMapping("/synchronize/books")
   public Mono<CustomApiResponse<LibrarySyncResponse>> synchronizeLibraryBooks(
-      @PathVariable String slid, @RequestParam() int page) {
-    return smartLibraryService.synchronizeLibrary(Slid.of(slid), page).map(CustomApiResponse::from);
+      @PathVariable String slid, @RequestParam() int page, @RequestParam() int pageSize) {
+    return smartLibraryService
+        .synchronizeLibrary(Slid.of(slid), page, pageSize)
+        .map(CustomApiResponse::from);
   }
 
   @Operation(

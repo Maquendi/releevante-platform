@@ -120,9 +120,9 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   }
 
   @Override
-  public Flux<BookCopy> synchronizeBooks(Slid slid, int offset) {
+  public Flux<BookCopy> synchronizeBooks(Slid slid, int offset, int pageSize) {
     return libraryInventoryHibernateDao
-        .findAllCopiesUnSynced(slid.value(), offset)
+        .findAllCopiesUnSynced(slid.value(), offset * pageSize, pageSize)
         .map(LibraryInventoryRecord::fromProjection);
   }
 

@@ -15,7 +15,7 @@ public interface SmartLibraryRepository {
 
   Mono<SmartLibrary> synchronizeClients(SmartLibrary smartLibrary);
 
-  Flux<BookCopy> synchronizeBooks(Slid slid, int offset);
+  Flux<BookCopy> synchronizeBooks(Slid slid, int offset, int pageSize);
 
   Flux<LibrarySetting> synchronizeSetting(Slid slid);
 
