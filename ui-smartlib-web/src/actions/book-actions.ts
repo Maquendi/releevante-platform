@@ -20,9 +20,9 @@ export async function FetchAllBookBySearchCriteria(searchParam:string){
     }
 }
 
-export async function FetchAllBooks(){
+export async function FetchAllBooks({limit}:{limit?:number}){
     try {
-        return await bookServiceFacade.findAllBooks({limit:10})
+        return await bookServiceFacade.findAllBooks({limit:limit || 20})
     } catch (error) {
         throw new Error('Error fetching all books' +  error)
     }
