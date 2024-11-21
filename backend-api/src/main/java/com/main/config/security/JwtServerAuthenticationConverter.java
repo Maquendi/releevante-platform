@@ -1,7 +1,6 @@
 package com.main.config.security;
 
 import com.main.application.identity.IdentityServiceFacade;
-import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;

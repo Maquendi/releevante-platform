@@ -18,16 +18,19 @@ public abstract class AbstractLibrarySyncResponse {
   List<ClientSyncResponse> clients() {
     return Collections.emptyList();
   }
+
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookCopyDto> books() {
     return Collections.emptyList();
   }
+
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookImageDto> bookImages() {
     return Collections.emptyList();
   }
+
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<LibrarySettingsDto> settings() {

@@ -12,7 +12,10 @@ CREATE TABLE core.clients (
 CREATE TABLE core.books (
   isbn varchar(36) NOT NULL,
   title varchar(250) NULL,
+  qty numeric NOT NULL,
   price numeric NOT NULL,
+  author varchar(120) NOT NULL,
+  description varchar(1080) NULL,
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT books_pk PRIMARY KEY(isbn)

@@ -60,6 +60,11 @@ logging:
     org:
       springframework: INFO
 
+google:
+  credentials:
+    api-key: AIzaSyC0tRVxofehHINvbBcA4hxUT3uC0RRgeIg
+    path: /releevante-google-sheets-client-secret.json
+
 
 
 

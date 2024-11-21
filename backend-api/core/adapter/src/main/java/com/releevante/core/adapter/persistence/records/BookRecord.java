@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.Isbn;
-import com.releevante.core.domain.LazyLoaderInit;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
@@ -26,7 +25,9 @@ public class BookRecord extends PersistableEntity {
   private String id;
 
   private String title;
+  private String qty;
   private BigDecimal price;
+  private String author;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
@@ -49,7 +50,7 @@ public class BookRecord extends PersistableEntity {
   public Book toDomain() {
     return Book.builder()
         .isbn(Isbn.of(getId()))
-        .ratings(new LazyLoaderInit<>(() -> BookRatingRecord.toDomain(getRatings())))
+        .ratings(BookRatingRecord.toDomain(getRatings()))
         .price(price)
         .title(title)
         .build();

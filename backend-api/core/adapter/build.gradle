@@ -12,9 +12,14 @@ bootJar {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc:3.3.5'
     implementation 'org.postgresql:r2dbc-postgresql:1.0.7.RELEASE'
-//    implementation 'io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE'
-
     implementation 'org.postgresql:postgresql:42.7.4'
-//    implementation 'io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE'
+
+
+    implementation 'com.google.api-client:google-api-client:2.7.0'
+    implementation 'com.google.apis:google-api-services-sheets:v4-rev20241008-2.0.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.30.0'
+
+
     implementation project(path: ':core:domain')
+    implementation project(path: ':core:application')
 }

@@ -16,11 +16,11 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/aggregator/{slid}")
-public class SmartLibraryController {
+public class SmartLibrarySyncController {
 
   private final SmartLibraryServiceFacade smartLibraryService;
 
-  public SmartLibraryController(SmartLibraryServiceFacade smartLibraryService) {
+  public SmartLibrarySyncController(SmartLibraryServiceFacade smartLibraryService) {
     this.smartLibraryService = smartLibraryService;
   }
 

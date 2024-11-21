@@ -37,3 +37,5 @@ out/
 .vscode/
 private.pem
 public.pem
+
+/src/main/resources/releevante-google-sheets-client-secret.json
