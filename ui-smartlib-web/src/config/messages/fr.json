@@ -1,5 +1,19 @@
-  {
-    "HomePage": {
-      "title":  "Bienvenue à la bibliothèque intelligente"
-    }
+{
+  "home": {
+    "title": "Bienvenue à la Bibliothèque Intelligente"
+  },
+  "wristbandScanAuth": {
+    "header": "Bienvenue dans votre bibliothèque personnelle !",
+    "title": "Commencez à scanner votre bracelet",
+    "subTitle": "Placez votre bracelet sur le scanner pour accéder à notre collection de livres à louer ou à acheter.",
+    "footerText": "Vous avez des problèmes pour scanner votre bracelet ?",
+    "footerBtn": "Entrez votre code manuellement"
+  },
+  "AuthPasscodePage": {
+    "header": "Bienvenue dans votre bibliothèque personnelle!",
+    "title": "Commençons à scanner votre bracelet",
+    "subTitle": "Présentez votre bracelet au scanner du kiosque pour accéder à notre collection de livres en location ou achat.",
+    "footerText": "Vous avez des difficultés à scanner votre bracelet?",
+    "footerBtn": "Scanner le bracelet"
   }
+}
