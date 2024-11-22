@@ -44,8 +44,6 @@ public class GoogleSheetService extends GoogleService<Sheets> implements GoogleS
                     .execute())
         .filter(results -> Objects.nonNull(results.getValues()))
         .flatMapIterable(ValueRange::getValues)
-        .map(rowMapper)
-        .onErrorResume(err -> Mono.empty())
-        .onErrorStop();
+        .map(rowMapper);
   }
 }
