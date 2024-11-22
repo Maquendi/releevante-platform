@@ -16,6 +16,8 @@ import org.immutables.value.Value;
 public abstract class AbstractBook {
   abstract Isbn isbn();
 
+  abstract String correlationId();
+
   abstract String title();
 
   abstract BigDecimal price();
@@ -25,6 +27,8 @@ public abstract class AbstractBook {
   abstract String description();
 
   abstract String author();
+
+  abstract String language();
 
   abstract ZonedDateTime createdAt();
 

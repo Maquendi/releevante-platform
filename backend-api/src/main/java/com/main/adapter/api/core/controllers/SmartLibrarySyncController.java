@@ -157,7 +157,7 @@ public class SmartLibrarySyncController {
   public Mono<CustomApiResponse<LibrarySyncResponse>> synchronizeLibraryBooks(
       @PathVariable String slid, @RequestParam() int page, @RequestParam() int pageSize) {
     return smartLibraryService
-        .synchronizeLibrary(Slid.of(slid), page, pageSize)
+        .synchronizeLibraryBooks(Slid.of(slid), page, pageSize)
         .map(CustomApiResponse::from);
   }
 

@@ -1,17 +1,28 @@
 package com.releevante.core.adapter.persistence.dao.projections;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public interface BookCopyProjection {
-  String getCpy();
-
-  String getIsbn();
-
-  String getSlid();
-
-  BigDecimal getBasePrice();
-
-  BigDecimal getTotalPrice();
-
-  String getTitle();
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class BookCopyProjection {
+  private String cpy;
+  private String isbn;
+  private String slid;
+  private BigDecimal price;
+  private String title;
+  private String author;
+  private String lang;
+  private String correlationId;
+  private String description;
+  private String status;
+  private ZonedDateTime createdAt;
+  private ZonedDateTime updatedAt;
+  private boolean isSync;
 }

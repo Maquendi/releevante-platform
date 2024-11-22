@@ -66,9 +66,9 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibrary(Slid slid, int offset, int pageSize) {
+  public Mono<LibrarySyncResponse> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
     return smartLibraryRepository
-        .synchronizeBooks(slid, offset, pageSize)
+        .findAllBookCopiesUnSynced(slid, offset, pageSize)
         .map(BookCopyDto::from)
         .collectList()
         .filter(Predicate.not(List::isEmpty))
@@ -79,6 +79,7 @@ public class DefaultLibraryService implements SmartLibraryService {
                       .map(BookCopyDto::isbn)
                       .map(Isbn::of)
                       .collect(Collectors.toSet());
+
               return smartLibraryRepository
                   .getImages(bookIsbnSet)
                   .map(BookImageDto::from)
@@ -91,7 +92,7 @@ public class DefaultLibraryService implements SmartLibraryService {
   @Override
   public Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid) {
     return smartLibraryRepository
-        .synchronizeSetting(slid)
+        .findLibrarySettings(slid)
         .map(LibrarySettingsDto::from)
         .collectList()
         .map(LibrarySyncResponse::fromSettings);

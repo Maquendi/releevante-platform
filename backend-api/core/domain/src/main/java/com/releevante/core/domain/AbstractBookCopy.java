@@ -2,7 +2,6 @@ package com.releevante.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.releevante.types.BookCopyId;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import java.math.BigDecimal;
@@ -14,17 +13,25 @@ import org.immutables.value.Value;
 @JsonSerialize(as = BookCopy.class)
 @ImmutableExt
 public abstract class AbstractBookCopy {
-  abstract BookCopyId id();
+  abstract String id();
 
   abstract Isbn isbn();
 
   abstract String title();
 
+  abstract BigDecimal price();
+
+  abstract String correlationId();
+
+  abstract String description();
+
   abstract Slid slid();
 
   abstract Boolean isSync();
 
-  abstract BigDecimal price();
+  abstract String author();
+
+  abstract String language();
 
   abstract BookCopyStatus status();
 

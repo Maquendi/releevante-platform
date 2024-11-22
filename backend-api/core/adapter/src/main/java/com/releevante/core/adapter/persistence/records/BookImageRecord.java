@@ -22,4 +22,13 @@ public class BookImageRecord extends PersistableEntity {
   public BookImage toDomain() {
     return BookImage.builder().id(id).isbn(isbn).url(url).sourceUrl(sourceUrl).build();
   }
+
+  public static BookImageRecord from(BookImage image) {
+    var record = new BookImageRecord();
+    record.setId(image.id());
+    record.setIsbn(image.isbn());
+    record.setUrl(image.url());
+    record.setSourceUrl(image.sourceUrl());
+    return record;
+  }
 }

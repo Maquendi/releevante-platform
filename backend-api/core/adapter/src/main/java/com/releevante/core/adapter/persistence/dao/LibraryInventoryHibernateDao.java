@@ -1,6 +1,6 @@
 package com.releevante.core.adapter.persistence.dao;
 
-import com.releevante.core.adapter.persistence.dao.projections.BookCopyData;
+import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
 import com.releevante.core.adapter.persistence.records.LibraryInventoryRecord;
 import java.util.Set;
 import org.springframework.data.r2dbc.repository.Modifying;
@@ -29,8 +29,16 @@ public interface LibraryInventoryHibernateDao
               + "\tli.cpy,\n"
               + "\tli.isbn,\n"
               + "\tli.slid,\n"
-              + "\tb.price as price,\n"
-              + "\tb.title\n"
+              + "\tli.is_sync,\n"
+              + "\tli.status,\n"
+              + "\tli.created_at,\n"
+              + "\tli.updated_at,\n"
+              + "\tb.price,\n"
+              + "\tb.title,\n"
+              + "\tb.author,\n"
+              + "\tb.description,\n"
+              + "\tb.lang,\n"
+              + "\tb.correlation_id\n"
               + "from\n"
               + "\tcore.library_inventories li\n"
               + "inner join core.books b on\n"
@@ -40,7 +48,7 @@ public interface LibraryInventoryHibernateDao
               + "\tand li.is_sync = false\n"
               + "order by li.created_at asc \n"
               + "limit :size offset :offset")
-  Flux<BookCopyData> findAllCopiesUnSynced(
+  Flux<BookCopyProjection> findAllCopiesUnSynced(
       @Param("slid") String slid, @Param("offset") int offset, @Param("size") int size);
 
   @Query("update core.library_inventories \n" + "set is_sync = true \n" + "where slid = :slid")

@@ -20,29 +20,30 @@
     VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b26', 'Master');
     INSERT INTO core.smart_libraries(slid, org_id)
     VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b00', '4e47b8d6-c330-4cd6-9d46-e484a79f0b26');
-    INSERT INTO core.books(isbn, title, price)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b66', '100 anos de soledad', 145.52);
 
     INSERT INTO core.smart_libraries(slid, org_id)
     VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f8b99', '4e47b8d6-c330-4cd6-9d46-e484a79f0b26');
 
-    INSERT INTO core.books(isbn, title, price)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f8a44', 'Beyond Order', 1450.52);
+    INSERT INTO core.books(isbn, title, price, correlation_id, author, description, lang, qty)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b66', 'Adentrando a la selva', 145.52, 'c68e5302-d719-488b-9655-aa2739df6c44', 'Homero', 'En lo profundo de las selvas amazonicas, se encuentran tesoros invaluables, dignos de explorarse.', 'Espanol', 3);
 
-    INSERT INTO core.books(isbn, title, price)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f9a88', 'Anita no te raje', 160);
+    INSERT INTO core.books(isbn, title, price, correlation_id, author, description, lang, qty)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f8a44', 'Gran canon', 1450.52, 'c68e5302-d719-488b-9422-aa2739df6c56', 'Homero', 'gran libro de filosofos', 'Espanol', 5);
 
-	INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,price,status)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4a99', '4e47b8d6-c330-4cd6-9d46-e484a79f0b66', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 145.52, 'AVAILABLE');
+    INSERT INTO core.books(isbn, title, price, correlation_id, author, description, lang, qty)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f9a88', 'Anita no te raje', 160, 'c68e0085-d719-488b-9422-aa2739df6c00', 'Marco aurelio', 'telenovela anita no te rajes.', 'Espanol', 7 );
 
-	INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,price,status)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f9f52', '4e47b8d6-c330-4cd6-9d46-e484a79f9a88', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 165.52, 'AVAILABLE');
+	INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,status)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4a99', '4e47b8d6-c330-4cd6-9d46-e484a79f0b66', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 'AVAILABLE');
 
-	INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,price,status)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f9f11', '4e47b8d6-c330-4cd6-9d46-e484a79f8a44', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 1450.52, 'AVAILABLE');
+	INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,status)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f9f52', '4e47b8d6-c330-4cd6-9d46-e484a79f9a88', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 'AVAILABLE');
 
-    INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,price,status)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4a33', '4e47b8d6-c330-4cd6-9d46-e484a79f0b66', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 145.52, 'AVAILABLE');
+	INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,status)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f9f11', '4e47b8d6-c330-4cd6-9d46-e484a79f8a44', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 'AVAILABLE');
+
+    INSERT INTO core.library_inventories(cpy,isbn,slid,is_sync,status)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4a33', '4e47b8d6-c330-4cd6-9d46-e484a79f0b66', '4e47b8d6-c330-4cd6-9d46-e484a79f0b00', true, 'AVAILABLE');
 
     INSERT INTO core.library_events
     (id, "type", slid, created_at)

@@ -24,10 +24,13 @@ public class BookRecord extends PersistableEntity {
   @Id
   private String id;
 
+  private String correlationId;
   private String title;
-  private String qty;
+  private int qty;
   private BigDecimal price;
   private String author;
+  private String description;
+  private String lang;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 
@@ -38,12 +41,13 @@ public class BookRecord extends PersistableEntity {
     record.setId(book.isbn().value());
     record.setTitle(book.title());
     record.setPrice(book.price());
-    return record;
-  }
-
-  public static BookRecord from(Isbn isbn) {
-    var record = new BookRecord();
-    record.setId(isbn.value());
+    record.setQty(book.qty());
+    record.setDescription(book.description());
+    record.setCreatedAt(book.createdAt());
+    record.setUpdatedAt(book.updatedAt());
+    record.setAuthor(book.author());
+    record.setCorrelationId(book.correlationId());
+    record.setLang(book.language());
     return record;
   }
 
@@ -51,6 +55,13 @@ public class BookRecord extends PersistableEntity {
     return Book.builder()
         .isbn(Isbn.of(getId()))
         .ratings(BookRatingRecord.toDomain(getRatings()))
+        .updatedAt(updatedAt)
+        .createdAt(createdAt)
+        .author(author)
+        .description(description)
+        .correlationId(correlationId)
+        .language(lang)
+        .qty(qty)
         .price(price)
         .title(title)
         .build();
