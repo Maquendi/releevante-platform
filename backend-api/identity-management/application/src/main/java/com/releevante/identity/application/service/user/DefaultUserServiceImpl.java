@@ -4,6 +4,7 @@ package com.releevante.identity.application.service.user;
 import static com.releevante.types.utils.DateTimeUtils.daysDifference;
 
 import com.releevante.identity.application.dto.*;
+import com.releevante.identity.application.service.auth.AuthConstants;
 import com.releevante.identity.application.service.auth.AuthorizationService;
 import com.releevante.identity.domain.model.*;
 import com.releevante.identity.domain.repository.AccountRepository;
@@ -11,10 +12,12 @@ import com.releevante.identity.domain.repository.SmartLibraryAccessControlReposi
 import com.releevante.identity.domain.repository.UserRepository;
 import com.releevante.identity.domain.service.PasswordEncoder;
 import com.releevante.types.SequentialGenerator;
+import com.releevante.types.Slid;
 import com.releevante.types.ZonedDateTimeGenerator;
 import com.releevante.types.utils.DateTimeUtils;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +49,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   @Override
   public Mono<AccountIdDto> createAccount(AccountDto accountDto) {
     return authorizationService
-        .checkAuthorities("account:create")
+        .checkAuthorities(AuthConstants.ACCOUNT_CREATE)
         .flatMap(principal -> createAccount(accountDto, OrgId.of(principal.orgId())))
         .flatMap(accountRepository::upsert)
         .map(LoginAccount::accountId)
@@ -62,7 +65,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
       String userId) {
 
     return authorizationService
-        .checkAuthorities("smart-library-access:create")
+        .checkAuthorities(AuthConstants.LIBRARY_ACCESS_CREATE)
         .flatMap(
             principal ->
                 Flux.fromIterable(sLids)
@@ -78,18 +81,12 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                                 .slid(slid)
                                 .isActive(true)
                                 .expiresAt(expiresAt)
+                                .isSync(false)
                                 .accessDueDays(accessDueDays)
                                 .build())
                     .collectList()
                     .flatMapMany(accessControlRepository::save)
-                    .map(
-                        libraryAccess ->
-                            GrantedAccess.builder()
-                                .accessId(libraryAccess.id())
-                                .slid(libraryAccess.slid())
-                                .accessDueDays(libraryAccess.accessDueDays())
-                                .expiresAt(libraryAccess.expiresAt())
-                                .build())
+                    .map(GrantedAccess::from)
                     .collectList()
                     .map(
                         grantedAccesses ->
@@ -123,6 +120,26 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
             });
   }
 
+  @Override
+  public Flux<SmartLibraryGrantedAccess> getUnSyncedAccesses(Slid slid) {
+    return this.accessControlRepository
+        .findAllBy(slid)
+        .groupBy(SmartLibraryAccess::userId)
+        .flatMap(
+            groupedFlux ->
+                groupedFlux
+                    .collectList()
+                    .map(
+                        accesses ->
+                            SmartLibraryGrantedAccess.builder()
+                                .access(
+                                    accesses.stream()
+                                        .map(GrantedAccess::from)
+                                        .collect(Collectors.toList()))
+                                .clientId(groupedFlux.key())
+                                .build()));
+  }
+
   Mono<AccessCredential> validateCredentials(AccessCredential credential) {
     return accessControlRepository
         .findBy(credential.value())
@@ -131,8 +148,6 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
               if (access.isActive()) throw new RuntimeException("access is still active");
               return credential;
             })
-        .last()
-        .thenReturn(credential)
-        .defaultIfEmpty(credential);
+        .then(Mono.just(credential));
   }
 }

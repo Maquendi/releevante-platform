@@ -18,4 +18,6 @@ public interface SmartLibraryServiceFacade {
   Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid);
 
   Mono<Boolean> setSynchronized(Slid slid);
+
+  Mono<LibrarySyncResponse> synchronizeLibraryAccesses(Slid slid);
 }

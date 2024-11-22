@@ -15,6 +15,8 @@ import org.springframework.data.relational.core.mapping.Table;
 public class CoreOrgRecord extends PersistableEntity {
   @Id private String id;
   private String name;
+  private String type;
+  private boolean isActive;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
 

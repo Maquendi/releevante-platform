@@ -2,6 +2,7 @@ package com.releevante.identity.application.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.ImmutableExt;
 import java.time.ZonedDateTime;
 import org.immutables.value.Value;
@@ -18,4 +19,13 @@ public abstract class AbstractGrantedAccess {
   abstract Integer accessDueDays();
 
   abstract ZonedDateTime expiresAt();
+
+  public static GrantedAccess from(SmartLibraryAccess access) {
+    return GrantedAccess.builder()
+        .accessId(access.id())
+        .slid(access.slid())
+        .accessDueDays(access.accessDueDays())
+        .expiresAt(access.expiresAt())
+        .build();
+  }
 }

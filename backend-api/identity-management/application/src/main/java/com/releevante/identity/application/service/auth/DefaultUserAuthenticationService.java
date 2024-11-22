@@ -67,8 +67,8 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
                                                   var user = data.getT2();
                                                   return UserAuthenticationDto.from(
                                                       token, loginAccount, user, org);
-                                                }))
-                                .switchIfEmpty(Mono.error(new UserUnauthorizedException()))));
+                                                }))))
+        .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
   }
 
   @Override

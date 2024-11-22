@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "roles", schema = "identity_management")
+@Table(name = "roles", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -2,6 +2,7 @@ package com.releevante.identity.application.service.user;
 
 import com.releevante.identity.application.dto.AccountIdDto;
 import com.releevante.identity.application.dto.OrgDto;
+import com.releevante.identity.application.service.auth.AuthConstants;
 import com.releevante.identity.application.service.auth.AuthorizationService;
 import com.releevante.identity.domain.model.AccountId;
 import com.releevante.identity.domain.model.LoginAccount;
@@ -33,7 +34,7 @@ public class OrgServiceImpl extends AccountService implements OrgService {
   @Override
   public Mono<AccountIdDto> createOrg(OrgDto orgDto) {
     return authorizationService
-        .checkAuthorities("org:create")
+        .checkAuthorities(AuthConstants.ORG_CREATE)
         .flatMap(
             principal -> {
               var orgId = OrgId.of(uuidGenerator.next());

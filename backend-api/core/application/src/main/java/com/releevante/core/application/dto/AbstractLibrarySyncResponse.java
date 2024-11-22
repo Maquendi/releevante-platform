@@ -21,6 +21,12 @@ public abstract class AbstractLibrarySyncResponse {
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
+  List<LibraryAccessDto> accesses() {
+    return Collections.emptyList();
+  }
+
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  @Value.Default
   List<BookCopyDto> books() {
     return Collections.emptyList();
   }
@@ -39,6 +45,10 @@ public abstract class AbstractLibrarySyncResponse {
 
   public static LibrarySyncResponse fromImages(List<BookImageDto> images) {
     return LibrarySyncResponse.builder().bookImages(images).build();
+  }
+
+  public static LibrarySyncResponse fromAccess(List<LibraryAccessDto> libraryAccessDto) {
+    return LibrarySyncResponse.builder().accesses(libraryAccessDto).build();
   }
 
   public static LibrarySyncResponse from(List<BookCopyDto> books, List<BookImageDto> images) {

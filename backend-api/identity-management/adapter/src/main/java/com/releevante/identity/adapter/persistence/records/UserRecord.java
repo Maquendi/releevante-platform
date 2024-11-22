@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "users", schema = "identity_management")
+@Table(name = "users", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor

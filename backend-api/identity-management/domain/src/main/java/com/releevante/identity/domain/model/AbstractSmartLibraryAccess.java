@@ -24,6 +24,8 @@ public abstract class AbstractSmartLibraryAccess {
 
   abstract String userId();
 
+  abstract Boolean isSync();
+
   abstract Boolean isActive();
 
   /** credential for accessing the smart library identified with slid */

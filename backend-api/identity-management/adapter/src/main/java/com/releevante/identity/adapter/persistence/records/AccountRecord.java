@@ -11,7 +11,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "accounts", schema = "identity_management")
+@Table(name = "accounts", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor

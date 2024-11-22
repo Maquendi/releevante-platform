@@ -9,4 +9,6 @@ import reactor.core.publisher.Flux;
 public interface SmartLibraryAccessDao
     extends ReactiveCrudRepository<SmartLibraryAccessControlRecord, String> {
   Flux<SmartLibraryAccessControlRecord> findByCredential(String credential);
+
+  Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSyncIsFalse(String slid);
 }

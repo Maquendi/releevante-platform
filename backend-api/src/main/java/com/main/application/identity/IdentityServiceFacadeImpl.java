@@ -1,9 +1,9 @@
 /* (C)2024 */
 package com.main.application.identity;
 
-import com.main.application.core.SmartLibraryServiceFacade;
 import com.main.config.security.CustomAuthenticationException;
 import com.main.config.security.JwtAuthenticationToken;
+import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.identity.application.dto.*;
 import com.releevante.identity.application.service.auth.AuthenticationService;
 import com.releevante.identity.application.service.auth.AuthorizationService;
@@ -14,6 +14,7 @@ import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -22,15 +23,14 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   final UserService userService;
   final OrgService orgService;
   final AuthorizationService authorizationService;
-
-  private final SmartLibraryServiceFacade smartLibraryService;
+  private final SmartLibraryService smartLibraryService;
 
   public IdentityServiceFacadeImpl(
       AuthenticationService userAuthenticationService,
       UserService userService,
       OrgService orgService,
       AuthorizationService authorizationService,
-      SmartLibraryServiceFacade smartLibraryService) {
+      SmartLibraryService smartLibraryService) {
     this.authenticationService = userAuthenticationService;
     this.orgService = orgService;
     this.userService = userService;
@@ -60,6 +60,11 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
                   .collectList()
                   .flatMap(ignored -> userService.create(access));
             });
+  }
+
+  @Override
+  public Flux<SmartLibraryGrantedAccess> getUnSyncedAccesses(Slid slid) {
+    return userService.getUnSyncedAccesses(slid);
   }
 
   @Override

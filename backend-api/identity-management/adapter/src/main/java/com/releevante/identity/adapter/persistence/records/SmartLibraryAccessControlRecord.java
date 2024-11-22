@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "smart_library_access_ctrl", schema = "identity_management")
+@Table(name = "smart_library_access_ctrl", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +20,7 @@ public class SmartLibraryAccessControlRecord extends PersistableEntity {
   private String credentialType;
   private String userId;
   private boolean isActive;
+  private boolean isSync;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
   private ZonedDateTime expiresAt;
@@ -37,6 +38,7 @@ public class SmartLibraryAccessControlRecord extends PersistableEntity {
     record.setCredentialType(access.credential().key().value());
     record.setExpiresAt(access.expiresAt());
     record.setAccessDueDays(access.accessDueDays());
+    record.setSync(access.isSync());
     record.setUserId(access.userId());
     return record;
   }
@@ -52,6 +54,7 @@ public class SmartLibraryAccessControlRecord extends PersistableEntity {
         .accessDueDays(accessDueDays)
         .expiresAt(expiresAt)
         .userId(userId)
+        .isSync(isSync)
         .credential(
             AccessCredential.builder()
                 .value(AccessCredentialValue.of(credential))

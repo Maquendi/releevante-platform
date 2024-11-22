@@ -7,7 +7,7 @@ import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.ConfigurationException;
-import com.releevante.types.exceptions.UserUnauthorizedException;
+import com.releevante.types.exceptions.ForbiddenException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,7 +36,7 @@ public abstract class AbstractSmartLibrary {
     var data = new ArrayList<>(statuses());
     data.sort(Comparator.comparing(SmartLibraryStatus::createdAt));
 
-    if (data.size() == 0) {
+    if (data.isEmpty()) {
       throw new ConfigurationException("library invalid status");
     }
 
@@ -44,9 +44,10 @@ public abstract class AbstractSmartLibrary {
   }
 
   public void validateIsAuthorized(AccountPrincipal principal) {
-    if (!orgId().value().equals(principal.orgId()) && !principal.isSuperAdmin()) {
-      throw new UserUnauthorizedException();
+    if (orgId().value().equals(principal.orgId()) || principal.isSuperAdmin()) {
+      return;
     }
+    throw new ForbiddenException();
   }
 
   public void validateIsActive() {

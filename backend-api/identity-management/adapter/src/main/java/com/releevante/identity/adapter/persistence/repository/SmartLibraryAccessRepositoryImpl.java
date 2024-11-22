@@ -28,6 +28,13 @@ public class SmartLibraryAccessRepositoryImpl implements SmartLibraryAccessContr
   }
 
   @Override
+  public Flux<SmartLibraryAccess> findAllBy(Slid slid) {
+    return libraryAccessControlDao
+        .findAllBySlidAndIsSyncIsFalse(slid.value())
+        .map(SmartLibraryAccessControlRecord::toDomain);
+  }
+
+  @Override
   public Flux<SmartLibraryAccess> findBy(AccessCredentialValue credential) {
     return libraryAccessControlDao
         .findByCredential(credential.value())
