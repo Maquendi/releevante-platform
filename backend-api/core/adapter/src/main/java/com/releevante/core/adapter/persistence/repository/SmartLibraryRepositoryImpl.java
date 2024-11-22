@@ -31,19 +31,23 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final BookImageHibernateDao bookImageHibernateDao;
 
+  final SmartLibraryAccessControlDao smartLibraryAccessControlDao;
+
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
       SmartLibraryEventsHibernateDao smartLibraryEventsHibernateDao,
       ClientRepository clientRepository,
       LibraryInventoryHibernateDao libraryInventoryHibernateDao,
       LibrarySettingsHibernateDao librarySettingsHibernateDao,
-      BookImageHibernateDao bookImageHibernateDao) {
+      BookImageHibernateDao bookImageHibernateDao,
+      SmartLibraryAccessControlDao smartLibraryAccessControlDao) {
     this.smartLibraryDao = smartLibraryDao;
     this.smartLibraryEventsHibernateDao = smartLibraryEventsHibernateDao;
     this.clientRepository = clientRepository;
     this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
     this.librarySettingsHibernateDao = librarySettingsHibernateDao;
     this.bookImageHibernateDao = bookImageHibernateDao;
+    this.smartLibraryAccessControlDao = smartLibraryAccessControlDao;
   }
 
   @Override
@@ -144,6 +148,7 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   @Override
   public Mono<Boolean> setSynchronized(Slid slid) {
     return Mono.zip(
+            smartLibraryAccessControlDao.setSynchronized(slid.value()),
             libraryInventoryHibernateDao.setSynchronized(slid.value()),
             librarySettingsHibernateDao.setSynchronized(slid.value()))
         .map(ignore -> Boolean.TRUE);
