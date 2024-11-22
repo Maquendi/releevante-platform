@@ -1,10 +1,6 @@
+import Passcode from "@/components/auth/Passcode";
 import AuthNavbar from "@/components/AuthNavbar";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import VideoPlayer from "@/components/videoPlayer";
 import { Link } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -31,14 +27,7 @@ const SigninPasscode = () => {
           <VideoPlayer width={400} height={700} src="/videos/passcode-video.mp4" />
         </div>
         <div className="grid place-content-center pt-2">
-          <InputOTP maxLength={6}>
-            <InputOTPGroup className="space-x-1">
-              <InputOTPSlot className="bg-white py-5 border px-6 border-gray-500 rounded-md" index={0} />
-              <InputOTPSlot className="bg-white py-5 border px-6 border-gray-500 rounded-md" index={1} />
-              <InputOTPSlot className="bg-white py-5 border px-6 border-gray-500 rounded-md" index={2} />
-              <InputOTPSlot className="bg-white py-5 border px-6 border-gray-500 rounded-md" index={3} />
-            </InputOTPGroup>
-          </InputOTP>
+          <Passcode/>
         </div>
         <div className="text-center space-y-4 pt-2">
           <h1 className="text-4xl font-medium line ">{t("title")}</h1>
