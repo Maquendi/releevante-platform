@@ -17,7 +17,7 @@ export function Providers({ children, messages, locale }: ReactQueryProviderProp
 
   return (
     <QueryClientProvider client={client}>
-      <NextIntlClientProvider messages={messages} locale={locale}>
+      <NextIntlClientProvider messages={messages} locale={locale} timeZone="America/Santo_Domingo">
         <AppReduxProvider>{children}</AppReduxProvider>
       </NextIntlClientProvider>
       <ReactQueryDevtools initialIsOpen={false} />

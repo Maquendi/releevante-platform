@@ -1,4 +1,3 @@
-import { hashString } from "@/lib/hash-utils";
 import { UserRepository } from "../domain/repositories";
 import { AuthCredential, UserAuthentication, UserDto } from "./dto";
 import { signToken } from "@/lib/jwt-parser";
@@ -17,8 +16,8 @@ export class DefaultUserServiceImpl implements UserServices {
   }
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
-    const hashedCredential = hashString(credential.value);
-    const user = await this.repository.findBy(hashedCredential);
+    // const hashedCredential = hashString(credential.value);
+    const user = await this.repository.findBy(credential.value);
     const jwtToken = signToken({
       sub: user.data.id,
       org: user.data.org,
@@ -42,7 +41,7 @@ export class UserServiceFacadeImpl implements UserServiceFacade {
     try {
       return this.defaultUserService.authenticate(credential);
     } catch (error) {
-      console.log(error)
+      console.log('err auth server',error)
       const response = await this.userServiceApiClient.authenticate(credential);
       await this.defaultUserService.register(response?.user);
       return response;
