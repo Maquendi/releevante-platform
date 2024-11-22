@@ -54,7 +54,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
                   .withAudience(payload.slid())
                   .withClaim(ORG_ID, payload.orgId().value())
                   .withClaim(ROLES, GUEST_ACCESS)
-                  .withSubject(payload.id())
+                  .withSubject(payload.userId())
                   .withExpiresAt(Instant.now().plusSeconds(1800))
                   .sign(algorithm);
             })

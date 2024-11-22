@@ -20,6 +20,9 @@ public abstract class AbstractLibrarySetting {
   /** determines how many books should be allowed to be borrowed in a single loan. defaults to 4 */
   abstract int maxBooksPerLoan();
 
+  /** determines how the max duration of a user session for this library */
+  abstract int sessionDurationMinutes();
+
   /** determines by how much the book price should drop in this library. defaults to 0 */
   abstract float bookPriceDiscountPercentage();
 

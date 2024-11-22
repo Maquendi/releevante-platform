@@ -33,6 +33,9 @@ public class LibrarySettingsRecord extends PersistableEntity {
   /** determines in percentage, how much of the price of the book should drop */
   float bookPriceReductionRateOnThresholdReached;
 
+  /** determines how the max duration of a user session for this library */
+  int sessionDurationMinutes;
+
   /** when this setting was created */
   ZonedDateTime createdAt;
 
@@ -49,6 +52,7 @@ public class LibrarySettingsRecord extends PersistableEntity {
         .bookPriceReductionThreshold(bookPriceReductionThreshold)
         .bookPriceReductionRateOnThresholdReached(bookPriceReductionRateOnThresholdReached)
         .createdAt(createdAt)
+        .sessionDurationMinutes(sessionDurationMinutes)
         .isSync(isSync)
         .build();
   }
