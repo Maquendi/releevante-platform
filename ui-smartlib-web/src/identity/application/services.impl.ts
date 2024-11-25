@@ -18,6 +18,7 @@ export class DefaultUserServiceImpl implements UserServices {
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
     // const hashedCredential = hashString(credential.value);
     const user = await this.repository.findBy(credential.value);
+    if(!user?.data?.id) throw new Error("User not found")
     const jwtToken = signToken({
       sub: user.data.id,
       org: user.data.org,
