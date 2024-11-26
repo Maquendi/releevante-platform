@@ -19,7 +19,7 @@ export default async function Home() {
 
 
   return (
-    <div className="relative min-h-[80vh] overflow-hidden">
+    <div className="relative min-h-[80vh] overflow-hidden ">
       <div className="fixed -top-0 -right-48 h-[140px] w-full z-0">
         <figure className="relative w-full h-full">
           <Image
