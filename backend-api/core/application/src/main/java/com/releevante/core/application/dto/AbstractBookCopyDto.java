@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.BookCopy;
 import com.releevante.types.ImmutableExt;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -27,6 +29,11 @@ public abstract class AbstractBookCopyDto {
   abstract String correlationId();
 
   abstract String description();
+
+  @Value.Default
+  List<BookImageDto> images() {
+    return Collections.emptyList();
+  }
 
   public static BookCopyDto from(BookCopy copy) {
     return BookCopyDto.builder()

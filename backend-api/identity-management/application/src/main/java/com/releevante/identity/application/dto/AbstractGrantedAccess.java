@@ -12,7 +12,7 @@ import org.immutables.value.Value;
 @JsonSerialize(as = GrantedAccess.class)
 @ImmutableExt
 public abstract class AbstractGrantedAccess {
-  abstract String slid();
+  abstract String userId();
 
   abstract String accessId();
 
@@ -23,7 +23,7 @@ public abstract class AbstractGrantedAccess {
   public static GrantedAccess from(SmartLibraryAccess access) {
     return GrantedAccess.builder()
         .accessId(access.id())
-        .slid(access.slid())
+        .userId(access.userId())
         .accessDueDays(access.accessDueDays())
         .expiresAt(access.expiresAt())
         .build();

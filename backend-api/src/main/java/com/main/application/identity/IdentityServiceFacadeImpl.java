@@ -11,6 +11,7 @@ import com.releevante.identity.application.service.user.OrgService;
 import com.releevante.identity.application.service.user.UserService;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.UserUnauthorizedException;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
+  public Mono<List<GrantedAccess>> create(UserAccessDto access) {
     return authorizationService
         .getAccountPrincipal()
         .flatMap(
@@ -58,12 +59,12 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
               return smartLibraryService
                   .smartLibrariesValidated(principal, slidSet)
                   .collectList()
-                  .flatMap(ignored -> userService.create(access));
+                  .flatMap(ignored -> userService.create(access).collectList());
             });
   }
 
   @Override
-  public Flux<SmartLibraryGrantedAccess> getUnSyncedAccesses(Slid slid) {
+  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid) {
     return userService.getUnSyncedAccesses(slid);
   }
 

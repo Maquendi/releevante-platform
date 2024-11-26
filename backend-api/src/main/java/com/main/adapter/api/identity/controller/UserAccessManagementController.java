@@ -4,15 +4,13 @@ package com.main.adapter.api.identity.controller;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.identity.IdentityServiceFacade;
-import com.releevante.identity.application.dto.AccountDto;
-import com.releevante.identity.application.dto.AccountIdDto;
-import com.releevante.identity.application.dto.SmartLibraryGrantedAccess;
-import com.releevante.identity.application.dto.UserAccessDto;
+import com.releevante.identity.application.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,8 +108,7 @@ public class UserAccessManagementController {
             })
       })
   @PostMapping("/access")
-  public Mono<CustomApiResponse<SmartLibraryGrantedAccess>> register(
-      @RequestBody UserAccessDto access) {
+  public Mono<CustomApiResponse<List<GrantedAccess>>> register(@RequestBody UserAccessDto access) {
     return identityServiceFacade.create(access).map(CustomApiResponse::from);
   }
 }

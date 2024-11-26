@@ -17,7 +17,6 @@ import com.releevante.types.ZonedDateTimeGenerator;
 import com.releevante.types.utils.DateTimeUtils;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,7 +56,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
         .map(AccountIdDto::of);
   }
 
-  protected Mono<SmartLibraryGrantedAccess> create(
+  protected Flux<GrantedAccess> create(
       List<String> sLids,
       ZonedDateTime expiresAt,
       Integer accessDueDays,
@@ -66,7 +65,7 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
 
     return authorizationService
         .checkAuthorities(AuthConstants.LIBRARY_ACCESS_CREATE)
-        .flatMap(
+        .flatMapMany(
             principal ->
                 Flux.fromIterable(sLids)
                     .map(
@@ -86,21 +85,14 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
                                 .build())
                     .collectList()
                     .flatMapMany(accessControlRepository::save)
-                    .map(GrantedAccess::from)
-                    .collectList()
-                    .map(
-                        grantedAccesses ->
-                            SmartLibraryGrantedAccess.builder()
-                                .access(grantedAccesses)
-                                .clientId(userId)
-                                .build()));
+                    .map(GrantedAccess::from));
   }
 
   @Override
-  public Mono<SmartLibraryGrantedAccess> create(UserAccessDto access) {
+  public Flux<GrantedAccess> create(UserAccessDto access) {
     return Mono.fromCallable(() -> AccessCredential.from(access.key(), access.value()))
         .flatMap(this::validateCredentials)
-        .flatMap(
+        .flatMapMany(
             credential -> {
               var now = ZonedDateTimeGenerator.instance().next();
               var accessDueDays =
@@ -121,23 +113,8 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   }
 
   @Override
-  public Flux<SmartLibraryGrantedAccess> getUnSyncedAccesses(Slid slid) {
-    return this.accessControlRepository
-        .findAllBy(slid)
-        .groupBy(SmartLibraryAccess::userId)
-        .flatMap(
-            groupedFlux ->
-                groupedFlux
-                    .collectList()
-                    .map(
-                        accesses ->
-                            SmartLibraryGrantedAccess.builder()
-                                .access(
-                                    accesses.stream()
-                                        .map(GrantedAccess::from)
-                                        .collect(Collectors.toList()))
-                                .clientId(groupedFlux.key())
-                                .build()));
+  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid) {
+    return this.accessControlRepository.findAllBy(slid).map(GrantedAccess::from);
   }
 
   Mono<AccessCredential> validateCredentials(AccessCredential credential) {

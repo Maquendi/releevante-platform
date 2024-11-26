@@ -11,7 +11,7 @@ public interface UserService {
 
   Mono<AccountIdDto> createAccount(AccountDto accountDto);
 
-  Mono<SmartLibraryGrantedAccess> create(UserAccessDto access);
+  Flux<GrantedAccess> create(UserAccessDto access);
 
-  Flux<SmartLibraryGrantedAccess> getUnSyncedAccesses(Slid slid);
+  Flux<GrantedAccess> getUnSyncedAccesses(Slid slid);
 }

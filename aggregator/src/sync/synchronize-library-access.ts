@@ -8,20 +8,16 @@ const slid = process.env.slid;
 
 export const synchronizeLibraryAccess = async () => {
   let syncComplete = false;
-  let page = 0;
   let totalRecordsSynced = 0;
-  while (syncComplete == false) {
-    const request: ApiRequest = {
-      resource: `aggregator/${slid}/synchronize/books?page=${page}&pageSize=2`,
-    };
-    const response = await executeGet<ClientSyncResponse>(request);
-    const books = response.context.data.books;
-    page++;
-    syncComplete = books?.length == 0 || !books;
+  const request: ApiRequest = {
+    resource: `aggregator/${slid}/synchronize/accesses`,
+  };
+  const response = await executeGet<ClientSyncResponse>(request);
+  const accesses = response.context.data.books;
+  syncComplete = accesses?.length == 0 || !accesses;
 
-    if (books && books.length) {
-      totalRecordsSynced += await insertUsers(books);
-    }
+  if (accesses && accesses.length) {
+    totalRecordsSynced += await insertUsers(accesses);
   }
 
   console.log("TOTAL RECORDS SYNCHRONIZED: " + totalRecordsSynced);

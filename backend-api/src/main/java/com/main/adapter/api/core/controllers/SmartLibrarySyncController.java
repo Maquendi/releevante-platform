@@ -3,14 +3,18 @@ package com.main.adapter.api.core.controllers;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.core.SmartLibraryServiceFacade;
-import com.releevante.core.application.dto.LibrarySyncResponse;
+import com.releevante.core.application.dto.BookCopyDto;
+import com.releevante.core.application.dto.ClientSyncResponse;
+import com.releevante.core.application.dto.LibrarySettingsDto;
 import com.releevante.core.application.dto.SmartLibrarySyncDto;
+import com.releevante.identity.application.dto.GrantedAccess;
 import com.releevante.types.Slid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -64,7 +68,7 @@ public class SmartLibrarySyncController {
             })
       })
   @PostMapping("/synchronize/loans")
-  public Mono<CustomApiResponse<LibrarySyncResponse>> synchronizeLoans(
+  public Mono<CustomApiResponse<List<ClientSyncResponse>>> synchronizeLoans(
       @RequestBody SmartLibrarySyncDto loanSynchronizeDto) {
     return smartLibraryService.synchronizeClients(loanSynchronizeDto).map(CustomApiResponse::from);
   }
@@ -154,10 +158,11 @@ public class SmartLibrarySyncController {
             })
       })
   @GetMapping("/synchronize/books")
-  public Mono<CustomApiResponse<LibrarySyncResponse>> synchronizeLibraryBooks(
+  public Mono<CustomApiResponse<List<BookCopyDto>>> synchronizeLibraryBooks(
       @PathVariable String slid, @RequestParam() int page, @RequestParam() int pageSize) {
     return smartLibraryService
         .synchronizeLibraryBooks(Slid.of(slid), page, pageSize)
+        .collectList()
         .map(CustomApiResponse::from);
   }
 
@@ -201,10 +206,11 @@ public class SmartLibrarySyncController {
             })
       })
   @GetMapping("/synchronize/settings")
-  public Mono<CustomApiResponse<LibrarySyncResponse>> synchronizeLibrarySettings(
+  public Mono<CustomApiResponse<List<LibrarySettingsDto>>> synchronizeLibrarySettings(
       @PathVariable String slid) {
     return smartLibraryService
         .synchronizeLibrarySettings(Slid.of(slid))
+        .collectList()
         .map(CustomApiResponse::from);
   }
 
@@ -248,10 +254,11 @@ public class SmartLibrarySyncController {
             })
       })
   @GetMapping("/synchronize/accesses")
-  public Mono<CustomApiResponse<LibrarySyncResponse>> synchronizeLibraryAccess(
+  public Mono<CustomApiResponse<List<GrantedAccess>>> synchronizeLibraryAccess(
       @PathVariable String slid) {
     return smartLibraryService
         .synchronizeLibraryAccesses(Slid.of(slid))
+        .collectList()
         .map(CustomApiResponse::from);
   }
 }

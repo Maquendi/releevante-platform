@@ -3,16 +3,15 @@ package com.releevante.identity.application.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
-import java.util.List;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = SmartLibraryGrantedAccess.class)
-@JsonSerialize(as = SmartLibraryGrantedAccess.class)
+@JsonDeserialize(as = SmartLibraryGrantedAccessDto.class)
+@JsonSerialize(as = SmartLibraryGrantedAccessDto.class)
 @ImmutableExt
-public abstract class AbstractSmartLibraryGrantedAccess {
+public abstract class AbstractSmartLibraryGrantedAccessDto {
 
-  abstract String clientId();
+  abstract String userId();
 
-  abstract List<GrantedAccess> access();
+  abstract GrantedAccess access();
 }

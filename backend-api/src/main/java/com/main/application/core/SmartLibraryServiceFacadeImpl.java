@@ -1,12 +1,14 @@
 package com.main.application.core;
 
+import com.main.adapter.api.dto.LibrarySyncResponseDto;
 import com.main.application.identity.IdentityServiceFacade;
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
+import com.releevante.identity.application.dto.GrantedAccess;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,8 +26,8 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeClients(SmartLibrarySyncDto synchronizeDto) {
-    return smartLibraryService.synchronizeClients(synchronizeDto);
+  public Mono<List<ClientSyncResponse>> synchronizeClients(SmartLibrarySyncDto synchronizeDto) {
+    return smartLibraryService.synchronizeClients(synchronizeDto).map(LibrarySyncResponseDto::from);
   }
 
   @Override
@@ -35,12 +37,12 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
+  public Flux<BookCopyDto> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
     return smartLibraryService.synchronizeLibraryBooks(slid, offset, pageSize);
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid) {
+  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid) {
     return smartLibraryService.synchronizeLibrarySettings(slid);
   }
 
@@ -50,25 +52,7 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibraryAccesses(Slid slid) {
-    return identityServiceFacade
-        .getUnSyncedAccesses(slid)
-        .map(
-            grantedAccess ->
-                LibraryAccessDto.builder()
-                    .clientId(grantedAccess.clientId())
-                    .accesses(
-                        grantedAccess.access().stream()
-                            .map(
-                                access ->
-                                    AccessDto.builder()
-                                        .accessId(access.accessId())
-                                        .accessDueDays(access.accessDueDays())
-                                        .expiresAt(access.expiresAt())
-                                        .build())
-                            .collect(Collectors.toList()))
-                    .build())
-        .collectList()
-        .map(LibrarySyncResponse::fromAccess);
+  public Flux<GrantedAccess> synchronizeLibraryAccesses(Slid slid) {
+    return identityServiceFacade.getUnSyncedAccesses(slid);
   }
 }

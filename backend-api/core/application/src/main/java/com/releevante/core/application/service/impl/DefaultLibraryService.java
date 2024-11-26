@@ -1,14 +1,19 @@
 package com.releevante.core.application.service.impl;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.Isbn;
+import com.releevante.core.domain.SmartLibrary;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.InvalidInputException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -23,16 +28,14 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeClients(SmartLibrarySyncDto syncDto) {
+  public Mono<SmartLibrary> synchronizeClients(SmartLibrarySyncDto syncDto) {
     return smartLibraryRepository
         .findBy(Slid.of(syncDto.slid()))
         .flatMap(
             smartLibrary -> {
               smartLibrary.validateIsActive();
               var clients = syncDto.domainClients();
-              return smartLibraryRepository
-                  .synchronizeClients(smartLibrary.withClients(clients))
-                  .map(ClientSyncResponse::fromDomain);
+              return smartLibraryRepository.synchronizeClients(smartLibrary.withClients(clients));
             });
   }
 
@@ -66,13 +69,13 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
+  public Flux<BookCopyDto> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
     return smartLibraryRepository
         .findAllBookCopiesUnSynced(slid, offset, pageSize)
         .map(BookCopyDto::from)
         .collectList()
         .filter(Predicate.not(List::isEmpty))
-        .flatMap(
+        .flatMapMany(
             bookCopies -> {
               var bookIsbnSet =
                   bookCopies.stream()
@@ -84,18 +87,25 @@ public class DefaultLibraryService implements SmartLibraryService {
                   .getImages(bookIsbnSet)
                   .map(BookImageDto::from)
                   .collectList()
-                  .map(bookImages -> LibrarySyncResponse.from(bookCopies, bookImages));
-            })
-        .defaultIfEmpty(LibrarySyncResponse.fromEmpty());
+                  .flatMapMany(
+                      bookImages -> {
+                        var imageGroups =
+                            bookImages.stream().collect(groupingBy(BookImageDto::isbn));
+                        return Flux.fromIterable(bookCopies)
+                            .map(
+                                copy -> {
+                                  var images =
+                                      Optional.ofNullable(imageGroups.get(copy.isbn()))
+                                          .orElse(Collections.emptyList());
+                                  return copy.withImages(images);
+                                });
+                      });
+            });
   }
 
   @Override
-  public Mono<LibrarySyncResponse> synchronizeLibrarySettings(Slid slid) {
-    return smartLibraryRepository
-        .findLibrarySettings(slid)
-        .map(LibrarySettingsDto::from)
-        .collectList()
-        .map(LibrarySyncResponse::fromSettings);
+  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid) {
+    return smartLibraryRepository.findLibrarySettings(slid).map(LibrarySettingsDto::from);
   }
 
   @Override

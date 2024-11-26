@@ -2,7 +2,7 @@ import { executePut } from "../htttp-client/http-client";
 import { ApiRequest } from "../htttp-client/model";
 
 const slid = process.env.slid;
-export const setLibrarySynchronized = async () => {
+export const markLibrarySynchronized = async () => {
   const request: ApiRequest = {
     resource: `aggregator/${slid}/synchronize`,
   };
