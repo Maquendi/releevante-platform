@@ -4,7 +4,7 @@ import { bookServiceFacade } from "@/book/application"
 
 
 
-export async function FetchAllBookCategory(){
+export async function FetchAllBookCategories(){
     try {
         return await bookServiceFacade.findAllBookCategory()
     } catch (error) {
