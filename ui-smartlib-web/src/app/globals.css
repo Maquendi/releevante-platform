@@ -10,14 +10,27 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .dragging {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+  }
+  .otp-slot {
+    font-size: 40px;
+    -webkit-text-security: disc;
+  }
 }
-
 
 .simple-keyboard {
-  color:black;
+  color: black;
   padding: 50px;
 }
-
 
 @layer base {
   :root {
@@ -27,14 +40,14 @@ body {
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary:28, 67%, 48%, 1;
+    --primary: 28, 67%, 48%, 1;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary-foreground: 0, 1%, 50% ,1;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 33, 85%, 95%, 1;
+    --accent-foreground:24, 68%, 34%, 1;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
@@ -72,9 +85,8 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-  } 
+  }
 }
-
 
 @layer base {
   * {
@@ -83,10 +95,14 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-} 
+}
 
-
-.otp-slot {
-  font-size: 40px;
-  -webkit-text-security: disc;
+*,
+*::after,
+*::before {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-app-region: no-drag;
+  cursor: default;
 }
