@@ -1,9 +1,19 @@
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
 
-import { bookCategorySchema, bookCopieSchema, bookFtagSchema, bookImageSchema, bookSchema, categorySchema, ftagsSchema, organizationSchema, userSchema } from "./schemas";
+import {
+  bookCategorySchema,
+  bookCopieSchema,
+  bookFtagSchema,
+  bookImageSchema,
+  bookSchema,
+  categorySchema,
+  ftagsSchema,
+  userSchema,
+} from "./schemas";
 
 import { db } from "./db";
+import { createHashFromString } from "@/lib/utils";
 
 async function seed() {
   try {
@@ -19,9 +29,10 @@ async function seed() {
     for (let i = 0; i < 10; i++) {
       const userData = {
         id: uuidv4(),
-        pin: faker.finance.routingNumber(),
+        access_id: uuidv4(),
+        credential: await createHashFromString('1234'),
         is_active: faker.datatype.boolean(),
-        organization_id: uuidv4(),
+        expires_at: new Date().toISOString(),
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
@@ -43,7 +54,7 @@ async function seed() {
       const categoryData = {
         id: uuidv4(),
         name: faker.commerce.department(),
-        imageUrl:faker.image.url()
+        imageUrl: faker.image.url(),
       };
       categories.push(categoryData);
     }
@@ -55,6 +66,8 @@ async function seed() {
         bookTitle: faker.commerce.productName(),
         editionTitle: faker.commerce.product(),
         author: faker.person.firstName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -77,6 +90,7 @@ async function seed() {
 
     const bookImagesData = books.map((book) => {
       return {
+        external_id: uuidv4(),
         url: faker.image.url(),
         book_isbn: book.id,
         isSincronized: faker.datatype.boolean(),
@@ -85,6 +99,7 @@ async function seed() {
 
     const bookCopiesData = books.map((book) => {
       return {
+        id: uuidv4(),
         book_isbn: book.id,
         is_available: faker.datatype.boolean(),
         at_position: faker.book.series(),
@@ -94,7 +109,6 @@ async function seed() {
     });
 
     await Promise.all([
-      db.insert(organizationSchema).values(organizations),
       db.insert(ftagsSchema).values(ftags),
       db.insert(userSchema).values(users),
       db.insert(categorySchema).values(categories),

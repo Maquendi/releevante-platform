@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0ef44129-4dc4-4bd7-85e2-7d14d71ea1a0",
+  "id": "564d65e5-de22-4a99-b4c9-419ef1aeb627",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "book_category": {
@@ -199,6 +199,13 @@
           "notNull": true,
           "autoincrement": true
         },
+        "external_id": {
+          "name": "external_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "url": {
           "name": "url",
           "type": "text",
@@ -356,6 +363,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "external_id": {
+          "name": "external_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "status": {
           "name": "status",
           "type": "text",
@@ -398,6 +412,67 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "book_loan_status": {
+      "name": "book_loan_status",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "book_load_id": {
+          "name": "book_load_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "book_loan_status_book_load_id_book_loan_id_fk": {
+          "name": "book_loan_status_book_load_id_book_loan_id_fk",
+          "tableFrom": "book_loan_status",
+          "tableTo": "book_loan",
+          "columnsFrom": [
+            "book_load_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -504,6 +579,20 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "price": {
+          "name": "price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {
@@ -736,8 +825,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "pin": {
-          "name": "pin",
+        "access_id": {
+          "name": "access_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "credential": {
+          "name": "credential",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -751,8 +847,8 @@
           "autoincrement": false,
           "default": true
         },
-        "organization_id": {
-          "name": "organization_id",
+        "expires_at": {
+          "name": "expires_at",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -781,8 +877,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "organization": {
-      "name": "organization",
+    "library_settings": {
+      "name": "library_settings",
       "columns": {
         "id": {
           "name": "id",
@@ -791,12 +887,56 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
-          "type": "text",
+        "max_books_per_loan": {
+          "name": "max_books_per_loan",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "book_price_discount_percentage": {
+          "name": "book_price_discount_percentage",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "book_price_surcharge_percentage": {
+          "name": "book_price_surcharge_percentage",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "book_price_reduction_threshold": {
+          "name": "book_price_reduction_threshold",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "book_price_reduction_rate_on_threshold_reached": {
+          "name": "book_price_reduction_rate_on_threshold_reached",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
         }
       },
       "indexes": {},

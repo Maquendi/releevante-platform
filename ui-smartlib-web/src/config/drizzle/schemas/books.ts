@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import {  sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {  sqliteTable, text, numeric } from "drizzle-orm/sqlite-core";
 import { v4 as uuidv4 } from 'uuid';
 import { bookCopieSchema } from "./bookCopies";
 import { bookImageSchema } from "./bookImages";
@@ -10,6 +10,8 @@ export const bookSchema = sqliteTable('books',{
     bookTitle:text('book_title').notNull(),
     editionTitle:text('edition_title').notNull(),
     author:text('author').notNull(),
+    description: text('description').notNull(),
+    price: numeric(),
     createdAt: text('created_at')
     .notNull()
     .default(sql`(current_timestamp)`).$defaultFn(()=>new Date().toISOString()),

@@ -7,6 +7,7 @@ import {
   UserServices,
 } from "./services.definitions";
 import { User } from "../domain/models";
+import { createHashFromString } from "@/lib/utils";
 
 export class DefaultUserServiceImpl implements UserServices {
   constructor(private repository: UserRepository) {}
@@ -16,9 +17,10 @@ export class DefaultUserServiceImpl implements UserServices {
   }
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
-    // const hashedCredential = hashString(credential.value);
-    const user = await this.repository.findBy(credential.value);
+    const hashedCredential = await createHashFromString(credential.value);
+    const user = await this.repository.findBy(hashedCredential);
     if(!user?.data?.id) throw new Error("User not found")
+    console.log(user)
     const jwtToken = signToken({
       sub: user.data.id,
       org: user.data.org,

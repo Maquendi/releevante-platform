@@ -18,6 +18,6 @@ public interface LibrarySettingsHibernateDao
   Mono<LibrarySettingsRecord> findOneBySlidAndIsSyncIsFalseOrderByCreatedAtDesc(
       @Param("slid") String slid);
 
-  @Query("update core.library_settings \n" + "set is_sync = true \n" + "where slid = :slid")
+  @Query("update core.library_settings set is_sync = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);
 }

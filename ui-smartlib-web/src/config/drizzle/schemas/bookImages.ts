@@ -6,8 +6,11 @@ export const bookImageSchema = sqliteTable("books_images", {
   id: integer("id", { mode: "number" })
     .primaryKey({ autoIncrement: true })
     .notNull(),
+  external_id: text("external_id").notNull(),
   url: text("url", { mode: "text" }).notNull(),
-  book_isbn: text("book_isbn").notNull().references(()=>bookSchema.id),
+  book_isbn: text("book_isbn")
+    .notNull()
+    .references(() => bookSchema.id),
   isSincronized: integer("isSincronized", { mode: "boolean" }).default(false),
 });
 

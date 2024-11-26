@@ -4,7 +4,7 @@ export interface UserId{
 
 interface AppUser {
   id: string;
-  org: string,
+  org?: string,
   name?: string;
 }
 

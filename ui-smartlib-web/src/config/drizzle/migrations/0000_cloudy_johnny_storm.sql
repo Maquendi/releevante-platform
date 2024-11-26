@@ -26,6 +26,7 @@ CREATE TABLE `book_ftag` (
 --> statement-breakpoint
 CREATE TABLE `books_images` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`external_id` text NOT NULL,
 	`url` text NOT NULL,
 	`book_isbn` text NOT NULL,
 	`isSincronized` integer DEFAULT false,
@@ -51,11 +52,21 @@ CREATE TABLE `book_loan` (
 	`user_id` text NOT NULL,
 	`cart_id` text NOT NULL,
 	`total_items` integer NOT NULL,
+	`external_id` text NOT NULL,
 	`status` text DEFAULT 'onschedule' NOT NULL,
 	`start_time` text DEFAULT (current_timestamp),
 	`end_time` text,
 	`created_at` text DEFAULT (current_timestamp),
 	`updated_at` text DEFAULT (current_timestamp)
+);
+--> statement-breakpoint
+CREATE TABLE `book_loan_status` (
+	`id` text PRIMARY KEY NOT NULL,
+	`status` text NOT NULL,
+	`book_load_id` text NOT NULL,
+	`created_at` text DEFAULT (current_timestamp),
+	`updated_at` text DEFAULT (current_timestamp),
+	FOREIGN KEY (`book_load_id`) REFERENCES `book_loan`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `book_ratings` (
@@ -73,6 +84,8 @@ CREATE TABLE `books` (
 	`book_title` text NOT NULL,
 	`edition_title` text NOT NULL,
 	`author` text NOT NULL,
+	`description` text NOT NULL,
+	`price` numeric,
 	`created_at` text DEFAULT (current_timestamp) NOT NULL,
 	`updated_at` text DEFAULT (current_timestamp) NOT NULL
 );
@@ -110,16 +123,23 @@ CREATE TABLE `ftags` (
 --> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
-	`pin` text NOT NULL,
+	`access_id` text NOT NULL,
+	`credential` text NOT NULL,
 	`is_active` integer DEFAULT true NOT NULL,
-	`organization_id` text NOT NULL,
+	`expires_at` text NOT NULL,
 	`created_at` text DEFAULT (current_timestamp) NOT NULL,
 	`updated_at` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `organization` (
+CREATE TABLE `library_settings` (
 	`id` text PRIMARY KEY NOT NULL,
-	`name` text NOT NULL
+	`max_books_per_loan` numeric NOT NULL,
+	`book_price_discount_percentage` numeric NOT NULL,
+	`book_price_surcharge_percentage` numeric NOT NULL,
+	`book_price_reduction_threshold` numeric NOT NULL,
+	`book_price_reduction_rate_on_threshold_reached` numeric NOT NULL,
+	`created_at` text DEFAULT (current_timestamp) NOT NULL,
+	`updated_at` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `service_ratings` (

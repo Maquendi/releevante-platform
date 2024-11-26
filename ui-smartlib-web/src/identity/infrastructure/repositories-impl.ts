@@ -11,19 +11,17 @@ export class DefaultUserRepositoryImpl implements UserRepository {
     try {
       const userData = await dbGetOne("userSchema", {
         where: and(
-          eq(userSchema.pin, credential),
+          eq(userSchema.credential, credential),
           eq(userSchema.is_active, true)
         ),
         columns: {
           id: true,
           is_active: true,
           pin: true,
-          organization_id: true,
         },
       });
       return new User({
         id: userData?.id,
-        org: userData?.organization_id,
       });
     } catch (error) {
       throw new Error("Failed to load user, details: " + error);

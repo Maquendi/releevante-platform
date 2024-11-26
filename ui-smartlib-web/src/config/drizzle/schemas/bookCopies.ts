@@ -1,13 +1,10 @@
 import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { v4 as uuidv4 } from "uuid";
 import { bookSchema } from "./books";
 import { bookLayoutSchema } from "./bookLayout";
 
 export const bookCopieSchema = sqliteTable("books_copies", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => uuidv4()),
+  id: text("id").primaryKey(),
   book_isbn: text("book_isbn")
     .notNull()
     .references(() => bookSchema.id),

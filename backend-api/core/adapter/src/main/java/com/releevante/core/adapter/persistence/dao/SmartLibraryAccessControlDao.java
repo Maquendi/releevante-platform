@@ -15,7 +15,6 @@ public interface SmartLibraryAccessControlDao
 
   Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSyncIsFalse(String slid);
 
-  @Query(
-      "update core.smart_library_access_ctrl \n" + "set is_sync = true \n" + "where slid = :slid")
+  @Query("update core.smart_library_access_ctrl set is_sync = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);
 }

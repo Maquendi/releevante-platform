@@ -8,9 +8,7 @@ import java.security.NoSuchAlgorithmException;
 public class HashUtils {
 
   public static String createSHAHash(String input) {
-
-    String hashtext = null;
-    MessageDigest md = null;
+    MessageDigest md;
     try {
       md = MessageDigest.getInstance("SHA-256");
     } catch (NoSuchAlgorithmException e) {
@@ -18,8 +16,7 @@ public class HashUtils {
     }
     byte[] messageDigest = md.digest(input.getBytes(StandardCharsets.UTF_8));
 
-    hashtext = convertToHex(messageDigest);
-    return hashtext;
+    return convertToHex(messageDigest);
   }
 
   private static String convertToHex(final byte[] messageDigest) {

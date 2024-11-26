@@ -1,6 +1,6 @@
 export interface UserDto {
   id: string;
-  org: string;
+  org?: string;
   hash?: string
 }
 export interface UserAuthentication {

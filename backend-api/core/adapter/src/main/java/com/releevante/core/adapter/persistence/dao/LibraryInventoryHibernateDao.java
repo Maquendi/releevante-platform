@@ -51,6 +51,6 @@ public interface LibraryInventoryHibernateDao
   Flux<BookCopyProjection> findAllCopiesUnSynced(
       @Param("slid") String slid, @Param("offset") int offset, @Param("size") int size);
 
-  @Query("update core.library_inventories \n" + "set is_sync = true \n" + "where slid = :slid")
+  @Query("update core.library_inventories set is_sync = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);
 }

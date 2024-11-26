@@ -80,6 +80,7 @@ const SearchFilter = () => {
         handleInputChangeFn={handleQueryTerm}
         open={showKeyboard}
         state={queryTerm}
+        setOpen={(value)=> console.log(value)}
       />
     </div>
   );

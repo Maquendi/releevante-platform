@@ -148,10 +148,11 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   @Override
   public Mono<Boolean> setSynchronized(Slid slid) {
     return Mono.zip(
-            smartLibraryAccessControlDao.setSynchronized(slid.value()),
-            libraryInventoryHibernateDao.setSynchronized(slid.value()),
-            librarySettingsHibernateDao.setSynchronized(slid.value()))
-        .map(ignore -> Boolean.TRUE);
+            smartLibraryAccessControlDao.setSynchronized(slid.value()).defaultIfEmpty(0),
+            libraryInventoryHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0),
+            librarySettingsHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0))
+        .map(data -> true)
+        .defaultIfEmpty(true);
   }
 
   public Mono<Void> markInventoryAsBorrowed(List<Client> clients) {
