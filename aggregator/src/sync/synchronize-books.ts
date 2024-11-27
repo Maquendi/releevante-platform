@@ -1,8 +1,8 @@
 import { dbConnection } from "../config/db.js";
 import { executeGet } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
-import { Book, ClientSyncResponse } from "../model/client.js";
-import { arrayGroupBy } from "../utils.js";
+import { Book, BookImage } from "../model/client.js";
+import { arrayGroupBy, arrayGroupByV2 } from "../utils.js";
 
 const slid = process.env.slid;
 
@@ -12,10 +12,10 @@ export const synchronizeBooks = async () => {
   let totalRecordsSynced = 0;
   while (syncComplete == false) {
     const request: ApiRequest = {
-      resource: `aggregator/${slid}/synchronize/books?page=${page}&pageSize=2`,
+      resource: `aggregator/${slid}/synchronize/books?page=${page}&pageSize=100`,
     };
-    const response = await executeGet<ClientSyncResponse>(request);
-    const books = response.context.data.books;
+    const response = await executeGet<Book[]>(request);
+    const books = response.context.data;
     page++;
     syncComplete = books?.length == 0 || !books;
 
@@ -30,41 +30,85 @@ export const synchronizeBooks = async () => {
 };
 
 const insertBook = async (books: Book[]) => {
-  const groupsByIsbn = arrayGroupBy(books, "isbn");
+  const groupsByIsbn = arrayGroupByV2(books, (book) => book.isbn);
   const stmt = dbConnection.prepare(
-    "INSERT INTO books VALUES (@id, @book_title, @edition_title, @author, @description)"
+    "INSERT INTO books VALUES (@id, @book_title, @edition_title, @author, @description, @price, @created_at, @updated_at)"
   );
-  let insertedBook = 0;
 
-  Object.keys(groupsByIsbn).forEach((key) => {
+  //console.log(groupsByIsbn)
+
+  const images: BookImage[] = [];
+
+  const bookInsertions = Object.keys(groupsByIsbn).map((key) => {
     const book = groupsByIsbn[key][0];
-    insertedBook += stmt.run({
-      id: book.isbn,
-      book_title: book.title,
-      edition_title: book.title,
-      author: book.author,
-      description: book.description,
-    }).changes;
+    images.push(...book.images);
+    return new Promise((resolve) => {
+      // var insertedBook = stmt.run({
+      //   id: book.isbn,
+      //   book_title: book.title,
+      //   edition_title: book.title,
+      //   author: book.author,
+      //   description: book.description,
+      //   price: book.price,
+      //   created_at: new Date().toISOString(),
+      //   updated_at: new Date().toISOString(),
+      // }).changes;
+
+      return resolve(3);
+    });
   });
 
-  return insertBookCopies(books);
+  await Promise.all(bookInsertions);
+
+  return await insertImages(images);
+  //return insertBookCopies(books);
 };
 
-const insertBookCopies = async (books: Book[]) => {
+const insertImages = async (images: BookImage[]) => {
+
   const stmt = dbConnection.prepare(
-    "INSERT INTO books_copies VALUES (@id, @book_isbn, @is_available, @at_position)"
+    "INSERT INTO books_images VALUES (@id, @book_isbn, @external_id, @url, @source_url, @isSincronized)"
   );
 
-  let dbChanges = 0;
+  var imageInsertions = images.map((image) => {
 
-  books.forEach((book) => {
-    dbChanges += stmt.run({
-      id: book.id,
-      book_isbn: book.isbn,
-      is_available: true,
-      at_position: book.at_position,
-    }).changes;
+    console.log(image);
+    return new Promise((resolve) => {
+      let dbChanges = stmt.run({
+        id: image.id,
+        book_isbn: image.isbn,
+        external_id: image.id,
+        url: image.url.trim(),
+        source_url: image.sourceUrl.trim(),
+        isSincronized: false,
+      }).changes;
+      resolve(dbChanges);
+    });
   });
 
-  return dbChanges;
+  await Promise.all(imageInsertions);
+  return images.length;
+};
+
+const insertBookCopies = async (bookCopies: Book[]) => {
+  const stmt = dbConnection.prepare(
+    "INSERT INTO books_copies VALUES (@id, @book_isbn, @is_available, @at_position, @created_at, @updated_at)"
+  );
+
+  var bookCopyInsertions = bookCopies.map((book) => {
+    return new Promise((resolve) => {
+      let dbChanges = stmt.run({
+        id: book.id,
+        book_isbn: book.isbn,
+        is_available: true,
+        at_position: book.at_position,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }).changes;
+      resolve(dbChanges);
+    });
+  });
+
+  await Promise.all(bookCopyInsertions);
+  return bookCopies.length;
 };

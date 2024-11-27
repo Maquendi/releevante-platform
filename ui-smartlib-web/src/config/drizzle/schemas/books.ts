@@ -1,12 +1,12 @@
 import { relations, sql } from "drizzle-orm";
 import {  sqliteTable, text, numeric } from "drizzle-orm/sqlite-core";
-import { v4 as uuidv4 } from 'uuid';
 import { bookCopieSchema } from "./bookCopies";
 import { bookImageSchema } from "./bookImages";
 import { bookFtagSchema } from "./bookFtags";
 
+
 export const bookSchema = sqliteTable('books',{
-    id: text('id').primaryKey().$defaultFn(() => uuidv4()),
+    id: text('id').primaryKey(),
     bookTitle:text('book_title').notNull(),
     editionTitle:text('edition_title').notNull(),
     author:text('author').notNull(),

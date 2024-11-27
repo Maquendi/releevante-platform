@@ -90,8 +90,10 @@ async function seed() {
 
     const bookImagesData = books.map((book) => {
       return {
+        id: uuidv4(),
         external_id: uuidv4(),
         url: faker.image.url(),
+        source_url: faker.image.url(),
         book_isbn: book.id,
         isSincronized: faker.datatype.boolean(),
       };

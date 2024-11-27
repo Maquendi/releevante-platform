@@ -7,18 +7,18 @@ import com.releevante.types.ImmutableExt;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = SmartLibraryAccessDto.class)
-@JsonSerialize(as = SmartLibraryAccessDto.class)
+@JsonDeserialize(as = PinAuthenticationDto.class)
+@JsonSerialize(as = PinAuthenticationDto.class)
 @ImmutableExt
-public abstract class AbstractSmartLibraryAccessDto {
+public abstract class AbstractPinAuthenticationDto {
   abstract LoginTokenDto token();
 
   abstract String orgId();
 
   abstract String userId();
 
-  public static SmartLibraryAccessDto from(LoginTokenDto tokenDto, SmartLibraryAccess access) {
-    return SmartLibraryAccessDto.builder()
+  public static PinAuthenticationDto from(LoginTokenDto tokenDto, SmartLibraryAccess access) {
+    return PinAuthenticationDto.builder()
         .token(tokenDto)
         .userId(access.userId())
         .orgId(access.orgId().value())

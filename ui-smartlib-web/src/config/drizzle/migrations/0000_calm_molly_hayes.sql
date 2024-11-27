@@ -25,9 +25,10 @@ CREATE TABLE `book_ftag` (
 );
 --> statement-breakpoint
 CREATE TABLE `books_images` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`external_id` text NOT NULL,
 	`url` text NOT NULL,
+	`source_url` text NOT NULL,
 	`book_isbn` text NOT NULL,
 	`isSincronized` integer DEFAULT false,
 	FOREIGN KEY (`book_isbn`) REFERENCES `books`(`id`) ON UPDATE no action ON DELETE no action

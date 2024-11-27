@@ -6,11 +6,15 @@ import { synchronizeLibraryAccess } from "./sync/synchronize-library-access";
 const run = async () => {
   let dataSynced = await synchronizeBooks();
 
-  dataSynced += await synchronizeSettings();
+  //dataSynced += await synchronizeLibraryAccess();
 
-  dataSynced += await synchronizeLibraryAccess();
+  //dataSynced += await synchronizeSettings();
 
-  await markLibrarySynchronized();
+  console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced)
+
+  // if (dataSynced > 0) {
+  //   await markLibrarySynchronized();
+  // }
 };
 
 run();
