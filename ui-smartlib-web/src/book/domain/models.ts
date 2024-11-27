@@ -18,6 +18,8 @@ export interface BooksByCategory {
     bookTitle: string;
     author: string;
     imageUrl: string;
+    votes:number,
+    rating:number
   }[];
 }
 

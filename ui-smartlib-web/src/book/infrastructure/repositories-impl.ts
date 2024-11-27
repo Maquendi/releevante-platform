@@ -10,19 +10,18 @@ import {
   Isbn,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, eq,  like, or } from "drizzle-orm";
+import { and, avg, eq, like, or, sql } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,
   bookFtagSchema,
   bookImageSchema,
   bookSchema,
-  categorySchema,
   ftagsSchema,
 } from "@/config/drizzle/schemas";
-import { jsonAgg } from "@/lib/db/helpers";
 import { db } from "@/config/drizzle/db";
 import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
+import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -76,43 +75,52 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async findAllCategories(): Promise<BookCategory[]> {
-    return dbGetAll('categorySchema',{
-      columns:{
-        id:true,
-        name:true,
-        imageUrl:true
-      }
-    })    
+    return dbGetAll("categorySchema", {
+      columns: {
+        id: true,
+        name: true,
+        imageUrl: true,
+      },
+    });
   }
 
-  async findAllByCategory(categoryId: string): Promise<BooksByCategory[]> {
-    const results=await db
+  async findAllByCategory(categoryId?: string): Promise<BooksByCategory[]> {
+    const results = await db
       .select({
-        category:categorySchema.name,
-        subCategory: ftagsSchema.tagValue,
-        books: jsonAgg({
+         subCategory:ftagsSchema.tagValue,
           isbn: bookSchema.id,
           bookTitle: bookSchema.bookTitle,
           publisher: bookSchema.author,
           imageUrl: bookImageSchema.url,
-        }),
+          rating:sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
+          votes:sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
       })
       .from(bookSchema)
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .leftJoin(bookImageSchema, eq(bookImageSchema.book_isbn, bookSchema.id))
+      .leftJoin(bookRatingsSchema,eq(bookRatingsSchema.isbn,bookSchema.id))
       .leftJoin(
         bookCategorySchema,
         eq(bookCategorySchema.bookIsbn, bookSchema.id)
       )
-      .leftJoin(
-        categorySchema,
-        eq(bookCategorySchema.categoryId, categorySchema.id)
+      .where(
+        categoryId ? eq(bookCategorySchema.categoryId, categoryId) : undefined
       )
-      .where(and(eq(bookCategorySchema.categoryId, categoryId)))
-      .groupBy(ftagsSchema.tagValue);
-      
-      return results as BooksByCategory[]
+      .groupBy(bookSchema.id);
+
+      const groupedBooks = results.reduce((acc, book) => {
+        const category = book.subCategory || 'Others'; 
+        if (!acc[category]) {
+          acc[category] = { subCategory: category, books: [] };
+        }
+        acc[category].books.push(book);
+        return acc;
+      }, {});
+
+      const data = Object.values(groupedBooks)
+
+    return data as BooksByCategory[];
   }
 
   async findAllBy(query: string): Promise<Book[]> {
