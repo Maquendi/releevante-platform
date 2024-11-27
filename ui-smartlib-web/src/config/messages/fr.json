@@ -15,5 +15,15 @@
     "subTitle": "Présentez votre bracelet au scanner du kiosque pour accéder à notre collection de livres en location ou achat.",
     "footerText": "Vous avez des difficultés à scanner votre bracelet?",
     "footerBtn": "Scanner le bracelet"
+  },
+  "homePage": {
+    "title": "Bon après-midi!",
+    "subTitle": "Explorez et louez gratuitement notre riche collection de livres",
+    "selectCategory": "Sélectionnez une catégorie",
+    "seeAll": "Voir tout",
+    "notFound": "Nous n'avons trouvé aucun livre d'action. Veuillez rechercher une autre catégorie ou trouver un autre livre que nous vous recommandons ci-dessous.",
+    "findRightBook": "Trouvez le livre qui vous convient",
+    "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à louer gratuitement.",
+    "startNow": "Commencez maintenant"
   }
 }
