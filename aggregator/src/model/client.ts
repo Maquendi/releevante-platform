@@ -1,3 +1,10 @@
+export interface BookImage {
+  id: string;
+  isbn: string;
+  url: string;
+  sourceUrl: string;
+}
+
 export interface Book {
   id: string;
   isbn: string;
@@ -7,6 +14,7 @@ export interface Book {
   price: number;
   correlationId: string;
   description: string;
+  images: BookImage[];
   at_position?: string;
 }
 
@@ -19,7 +27,11 @@ export interface LibrarySetting {
   bookPriceReductionRateOnThresholdReached: number;
 }
 
-export interface ClientSyncResponse {
-  books?: Book[];
-  settings?: LibrarySetting[];
+export interface LibraryAccess {
+  userId: string;
+  accessId: string;
+  accessDueDays: number;
+  expiresAt: Date;
+  credential: string;
+  credentialType: string;
 }

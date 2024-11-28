@@ -155,11 +155,19 @@ class DefaultBookRepositoryImpl implements BookRepository {
         like(bookSchema.editionTitle, `%${query}%`)
       ),
       columns: {
-        isbn: true,
+        id: true,
         bookTitle: true,
         author: true,
         editionTitle: true,
       },
+      with:{
+        images:{
+          columns:{
+            id:true,
+            url:true
+          }
+        }
+      }
     });
 
     return results as Book[];

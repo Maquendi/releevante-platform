@@ -16,7 +16,9 @@ CREATE TABLE core.books (
   qty numeric NOT NULL,
   price numeric NOT NULL,
   author varchar(120) NOT NULL,
-  description varchar(1080) NULL,
+  description varchar(1080) NOT NULL,
+  description_fr varchar(1080) NOT NULL,
+  description_es varchar(1080) NOT NULL,
   lang varchar(50) NOT NULL,
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -266,4 +268,37 @@ CREATE TABLE core.smart_library_access_ctrl (
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT slid_acc_id PRIMARY KEY (id),
 	FOREIGN KEY (org_id) REFERENCES core.org(id)
+);
+
+CREATE TABLE core.tasks (
+    id varchar(36) NOT NULL,
+	name varchar(50) NOT NULL,
+	started_at timestamp NOT NULL,
+	ended_at timestamp NOT NULL,
+	updated_at timestamp NOT NULL,
+	errors text[] NULL,
+	result numeric NULL,
+	CONSTRAINT task_p_k PRIMARY KEY (id)
+);
+
+CREATE TABLE core.tags (
+    id varchar(36) NOT NULL,
+	name varchar(50) NOT NULL,
+	value_en varchar(50) NOT NULL,
+	value_fr varchar(50) NULL,
+	value_sp varchar(50) NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT tag_p_k PRIMARY KEY (id)
+);
+
+
+CREATE TABLE core.book_tags (
+    id varchar(36) NOT NULL,
+	isbn varchar(50) NOT NULL,
+	tag_id varchar(36) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT book_tag_p_k PRIMARY KEY (id),
+	FOREIGN KEY (isbn) REFERENCES core.books(isbn),
+	FOREIGN KEY (tag_id) REFERENCES core.tags(id)
 );

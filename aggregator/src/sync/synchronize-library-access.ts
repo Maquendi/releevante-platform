@@ -1,8 +1,7 @@
 import { dbConnection } from "../config/db.js";
 import { executeGet } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
-import { Book, ClientSyncResponse } from "../model/client.js";
-import { arrayGroupBy } from "../utils.js";
+import { LibraryAccess } from "../model/client.js";
 
 const slid = process.env.slid;
 
@@ -12,53 +11,34 @@ export const synchronizeLibraryAccess = async () => {
   const request: ApiRequest = {
     resource: `aggregator/${slid}/synchronize/accesses`,
   };
-  const response = await executeGet<ClientSyncResponse>(request);
-  const accesses = response.context.data.books;
+  const response = await executeGet<LibraryAccess[]>(request);
+  const accesses = response.context.data;
   syncComplete = accesses?.length == 0 || !accesses;
 
   if (accesses && accesses.length) {
     totalRecordsSynced += await insertUsers(accesses);
   }
 
-  console.log("TOTAL RECORDS SYNCHRONIZED: " + totalRecordsSynced);
+  console.log("TOTAL USER RECORDS SYNCHRONIZED: " + totalRecordsSynced);
 
   return totalRecordsSynced;
 };
 
-const insertUsers = async (books: Book[]) => {
-  const groupsByIsbn = arrayGroupBy(books, "isbn");
+const insertUsers = async (accesses: LibraryAccess[]) => {
   const stmt = dbConnection.prepare(
-    "INSERT INTO books VALUES (@id, @book_title, @edition_title, @author, @description)"
+    "INSERT INTO user VALUES (@id, @access_id, @credential, @is_active, @expires_at, @created_at, @updated_at)"
   );
-  let insertedBook = 0;
-
-  Object.keys(groupsByIsbn).forEach((key) => {
-    const book = groupsByIsbn[key][0];
-    insertedBook += stmt.run({
-      id: book.isbn,
-      book_title: book.title,
-      edition_title: book.title,
-      author: book.author,
-      description: book.description,
-    }).changes;
-  });
-
-  return insertBookCopies(books);
-};
-
-const insertBookCopies = async (books: Book[]) => {
-  const stmt = dbConnection.prepare(
-    "INSERT INTO user VALUES (@id, @book_isbn, @is_available, @at_position)"
-  );
-
   let dbChanges = 0;
 
-  books.forEach((book) => {
+  accesses.forEach((access) => {
     dbChanges += stmt.run({
-      id: book.id,
-      book_isbn: book.isbn,
-      is_available: true,
-      at_position: book.at_position,
+      id: access.userId,
+      access_id: access.accessId,
+      credential: access.credential,
+      is_active: true,
+      expires_at: access.expiresAt,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }).changes;
   });
 

@@ -5,8 +5,8 @@ import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.identity.IdentityServiceFacade;
 import com.releevante.identity.application.dto.LoginDto;
+import com.releevante.identity.application.dto.PinAuthenticationDto;
 import com.releevante.identity.application.dto.PinLoginDto;
-import com.releevante.identity.application.dto.SmartLibraryAccessDto;
 import com.releevante.identity.application.dto.UserAuthenticationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -112,7 +112,7 @@ public class UserAuthenticationController {
             })
       })
   @PostMapping("/pin")
-  Mono<CustomApiResponse<SmartLibraryAccessDto>> login(@RequestBody PinLoginDto login) {
+  Mono<CustomApiResponse<PinAuthenticationDto>> login(@RequestBody PinLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 }

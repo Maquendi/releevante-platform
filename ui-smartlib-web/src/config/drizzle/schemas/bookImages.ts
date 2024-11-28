@@ -3,11 +3,10 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { bookSchema } from "./books";
 
 export const bookImageSchema = sqliteTable("books_images", {
-  id: integer("id", { mode: "number" })
-    .primaryKey({ autoIncrement: true })
-    .notNull(),
+  id: text("id").primaryKey().notNull(),
   external_id: text("external_id").notNull(),
-  url: text("url", { mode: "text" }).notNull(),
+  url: text("url").notNull(),
+  source_url: text("source_url").notNull(),
   book_isbn: text("book_isbn")
     .notNull()
     .references(() => bookSchema.id),

@@ -72,7 +72,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   }
 
   @Override
-  public Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto) {
+  public Mono<PinAuthenticationDto> authenticate(PinLoginDto loginDto) {
     return Mono.just(HashUtils.createSHAHash(loginDto.accessCode()))
         .map(AccessCredentialValue::of)
         .flatMapMany(accessControlRepository::findBy)
@@ -90,7 +90,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
             access ->
                 tokenService
                     .generateToken(access)
-                    .map(token -> SmartLibraryAccessDto.from(token, access)))
+                    .map(token -> PinAuthenticationDto.from(token, access)))
         .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
   }
 

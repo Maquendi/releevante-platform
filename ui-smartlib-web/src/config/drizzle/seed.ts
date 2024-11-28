@@ -118,12 +118,12 @@ async function seed() {
 
     const bookCategoriesData = books.map((book) => ({
       bookIsbn: book.id,
-      categoryId: categories[Math.floor(Math.random() * 4)].id, 
+      categoryId: categories[Math.floor(Math.random() * categories.length)].id,
     }));
 
     const bookFtagsData = books.map((book) => ({
       bookIsbn: book.id,
-      ftagId: ftags[Math.floor(Math.random() * 4)].id, 
+      ftagId: ftags[Math.floor(Math.random() * ftags.length)].id,
     }));
 
     const bookImagesData = books.map((book) => ({

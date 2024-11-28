@@ -30,6 +30,8 @@ public class BookRecord extends PersistableEntity {
   private BigDecimal price;
   private String author;
   private String description;
+  private String descriptionFr;
+  private String descriptionEs;
   private String lang;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
@@ -42,7 +44,9 @@ public class BookRecord extends PersistableEntity {
     record.setTitle(book.title());
     record.setPrice(book.price());
     record.setQty(book.qty());
-    record.setDescription(book.description());
+    record.setDescription(book.descriptionEnglish());
+    record.setDescriptionFr(book.descriptionFrench());
+    record.setDescriptionEs(book.descriptionSpanish());
     record.setCreatedAt(book.createdAt());
     record.setUpdatedAt(book.updatedAt());
     record.setAuthor(book.author());
@@ -58,7 +62,9 @@ public class BookRecord extends PersistableEntity {
         .updatedAt(updatedAt)
         .createdAt(createdAt)
         .author(author)
-        .description(description)
+        .descriptionEnglish(description)
+        .descriptionFrench(descriptionFr)
+        .descriptionSpanish(descriptionEs)
         .correlationId(correlationId)
         .language(lang)
         .qty(qty)

@@ -1,6 +1,5 @@
 package com.main.application.core;
 
-import com.main.adapter.api.dto.LibrarySyncResponseDto;
 import com.main.application.identity.IdentityServiceFacade;
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
@@ -27,7 +26,7 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
 
   @Override
   public Mono<List<ClientSyncResponse>> synchronizeClients(SmartLibrarySyncDto synchronizeDto) {
-    return smartLibraryService.synchronizeClients(synchronizeDto).map(LibrarySyncResponseDto::from);
+    return smartLibraryService.synchronizeClients(synchronizeDto).map(ClientSyncResponse::from);
   }
 
   @Override

@@ -70,7 +70,7 @@ export interface BookEdition {
 }
 
 export interface Book {
-  isbn: string;
+  id: string;
   bookTitle: string;
   author: string;
   editionTitle: string;

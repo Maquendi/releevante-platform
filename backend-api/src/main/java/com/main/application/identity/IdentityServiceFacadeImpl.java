@@ -74,7 +74,7 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto) {
+  public Mono<PinAuthenticationDto> authenticate(PinLoginDto loginDto) {
     return authenticationService.authenticate(loginDto);
   }
 

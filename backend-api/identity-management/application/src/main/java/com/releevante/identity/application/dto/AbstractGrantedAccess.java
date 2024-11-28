@@ -16,6 +16,10 @@ public abstract class AbstractGrantedAccess {
 
   abstract String accessId();
 
+  abstract String credential();
+
+  abstract String credentialType();
+
   abstract Integer accessDueDays();
 
   abstract ZonedDateTime expiresAt();
@@ -26,6 +30,8 @@ public abstract class AbstractGrantedAccess {
         .userId(access.userId())
         .accessDueDays(access.accessDueDays())
         .expiresAt(access.expiresAt())
+        .credential(access.credential().value().value())
+        .credentialType(access.credential().key().value())
         .build();
   }
 }

@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import SelectLanguage from "./SelectLanguage";
 import Link from "next/link";
 import Image from "next/image";
+import SearchBooks from "./SearchBooks";
 
 const LINKS = [
   {
@@ -48,6 +49,7 @@ export default function Navbar() {
         />
       </div>
       <div className="flex gap-5">
+        <SearchBooks/>
         {LINKS.map((item) => (
           <article key={item.path}>
             <Image

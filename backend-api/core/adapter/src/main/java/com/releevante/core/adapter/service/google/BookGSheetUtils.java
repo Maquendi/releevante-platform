@@ -8,6 +8,13 @@ public class BookGSheetUtils {
   public static final int BOOK_QTY = 4;
   public static final int BOOK_PRICE = 5;
   public static final int BOOK_AUTHOR = 6;
-  public static final int BOOK_IMAGES_URL = 7;
-  public static final int BOOK_DESCRIPTION = 8;
+  public static final int BOOK_DESCRIPTION_EN = 7;
+  public static final int BOOK_DESCRIPTION_SP = 8;
+  public static final int BOOK_DESCRIPTION_FR = 9;
+  public static final int BOOK_IMAGE_1 = 10;
+  public static final int BOOK_IMAGE_2 = 11;
+  public static final int BOOK_IMAGE_3 = 12;
+  public static final int BOOK_KEY_WORDS = 13;
+  public static final int BOOK_CATEGORIES = 14;
+  public static final int BOOK_SUB_CATEGORIES = 15;
 }

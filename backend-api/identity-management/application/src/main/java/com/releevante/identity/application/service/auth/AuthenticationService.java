@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 public interface AuthenticationService {
   Mono<UserAuthenticationDto> authenticate(LoginDto loginDto);
 
-  Mono<SmartLibraryAccessDto> authenticate(PinLoginDto loginDto);
+  Mono<PinAuthenticationDto> authenticate(PinLoginDto loginDto);
 
   Mono<AccountPrincipal> authenticate(LoginTokenDto token);
 }

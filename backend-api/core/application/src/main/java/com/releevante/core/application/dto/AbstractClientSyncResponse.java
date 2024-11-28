@@ -19,29 +19,25 @@ public abstract class AbstractClientSyncResponse {
 
   abstract List<LoanSyncResponse> loans();
 
-  public static LibrarySyncResponse fromDomain(SmartLibrary library) {
-
-    var clients =
-        library.clients().stream()
-            .map(
-                client -> {
-                  var syncedLoans =
-                      client.loans().stream()
-                          .map(
-                              loan ->
-                                  LoanSyncResponse.builder()
-                                      .externalId(loan.externalId().value())
-                                      .loanId(loan.id().value())
-                                      .build())
-                          .toList();
-                  return ClientSyncResponse.builder()
-                      .clientId(client.id().value())
-                      .externalId(client.externalId().value())
-                      .loans(syncedLoans)
-                      .build();
-                })
-            .collect(Collectors.toList());
-
-    return LibrarySyncResponse.builder().clients(clients).build();
+  public static List<ClientSyncResponse> from(SmartLibrary library) {
+    return library.clients().stream()
+        .map(
+            client -> {
+              var syncedLoans =
+                  client.loans().stream()
+                      .map(
+                          loan ->
+                              LoanSyncResponse.builder()
+                                  .externalId(loan.externalId().value())
+                                  .loanId(loan.id().value())
+                                  .build())
+                      .toList();
+              return ClientSyncResponse.builder()
+                  .clientId(client.id().value())
+                  .externalId(client.externalId().value())
+                  .loans(syncedLoans)
+                  .build();
+            })
+        .collect(Collectors.toList());
   }
 }

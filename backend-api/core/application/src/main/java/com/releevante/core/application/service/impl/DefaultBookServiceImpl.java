@@ -2,12 +2,16 @@ package com.releevante.core.application.service.impl;
 
 import com.releevante.core.application.dto.BookDto;
 import com.releevante.core.application.dto.LibraryInventoryDto;
+import com.releevante.core.application.dto.TagCreateDto;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.BookCopyStatus;
 import com.releevante.core.domain.LibraryInventory;
 import com.releevante.core.domain.repository.BookRepository;
+import com.releevante.core.domain.repository.BookTagRepository;
+import com.releevante.core.domain.tags.Tag;
+import com.releevante.core.domain.tags.TagTypes;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
 import com.releevante.types.UuidGenerator;
@@ -21,23 +25,30 @@ import reactor.core.scheduler.Schedulers;
 public class DefaultBookServiceImpl implements BookService {
   private final BookRepository bookRepository;
   private final BookRegistrationService bookRegistrationService;
+  private final BookTagRepository bookTagRepository;
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
+
+  private final SequentialGenerator<ZonedDateTime> dateTimeGenerator =
+      ZonedDateTimeGenerator.instance();
   private static final int BATCH_SIZE = 100;
 
   public DefaultBookServiceImpl(
-      BookRepository bookRepository, BookRegistrationService bookRegistrationService) {
+      BookRepository bookRepository,
+      BookRegistrationService bookRegistrationService,
+      BookTagRepository bookTagRepository) {
     this.bookRegistrationService = bookRegistrationService;
     this.bookRepository = bookRepository;
+    this.bookTagRepository = bookTagRepository;
   }
 
   @Override
-  public Mono<String> executeLoadBooks() {
+  public Mono<Long> executeLoadBooks() {
     return bookRegistrationService
         .getBookInventory()
         .buffer(BATCH_SIZE)
         .flatMap(bookRepository::saveAll)
-        .subscribeOn(Schedulers.boundedElastic())
-        .then(Mono.just(uuidGenerator.next()));
+        .count()
+        .subscribeOn(Schedulers.boundedElastic());
   }
 
   @Override
@@ -50,6 +61,16 @@ public class DefaultBookServiceImpl implements BookService {
         .flatMap(bookRepository::saveInventory)
         .subscribeOn(Schedulers.boundedElastic())
         .then(Mono.just(uuidGenerator.next()));
+  }
+
+  @Override
+  public Flux<Tag> createTags(TagCreateDto dto) {
+    return bookTagRepository.create(dto.toDomain(uuidGenerator, dateTimeGenerator));
+  }
+
+  @Override
+  public Flux<Tag> getTags(TagTypes name) {
+    return bookTagRepository.get(name);
   }
 
   Flux<LibraryInventory> buildInventory(List<LibraryInventoryDto> bookInventory, Slid slid) {

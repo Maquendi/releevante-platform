@@ -1,7 +1,7 @@
 import { dbConnection } from "../config/db";
 import { executeGet } from "../htttp-client/http-client";
 import { ApiRequest } from "../htttp-client/model";
-import { ClientSyncResponse, LibrarySetting } from "../model/client";
+import { LibrarySetting } from "../model/client";
 
 const slid = process.env.slid;
 
@@ -14,8 +14,8 @@ export const synchronizeSettings = async () => {
     resource: `aggregator/${slid}/synchronize/settings`,
   };
 
-  const response = await executeGet<ClientSyncResponse>(request);
-  const settings = response.context.data.settings;
+  const response = await executeGet<LibrarySetting[]>(request);
+  const settings = response.context.data;
   page++;
   syncComplete = settings?.length == 0 || !settings;
 
@@ -30,7 +30,7 @@ export const synchronizeSettings = async () => {
 
 const insertSettings = async (settings: LibrarySetting[]) => {
   const stmt = dbConnection.prepare(
-    "INSERT INTO library_settings VALUES (@id, @max_books_per_loan, @book_price_discount_percentage, @book_price_surcharge_percentage,  @book_price_reduction_threshold,  @book_price_reduction_rate_on_threshold_reached)"
+    "INSERT INTO library_settings VALUES (@id, @max_books_per_loan, @book_price_discount_percentage, @book_price_surcharge_percentage,  @book_price_reduction_threshold,  @book_price_reduction_rate_on_threshold_reached, @created_at, @updated_at)"
   );
 
   let dbChanges = 0;
@@ -44,6 +44,8 @@ const insertSettings = async (settings: LibrarySetting[]) => {
       book_price_reduction_threshold: setting.bookPriceReductionThreshold,
       book_price_reduction_rate_on_threshold_reached:
         setting.bookPriceReductionRateOnThresholdReached,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }).changes;
   });
 
