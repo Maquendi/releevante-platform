@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SelectLanguage from "./SelectLanguage";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,9 +23,11 @@ const LINKS = [
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center px-6 bg-white pt-2">
+    <nav className="flex justify-between items-center px-6 bg-white py-2 border border-b border-secondary">
       <div className="flex gap-2 items-center">
-        <SelectLanguage />
+        <Suspense>
+          <SelectLanguage />
+        </Suspense>
         <Link href={"/catalog"}>
           <Image
             width={40}

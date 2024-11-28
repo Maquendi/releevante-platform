@@ -4,24 +4,27 @@ import React, { useRef } from "react";
 import ImageWithSkeleton from "./ImageWithSkeleton";
 import Rating from "./Rating";
 import { useTranslations } from "next-intl";
+import { Link } from "@/config/i18n/routing";
+import { useSearchParams } from "next/navigation";
+import { CategoryBookItem } from "@/book/domain/models";
+import BookItem from "./catalogByCategory/BookItem";
 
-type Book = {
-  imageUrl: string;
-  bookTitle: string;
-  rating:number
-  votes:number
-  
-};
+
 
 type SliderProps = {
-  books: Book[];
+  books: CategoryBookItem[];
   slidesToShow?: number;
+  subCategoryId?: string;
 };
 
-const Slider: React.FC<SliderProps> = ({ books, slidesToShow = 3 }) => {
+const Slider: React.FC<SliderProps> = ({
+  books,
+  subCategoryId,
+  slidesToShow = 3,
+}) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const t = useTranslations("homePage");
-
+  const searchParams = useSearchParams();
 
   const nextSlide = () => {
     if (ref.current) {
@@ -38,7 +41,7 @@ const Slider: React.FC<SliderProps> = ({ books, slidesToShow = 3 }) => {
   };
 
   return (
-    <div className=" w-full overflow-hidden " >
+    <div className=" w-full overflow-hidden ">
       <div className=" absolute right-3 top-5 flex justify-end pb-1 px-4">
         <div className="flex gap-2">
           <button
@@ -53,36 +56,23 @@ const Slider: React.FC<SliderProps> = ({ books, slidesToShow = 3 }) => {
           >
             <ChevronRight />
           </button>
-          <button className="border border-[#827F7F] py-2 px-4 rounded-full text-xs font-medium">
-            {t('seeAll')}
-          </button>
+          <Link
+            href={`/catalog/${
+              searchParams?.get("categoryId") || "n"
+            }/?subCategoryId=${subCategoryId}`}
+            className="border grid place-content-center cursor-pointer border-[#827F7F] py-2 px-4 rounded-full text-xs font-medium"
+          >
+            {t("seeAll")}
+          </Link>
         </div>
       </div>
 
       <div
         ref={ref}
         className="flex overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth mx-2 space-x-3 no-scrollbar"
-        
       >
-        {books.map(async(book, index) => (
-          <div
-            className="flex-shrink-0 space-y-4 w-[30%]  text-center snap-start"
-            key={index}
-          >
-            <ImageWithSkeleton
-              src={book.imageUrl}
-              alt={book.bookTitle}
-              width={250}
-              height={250}
-              className="w-full h-[250px] object-cover rounded-lg "
-
-            />
-            <div className="flex text-end text-secondary-foreground items-center gap-3">
-              <Rating rating={book.rating}/>
-              <p >{book.rating}</p>
-              <p> ({book.votes} votes)</p>
-            </div>
-          </div>
+        {books.map(async (book) => (
+          <BookItem key={book.isbn} book={book}/>
         ))}
       </div>
     </div>
