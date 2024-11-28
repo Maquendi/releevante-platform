@@ -5,12 +5,15 @@ import com.releevante.core.adapter.service.google.GoogleSheetService;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.application.service.SmartLibraryService;
+import com.releevante.core.application.service.TaskExecutionService;
 import com.releevante.core.application.service.impl.DefaultBookServiceImpl;
 import com.releevante.core.application.service.impl.DefaultLibraryService;
+import com.releevante.core.application.service.impl.DefaultTaskExecutionService;
 import com.releevante.core.domain.repository.BookLoanRepository;
 import com.releevante.core.domain.repository.BookRepository;
 import com.releevante.core.domain.repository.ClientRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
+import com.releevante.core.domain.tasks.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +30,8 @@ public class CoreServiceBeanFactory {
 
   @Autowired BookRepository bookRepository;
 
+  @Autowired TaskRepository taskRepository;
+
   @Value("${spring.application.name}")
   String applicationName;
 
@@ -42,6 +47,11 @@ public class CoreServiceBeanFactory {
   public BookRegistrationService bookRegistrationService() {
     return new DefaultBookRegistrationService(
         new GoogleSheetService(applicationName, googleCredentialFilePath));
+  }
+
+  @Bean
+  public TaskExecutionService taskExecutionService() {
+    return new DefaultTaskExecutionService(taskRepository);
   }
 
   @Bean

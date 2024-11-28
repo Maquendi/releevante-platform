@@ -31,13 +31,13 @@ public class DefaultBookServiceImpl implements BookService {
   }
 
   @Override
-  public Mono<String> executeLoadBooks() {
+  public Mono<Long> executeLoadBooks() {
     return bookRegistrationService
         .getBookInventory()
         .buffer(BATCH_SIZE)
         .flatMap(bookRepository::saveAll)
-        .subscribeOn(Schedulers.boundedElastic())
-        .then(Mono.just(uuidGenerator.next()));
+        .count()
+        .subscribeOn(Schedulers.boundedElastic());
   }
 
   @Override

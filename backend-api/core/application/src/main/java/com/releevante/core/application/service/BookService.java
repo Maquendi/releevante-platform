@@ -6,7 +6,7 @@ import com.releevante.types.Slid;
 import reactor.core.publisher.Mono;
 
 public interface BookService {
-  Mono<String> executeLoadBooks();
+  Mono<Long> executeLoadBooks();
 
   Mono<String> executeLoadInventory(Slid slid, String source);
 

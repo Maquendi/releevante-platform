@@ -3,23 +3,32 @@ package com.main.adapter.api.core.controllers;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.releevante.core.application.service.BookService;
-import com.releevante.types.Slid;
+import com.releevante.core.application.service.TaskExecutionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/inventory")
-public class BookRegistrationController {
+@RequestMapping("/task")
+public class AsyncTaskInitiatorController {
+  private final ExecutorService executor = Executors.newFixedThreadPool(4);
 
-  final BookService bookService;
+  private final BookService bookService;
 
-  public BookRegistrationController(BookService bookService) {
+  private final TaskExecutionService taskExecutionService;
+
+  public AsyncTaskInitiatorController(
+      BookService bookService, TaskExecutionService taskExecutionService) {
     this.bookService = bookService;
+    this.taskExecutionService = taskExecutionService;
   }
 
   @Operation(
@@ -61,9 +70,10 @@ public class BookRegistrationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/slid/{slid}")
-  public Mono<CustomApiResponse<String>> registerLibraryInventory(
-      @PathVariable String slid, @RequestParam() String source) {
-    return bookService.executeLoadInventory(Slid.of(slid), source).map(CustomApiResponse::from);
+  @PostMapping("/register-books")
+  public Mono<CustomApiResponse<String>> startRegisterBooksTask() {
+    return taskExecutionService
+        .execute("register-books", bookService.executeLoadBooks())
+        .map(CustomApiResponse::from);
   }
 }

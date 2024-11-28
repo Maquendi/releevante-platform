@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.immutables.value.Value;
@@ -24,7 +25,11 @@ public abstract class AbstractBook {
 
   abstract int qty();
 
-  abstract String description();
+  abstract String descriptionEnglish();
+
+  abstract String descriptionFrench();
+
+  abstract String descriptionSpanish();
 
   abstract String author();
 
@@ -35,6 +40,21 @@ public abstract class AbstractBook {
   abstract ZonedDateTime updatedAt();
 
   @Value.Default
+  List<String> keyWords() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
+  List<String> categories() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
+  List<String> subCategories() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
   List<BookRating> ratings() {
     return Collections.emptyList();
   }
@@ -42,5 +62,11 @@ public abstract class AbstractBook {
   @Value.Default
   List<BookImage> images() {
     return Collections.emptyList();
+  }
+
+  public List<String> categoriesCombined() {
+    var categories = new ArrayList<>(categories());
+    categories.addAll(subCategories());
+    return categories;
   }
 }
