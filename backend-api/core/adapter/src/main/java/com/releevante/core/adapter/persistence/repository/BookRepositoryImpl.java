@@ -7,6 +7,8 @@ import com.releevante.core.domain.LibraryInventory;
 import com.releevante.core.domain.repository.BookRepository;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.UuidGenerator;
+import com.releevante.types.ZonedDateTimeGenerator;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,12 +22,10 @@ public class BookRepositoryImpl implements BookRepository {
   final BookHibernateDao bookHibernateDao;
   final BookImageHibernateDao bookImageHibernateDao;
   final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
-
   final BookTagHibernateDao bookTagHibernateDao;
-
-  final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
-
   final TagHibernateDao tagHibernateDao;
+  final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
+  final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
 
   public BookRepositoryImpl(
       BookHibernateDao bookHibernateDao,
@@ -63,8 +63,7 @@ public class BookRepositoryImpl implements BookRepository {
             book -> {
               var tags = book.categoriesCombined();
               return Flux.fromStream(book.keyWords().stream())
-                  .map(keyword -> TagRecord.fromKeyWord(uuidGenerator, keyword))
-                  .flatMap(tagHibernateDao::save)
+                  .flatMap(this::getTag)
                   .map(toBookTag(book))
                   .collectList()
                   .flatMapMany(
@@ -78,6 +77,16 @@ public class BookRepositoryImpl implements BookRepository {
                   .collectList()
                   .flatMapMany(bookTagHibernateDao::saveAll);
             });
+  }
+
+  private Mono<TagRecord> getTag(String value) {
+    return tagHibernateDao
+        .findFirstByValueIgnoreCase(value)
+        .switchIfEmpty(
+            Mono.defer(
+                () ->
+                    tagHibernateDao.save(
+                        TagRecord.fromKeyWord(uuidGenerator, dateTimeGenerator, value))));
   }
 
   Function<List<BookTagRecord>, List<BookTagRecord>> validateCategoryTags(List<String> tags) {
@@ -99,7 +108,7 @@ public class BookRepositoryImpl implements BookRepository {
   }
 
   private Function<TagRecord, BookTagRecord> toBookTag(Book book) {
-    return tag -> BookTagRecord.from(uuidGenerator, book, tag);
+    return tag -> BookTagRecord.from(uuidGenerator, dateTimeGenerator, book, tag);
   }
 
   @Override

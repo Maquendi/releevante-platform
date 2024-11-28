@@ -297,6 +297,7 @@ CREATE TABLE core.book_tags (
     id varchar(36) NOT NULL,
 	isbn varchar(50) NOT NULL,
 	tag_id varchar(36) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_tag_p_k PRIMARY KEY (id),
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn),
 	FOREIGN KEY (tag_id) REFERENCES core.tags(id)

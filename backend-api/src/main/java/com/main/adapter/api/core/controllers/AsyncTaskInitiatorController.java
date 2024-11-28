@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +17,6 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/task")
 public class AsyncTaskInitiatorController {
-  private final ExecutorService executor = Executors.newFixedThreadPool(4);
-
   private final BookService bookService;
 
   private final TaskExecutionService taskExecutionService;

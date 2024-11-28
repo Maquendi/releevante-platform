@@ -34,11 +34,11 @@ public class DefaultTaskExecutionService implements TaskExecutionService {
         .map(
             task -> {
               taskRunner
-                  .subscribeOn(Schedulers.boundedElastic())
                   .doOnSuccess(persistWithResults(task))
                   .thenReturn(task)
                   .onErrorResume(persistWithErrors(task))
                   .onErrorStop()
+                  .subscribeOn(Schedulers.boundedElastic())
                   .subscribe();
               return task.id();
             });

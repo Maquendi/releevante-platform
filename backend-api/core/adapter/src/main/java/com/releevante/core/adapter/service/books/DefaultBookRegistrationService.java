@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -148,21 +149,24 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               Optional.of(row.get(BookGSheetUtils.BOOK_CATEGORIES).toString().strip())
                   .filter(Predicate.not(String::isEmpty))
                   .map(keywords -> keywords.split(COMMA_SEPARATOR))
-                  .map(Arrays::asList)
+                  .map(Stream::of)
+                  .map(stream -> stream.map(String::strip).collect(Collectors.toList()))
                   .orElseThrow(() -> new RuntimeException("BOOK_CATEGORIES REQUIRED"));
 
           var subCategories =
               Optional.of(row.get(BookGSheetUtils.BOOK_SUB_CATEGORIES).toString().strip())
                   .filter(Predicate.not(String::isEmpty))
                   .map(keywords -> keywords.split(COMMA_SEPARATOR))
-                  .map(Arrays::asList)
+                  .map(Stream::of)
+                  .map(stream -> stream.map(String::strip).collect(Collectors.toList()))
                   .orElseThrow(() -> new RuntimeException("BOOK_SUB_CATEGORIES REQUIRED"));
 
           var keyWords =
               Optional.of(row.get(BookGSheetUtils.BOOK_KEY_WORDS).toString().strip())
                   .filter(Predicate.not(String::isEmpty))
                   .map(keywords -> keywords.split(COMMA_SEPARATOR))
-                  .map(Arrays::asList)
+                  .map(Stream::of)
+                  .map(stream -> stream.map(String::strip).collect(Collectors.toList()))
                   .orElse(Collections.emptyList());
 
           var createdAt = ZonedDateTimeGenerator.instance().next();

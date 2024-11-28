@@ -9,10 +9,7 @@ import com.releevante.core.application.service.TaskExecutionService;
 import com.releevante.core.application.service.impl.DefaultBookServiceImpl;
 import com.releevante.core.application.service.impl.DefaultLibraryService;
 import com.releevante.core.application.service.impl.DefaultTaskExecutionService;
-import com.releevante.core.domain.repository.BookLoanRepository;
-import com.releevante.core.domain.repository.BookRepository;
-import com.releevante.core.domain.repository.ClientRepository;
-import com.releevante.core.domain.repository.SmartLibraryRepository;
+import com.releevante.core.domain.repository.*;
 import com.releevante.core.domain.tasks.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +28,8 @@ public class CoreServiceBeanFactory {
   @Autowired BookRepository bookRepository;
 
   @Autowired TaskRepository taskRepository;
+
+  @Autowired BookTagRepository bookTagRepository;
 
   @Value("${spring.application.name}")
   String applicationName;
@@ -56,6 +55,6 @@ public class CoreServiceBeanFactory {
 
   @Bean
   public BookService bookService(BookRegistrationService bookRegistrationService) {
-    return new DefaultBookServiceImpl(bookRepository, bookRegistrationService);
+    return new DefaultBookServiceImpl(bookRepository, bookRegistrationService, bookTagRepository);
   }
 }
