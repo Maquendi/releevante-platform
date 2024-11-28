@@ -36,9 +36,9 @@ export async function FetchBookById(isbn:string){
     }
 }
 
-export async function FetchAllBookByCategory(category:string){
+export async function FetchAllBookByCategory(categoryId:string){
     try {
-        return await bookServiceFacade.findAllBookByCategory(category)
+        return await bookServiceFacade.findAllBookByCategory(categoryId)
     } catch (error) {
         throw new Error('Error fetching books by category' +  error)
     }
