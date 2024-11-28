@@ -1,8 +1,8 @@
 export interface BookCategory {
   id: string;
-   name: string;
-   imageUrl:string
-
+  esName: string;
+  frName: string;
+  enName: string;
 }
 
 export interface BookImage {
@@ -10,19 +10,31 @@ export interface BookImage {
   url: string;
 }
 
-export interface BooksByCategory {
-  category:string
-  subCategory: string;
-  books: {
-    isbn: string;
-    bookTitle: string;
-    author: string;
-    imageUrl: string;
-    votes:number,
-    rating:number
-  }[];
+export interface CategoryBookItem {
+  isbn: string;
+  bookTitle: string;
+  author: string;
+  imageUrl: string;
+  votes: number;
+  rating: number;
 }
 
+export interface BooksByCategory {
+  subCategory: {
+    id: string;
+    esSubCategoryName: string;
+    enSubCategoryName: string;
+    frSubCategoryName: string;
+  };
+  category: {
+    id: string;
+    esCategoryName: string;
+    frCategoryName: string;
+    enCategoryName: string;
+  };
+
+  books: CategoryBookItem[];
+}
 
 export interface BookCopy {
   id: string;
@@ -47,8 +59,8 @@ export interface BookItems {
 }
 
 export interface BooksPagination {
-  limit?: number;  
-  page?: number;    
+  limit?: number;
+  page?: number;
 }
 
 export interface BookEdition {
@@ -63,10 +75,10 @@ export interface Book {
   author: string;
   editionTitle: string;
   images?: BookImage[];
-  publisher?: string
+  publisher?: string;
 }
 
-export interface CategoryBooks{
-  categoryName:string,
-  books:Book[]
+export interface CategoryBooks {
+  categoryName: string;
+  books: Book[];
 }

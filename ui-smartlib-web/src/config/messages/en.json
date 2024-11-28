@@ -26,6 +26,8 @@
     "findRightBook": "Find the right book for you",
     "helpMessage": "Didn’t find a book yet? We are here to help you. Let’s find the perfect book for rent for free.",
     "startNow": "Start now"
-
+  },
+  "SeeAllPage":{
+    "subTitleBanner":"Excellent choice, select up to 4 books to rent for free"
   }
 }

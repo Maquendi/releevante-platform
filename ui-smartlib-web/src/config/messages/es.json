@@ -20,11 +20,13 @@
     "title": "¡Buenas tardes!",
     "subTitle": "Explora y alquila gratis nuestra rica colección de libros",
     "selectCategory": "Selecciona una categoría",
-     "seeAll": "Ver todo",
+    "seeAll": "Ver todo",
     "notFound": "No pudimos encontrar ningún libro de acción. Por favor, busca en otra categoría o encuentra otro libro que te recomendamos a continuación.",
     "findRightBook": "Encuentra el libro adecuado para ti",
     "helpMessage": "¿Aún no encuentras un libro? Estamos aquí para ayudarte. Encuentra el libro perfecto para alquilar gratis.",
     "startNow": "Empieza ahora"
-
+  },
+  "SeeAllPage": {
+    "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis"
   }
 }
