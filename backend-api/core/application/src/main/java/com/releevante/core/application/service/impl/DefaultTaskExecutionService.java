@@ -1,7 +1,7 @@
 package com.releevante.core.application.service.impl;
 
 import com.releevante.core.application.service.TaskExecutionService;
-import com.releevante.core.domain.tasks.Task;
+import com.releevante.core.domain.tasks.ImmutableTask;
 import com.releevante.core.domain.tasks.TaskRepository;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.UuidGenerator;
@@ -25,7 +25,7 @@ public class DefaultTaskExecutionService implements TaskExecutionService {
   public Mono<String> execute(String taskName, Mono<Long> taskRunner) {
     return Mono.fromCallable(
             () ->
-                Task.builder()
+                ImmutableTask.builder()
                     .id(UuidGenerator.instance().next())
                     .name(taskName)
                     .updatedAt(dateTimeGenerator.next())
@@ -44,14 +44,14 @@ public class DefaultTaskExecutionService implements TaskExecutionService {
             });
   }
 
-  private Consumer<Long> persistWithResults(Task task) {
+  private Consumer<Long> persistWithResults(ImmutableTask task) {
     return res ->
         taskRepository
             .create(task.withResult(res).withFinishedAt(dateTimeGenerator.next()))
             .subscribe();
   }
 
-  Function<Throwable, Mono<Task>> persistWithErrors(Task task) {
+  Function<Throwable, Mono<ImmutableTask>> persistWithErrors(ImmutableTask task) {
     return error ->
         taskRepository.create(
             task.withErrors(List.of(error.getMessage())).withFinishedAt(dateTimeGenerator.next()));

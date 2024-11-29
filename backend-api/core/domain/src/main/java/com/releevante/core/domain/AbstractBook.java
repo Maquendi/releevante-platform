@@ -1,5 +1,7 @@
 package com.releevante.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
@@ -8,6 +10,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -25,11 +28,11 @@ public abstract class AbstractBook {
 
   abstract int qty();
 
-  abstract String descriptionEnglish();
+  abstract String description();
 
-  abstract String descriptionFrench();
+  abstract String descriptionFr();
 
-  abstract String descriptionSpanish();
+  abstract String descriptionSp();
 
   abstract String author();
 
@@ -39,34 +42,46 @@ public abstract class AbstractBook {
 
   abstract ZonedDateTime updatedAt();
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
-  List<String> keyWords() {
+  List<Tag> keyWords() {
     return Collections.emptyList();
   }
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
-  List<String> categories() {
+  List<Tag> categories() {
     return Collections.emptyList();
   }
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
-  List<String> subCategories() {
+  List<Tag> subCategories() {
     return Collections.emptyList();
   }
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookRating> ratings() {
     return Collections.emptyList();
   }
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookImage> images() {
     return Collections.emptyList();
   }
 
-  public List<String> categoriesCombined() {
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  @Value.Default
+  List<BookCpy> copies() {
+    return Collections.emptyList();
+  }
+
+  @JsonIgnore
+  public List<String> joinTags() {
     var categories = new ArrayList<>(categories());
     categories.addAll(subCategories());
-    return categories;
+    return categories.stream().map(Tag::value).collect(Collectors.toList());
   }
 }

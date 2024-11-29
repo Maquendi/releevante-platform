@@ -22,4 +22,7 @@ dependencies {
 
     implementation project(path: ':core:domain')
     implementation project(path: ':core:application')
+
+    compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+    annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
 }

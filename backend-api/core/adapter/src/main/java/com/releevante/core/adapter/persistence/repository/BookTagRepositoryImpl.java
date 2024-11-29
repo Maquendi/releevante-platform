@@ -3,14 +3,12 @@ package com.releevante.core.adapter.persistence.repository;
 import com.releevante.core.adapter.persistence.dao.BookTagHibernateDao;
 import com.releevante.core.adapter.persistence.dao.TagHibernateDao;
 import com.releevante.core.adapter.persistence.records.TagRecord;
+import com.releevante.core.domain.Isbn;
+import com.releevante.core.domain.Tag;
 import com.releevante.core.domain.repository.BookTagRepository;
-import com.releevante.core.domain.tags.Tag;
 import com.releevante.core.domain.tags.TagTypes;
-import com.releevante.types.SequentialGenerator;
-import com.releevante.types.UuidGenerator;
-import com.releevante.types.ZonedDateTimeGenerator;
-import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +21,6 @@ public class BookTagRepositoryImpl implements BookTagRepository {
   final TagHibernateDao tagHibernateDao;
 
   final BookTagHibernateDao bookTagHibernateDao;
-
-  final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
-  final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
 
   public BookTagRepositoryImpl(
       TagHibernateDao tagHibernateDao, BookTagHibernateDao bookTagHibernateDao) {
@@ -49,5 +44,21 @@ public class BookTagRepositoryImpl implements BookTagRepository {
   @Override
   public Flux<Tag> get(TagTypes name) {
     return tagHibernateDao.findAllByName(name.name()).map(TagRecord::toDomain);
+  }
+
+  @Override
+  public Flux<Tag> getTags(Isbn isbn) {
+    return tagHibernateDao
+        .findByIsbn(isbn.value())
+        .map(
+            projection ->
+                Tag.builder()
+                    .id(projection.getId())
+                    .name(projection.getName())
+                    .value(projection.getValueEn())
+                    .valueFr(Optional.ofNullable(projection.getValueFr()))
+                    .valueSp(Optional.ofNullable(projection.getValueSp()))
+                    .createdAt(projection.getCreatedAt())
+                    .build());
   }
 }

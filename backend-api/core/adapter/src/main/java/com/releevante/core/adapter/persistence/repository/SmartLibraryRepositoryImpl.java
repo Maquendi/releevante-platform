@@ -124,17 +124,16 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   }
 
   @Override
-  public Flux<BookCopy> findAllBookCopiesUnSynced(Slid slid, int offset, int pageSize) {
+  public Flux<BookCopy> findAllBookCopiesUnSynced(
+      Slid slid, boolean synced, int offset, int pageSize) {
     return libraryInventoryHibernateDao
-        .findAllCopiesUnSynced(slid.value(), offset * pageSize, pageSize)
+        .findAllCopies(slid.value(), synced, offset * pageSize, pageSize)
         .map(LibraryInventoryRecord::fromProjection);
   }
 
   @Override
-  public Flux<LibrarySetting> findLibrarySettings(Slid slid) {
-    return Flux.from(
-            librarySettingsHibernateDao.findOneBySlidAndIsSyncIsFalseOrderByCreatedAtDesc(
-                slid.value()))
+  public Flux<LibrarySetting> findLibrarySettings(Slid slid, boolean synced) {
+    return Flux.from(librarySettingsHibernateDao.findBy(slid.value(), synced))
         .map(LibrarySettingsRecord::toDomain);
   }
 
@@ -143,6 +142,11 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
     return bookImageHibernateDao
         .findAllByIsbnIn(isbnSet.stream().map(Isbn::value).collect(Collectors.toSet()))
         .map(BookImageRecord::toDomain);
+  }
+
+  @Override
+  public Flux<BookImage> getImages(Isbn isbn) {
+    return null;
   }
 
   @Override

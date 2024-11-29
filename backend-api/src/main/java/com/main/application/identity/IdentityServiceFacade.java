@@ -17,7 +17,7 @@ public interface IdentityServiceFacade {
 
   Mono<List<GrantedAccess>> create(UserAccessDto access);
 
-  Flux<GrantedAccess> getUnSyncedAccesses(Slid slid);
+  Flux<GrantedAccess> getUnSyncedAccesses(Slid slid, boolean synced);
 
   Mono<UserAuthenticationDto> authenticate(LoginDto loginDto);
 

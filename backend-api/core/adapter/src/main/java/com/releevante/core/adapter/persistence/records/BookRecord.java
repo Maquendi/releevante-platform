@@ -44,9 +44,9 @@ public class BookRecord extends PersistableEntity {
     record.setTitle(book.title());
     record.setPrice(book.price());
     record.setQty(book.qty());
-    record.setDescription(book.descriptionEnglish());
-    record.setDescriptionFr(book.descriptionFrench());
-    record.setDescriptionEs(book.descriptionSpanish());
+    record.setDescription(book.description());
+    record.setDescriptionFr(book.descriptionFr());
+    record.setDescriptionEs(book.descriptionSp());
     record.setCreatedAt(book.createdAt());
     record.setUpdatedAt(book.updatedAt());
     record.setAuthor(book.author());
@@ -62,9 +62,9 @@ public class BookRecord extends PersistableEntity {
         .updatedAt(updatedAt)
         .createdAt(createdAt)
         .author(author)
-        .descriptionEnglish(description)
-        .descriptionFrench(descriptionFr)
-        .descriptionSpanish(descriptionEs)
+        .description(description)
+        .descriptionFr(descriptionFr)
+        .descriptionSp(descriptionEs)
         .correlationId(correlationId)
         .language(lang)
         .qty(qty)

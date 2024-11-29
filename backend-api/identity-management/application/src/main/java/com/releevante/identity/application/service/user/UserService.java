@@ -13,5 +13,5 @@ public interface UserService {
 
   Flux<GrantedAccess> create(UserAccessDto access);
 
-  Flux<GrantedAccess> getUnSyncedAccesses(Slid slid);
+  Flux<GrantedAccess> getUnSyncedAccesses(Slid slid, boolean synced);
 }

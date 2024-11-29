@@ -3,7 +3,6 @@ package com.main.adapter.api.core.controllers;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.core.SmartLibraryServiceFacade;
-import com.releevante.core.application.dto.BookCopyDto;
 import com.releevante.core.application.dto.ClientSyncResponse;
 import com.releevante.core.application.dto.LibrarySettingsDto;
 import com.releevante.core.application.dto.SmartLibrarySyncDto;
@@ -119,54 +118,6 @@ public class SmartLibrarySyncController {
   }
 
   @Operation(
-      summary = "Synchronize books, images, etc",
-      description = "retrieve all book copies and their images that belongs to the given library")
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid data supplied",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden access",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal server error",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            })
-      })
-  @GetMapping("/synchronize/books")
-  public Mono<CustomApiResponse<List<BookCopyDto>>> synchronizeLibraryBooks(
-      @PathVariable String slid, @RequestParam() int page, @RequestParam() int pageSize) {
-    return smartLibraryService
-        .synchronizeLibraryBooks(Slid.of(slid), page, pageSize)
-        .collectList()
-        .map(CustomApiResponse::from);
-  }
-
-  @Operation(
       summary = "Synchronize settings",
       description = "retrieve settings that belongs to the given library")
   @ApiResponses(
@@ -209,7 +160,7 @@ public class SmartLibrarySyncController {
   public Mono<CustomApiResponse<List<LibrarySettingsDto>>> synchronizeLibrarySettings(
       @PathVariable String slid) {
     return smartLibraryService
-        .synchronizeLibrarySettings(Slid.of(slid))
+        .synchronizeLibrarySettings(Slid.of(slid), true)
         .collectList()
         .map(CustomApiResponse::from);
   }
@@ -257,7 +208,7 @@ public class SmartLibrarySyncController {
   public Mono<CustomApiResponse<List<GrantedAccess>>> synchronizeLibraryAccess(
       @PathVariable String slid) {
     return smartLibraryService
-        .synchronizeLibraryAccesses(Slid.of(slid))
+        .synchronizeLibraryAccesses(Slid.of(slid), true)
         .collectList()
         .map(CustomApiResponse::from);
   }

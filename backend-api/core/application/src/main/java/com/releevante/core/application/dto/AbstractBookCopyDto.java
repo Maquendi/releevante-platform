@@ -30,6 +30,10 @@ public abstract class AbstractBookCopyDto {
 
   abstract String description();
 
+  abstract String descriptionFr();
+
+  abstract String descriptionSp();
+
   @Value.Default
   List<BookImageDto> images() {
     return Collections.emptyList();
@@ -45,6 +49,8 @@ public abstract class AbstractBookCopyDto {
         .price(copy.price())
         .author(copy.author())
         .language(copy.language())
+        .descriptionFr(copy.descriptionFr())
+        .descriptionSp(copy.descriptionSp())
         .build();
   }
 }

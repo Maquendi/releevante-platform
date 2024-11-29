@@ -82,6 +82,8 @@ public class LibraryInventoryRecord extends PersistableEntity {
         .correlationId(projection.getCorrelationId())
         .description(projection.getDescription())
         .isSync(projection.isSync())
+        .descriptionFr(projection.getDescriptionFr())
+        .descriptionSp(projection.getDescriptionEs())
         .price(projection.getPrice())
         .build();
   }

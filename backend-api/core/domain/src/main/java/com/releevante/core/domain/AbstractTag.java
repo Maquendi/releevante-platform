@@ -1,5 +1,6 @@
-package com.releevante.core.domain.tags;
+package com.releevante.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
@@ -18,8 +19,10 @@ public abstract class AbstractTag {
 
   abstract String value();
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   abstract Optional<String> valueFr();
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   abstract Optional<String> valueSp();
 
   abstract ZonedDateTime createdAt();

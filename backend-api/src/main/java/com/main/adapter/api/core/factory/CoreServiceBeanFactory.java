@@ -55,6 +55,7 @@ public class CoreServiceBeanFactory {
 
   @Bean
   public BookService bookService(BookRegistrationService bookRegistrationService) {
-    return new DefaultBookServiceImpl(bookRepository, bookRegistrationService, bookTagRepository);
+    return new DefaultBookServiceImpl(
+        bookRepository, bookRegistrationService, bookTagRepository, smartLibraryRepository);
   }
 }

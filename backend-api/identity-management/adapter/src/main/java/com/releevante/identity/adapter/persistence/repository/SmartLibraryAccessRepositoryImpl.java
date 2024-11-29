@@ -28,9 +28,9 @@ public class SmartLibraryAccessRepositoryImpl implements SmartLibraryAccessContr
   }
 
   @Override
-  public Flux<SmartLibraryAccess> findAllBy(Slid slid) {
+  public Flux<SmartLibraryAccess> findAllBy(Slid slid, boolean synced) {
     return libraryAccessControlDao
-        .findAllBySlidAndIsSyncIsFalse(slid.value())
+        .findAllBySlidAndIsSync(slid.value(), synced)
         .map(SmartLibraryAccessControlRecord::toDomain);
   }
 

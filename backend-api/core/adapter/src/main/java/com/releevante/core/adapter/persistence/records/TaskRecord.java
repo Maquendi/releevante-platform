@@ -1,6 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.tasks.Task;
+import com.releevante.core.domain.tasks.ImmutableTask;
 import java.time.ZonedDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -29,7 +29,7 @@ public class TaskRecord extends PersistableEntity {
 
   private long result;
 
-  public static TaskRecord from(Task task) {
+  public static TaskRecord from(ImmutableTask task) {
     var record = new TaskRecord();
     record.setId(task.id());
     record.setName(task.name());
@@ -38,11 +38,12 @@ public class TaskRecord extends PersistableEntity {
     record.setUpdatedAt(task.updatedAt());
     record.setErrors(task.errors());
     record.setResult(task.result().orElse(0L));
+    task.authorizedOrigin().id();
     return record;
   }
 
-  public Task toDomain() {
-    return Task.builder()
+  public ImmutableTask toDomain() {
+    return ImmutableTask.builder()
         .id(id)
         .name(name)
         .startedAt(startedAt)

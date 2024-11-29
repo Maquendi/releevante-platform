@@ -3,7 +3,6 @@ package com.releevante.core.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
-import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +19,7 @@ public abstract class AbstractBookLoan {
   abstract BookLoanId id();
 
   /** smart library id */
-  abstract Slid slid();
+  abstract String origin();
 
   /** estimated time for book return */
   abstract ZonedDateTime returnsAt();

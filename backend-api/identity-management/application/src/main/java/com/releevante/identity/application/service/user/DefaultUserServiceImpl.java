@@ -113,8 +113,8 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   }
 
   @Override
-  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid) {
-    return this.accessControlRepository.findAllBy(slid).map(GrantedAccess::from);
+  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid, boolean synced) {
+    return this.accessControlRepository.findAllBy(slid, synced).map(GrantedAccess::from);
   }
 
   Mono<AccessCredential> validateCredentials(AccessCredential credential) {

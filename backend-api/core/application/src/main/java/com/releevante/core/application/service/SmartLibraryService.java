@@ -1,6 +1,7 @@
 package com.releevante.core.application.service;
 
 import com.releevante.core.application.dto.*;
+import com.releevante.core.domain.BookCopy;
 import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.AccountPrincipal;
@@ -18,9 +19,9 @@ public interface SmartLibraryService {
 
   Flux<SmartLibraryDto> findAll(Set<Slid> sLids);
 
-  Flux<BookCopyDto> synchronizeLibraryBooks(Slid slid, int offset, int pageSize);
+  Flux<BookCopy> synchronizeLibraryBooks(Slid slid, boolean synced, int offset, int pageSize);
 
-  Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid);
+  Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid, boolean synced);
 
   Mono<Boolean> setSynchronized(Slid slid);
 }

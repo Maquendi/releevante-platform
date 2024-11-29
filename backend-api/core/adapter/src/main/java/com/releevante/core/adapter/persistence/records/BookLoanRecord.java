@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
-import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +20,7 @@ public class BookLoanRecord extends PersistableEntity {
 
   @Id private String id;
 
-  private String slid;
+  private String origin;
 
   private String externalId;
 
@@ -42,7 +41,7 @@ public class BookLoanRecord extends PersistableEntity {
   public BookLoan toDomain() {
     return BookLoan.builder()
         .id(BookLoanId.of(id))
-        .slid(Slid.of(slid))
+        .origin(origin)
         .returnedAt(returnedAt)
         .returnsAt(returnsAt)
         .createdAt(createdAt)
@@ -59,7 +58,7 @@ public class BookLoanRecord extends PersistableEntity {
     var record = new BookLoanRecord();
     record.setId(loan.id().value());
     record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails()));
-    record.setSlid(loan.slid().value());
+    record.setOrigin(loan.origin());
     record.setCreatedAt(loan.createdAt());
     record.setUpdatedAt(loan.updatedAt());
     record.setReturnsAt(loan.returnsAt());

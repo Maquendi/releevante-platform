@@ -21,6 +21,8 @@ public class BookCopyProjection {
   private String lang;
   private String correlationId;
   private String description;
+  private String descriptionFr;
+  private String descriptionEs;
   private String status;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;

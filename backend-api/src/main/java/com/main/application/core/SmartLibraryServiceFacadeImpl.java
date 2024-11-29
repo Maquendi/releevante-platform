@@ -3,6 +3,7 @@ package com.main.application.core;
 import com.main.application.identity.IdentityServiceFacade;
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
+import com.releevante.core.domain.BookCopy;
 import com.releevante.identity.application.dto.GrantedAccess;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
@@ -36,13 +37,14 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Flux<BookCopyDto> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
-    return smartLibraryService.synchronizeLibraryBooks(slid, offset, pageSize);
+  public Flux<BookCopy> synchronizeLibraryBooks(
+      Slid slid, boolean synced, int offset, int pageSize) {
+    return smartLibraryService.synchronizeLibraryBooks(slid, synced, offset, pageSize);
   }
 
   @Override
-  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid) {
-    return smartLibraryService.synchronizeLibrarySettings(slid);
+  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid, boolean synced) {
+    return smartLibraryService.synchronizeLibrarySettings(slid, synced);
   }
 
   @Override
@@ -51,7 +53,7 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Flux<GrantedAccess> synchronizeLibraryAccesses(Slid slid) {
-    return identityServiceFacade.getUnSyncedAccesses(slid);
+  public Flux<GrantedAccess> synchronizeLibraryAccesses(Slid slid, boolean synced) {
+    return identityServiceFacade.getUnSyncedAccesses(slid, synced);
   }
 }

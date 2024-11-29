@@ -34,11 +34,13 @@ public abstract class AbstractBookLoanDto {
 
   abstract List<BookLoanStatusDto> status();
 
+  // abstract TestDto testDto();
+
   public BookLoan toDomain(Slid slid) {
     var bookLoanId = BookLoanId.of(id().orElse(UuidGenerator.instance().next()));
     var externalId = BookLoanId.of(externalId());
     return BookLoan.builder()
-        .slid(slid)
+        .origin(slid.value())
         .id(bookLoanId)
         .externalId(externalId)
         .isNew(id().isEmpty())

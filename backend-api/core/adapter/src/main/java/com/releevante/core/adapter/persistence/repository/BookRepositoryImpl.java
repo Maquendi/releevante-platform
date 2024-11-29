@@ -1,15 +1,17 @@
 package com.releevante.core.adapter.persistence.repository;
 
 import com.releevante.core.adapter.persistence.dao.*;
+import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
 import com.releevante.core.adapter.persistence.records.*;
-import com.releevante.core.domain.Book;
-import com.releevante.core.domain.LibraryInventory;
+import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.BookRepository;
 import com.releevante.types.SequentialGenerator;
+import com.releevante.types.Slid;
 import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -46,8 +48,32 @@ public class BookRepositoryImpl implements BookRepository {
     return Mono.just(books.stream().map(BookRecord::fromDomain).collect(Collectors.toList()))
         .flatMapMany(bookHibernateDao::saveAll)
         .collectList()
-        .flatMapMany(ignored -> Flux.zip(persistBookImages(books), persistBookTags(books)))
+        .flatMapMany(
+            ignored -> Flux.mergeSequential(persistBookImages(books), persistBookTags(books)))
         .thenMany(Flux.fromIterable(books));
+  }
+
+  @Override
+  public Flux<Book> find(Slid slid, int page, int size, boolean synced) {
+    return find(
+        libraryInventoryHibernateDao.findAllCopies(slid.value(), synced, page * size, size), size);
+  }
+
+  @Override
+  public Flux<Book> find(Slid slid, int page, int size) {
+    return find(libraryInventoryHibernateDao.findAllCopies(slid.value(), page * size, size), size);
+  }
+
+  @Override
+  public Flux<Book> find(int page, int size) {
+    return bookHibernateDao.findPaginated(page * size, size).map(BookRecord::toDomain);
+  }
+
+  @Override
+  public Flux<BookImage> getImages(Isbn isbn) {
+    return bookImageHibernateDao
+        .findAllByIsbnIn(Set.of(isbn.value()))
+        .map(BookImageRecord::toDomain);
   }
 
   private Flux<BookImageRecord> persistBookImages(List<Book> books) {
@@ -61,32 +87,28 @@ public class BookRepositoryImpl implements BookRepository {
     return Flux.fromStream(books.stream())
         .flatMap(
             book -> {
-              var tags = book.categoriesCombined();
+              var tags = book.joinTags();
               return Flux.fromStream(book.keyWords().stream())
                   .flatMap(this::getTag)
                   .map(toBookTag(book))
                   .collectList()
                   .flatMapMany(
-                      bookTagRecords ->
+                      keyWords ->
                           tagHibernateDao
                               .findAllByValueIn(tags)
                               .map(toBookTag(book))
                               .collectList()
                               .map(validateCategoryTags(tags))
-                              .flatMapMany(bookTags -> combine(bookTagRecords, bookTags)))
-                  .collectList()
-                  .flatMapMany(bookTagHibernateDao::saveAll);
-            });
+                              .flatMapMany(categories -> combine(keyWords, categories)));
+            })
+        .collectList()
+        .flatMapMany(bookTagHibernateDao::saveAll);
   }
 
-  private Mono<TagRecord> getTag(String value) {
+  private Mono<TagRecord> getTag(Tag tag) {
     return tagHibernateDao
-        .findFirstByValueIgnoreCase(value)
-        .switchIfEmpty(
-            Mono.defer(
-                () ->
-                    tagHibernateDao.save(
-                        TagRecord.fromKeyWord(uuidGenerator, dateTimeGenerator, value))));
+        .findFirstByValueIgnoreCase(tag.value())
+        .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.fromKeyWord(tag))));
   }
 
   Function<List<BookTagRecord>, List<BookTagRecord>> validateCategoryTags(List<String> tags) {
@@ -95,12 +117,51 @@ public class BookRepositoryImpl implements BookRepository {
         throw new RuntimeException("Failed to find tags");
       }
 
-      if (tags.size() < list.size()) {
+      if (tags.size() != list.size()) {
         throw new RuntimeException("Failed to find all category or subCategory tags");
       }
 
       return list;
     };
+  }
+
+  private Flux<Book> find(Flux<BookCopyProjection> bookPublisher, int size) {
+    return bookPublisher
+        .groupBy(BookCopyProjection::getIsbn)
+        .flatMap(
+            flux ->
+                flux.collectList()
+                    .flatMap(
+                        copies ->
+                            Mono.just(copies.getFirst())
+                                .map(
+                                    first ->
+                                        Book.builder()
+                                            .isbn(Isbn.of(first.getIsbn()))
+                                            .correlationId(first.getCorrelationId())
+                                            .language(first.getLang())
+                                            .qty(size)
+                                            .author(first.getAuthor())
+                                            .description(first.getDescription())
+                                            .descriptionFr(first.getDescriptionFr())
+                                            .descriptionSp(first.getDescriptionEs())
+                                            .createdAt(first.getCreatedAt())
+                                            .updatedAt(first.getUpdatedAt())
+                                            .price(first.getPrice())
+                                            .title(first.getTitle())
+                                            .copies(
+                                                copies.stream()
+                                                    .map(
+                                                        copy ->
+                                                            BookCpy.builder()
+                                                                .id(copy.getCpy())
+                                                                .isSync(copy.isSync())
+                                                                .status(
+                                                                    BookCopyStatus.valueOf(
+                                                                        copy.getStatus()))
+                                                                .build())
+                                                    .collect(Collectors.toList()))
+                                            .build())));
   }
 
   private Flux<BookTagRecord> combine(List<BookTagRecord> list1, List<BookTagRecord> list2) {
@@ -111,6 +172,7 @@ public class BookRepositoryImpl implements BookRepository {
     return tag -> BookTagRecord.from(uuidGenerator, dateTimeGenerator, book, tag);
   }
 
+  @Transactional
   @Override
   public Flux<LibraryInventory> saveInventory(List<LibraryInventory> inventories) {
     return libraryInventoryHibernateDao

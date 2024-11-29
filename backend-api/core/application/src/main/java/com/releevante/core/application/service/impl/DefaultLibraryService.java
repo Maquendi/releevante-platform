@@ -4,8 +4,9 @@ import static java.util.stream.Collectors.groupingBy;
 
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
+import com.releevante.core.domain.BookCopy;
+import com.releevante.core.domain.BookImage;
 import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.Isbn;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.AccountPrincipal;
@@ -69,33 +70,27 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Flux<BookCopyDto> synchronizeLibraryBooks(Slid slid, int offset, int pageSize) {
+  public Flux<BookCopy> synchronizeLibraryBooks(
+      Slid slid, boolean synced, int offset, int pageSize) {
     return smartLibraryRepository
-        .findAllBookCopiesUnSynced(slid, offset, pageSize)
-        .map(BookCopyDto::from)
+        .findAllBookCopiesUnSynced(slid, synced, offset, pageSize)
         .collectList()
         .filter(Predicate.not(List::isEmpty))
         .flatMapMany(
             bookCopies -> {
-              var bookIsbnSet =
-                  bookCopies.stream()
-                      .map(BookCopyDto::isbn)
-                      .map(Isbn::of)
-                      .collect(Collectors.toSet());
+              var bookIsbnSet = bookCopies.stream().map(BookCopy::isbn).collect(Collectors.toSet());
 
               return smartLibraryRepository
                   .getImages(bookIsbnSet)
-                  .map(BookImageDto::from)
                   .collectList()
                   .flatMapMany(
                       bookImages -> {
-                        var imageGroups =
-                            bookImages.stream().collect(groupingBy(BookImageDto::isbn));
+                        var imageGroups = bookImages.stream().collect(groupingBy(BookImage::isbn));
                         return Flux.fromIterable(bookCopies)
                             .map(
                                 copy -> {
                                   var images =
-                                      Optional.ofNullable(imageGroups.get(copy.isbn()))
+                                      Optional.ofNullable(imageGroups.get(copy.isbn().value()))
                                           .orElse(Collections.emptyList());
                                   return copy.withImages(images);
                                 });
@@ -104,8 +99,8 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid) {
-    return smartLibraryRepository.findLibrarySettings(slid).map(LibrarySettingsDto::from);
+  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid, boolean synced) {
+    return smartLibraryRepository.findLibrarySettings(slid, synced).map(LibrarySettingsDto::from);
   }
 
   @Override

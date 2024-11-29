@@ -8,10 +8,13 @@ import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.BookImage;
 import com.releevante.core.domain.Isbn;
+import com.releevante.core.domain.Tag;
+import com.releevante.core.domain.tags.TagTypes;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,6 +29,9 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
   private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:P";
   private static final String LIBRARY_INVENTORY_RANGE = "A2:C";
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
+
+  private final SequentialGenerator<ZonedDateTime> dateTimeGenerator =
+      ZonedDateTimeGenerator.instance();
   private static final String COMMA_SEPARATOR = ",";
   private final GoogleSpreadSheetService googleSpreadSheetService;
 
@@ -150,7 +156,12 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
                   .filter(Predicate.not(String::isEmpty))
                   .map(keywords -> keywords.split(COMMA_SEPARATOR))
                   .map(Stream::of)
-                  .map(stream -> stream.map(String::strip).collect(Collectors.toList()))
+                  .map(
+                      stream ->
+                          stream
+                              .map(String::strip)
+                              .map(keyword -> buildTag(TagTypes.category, keyword))
+                              .collect(Collectors.toList()))
                   .orElseThrow(() -> new RuntimeException("BOOK_CATEGORIES REQUIRED"));
 
           var subCategories =
@@ -158,7 +169,12 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
                   .filter(Predicate.not(String::isEmpty))
                   .map(keywords -> keywords.split(COMMA_SEPARATOR))
                   .map(Stream::of)
-                  .map(stream -> stream.map(String::strip).collect(Collectors.toList()))
+                  .map(
+                      stream ->
+                          stream
+                              .map(String::strip)
+                              .map(keyword -> buildTag(TagTypes.subcategory, keyword))
+                              .collect(Collectors.toList()))
                   .orElseThrow(() -> new RuntimeException("BOOK_SUB_CATEGORIES REQUIRED"));
 
           var keyWords =
@@ -166,16 +182,21 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
                   .filter(Predicate.not(String::isEmpty))
                   .map(keywords -> keywords.split(COMMA_SEPARATOR))
                   .map(Stream::of)
-                  .map(stream -> stream.map(String::strip).collect(Collectors.toList()))
+                  .map(
+                      stream ->
+                          stream
+                              .map(String::strip)
+                              .map(keyword -> buildTag(TagTypes.keyword, keyword))
+                              .collect(Collectors.toList()))
                   .orElse(Collections.emptyList());
 
           var createdAt = ZonedDateTimeGenerator.instance().next();
           return Book.builder()
               .isbn(Isbn.of(bookId))
               .title(title)
-              .descriptionEnglish(descriptionEnglish)
-              .descriptionFrench(descriptionFrench)
-              .descriptionSpanish(descriptionSpanish)
+              .description(descriptionEnglish)
+              .descriptionFr(descriptionFrench)
+              .descriptionSp(descriptionSpanish)
               .price(price)
               .author(author)
               .qty(qty)
@@ -189,6 +210,15 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               .language(language)
               .build();
         });
+  }
+
+  private Tag buildTag(TagTypes name, String value) {
+    return Tag.builder()
+        .name(name.name())
+        .value(value)
+        .id(uuidGenerator.next())
+        .createdAt(dateTimeGenerator.next())
+        .build();
   }
 
   private List<BookImage> imageFrom(List<String> imageUrls, String bookId) {

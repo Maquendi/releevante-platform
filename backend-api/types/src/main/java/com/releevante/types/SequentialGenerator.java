@@ -4,7 +4,6 @@ package com.releevante.types;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
 
 public class SequentialGenerator<E> implements Generator<E> {
   Function<E, E> calculateNext;
@@ -28,9 +27,10 @@ public class SequentialGenerator<E> implements Generator<E> {
     this.current = Optional.empty();
   }
 
-  public static <E> Mono<SequentialGenerator<E>> fromZero(E zero, Function<E, E> calculateNext) {
-    return Mono.fromCallable(() -> new SequentialGenerator<>(zero, calculateNext));
-  }
+  //  public static <E> Mono<SequentialGenerator<E>> fromZero(E zero, Function<E, E> calculateNext)
+  // {
+  //    return Mono.fromCallable(() -> new SequentialGenerator<>(zero, calculateNext));
+  //  }
 
   @Override
   public synchronized E next() {

@@ -10,5 +10,5 @@ public interface SmartLibraryAccessDao
     extends ReactiveCrudRepository<SmartLibraryAccessControlRecord, String> {
   Flux<SmartLibraryAccessControlRecord> findByCredential(String credential);
 
-  Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSyncIsFalse(String slid);
+  Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSync(String slid, boolean isSync);
 }

@@ -158,17 +158,25 @@ CREATE TABLE core.book_image (
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn)
 );
 
+CREATE TABLE core.authorized_origins (
+	id varchar(36) NOT NULL,
+	type varchar(36) NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT authorized_origin_pk PRIMARY KEY (id)
+);
+
 CREATE TABLE core.book_loans (
 	id varchar(36) NOT NULL,
 	external_id varchar(36) NOT NULL,
-	slid varchar(36) NOT NULL,
+	origin varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
 	returns_at timestamp NOT NULL,
 	returned_at timestamp NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_loans_pk PRIMARY KEY (id),
-	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid),
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
 	FOREIGN KEY (client_id) REFERENCES core.clients(id)
 );
 

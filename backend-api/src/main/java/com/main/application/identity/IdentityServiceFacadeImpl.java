@@ -64,8 +64,8 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid) {
-    return userService.getUnSyncedAccesses(slid);
+  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid, boolean synced) {
+    return userService.getUnSyncedAccesses(slid, synced);
   }
 
   @Override

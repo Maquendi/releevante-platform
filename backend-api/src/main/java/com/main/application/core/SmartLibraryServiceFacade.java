@@ -1,6 +1,7 @@
 package com.main.application.core;
 
 import com.releevante.core.application.dto.*;
+import com.releevante.core.domain.BookCopy;
 import com.releevante.identity.application.dto.GrantedAccess;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
@@ -15,11 +16,11 @@ public interface SmartLibraryServiceFacade {
 
   Mono<List<ClientSyncResponse>> synchronizeClients(SmartLibrarySyncDto synchronizeDto);
 
-  Flux<BookCopyDto> synchronizeLibraryBooks(Slid slid, int offset, int pageSize);
+  Flux<BookCopy> synchronizeLibraryBooks(Slid slid, boolean synced, int offset, int pageSize);
 
-  Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid);
+  Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid, boolean synced);
 
   Mono<Boolean> setSynchronized(Slid slid);
 
-  Flux<GrantedAccess> synchronizeLibraryAccesses(Slid slid);
+  Flux<GrantedAccess> synchronizeLibraryAccesses(Slid slid, boolean synced);
 }

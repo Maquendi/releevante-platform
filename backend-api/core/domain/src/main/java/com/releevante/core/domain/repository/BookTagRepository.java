@@ -1,6 +1,7 @@
 package com.releevante.core.domain.repository;
 
-import com.releevante.core.domain.tags.Tag;
+import com.releevante.core.domain.Isbn;
+import com.releevante.core.domain.Tag;
 import com.releevante.core.domain.tags.TagTypes;
 import java.util.List;
 import reactor.core.publisher.Flux;
@@ -12,4 +13,6 @@ public interface BookTagRepository {
   Flux<Tag> create(List<Tag> tags);
 
   Flux<Tag> get(TagTypes name);
+
+  Flux<Tag> getTags(Isbn isbn);
 }

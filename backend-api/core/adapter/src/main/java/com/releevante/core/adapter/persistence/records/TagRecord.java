@@ -1,8 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.tags.Tag;
+import com.releevante.core.domain.Tag;
 import com.releevante.core.domain.tags.TagTypes;
-import com.releevante.types.SequentialGenerator;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import lombok.Getter;
@@ -27,15 +26,12 @@ public class TagRecord extends PersistableEntity {
 
   private ZonedDateTime createdAt;
 
-  public static TagRecord fromKeyWord(
-      SequentialGenerator<String> uuidGenerator,
-      SequentialGenerator<ZonedDateTime> dateTimeGenerator,
-      String keyWord) {
+  public static TagRecord fromKeyWord(Tag tag) {
     var record = new TagRecord();
     record.setName(TagTypes.keyword.name());
-    record.setId(uuidGenerator.next());
-    record.setValue(keyWord);
-    record.setCreatedAt(dateTimeGenerator.next());
+    record.setId(tag.id());
+    record.setValue(tag.value());
+    record.setCreatedAt(tag.createdAt());
     return record;
   }
 

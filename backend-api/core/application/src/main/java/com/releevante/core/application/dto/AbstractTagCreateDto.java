@@ -2,7 +2,7 @@ package com.releevante.core.application.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.releevante.core.domain.tags.Tag;
+import com.releevante.core.domain.Tag;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.SequentialGenerator;
 import java.time.ZonedDateTime;

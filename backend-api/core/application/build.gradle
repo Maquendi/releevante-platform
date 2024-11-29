@@ -11,6 +11,12 @@ bootJar {
 
 dependencies {
     implementation project(path: ':core:domain')
+
+    compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+    annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+
+    implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
+    implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
 }
 
 test {

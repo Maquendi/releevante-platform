@@ -37,6 +37,8 @@ public interface LibraryInventoryHibernateDao
               + "\tb.title,\n"
               + "\tb.author,\n"
               + "\tb.description,\n"
+              + "\tb.description_fr,\n"
+              + "\tb.description_es,\n"
               + "\tb.lang,\n"
               + "\tb.correlation_id\n"
               + "from\n"
@@ -45,10 +47,42 @@ public interface LibraryInventoryHibernateDao
               + "\tb.isbn = li.isbn\n"
               + "where\n"
               + "\tli.slid=:slid\n"
-              + "\tand li.is_sync = false\n"
+              + "\tand li.is_sync=:synced\n"
               + "order by li.created_at asc \n"
               + "limit :size offset :offset")
-  Flux<BookCopyProjection> findAllCopiesUnSynced(
+  Flux<BookCopyProjection> findAllCopies(
+      @Param("slid") String slid,
+      @Param("synced") boolean synced,
+      @Param("offset") int offset,
+      @Param("size") int size);
+
+  @Query(
+      value =
+          "select\n"
+              + "\tli.cpy,\n"
+              + "\tli.isbn,\n"
+              + "\tli.slid,\n"
+              + "\tli.is_sync,\n"
+              + "\tli.status,\n"
+              + "\tli.created_at,\n"
+              + "\tli.updated_at,\n"
+              + "\tb.price,\n"
+              + "\tb.title,\n"
+              + "\tb.author,\n"
+              + "\tb.description,\n"
+              + "\tb.description_fr,\n"
+              + "\tb.description_es,\n"
+              + "\tb.lang,\n"
+              + "\tb.correlation_id\n"
+              + "from\n"
+              + "\tcore.library_inventories li\n"
+              + "inner join core.books b on\n"
+              + "\tb.isbn = li.isbn\n"
+              + "where\n"
+              + "\tli.slid=:slid\n"
+              + "order by li.created_at asc \n"
+              + "limit :size offset :offset")
+  Flux<BookCopyProjection> findAllCopies(
       @Param("slid") String slid, @Param("offset") int offset, @Param("size") int size);
 
   @Query("update core.library_inventories set is_sync = true where slid = :slid")
