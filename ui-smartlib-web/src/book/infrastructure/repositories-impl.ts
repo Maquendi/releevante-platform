@@ -17,11 +17,13 @@ import {
   bookFtagSchema,
   bookImageSchema,
   bookSchema,
+  categorySchema,
   ftagsSchema,
 } from "@/config/drizzle/schemas";
 import { db } from "@/config/drizzle/db";
 import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
+import { da } from "@faker-js/faker";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -78,8 +80,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return dbGetAll("categorySchema", {
       columns: {
         id: true,
-        name: true,
-        imageUrl: true,
+        enName: true,
+        frName: true,
+        esName: true,
       },
     });
   }
@@ -87,38 +90,59 @@ class DefaultBookRepositoryImpl implements BookRepository {
   async findAllByCategory(categoryId?: string): Promise<BooksByCategory[]> {
     const results = await db
       .select({
-         subCategory:ftagsSchema.tagValue,
-          isbn: bookSchema.id,
-          bookTitle: bookSchema.bookTitle,
-          publisher: bookSchema.author,
-          imageUrl: bookImageSchema.url,
-          rating:sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
-          votes:sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
+        category: {
+          esCategoryName: categorySchema.esName,
+          frCategoryName: categorySchema.frName,
+          enCategoryName: categorySchema.enName,
+          id: bookCategorySchema.categoryId,
+        },
+        subCategory: {
+          id: ftagsSchema.id,
+          esSubCategoryName: ftagsSchema.esTagValue,
+          enSubCategoryName: ftagsSchema.enTagValue,
+          frSubCategoryName: ftagsSchema.frTagValue,
+        },
+        isbn: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        publisher: bookSchema.author,
+        imageUrl: bookImageSchema.url,
+        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
+        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
       })
       .from(bookSchema)
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .leftJoin(bookImageSchema, eq(bookImageSchema.book_isbn, bookSchema.id))
-      .leftJoin(bookRatingsSchema,eq(bookRatingsSchema.isbn,bookSchema.id))
+      .leftJoin(bookRatingsSchema, eq(bookRatingsSchema.isbn, bookSchema.id))
       .leftJoin(
         bookCategorySchema,
         eq(bookCategorySchema.bookIsbn, bookSchema.id)
+      )
+      .leftJoin(
+        categorySchema,
+        eq(categorySchema.id, bookCategorySchema.categoryId)
       )
       .where(
         categoryId ? eq(bookCategorySchema.categoryId, categoryId) : undefined
       )
       .groupBy(bookSchema.id);
 
-      const groupedBooks = results.reduce((acc, book) => {
-        const category = book.subCategory || 'Others'; 
-        if (!acc[category]) {
-          acc[category] = { subCategory: category, books: [] };
+    const groupedBooks = results.reduce(
+      (acc, { category, subCategory, ...book }) => {
+        if (!acc[subCategory!.id]) {
+          acc[subCategory!.id] = {
+            category,
+            subCategory,
+            books: [],
+          };
         }
-        acc[category].books.push(book);
+        acc[subCategory!.id].books.push(book);
         return acc;
-      }, {});
+      },
+      {}
+    );
 
-      const data = Object.values(groupedBooks)
+    const data = Object.values(groupedBooks);
 
     return data as BooksByCategory[];
   }
@@ -131,11 +155,19 @@ class DefaultBookRepositoryImpl implements BookRepository {
         like(bookSchema.editionTitle, `%${query}%`)
       ),
       columns: {
-        isbn: true,
+        id: true,
         bookTitle: true,
         author: true,
         editionTitle: true,
       },
+      with:{
+        images:{
+          columns:{
+            id:true,
+            url:true
+          }
+        }
+      }
     });
 
     return results as Book[];

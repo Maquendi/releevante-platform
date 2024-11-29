@@ -9,12 +9,12 @@ import { authSignIn } from "@/actions/auth-actions";
 import { useRouter } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
 
-export default function Passcode() {  
+export default function Passcode() {
   const [input, setInput] = useState<string>("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
   const otpContainerRef = useRef<HTMLDivElement | null>(null);
-  const router = useRouter();  
-  const [error,setError]=useState<boolean>(false)
+  const router = useRouter();
+  const [error, setError] = useState<boolean>(false);
   useOnClickOutside(otpContainerRef, () => setIsKeyboardVisible(false));
   const { mutateAsync: authSigninAction } = useMutation({
     mutationFn: authSignIn,
@@ -22,14 +22,14 @@ export default function Passcode() {
       router.push("/catalog");
     },
     onError() {
-        setError(true)
+      setError(true);
     },
   });
 
   const handleInputChange = (val: string) => {
-    if(error)setError(false)
-    setInput(() => val)
-  }
+    if (error) setError(false);
+    setInput(() => val);
+  };
 
   const handleClick = (event: React.MouseEvent) => {
     if (
@@ -39,7 +39,7 @@ export default function Passcode() {
     ) {
       setIsKeyboardVisible(true);
     }
-  }
+  };
 
   const handleAuthSubmit = async () => {
     setIsKeyboardVisible(false);
@@ -61,10 +61,9 @@ export default function Passcode() {
               <InputOTPSlot
                 key={index}
                 className={cn(
-                  "bg-white  text-black py-[1.30rem] border otp-slot  px-6 border-gray-500 rounded-md",
-                  error &&
-                    input &&
-                    "otp-slot border-x-2 border-y-2 text-[#E60C51] border-[#E60C51] bg-[#FFE9F0]"
+                  "bg-white text-black py-[1.30rem] border otp-slot px-6 border-gray-500 rounded-md",
+                  input[index] && // Verifica si el contenedor tiene un valor
+                    "bg-[#FDF3E7]  border-black"
                 )}
                 index={index}
                 tabIndex={0}
@@ -72,6 +71,7 @@ export default function Passcode() {
             ))}
           </InputOTPGroup>
         </InputOTP>
+
         {error && (
           <p className="text-[#E60C51] font-normal mt-1 text-sm">
             Please enter a valid pin code.

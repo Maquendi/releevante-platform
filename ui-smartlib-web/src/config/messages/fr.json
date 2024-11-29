@@ -25,5 +25,12 @@
     "findRightBook": "Trouvez le livre qui vous convient",
     "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à louer gratuitement.",
     "startNow": "Commencez maintenant"
+  },
+  "SeeAllPage": {
+    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à louer gratuitement"
+  },
+  "SearchBookPage": {
+    "bookNotFound": "Livre introuvable",
+    "tryTheseBooks": "Essayez ces livres à la place"
   }
 }
