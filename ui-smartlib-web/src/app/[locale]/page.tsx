@@ -1,3 +1,4 @@
+'use server'
 import { FetchAllBooks } from "@/actions/book-actions";
 import MainSliderBooks from "@/components/MainSliderBooks";
 import {  buttonVariants } from "@/components/ui/button";

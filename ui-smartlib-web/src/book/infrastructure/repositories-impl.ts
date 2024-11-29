@@ -129,14 +129,14 @@ class DefaultBookRepositoryImpl implements BookRepository {
 
     const groupedBooks = results.reduce(
       (acc, { category, subCategory, ...book }) => {
-        if (!acc[subCategory?.id!]) {
-          acc[subCategory?.id!] = {
+        if (!acc[subCategory!.id]) {
+          acc[subCategory!.id] = {
             category,
             subCategory,
             books: [],
           };
         }
-        acc[subCategory?.id!].books.push(book);
+        acc[subCategory!.id].books.push(book);
         return acc;
       },
       {}

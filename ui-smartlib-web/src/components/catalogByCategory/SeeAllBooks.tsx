@@ -23,7 +23,7 @@ function SeeAllBooks({ subCategoryId, categoryId }: SeeAllBooksPros) {
       (item) => item.subCategory.id === subCategoryId
     );
     return data?.length ? data[0] : null;
-  }, [categoryBooks, subCategoryId, categoryId]);
+  }, [categoryBooks, subCategoryId]);
 
   return (
     <div className="min-h-[250px]">

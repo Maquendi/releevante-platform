@@ -26,7 +26,7 @@ export default function HeaderBanner({
       (item) => item.subCategory.id === subCategoryId
     );
     return data?.length ? data[0] : null;
-  }, [categoryBooks, subCategoryId, categoryId]);
+  }, [categoryBooks, subCategoryId]);
 
   return (
     <header className="text-center px-7 bg-background  bg-white p-3 rounded-b-3xl">

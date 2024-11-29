@@ -1,4 +1,5 @@
-import {  BooksByCategory, CategoryBookItem } from "@/book/domain/models";
+'use client'
+import {  BooksByCategory } from "@/book/domain/models";
 import React from "react";
 import CatalogSlider from "../CatalogSlider";
 import { useLocale } from "next-intl";

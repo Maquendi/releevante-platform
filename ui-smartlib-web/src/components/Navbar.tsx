@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
 import SelectLanguage from "./SelectLanguage";
-import Link from "next/link";
 import Image from "next/image";
-import SearchBooks from "./SearchBooks";
+import dynamic from 'next/dynamic'
+import { Link } from "@/config/i18n/routing";
+const SearchBooks = dynamic(() => import("./SearchBooks"))
 
 const LINKS = [
   {
@@ -49,9 +50,8 @@ export default function Navbar() {
         />
       </div>
       <div className="flex gap-5">
-        <SearchBooks/>
         {LINKS.map((item) => (
-          <article key={item.path}>
+          <Link href={`/${item.path}`} key={item.path}>
             <Image
               src={item.icon}
               className="w-[30px] h-[30px]"
@@ -59,7 +59,7 @@ export default function Navbar() {
               height={40}
               alt={`icon image ${item.value}`}
             />
-          </article>
+          </Link>
         ))}
       </div>
     </nav>

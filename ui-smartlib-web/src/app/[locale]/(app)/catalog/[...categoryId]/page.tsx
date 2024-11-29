@@ -1,8 +1,9 @@
+"use client";
 import HeaderBanner from "@/components/catalogByCategory/HeaderBanner";
 import RemainingBooksByCategories from "@/components/catalogByCategory/RemainingBooksByCategories";
 import SeeAllBooks from "@/components/catalogByCategory/SeeAllBooks";
 import HelpFindBookBanner from "@/components/HelpFindBookBanner";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function Page({ params, searchParams }) {
   const categoryId = params?.categoryId?.length
@@ -17,10 +18,12 @@ export default function Page({ params, searchParams }) {
       <section className="px-5 mt-5 space-y-6">
         <SeeAllBooks categoryId={categoryId} subCategoryId={subCategoryId} />
         <HelpFindBookBanner />
-        <RemainingBooksByCategories
-          categoryId={categoryId}
-          subCategoryId={subCategoryId}
-        />
+        <Suspense>
+          <RemainingBooksByCategories
+            categoryId={categoryId}
+            subCategoryId={subCategoryId}
+          />
+        </Suspense>
       </section>
     </div>
   );

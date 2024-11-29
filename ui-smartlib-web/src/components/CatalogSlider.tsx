@@ -1,8 +1,6 @@
 "use client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useRef } from "react";
-import ImageWithSkeleton from "./ImageWithSkeleton";
-import Rating from "./Rating";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
 import { useSearchParams } from "next/navigation";

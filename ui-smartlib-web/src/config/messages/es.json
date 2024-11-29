@@ -28,5 +28,9 @@
   },
   "SeeAllPage": {
     "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis"
+  },
+  "SearchBookPage":{
+        "bookNotFound": "Libro no encontrado",
+      "tryTheseBooks": "Prueba con estos libros en su lugar"
   }
 }

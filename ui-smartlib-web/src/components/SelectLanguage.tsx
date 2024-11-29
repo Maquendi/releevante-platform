@@ -11,7 +11,6 @@ import { useLocale } from "next-intl";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { ArrowLeft, MoveLeft } from "lucide-react";
 import Image from "next/image";
 
 export default function SelectLanguage() {
@@ -52,7 +51,7 @@ export default function SelectLanguage() {
           open={open}
           onOpenChange={setOpen}
           onValueChange={(localeVal) => {
-            const currentPath = `${path}?${searchParams?.toString()!}`;
+            const currentPath = `${path}?${searchParams!.toString()!}`;
             router.replace(currentPath, { locale: localeVal as any });
           }}
         >

@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {  useQuery,  } from "@tanstack/react-query";
 import { FetchAllBooks } from "@/actions/book-actions";
 import Image from "next/image";
 
@@ -34,7 +34,7 @@ export default function MainSliderBooks() {
 
   const getNextSlide = (index) => (index === activeSlide + 1 ? true : false);
 
-  const { data: books } = useSuspenseQuery({
+  const { data: books } = useQuery({
     queryKey: ["ALL_BOOKS"],
     queryFn: () => FetchAllBooks({ limit: 25 }),
   });

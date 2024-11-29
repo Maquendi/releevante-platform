@@ -127,10 +127,12 @@ async function seed() {
     }));
 
     const bookImagesData = books.map((book) => ({
+      id: uuidv4(), 
       external_id: uuidv4(),
       url: faker.image.url(),
       book_isbn: book.id,
       isSincronized: faker.datatype.boolean(),
+      source_url:faker.image.url()
     }));
 
     const bookCopiesData = books.map((book) => ({
@@ -142,16 +144,20 @@ async function seed() {
       updated_at: new Date().toISOString(),
     }));
 
-    await Promise.all([
-      db.insert(categorySchema).values(categories).onConflictDoNothing(),
-      db.insert(ftagsSchema).values(ftags).onConflictDoNothing(),
-      db.insert(userSchema).values(users),
-      db.insert(bookSchema).values(books),
-      db.insert(bookCategorySchema).values(bookCategoriesData),
-      db.insert(bookFtagSchema).values(bookFtagsData),
-      db.insert(bookImageSchema).values(bookImagesData),
-      db.insert(bookCopieSchema).values(bookCopiesData),
-    ]);
+
+    await db.transaction(async(tx)=>{
+      await Promise.all([
+        tx.insert(categorySchema).values(categories).onConflictDoNothing(),
+        tx.insert(ftagsSchema).values(ftags).onConflictDoNothing(),
+        tx.insert(userSchema).values(users),
+        tx.insert(bookSchema).values(books),
+        tx.insert(bookCategorySchema).values(bookCategoriesData),
+        tx.insert(bookFtagSchema).values(bookFtagsData),
+        tx.insert(bookImageSchema).values(bookImagesData),
+        tx.insert(bookCopieSchema).values(bookCopiesData),
+      ]);
+    })
+  
 
     console.log("Database seeded successfully");
   } catch (error) {

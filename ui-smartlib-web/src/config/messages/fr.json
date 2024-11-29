@@ -27,7 +27,10 @@
     "startNow": "Commencez maintenant"
   },
   "SeeAllPage": {
-  "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à louer gratuitement"
-}
-
+    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à louer gratuitement"
+  },
+  "SearchBookPage": {
+    "bookNotFound": "Livre introuvable",
+    "tryTheseBooks": "Essayez ces livres à la place"
+  }
 }
