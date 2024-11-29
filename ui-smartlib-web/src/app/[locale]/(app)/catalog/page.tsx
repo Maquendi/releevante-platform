@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import {
   FetchAllBookByCategory,
   FetchAllBookCategories,
@@ -20,7 +20,7 @@ export default async function CatalogPage({ searchParams }) {
   const categories = await FetchAllBookCategories();
   const selectedCategory = searchParams?.categoryId;
   const queryClient = new QueryClient();
-  const booksByCategory = await queryClient.fetchQuery({
+  const booksByCategory = await queryClient.ensureQueryData({
     queryKey: ["BOOKS_BY_CATEGORIES", selectedCategory],
     queryFn: () => FetchAllBookByCategory(selectedCategory),
   });
@@ -36,6 +36,7 @@ export default async function CatalogPage({ searchParams }) {
             <p>{t("subTitle")}</p>
           </div>
           <Image
+            priority
             className="w-[150px] h-[150px]"
             src="/images/reading-a-book.svg"
             alt="reading a book image"
@@ -59,17 +60,17 @@ export default async function CatalogPage({ searchParams }) {
             >
               All
             </Link>
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <Link
                 className={cn(
                   "flex-none border px-6 py-3 border-gray-500 rounded-full snap-start",
-                  selectedCategory === category.id &&
+                  selectedCategory === category?.id &&
                     "bg-primary border-4 border-accent-foreground text-white"
                 )}
-                href={`/catalog?categoryId=${category.id}`}
-                key={category.id}
+                href={`/catalog?categoryId=${category?.id}`}
+                key={category?.id}
               >
-                {category[`${locale}Name`]}
+                {category[`${locale}Name`] || ""}
               </Link>
             ))}
           </div>
@@ -83,8 +84,8 @@ export default async function CatalogPage({ searchParams }) {
           </div>
         )}
         <HydrationBoundary state={dehydrate(queryClient)}>
-          {booksByCategory?.map((item) => (
-            <CatalogSliderItem key={item.category.id} {...item} />
+          {booksByCategory?.map((item, index) => (
+            <CatalogSliderItem key={index} {...item} />
           ))}{" "}
         </HydrationBoundary>
       </section>

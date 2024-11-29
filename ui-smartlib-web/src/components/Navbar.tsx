@@ -1,9 +1,7 @@
 import React, { Suspense } from "react";
 import SelectLanguage from "./SelectLanguage";
 import Image from "next/image";
-import dynamic from 'next/dynamic'
 import { Link } from "@/config/i18n/routing";
-const SearchBooks = dynamic(() => import("./SearchBooks"))
 
 const LINKS = [
   {
@@ -28,8 +26,9 @@ export default function Navbar() {
     <nav className="flex justify-between items-center px-6 bg-white py-2 border border-b border-secondary">
       <div className="flex gap-2 items-center">
         <Suspense>
-          <SelectLanguage />
+        <SelectLanguage />
         </Suspense>
+
         <Link href={"/catalog"}>
           <Image
             width={40}
