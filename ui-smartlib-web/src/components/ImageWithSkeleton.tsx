@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface ImageWithSkeletonProps {
   className?: string;
@@ -16,14 +17,15 @@ const ImageWithSkeleton = ({ src, width, height, alt, className }: ImageWithSkel
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div suppressHydrationWarning className="relative" style={{minWidth:`${width}px`,minHeight:`${height}px`}}>
+    <div suppressHydrationWarning className="relative !bg-gray-200" style={{minWidth:`${width}px`,minHeight:`${height}px`}}>
       {isLoading && <Skeleton className="absolute inset-0 bg-gray-100 w-full h-full" />}
       <Image
         src={src || "/images/reeleante.svg"}
         fill
         alt={alt}
-        className={`${className} ${isLoading ? "w-full h-full opacity-0" : "opacity-100"} transition-opacity`}
-        onLoadingComplete={() => setIsLoading(false)}
+        sizes="w-full h-full"
+        className={cn('transition-opacity',className,isLoading && "w-full h-full object-contain opacity-0 bg-gray-100")}
+        onLoad={() => setIsLoading(false)}
       />
     </div>
   );

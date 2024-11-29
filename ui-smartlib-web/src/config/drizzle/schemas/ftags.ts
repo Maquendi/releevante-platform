@@ -6,7 +6,9 @@ import { bookFtagSchema } from "./bookFtags";
 export const ftagsSchema = sqliteTable('ftags',{
     id: text('id').primaryKey().$defaultFn(() => uuidv4()),
     tagName: text('tag_name',{enum:['category','sub_category']}).notNull(),
-    tagValue:text('tag_value').notNull()
+    enTagValue:text('en_tag_value').notNull().unique(),
+    frTagValue:text('fr_tag_value').notNull().unique(),
+    esTagValue:text('es_tag_value').notNull().unique()
 })
 
 export const bookLayoutSchemaRelations = relations(ftagsSchema, ({ many }) => ({

@@ -1,4 +1,5 @@
 "use client";
+import useOnClickOutside from "@/hooks/useOnClickOutside";
 import React, {
   useState,
   useRef,
@@ -30,7 +31,8 @@ const VirtualKeyboard = ({
 }: KeyboardProps) => {
   const [layoutName, setLayoutName] = useState<string>("default");
   const keyboardRef = useRef<KeyboardRef | null>(null);
-  const keyboardContainer = useRef(null);
+  const keyboardContainerRef = useRef<HTMLInputElement | null>(null);
+  useOnClickOutside(keyboardContainerRef, () => setOpen(false));
 
   const onChange = (input: string) => {
     handleInputChangeFn(input);
@@ -58,7 +60,7 @@ const VirtualKeyboard = ({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      ref={keyboardContainer}
+      ref={keyboardContainerRef}
       className={`fixed bottom-0 left-0 right-0 z-50 duration-300 ease-in-out px-10 ${
         open ? "translate-y-0" : "translate-y-full"
       }`}

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import SelectLanguage from "./SelectLanguage";
-import Link from "next/link";
 import Image from "next/image";
+import dynamic from 'next/dynamic'
+import { Link } from "@/config/i18n/routing";
+const SearchBooks = dynamic(() => import("./SearchBooks"))
 
 const LINKS = [
   {
@@ -23,9 +25,11 @@ const LINKS = [
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center px-6 bg-white pt-2">
+    <nav className="flex justify-between items-center px-6 bg-white py-2 border border-b border-secondary">
       <div className="flex gap-2 items-center">
-        <SelectLanguage />
+        <Suspense>
+          <SelectLanguage />
+        </Suspense>
         <Link href={"/catalog"}>
           <Image
             width={40}
@@ -47,7 +51,7 @@ export default function Navbar() {
       </div>
       <div className="flex gap-5">
         {LINKS.map((item) => (
-          <article key={item.path}>
+          <Link href={`/${item.path}`} key={item.path}>
             <Image
               src={item.icon}
               className="w-[30px] h-[30px]"
@@ -55,7 +59,7 @@ export default function Navbar() {
               height={40}
               alt={`icon image ${item.value}`}
             />
-          </article>
+          </Link>
         ))}
       </div>
     </nav>
