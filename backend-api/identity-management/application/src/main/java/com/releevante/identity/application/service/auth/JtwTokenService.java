@@ -8,7 +8,7 @@ import com.releevante.types.AccountPrincipal;
 import reactor.core.publisher.Mono;
 
 public interface JtwTokenService {
-  Mono<LoginTokenDto> generateToken(LoginAccount payload);
+  Mono<LoginTokenDto> generateToken(String audience, LoginAccount payload);
 
   Mono<LoginTokenDto> generateToken(SmartLibraryAccess payload);
 

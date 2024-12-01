@@ -16,7 +16,6 @@ public class BookTagRecord extends PersistableEntity {
   String id;
   String isbn;
   String tagId;
-  ZonedDateTime createdAt;
 
   public static BookTagRecord from(
       SequentialGenerator<String> uuidGenerator,

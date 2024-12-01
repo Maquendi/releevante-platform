@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.SmartLibraryStatus;
 import com.releevante.core.domain.types.SmartLibraryState;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +20,6 @@ public class SmartLibraryEventRecord extends PersistableEntity {
   @Id String id;
   String slid;
   String type;
-  ZonedDateTime createdAt;
 
   public SmartLibraryStatus toDomain() {
     return SmartLibraryStatus.builder()

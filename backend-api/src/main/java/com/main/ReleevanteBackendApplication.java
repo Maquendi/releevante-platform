@@ -22,12 +22,6 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
       "com.releevante.core.adapter.persistence.dao"
     })
 public class ReleevanteBackendApplication {
-
-  //  @Bean
-  //  public R2dbcEntityTemplate r2dbcEntityTemplate(ConnectionFactory connectionFactory) {
-  //    return new R2dbcEntityTemplate(connectionFactory);
-  //  }
-
   public static void main(String[] args) {
     SpringApplication.run(ReleevanteBackendApplication.class, args);
   }

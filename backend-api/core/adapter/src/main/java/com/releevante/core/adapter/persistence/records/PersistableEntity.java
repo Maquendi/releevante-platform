@@ -1,18 +1,15 @@
 package com.releevante.core.adapter.persistence.records;
 
+import java.time.ZonedDateTime;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
 
+@Getter
+@Setter
 public abstract class PersistableEntity implements Persistable<String> {
-
-  @Transient private boolean isNew = true;
-
-  @Override
-  public boolean isNew() {
-    return isNew;
-  }
-
-  public void setIsNew(boolean isNew) {
-    this.isNew = isNew;
-  }
+  @Transient protected boolean isNew = true;
+  protected ZonedDateTime createdAt;
+  protected ZonedDateTime updatedAt;
 }

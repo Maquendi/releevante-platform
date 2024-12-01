@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.ServiceRating;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +19,7 @@ public class ServiceRatingRecord extends PersistableEntity {
   private String id;
 
   private String orgId;
-
   private int rating;
-
-  ZonedDateTime createdAt;
-
-  ZonedDateTime updatedAt;
 
   protected static ServiceRatingRecord fromDomain(ClientRecord client, ServiceRating rating) {
     var record = new ServiceRatingRecord();

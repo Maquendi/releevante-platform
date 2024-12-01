@@ -19,6 +19,8 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   final SmartLibraryAccessControlRepository accessControlRepository;
   final UserRepository userRepository;
 
+  final AuthorizedOriginRepository authorizedOriginRepository;
+
   public DefaultUserAuthenticationService(
       AccountRepository accountRepository,
       JtwTokenService tokenService,
@@ -26,7 +28,8 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
       PrivilegeRepository permissionsRepository,
       OrgRepository orgRepository,
       SmartLibraryAccessControlRepository accessControlRepository,
-      UserRepository userRepository) {
+      UserRepository userRepository,
+      AuthorizedOriginRepository authorizedOriginRepository) {
     this.accountRepository = accountRepository;
     this.tokenService = tokenService;
     this.passwordEncoder = passwordEncoder;
@@ -34,6 +37,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
     this.orgRepository = orgRepository;
     this.accessControlRepository = accessControlRepository;
     this.userRepository = userRepository;
+    this.authorizedOriginRepository = authorizedOriginRepository;
   }
 
   @Override
@@ -44,6 +48,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
         .map(
             account ->
                 account.validPasswordOrThrow(Password.of(loginDto.password()), passwordEncoder))
+        .filterWhen(access -> this.validAudience(loginDto.origin()))
         .flatMap(
             account ->
                 orgRepository
@@ -59,7 +64,8 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
                                 .flatMap(
                                     loginAccount ->
                                         Mono.zip(
-                                                tokenService.generateToken(loginAccount),
+                                                tokenService.generateToken(
+                                                    loginDto.origin(), loginAccount),
                                                 userRepository.findBy(loginAccount.accountId()))
                                             .map(
                                                 data -> {
@@ -68,6 +74,13 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
                                                   return UserAuthenticationDto.from(
                                                       token, loginAccount, user, org);
                                                 }))))
+        .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
+  }
+
+  protected Mono<Boolean> validAudience(String audience) {
+    return authorizedOriginRepository
+        .findById(audience)
+        .map(value -> true)
         .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
   }
 
@@ -80,6 +93,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
         .filter(SmartLibraryAccess::isActive)
         .switchIfEmpty(Mono.error(new UserUnauthorizedException()))
         .single()
+        .filterWhen(access -> this.validAudience(loginDto.slid()))
         .flatMap(
             access ->
                 orgRepository

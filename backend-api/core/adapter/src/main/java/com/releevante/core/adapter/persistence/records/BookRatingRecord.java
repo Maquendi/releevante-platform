@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookRating;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -27,9 +26,6 @@ public class BookRatingRecord extends PersistableEntity {
   private int rating;
 
   private String orgId;
-
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
   private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
     var record = new BookRatingRecord();

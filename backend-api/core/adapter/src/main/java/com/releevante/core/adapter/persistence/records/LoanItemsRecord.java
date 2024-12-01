@@ -18,7 +18,6 @@ import org.springframework.data.relational.core.mapping.Table;
 public class LoanItemsRecord extends PersistableEntity {
   @Id private String id;
   private String cpy;
-
   private String loanId;
 
   @Override

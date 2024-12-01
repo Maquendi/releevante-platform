@@ -3,9 +3,9 @@ package com.releevante.core.domain.tasks;
 import reactor.core.publisher.Mono;
 
 public interface TaskRepository {
-  Mono<ImmutableTask> findBy(String taskId);
+  Mono<Task> findBy(String taskId);
 
-  Mono<ImmutableTask> create(ImmutableTask task);
+  Mono<Task> create(Task task);
 
-  Mono<ImmutableTask> update(ImmutableTask task);
+  Mono<Task> update(Task task);
 }

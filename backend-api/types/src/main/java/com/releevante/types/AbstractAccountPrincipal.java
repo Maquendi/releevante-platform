@@ -16,6 +16,8 @@ import org.immutables.value.Value;
 public abstract class AbstractAccountPrincipal {
   abstract String orgId();
 
+  abstract String audience();
+
   abstract String subject();
 
   abstract List<String> roles();

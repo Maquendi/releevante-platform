@@ -11,4 +11,6 @@ public interface SmartLibraryAccessDao
   Flux<SmartLibraryAccessControlRecord> findByCredential(String credential);
 
   Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSync(String slid, boolean isSync);
+
+  Flux<SmartLibraryAccessControlRecord> findAllBySlid(String slid);
 }

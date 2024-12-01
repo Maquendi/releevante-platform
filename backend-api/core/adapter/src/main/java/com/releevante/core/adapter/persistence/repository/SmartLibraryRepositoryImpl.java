@@ -114,12 +114,11 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Transactional
   @Override
-  public Mono<SmartLibrary> synchronizeClients(SmartLibrary library) {
-    var clients = library.clients();
-    return Flux.fromIterable(clients)
+  public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary library) {
+    return Flux.fromIterable(library.clients())
         .flatMap(clientRepository::saveBookLoan)
         .collectList()
-        .flatMap(ignore -> markInventoryAsBorrowed(clients))
+        .flatMap(ignore -> markInventoryAsBorrowed(library.clients()))
         .thenReturn(library);
   }
 
@@ -132,8 +131,14 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   }
 
   @Override
-  public Flux<LibrarySetting> findLibrarySettings(Slid slid, boolean synced) {
+  public Flux<LibrarySetting> getSetting(Slid slid, boolean synced) {
     return Flux.from(librarySettingsHibernateDao.findBy(slid.value(), synced))
+        .map(LibrarySettingsRecord::toDomain);
+  }
+
+  @Override
+  public Flux<LibrarySetting> getSetting(Slid slid) {
+    return Flux.from(librarySettingsHibernateDao.findBy(slid.value()))
         .map(LibrarySettingsRecord::toDomain);
   }
 

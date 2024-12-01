@@ -2,15 +2,13 @@ package com.main.adapter.api.core.factory;
 
 import com.releevante.core.adapter.service.books.DefaultBookRegistrationService;
 import com.releevante.core.adapter.service.google.GoogleSheetService;
-import com.releevante.core.application.service.BookRegistrationService;
-import com.releevante.core.application.service.BookService;
-import com.releevante.core.application.service.SmartLibraryService;
-import com.releevante.core.application.service.TaskExecutionService;
+import com.releevante.core.application.service.*;
 import com.releevante.core.application.service.impl.DefaultBookServiceImpl;
 import com.releevante.core.application.service.impl.DefaultLibraryService;
 import com.releevante.core.application.service.impl.DefaultTaskExecutionService;
 import com.releevante.core.domain.repository.*;
 import com.releevante.core.domain.tasks.TaskRepository;
+import com.releevante.identity.application.service.auth.AuthorizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,8 +36,15 @@ public class CoreServiceBeanFactory {
   String googleCredentialFilePath;
 
   @Bean()
-  public SmartLibraryService smartLibraryService() {
-    return new DefaultLibraryService(smartLibraryRepository);
+  public SmartLibraryService smartLibraryService(
+      AccountAuthorizationService accountAuthorizationService) {
+    return new DefaultLibraryService(smartLibraryRepository, accountAuthorizationService);
+  }
+
+  @Bean()
+  public AccountAuthorizationService accountAuthorizationService(
+      AuthorizationService authorizationService) {
+    return authorizationService::getAccountPrincipal;
   }
 
   @Bean

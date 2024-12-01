@@ -7,7 +7,7 @@ import org.immutables.value.Value;
 
 @Value.Immutable
 @ImmutableObject
-public interface AuthorizedOrigin {
+public interface AbstractAuthorizedOrigin {
   String id();
 
   String type();

@@ -15,4 +15,6 @@ public abstract class AbstractCartItem {
   abstract Isbn isbn();
 
   abstract Integer qty();
+
+  abstract Boolean forPurchase();
 }

@@ -3,11 +3,9 @@ package com.releevante.core.application.service.impl;
 import static java.util.stream.Collectors.groupingBy;
 
 import com.releevante.core.application.dto.*;
+import com.releevante.core.application.service.AccountAuthorizationService;
 import com.releevante.core.application.service.SmartLibraryService;
-import com.releevante.core.domain.BookCopy;
-import com.releevante.core.domain.BookImage;
-import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.SmartLibrary;
+import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
@@ -22,22 +20,31 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class DefaultLibraryService implements SmartLibraryService {
-  private final SmartLibraryRepository smartLibraryRepository;
+  final SmartLibraryRepository smartLibraryRepository;
+  final AccountAuthorizationService accountAuthorizationService;
 
-  public DefaultLibraryService(SmartLibraryRepository smartLibraryRepository) {
+  public DefaultLibraryService(
+      SmartLibraryRepository smartLibraryRepository,
+      AccountAuthorizationService accountAuthorizationService) {
     this.smartLibraryRepository = smartLibraryRepository;
+    this.accountAuthorizationService = accountAuthorizationService;
   }
 
   @Override
-  public Mono<SmartLibrary> synchronizeClients(SmartLibrarySyncDto syncDto) {
-    return smartLibraryRepository
-        .findBy(Slid.of(syncDto.slid()))
+  public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto syncDto) {
+    return accountAuthorizationService
+        .getCurrentPrincipal()
         .flatMap(
-            smartLibrary -> {
-              smartLibrary.validateIsActive();
-              var clients = syncDto.domainClients();
-              return smartLibraryRepository.synchronizeClients(smartLibrary.withClients(clients));
-            });
+            principal ->
+                smartLibraryRepository
+                    .findBy(Slid.of(syncDto.slid()))
+                    .flatMap(
+                        smartLibrary -> {
+                          smartLibrary.validateIsActive();
+                          var clients = syncDto.domainClients(principal);
+                          return smartLibraryRepository.synchronizeClientsLoans(
+                              smartLibrary.withClients(clients));
+                        }));
   }
 
   @Override
@@ -99,8 +106,13 @@ public class DefaultLibraryService implements SmartLibraryService {
   }
 
   @Override
-  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid, boolean synced) {
-    return smartLibraryRepository.findLibrarySettings(slid, synced).map(LibrarySettingsDto::from);
+  public Flux<LibrarySetting> getSetting(Slid slid, boolean synced) {
+    return smartLibraryRepository.getSetting(slid, synced);
+  }
+
+  @Override
+  public Flux<LibrarySetting> getSetting(Slid slid) {
+    return smartLibraryRepository.getSetting(slid);
   }
 
   @Override

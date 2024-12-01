@@ -1,7 +1,8 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.*;
-import java.time.ZonedDateTime;
+import com.releevante.types.Slid;
+import com.releevante.types.UserId;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -17,41 +18,47 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 public class CartRecord extends PersistableEntity {
   @Id private String id;
-
-  private String clientId;
-
+  private String userId;
   private String state;
-
-  private ZonedDateTime createdAt;
-
-  private ZonedDateTime updatedAt;
+  private String slid;
 
   @Transient private Set<CartItemRecord> cartItems = new HashSet<>();
+
+  public static CartRecord from(Cart cart) {
+    var record = new CartRecord();
+    record.setId(cart.id().value());
+    record.setUserId(cart.userId().value());
+    record.setState(cart.state().value());
+    record.setCreatedAt(cart.createAt());
+    record.setUpdatedAt(cart.updatedAt());
+    var cartItemRecords = CartItemRecord.fromDomain(record, cart.items());
+    record.setCartItems(cartItemRecords);
+    record.setSlid(cart.slid().map(Slid::value).orElse(null));
+    return record;
+  }
 
   public Cart toDomain() {
     return Cart.builder()
         .id(CartId.of(id))
         .state(CartState.of(state))
-        .items(
-            new LazyLoaderInit<>(
-                () ->
-                    getCartItems().stream()
-                        .map(CartItemRecord::toDomain)
-                        .collect(Collectors.toList())))
+        .items(getCartItems().stream().map(CartItemRecord::toDomain).collect(Collectors.toList()))
         .updatedAt(updatedAt)
         .createAt(createdAt)
+        .userId(UserId.of(userId))
+        .slid(Optional.ofNullable(slid).map(Slid::of))
         .build();
   }
 
   protected static CartRecord fromDomain(ClientRecord client, Cart cart) {
     var record = new CartRecord();
     record.setId(cart.id().value());
-    record.setClientId(client.getId());
+    record.setUserId(client.getId());
     record.setState(cart.state().value());
     record.setCreatedAt(cart.createAt());
     record.setUpdatedAt(cart.updatedAt());
-    var cartItemRecords = CartItemRecord.fromDomain(record, cart.items().get());
+    var cartItemRecords = CartItemRecord.fromDomain(record, cart.items());
     record.setCartItems(cartItemRecords);
+    record.setSlid(cart.slid().map(Slid::value).orElse(null));
     return record;
   }
 

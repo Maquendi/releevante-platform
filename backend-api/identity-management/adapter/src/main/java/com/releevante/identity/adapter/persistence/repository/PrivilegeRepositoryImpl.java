@@ -1,6 +1,6 @@
 package com.releevante.identity.adapter.persistence.repository;
 
-import com.releevante.identity.adapter.persistence.records.RoleRecord;
+import com.releevante.identity.adapter.persistence.projections.PrivilegeProjection;
 import com.releevante.identity.adapter.persistence.repository.components.RoleDao;
 import com.releevante.identity.domain.model.Privilege;
 import com.releevante.identity.domain.model.Role;
@@ -22,7 +22,11 @@ public class PrivilegeRepositoryImpl implements PrivilegeRepository {
   @Override
   public Flux<Privilege> findBy(List<Role> roles) {
     return Mono.just(roles.stream().map(Role::value).collect(Collectors.toList()))
-        .flatMapMany(roleDao::findByRoleIn)
-        .map(RoleRecord::toPrivilege);
+        .flatMapMany(roleDao::findAllPrivilegeBy)
+        .map(this::toPrivilege);
+  }
+
+  public Privilege toPrivilege(PrivilegeProjection projection) {
+    return Privilege.of(projection.getPrivilege());
   }
 }

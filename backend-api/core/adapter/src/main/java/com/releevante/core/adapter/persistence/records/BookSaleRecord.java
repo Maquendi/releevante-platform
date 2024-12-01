@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.*;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +21,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class BookSaleRecord extends PersistableEntity {
   @Id private String id;
   private BigDecimal total;
-
   private String clientId;
-
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
   @Transient private Set<SaleItemsRecord> saleItems = new LinkedHashSet<>();
 

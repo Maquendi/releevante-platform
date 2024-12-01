@@ -2,6 +2,7 @@ package com.main.application.identity;
 
 import com.main.config.security.JwtAuthenticationToken;
 import com.releevante.identity.application.dto.*;
+import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.Slid;
 import java.util.List;
 import lombok.NonNull;
@@ -17,7 +18,9 @@ public interface IdentityServiceFacade {
 
   Mono<List<GrantedAccess>> create(UserAccessDto access);
 
-  Flux<GrantedAccess> getUnSyncedAccesses(Slid slid, boolean synced);
+  Flux<SmartLibraryAccess> getAccesses(Slid slid, boolean synced);
+
+  Flux<SmartLibraryAccess> getAccesses(Slid slid);
 
   Mono<UserAuthenticationDto> authenticate(LoginDto loginDto);
 

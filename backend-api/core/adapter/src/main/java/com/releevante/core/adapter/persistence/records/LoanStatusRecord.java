@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.LoanStatus;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,13 +14,9 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoanStatusRecord extends PersistableEntity {
+public class LoanStatusRecord extends AuditableEntity {
   @Id private String id;
-
   private String loanId;
-
-  private ZonedDateTime createdAt;
-
   private String status;
 
   public static Set<LoanStatusRecord> fromDomain(
@@ -37,7 +32,8 @@ public class LoanStatusRecord extends PersistableEntity {
     record.setCreatedAt(loanStatus.createdAt());
     record.setStatus(loanStatus.status().name());
     record.setLoanId(loan.getId());
-    record.setIsNew(true);
+    record.setOrigin(loan.getOrigin());
+    record.setAudit(loan.getAudit());
     return record;
   }
 }

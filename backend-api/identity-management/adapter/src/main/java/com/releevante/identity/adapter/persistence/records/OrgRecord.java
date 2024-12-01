@@ -2,7 +2,6 @@ package com.releevante.identity.adapter.persistence.records;
 
 import com.releevante.identity.domain.model.OrgId;
 import com.releevante.identity.domain.model.Organization;
-import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +16,6 @@ public class OrgRecord extends PersistableEntity {
   @Id private String id;
   private String name;
   private String type;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
   private boolean isActive;
 
   public static OrgRecord from(Organization domain) {

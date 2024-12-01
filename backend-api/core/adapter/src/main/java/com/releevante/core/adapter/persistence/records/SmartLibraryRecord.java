@@ -3,7 +3,6 @@ package com.releevante.core.adapter.persistence.records;
 import com.releevante.core.domain.OrgId;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.Slid;
-import java.time.ZonedDateTime;
 import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,10 +22,6 @@ public class SmartLibraryRecord extends PersistableEntity {
   private String id;
 
   private String orgId;
-
-  private ZonedDateTime createdAt;
-
-  private ZonedDateTime updatedAt;
 
   @Transient private Set<SmartLibraryEventRecord> libraryEvents = new HashSet<>();
 

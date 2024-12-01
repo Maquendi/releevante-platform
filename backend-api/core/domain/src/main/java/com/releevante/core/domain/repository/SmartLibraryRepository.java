@@ -13,11 +13,13 @@ public interface SmartLibraryRepository {
 
   Mono<SmartLibrary> findBy(Slid slid);
 
-  Mono<SmartLibrary> synchronizeClients(SmartLibrary smartLibrary);
+  Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary smartLibrary);
 
   Flux<BookCopy> findAllBookCopiesUnSynced(Slid slid, boolean synced, int offset, int pageSize);
 
-  Flux<LibrarySetting> findLibrarySettings(Slid slid, boolean synced);
+  Flux<LibrarySetting> getSetting(Slid slid, boolean synced);
+
+  Flux<LibrarySetting> getSetting(Slid slid);
 
   Flux<BookImage> getImages(Set<Isbn> isbnSet);
 

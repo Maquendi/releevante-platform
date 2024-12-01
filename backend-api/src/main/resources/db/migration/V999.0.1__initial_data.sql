@@ -73,3 +73,6 @@
     INSERT INTO core.library_events
     (id, "type", slid, created_at)
     VALUES('4e47b8d6-c330-4cd6-9d46-e484a79f8b44', 'online', '4e47b8d6-c330-4cd6-9d46-e484a79f8b99', '2024-11-17 11:43:36.113');
+
+    INSERT INTO core.authorized_origins(id,type)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4c00', 'smart library v.0.0.1');

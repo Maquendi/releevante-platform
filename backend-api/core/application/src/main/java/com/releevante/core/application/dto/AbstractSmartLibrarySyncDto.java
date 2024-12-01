@@ -3,6 +3,7 @@ package com.releevante.core.application.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.Client;
+import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import java.util.List;
@@ -18,8 +19,10 @@ public abstract class AbstractSmartLibrarySyncDto {
 
   abstract List<ClientSyncDto> clients();
 
-  public List<Client> domainClients() {
+  public List<Client> domainClients(AccountPrincipal principal) {
     var slid = Slid.of(slid());
-    return clients().stream().map(client -> client.toDomain(slid)).collect(Collectors.toList());
+    return clients().stream()
+        .map(client -> client.toDomain(principal, slid))
+        .collect(Collectors.toList());
   }
 }

@@ -9,6 +9,7 @@ import com.releevante.identity.application.service.auth.AuthenticationService;
 import com.releevante.identity.application.service.auth.AuthorizationService;
 import com.releevante.identity.application.service.user.OrgService;
 import com.releevante.identity.application.service.user.UserService;
+import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.List;
@@ -64,8 +65,13 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Flux<GrantedAccess> getUnSyncedAccesses(Slid slid, boolean synced) {
-    return userService.getUnSyncedAccesses(slid, synced);
+  public Flux<SmartLibraryAccess> getAccesses(Slid slid, boolean synced) {
+    return userService.getAccesses(slid, synced);
+  }
+
+  @Override
+  public Flux<SmartLibraryAccess> getAccesses(Slid slid) {
+    return userService.getAccesses(slid);
   }
 
   @Override

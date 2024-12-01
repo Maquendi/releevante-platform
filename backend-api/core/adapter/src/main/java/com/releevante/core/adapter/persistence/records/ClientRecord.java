@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Predicate;
 import lombok.Getter;
@@ -22,10 +21,6 @@ public class ClientRecord extends PersistableEntity {
 
   String externalId;
 
-  ZonedDateTime createdAt;
-
-  ZonedDateTime updatedAt;
-
   @Transient ServiceRatingRecord serviceRating;
 
   @Transient Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
@@ -43,7 +38,7 @@ public class ClientRecord extends PersistableEntity {
     record.setId(client.id().value());
     record.setCreatedAt(client.createdAt());
     record.setUpdatedAt(client.updatedAt());
-    record.setIsNew(client.isNew());
+    record.setNew(client.isNew());
     record.setExternalId(client.externalId().value());
     return record;
   }

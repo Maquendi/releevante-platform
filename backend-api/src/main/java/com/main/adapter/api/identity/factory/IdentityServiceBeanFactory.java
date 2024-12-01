@@ -28,6 +28,8 @@ public class IdentityServiceBeanFactory {
   @Autowired private OrgRepository orgRepository;
   @Autowired protected SmartLibraryAccessControlRepository accessControlRepository;
 
+  @Autowired private AuthorizedOriginRepository authorizedOriginRepository;
+
   @Value("${security.rsa.key-path.public}")
   private String rsaPublicKey;
 
@@ -44,7 +46,8 @@ public class IdentityServiceBeanFactory {
         privilegeRepository,
         orgRepository,
         accessControlRepository,
-        userRepository);
+        userRepository,
+        authorizedOriginRepository);
   }
 
   @Bean()

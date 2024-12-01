@@ -21,9 +21,9 @@ public class SmartLibraryAccessRepositoryImpl implements SmartLibraryAccessContr
   }
 
   @Override
-  public Mono<SmartLibraryAccess> findBy(Slid slid) {
+  public Flux<SmartLibraryAccess> findAllBy(Slid slid) {
     return libraryAccessControlDao
-        .findById(slid.value())
+        .findAllBySlid(slid.value())
         .map(SmartLibraryAccessControlRecord::toDomain);
   }
 

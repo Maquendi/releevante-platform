@@ -25,7 +25,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
   }
 
   @Override
-  public Mono<LoginTokenDto> generateToken(LoginAccount payload) {
+  public Mono<LoginTokenDto> generateToken(String audience, LoginAccount payload) {
 
     return signingKeyProvider
         .privateKey()
@@ -33,7 +33,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
             privateKey -> {
               Algorithm algorithm = Algorithm.RSA256(privateKey);
               return JWT.create()
-                  .withIssuer("mee")
+                  .withAudience(audience)
                   .withClaim(ORG_ID, payload.orgId().value())
                   .withClaim(ROLES, payload.privileges())
                   .withSubject(payload.userName().value())
@@ -87,6 +87,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
                     .orgId(decodedJWT.getClaim(ORG_ID).asString())
                     .subject(decodedJWT.getSubject())
                     .roles(decodedJWT.getClaim(ROLES).asList(String.class))
+                    .audience(decodedJWT.getAudience().getFirst())
                     .build());
   }
 }

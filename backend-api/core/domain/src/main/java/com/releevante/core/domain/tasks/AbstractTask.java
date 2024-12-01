@@ -1,6 +1,6 @@
 package com.releevante.core.domain.tasks;
 
-import com.releevante.core.domain.tags.AuthorizedOrigin;
+import com.releevante.core.domain.tags.AbstractAuthorizedOrigin;
 import com.releevante.types.ImmutableObject;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import org.immutables.value.Value;
 
 @Value.Immutable()
 @ImmutableObject
-public abstract class Task {
+public abstract class AbstractTask {
   public abstract String id();
 
   public abstract String name();
@@ -23,7 +23,7 @@ public abstract class Task {
 
   public abstract Optional<Long> result();
 
-  public abstract AuthorizedOrigin authorizedOrigin();
+  public abstract AbstractAuthorizedOrigin authorizedOrigin();
 
   @Value.Default
   public List<String> errors() {

@@ -3,7 +3,6 @@ package com.releevante.core.adapter.persistence.records;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.Isbn;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,8 +32,6 @@ public class BookRecord extends PersistableEntity {
   private String descriptionFr;
   private String descriptionEs;
   private String lang;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
   @Transient private Set<BookRatingRecord> ratings = new LinkedHashSet<>();
 

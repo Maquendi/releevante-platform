@@ -13,7 +13,7 @@ import org.immutables.value.Value;
 public abstract class AbstractClientDto {
   abstract String id();
 
-  abstract List<CartDto> cartsDto();
+  abstract List<CreateCartDto> carts();
 
   abstract List<BookReservationDto> reservations();
 }

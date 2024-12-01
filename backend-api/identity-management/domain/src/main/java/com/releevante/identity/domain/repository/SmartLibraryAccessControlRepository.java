@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface SmartLibraryAccessControlRepository {
-  Mono<SmartLibraryAccess> findBy(Slid slid);
+  Flux<SmartLibraryAccess> findAllBy(Slid slid);
 
   Flux<SmartLibraryAccess> findAllBy(Slid slid, boolean synced);
 

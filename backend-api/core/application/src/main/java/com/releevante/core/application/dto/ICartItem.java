@@ -4,4 +4,6 @@ public interface ICartItem {
   String isbn();
 
   Integer qty();
+
+  Boolean forPurchase();
 }

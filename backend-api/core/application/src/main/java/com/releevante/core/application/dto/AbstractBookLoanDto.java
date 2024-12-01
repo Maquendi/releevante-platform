@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
+import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import com.releevante.types.UuidGenerator;
@@ -34,9 +35,7 @@ public abstract class AbstractBookLoanDto {
 
   abstract List<BookLoanStatusDto> status();
 
-  // abstract TestDto testDto();
-
-  public BookLoan toDomain(Slid slid) {
+  public BookLoan toDomain(AccountPrincipal principal, Slid slid) {
     var bookLoanId = BookLoanId.of(id().orElse(UuidGenerator.instance().next()));
     var externalId = BookLoanId.of(externalId());
     return BookLoan.builder()
@@ -47,6 +46,8 @@ public abstract class AbstractBookLoanDto {
         .createdAt(createdAt())
         .updatedAt(updatedAt())
         .returnsAt(returnsAt())
+        .origin(principal.audience())
+        .audit(principal.subject())
         .loanStatus(status().stream().map(BookLoanStatusDto::toDomain).collect(Collectors.toList()))
         .loanDetails(items().stream().map(LoanDetailDto::toDomain).collect(Collectors.toList()))
         .build();

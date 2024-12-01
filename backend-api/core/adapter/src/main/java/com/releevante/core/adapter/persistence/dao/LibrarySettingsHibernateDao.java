@@ -14,9 +14,14 @@ public interface LibrarySettingsHibernateDao
       "select * from core.library_settings ls \n"
           + "where ls.slid=:slid\n"
           + "and ls.is_sync=:synced\n"
-          + "order by ls.created_at desc\n"
-          + "limit 1;")
+          + "order by ls.created_at desc\n")
   Mono<LibrarySettingsRecord> findBy(@Param("slid") String slid, @Param("synced") boolean synced);
+
+  @Query(
+      "select * from core.library_settings ls \n"
+          + "where ls.slid=:slid\n"
+          + "order by ls.created_at desc\n")
+  Mono<LibrarySettingsRecord> findBy(@Param("slid") String slid);
 
   @Query("update core.library_settings set is_sync = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);

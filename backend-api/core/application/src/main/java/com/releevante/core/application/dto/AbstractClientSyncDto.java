@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.Client;
 import com.releevante.core.domain.ClientId;
+import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import com.releevante.types.UuidGenerator;
@@ -29,7 +30,7 @@ public abstract class AbstractClientSyncDto {
 
   abstract List<BookLoanDto> loans();
 
-  public Client toDomain(Slid slid) {
+  public Client toDomain(AccountPrincipal principal, Slid slid) {
     var clientId = ClientId.of(id().orElse(UuidGenerator.instance().next()));
     var externalId = ClientId.of(externalId());
     return Client.builder()
@@ -38,7 +39,10 @@ public abstract class AbstractClientSyncDto {
         .isNew(id().isEmpty())
         .createdAt(createdAt())
         .updatedAt(updatedAt())
-        .loans(loans().stream().map(loan -> loan.toDomain(slid)).collect(Collectors.toList()))
+        .loans(
+            loans().stream()
+                .map(loan -> loan.toDomain(principal, slid))
+                .collect(Collectors.toList()))
         .build();
   }
 }

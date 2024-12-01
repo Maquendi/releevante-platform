@@ -20,8 +20,6 @@ public class SmartLibraryAccessControlRecord extends PersistableEntity {
   private String userId;
   private boolean isActive;
   private boolean isSync;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
   private ZonedDateTime expiresAt;
   private int accessDueDays;
 }

@@ -30,7 +30,7 @@ public abstract class AbstractCartSyncDto {
         .createAt(createdAt())
         .updatedAt(createdAt())
         .state(CartState.of(cartState().name()))
-        .items(new LazyLoaderInit<>(this::domainCartItem))
+        .items(this.domainCartItem())
         .build();
   }
 

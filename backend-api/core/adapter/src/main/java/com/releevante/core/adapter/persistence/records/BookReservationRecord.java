@@ -27,8 +27,6 @@ public class BookReservationRecord extends PersistableEntity {
 
   private ZonedDateTime startTime;
   private ZonedDateTime endTime;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
   @Transient private Set<BookReservationItemsRecord> reservationItems = new HashSet<>();
 

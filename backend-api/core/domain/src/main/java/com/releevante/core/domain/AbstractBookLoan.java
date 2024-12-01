@@ -2,6 +2,7 @@ package com.releevante.core.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.releevante.types.Auditable;
 import com.releevante.types.ImmutableExt;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -13,13 +14,10 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = BookLoan.class)
 @JsonSerialize(as = BookLoan.class)
 @ImmutableExt
-public abstract class AbstractBookLoan {
+public abstract class AbstractBookLoan implements Auditable {
   abstract BookLoanId externalId();
 
   abstract BookLoanId id();
-
-  /** smart library id */
-  abstract String origin();
 
   /** estimated time for book return */
   abstract ZonedDateTime returnsAt();

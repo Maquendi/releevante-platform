@@ -16,7 +16,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookLoanRecord extends PersistableEntity {
+public class BookLoanRecord extends AuditableEntity {
 
   @Id private String id;
 
@@ -57,16 +57,18 @@ public class BookLoanRecord extends PersistableEntity {
   private static BookLoanRecord fromDomain(ClientRecord client, BookLoan loan) {
     var record = new BookLoanRecord();
     record.setId(loan.id().value());
-    record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails()));
     record.setOrigin(loan.origin());
     record.setCreatedAt(loan.createdAt());
     record.setUpdatedAt(loan.updatedAt());
     record.setReturnsAt(loan.returnsAt());
     record.setReturnedAt(loan.returnedAt().orElse(null));
-    record.setIsNew(loan.isNew());
+    record.setNew(loan.isNew());
     record.setClientId(client.getId());
-    record.setLoanStatus(LoanStatusRecord.fromDomain(record, loan.loanStatus()));
     record.setExternalId(loan.externalId().value());
+    record.setOrigin(loan.origin());
+    record.setAudit(loan.audit());
+    record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails()));
+    record.setLoanStatus(LoanStatusRecord.fromDomain(record, loan.loanStatus()));
     return record;
   }
 

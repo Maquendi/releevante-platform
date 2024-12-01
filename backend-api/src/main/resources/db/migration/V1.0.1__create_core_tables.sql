@@ -27,7 +27,8 @@ CREATE TABLE core.books (
 
 CREATE TABLE core.carts (
 	id varchar(36) NOT NULL,
-	client_id varchar(36) NULL,
+	user_id varchar(36) NULL,
+	slid varchar(36) NULL,
 	state varchar(50) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -169,10 +170,11 @@ CREATE TABLE core.authorized_origins (
 CREATE TABLE core.book_loans (
 	id varchar(36) NOT NULL,
 	external_id varchar(36) NOT NULL,
-	origin varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
 	returns_at timestamp NOT NULL,
 	returned_at timestamp NULL,
+	audit varchar(36) NOT NULL,
+	origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_loans_pk PRIMARY KEY (id),
@@ -193,7 +195,10 @@ CREATE TABLE core.loan_status (
 	id varchar(36) NOT NULL,
 	loan_id varchar(36) NOT NULL,
 	status varchar(50),
+	audit varchar(36) NOT NULL,
+    origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT loan_status_pk PRIMARY KEY (id),
 	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
 );
@@ -258,6 +263,8 @@ CREATE TABLE core.roles (
     id varchar(36) NOT NULL,
 	role varchar(50) NOT NULL,
 	privilege varchar(100) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT role_p_k PRIMARY KEY (id)
 );
 

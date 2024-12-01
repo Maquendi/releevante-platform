@@ -17,12 +17,12 @@ public interface BookService {
 
   Flux<Tag> createTags(TagCreateDto dto);
 
+  Flux<Tag> getTags(TagTypes name);
+
   Flux<Book> getBooks(
       Slid slid, int page, int size, SyncStatus status, boolean includeImages, boolean includeTags);
 
   Flux<Book> getBooks(int page, int size, boolean includeImages, boolean includeTags);
-
-  Flux<Tag> getTags(TagTypes name);
 
   Mono<Book> saveBook(BookDto book);
 }

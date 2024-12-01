@@ -4,10 +4,11 @@ import com.main.application.identity.IdentityServiceFacade;
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.core.domain.BookCopy;
-import com.releevante.identity.application.dto.GrantedAccess;
+import com.releevante.core.domain.LibrarySetting;
+import com.releevante.core.domain.SmartLibrary;
+import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
-import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -26,8 +27,8 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<List<ClientSyncResponse>> synchronizeClients(SmartLibrarySyncDto synchronizeDto) {
-    return smartLibraryService.synchronizeClients(synchronizeDto).map(ClientSyncResponse::from);
+  public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto synchronizeDto) {
+    return smartLibraryService.synchronizeClientsLoans(synchronizeDto);
   }
 
   @Override
@@ -43,8 +44,13 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Flux<LibrarySettingsDto> synchronizeLibrarySettings(Slid slid, boolean synced) {
-    return smartLibraryService.synchronizeLibrarySettings(slid, synced);
+  public Flux<LibrarySetting> getSetting(Slid slid, boolean synced) {
+    return smartLibraryService.getSetting(slid, synced);
+  }
+
+  @Override
+  public Flux<LibrarySetting> getSetting(Slid slid) {
+    return smartLibraryService.getSetting(slid);
   }
 
   @Override
@@ -53,7 +59,12 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Flux<GrantedAccess> synchronizeLibraryAccesses(Slid slid, boolean synced) {
-    return identityServiceFacade.getUnSyncedAccesses(slid, synced);
+  public Flux<SmartLibraryAccess> getAccesses(Slid slid, boolean synced) {
+    return identityServiceFacade.getAccesses(slid, synced);
+  }
+
+  @Override
+  public Flux<SmartLibraryAccess> getAccesses(Slid slid) {
+    return identityServiceFacade.getAccesses(slid);
   }
 }

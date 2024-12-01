@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Tag;
 import com.releevante.core.domain.tags.TagTypes;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +22,6 @@ public class TagRecord extends PersistableEntity {
 
   private String valueFr;
   private String valueSp;
-
-  private ZonedDateTime createdAt;
 
   public static TagRecord fromKeyWord(Tag tag) {
     var record = new TagRecord();

@@ -10,6 +10,8 @@ import org.immutables.value.Value;
 @JsonSerialize(as = LoginDto.class)
 @ImmutableExt
 public abstract class AbstractLoginDto {
+  abstract String origin();
+
   abstract String userName();
 
   abstract String password();

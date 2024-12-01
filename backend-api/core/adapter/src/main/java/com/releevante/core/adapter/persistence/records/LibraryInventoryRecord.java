@@ -6,7 +6,6 @@ import com.releevante.core.domain.BookCopyStatus;
 import com.releevante.core.domain.Isbn;
 import com.releevante.core.domain.LibraryInventory;
 import com.releevante.types.Slid;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +27,6 @@ public class LibraryInventoryRecord extends PersistableEntity {
   private String slid;
   private boolean isSync;
   private String status;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
   @Override
   public boolean equals(Object o) {

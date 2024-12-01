@@ -1,7 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.LibrarySetting;
-import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,9 +34,6 @@ public class LibrarySettingsRecord extends PersistableEntity {
 
   /** determines how the max duration of a user session for this library */
   int sessionDurationMinutes;
-
-  /** when this setting was created */
-  ZonedDateTime createdAt;
 
   /** if this setting is synced with the actual smart library it belongs to. */
   boolean isSync;

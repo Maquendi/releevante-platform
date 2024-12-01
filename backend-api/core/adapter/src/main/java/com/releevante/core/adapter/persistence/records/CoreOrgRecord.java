@@ -1,6 +1,5 @@
 package com.releevante.core.adapter.persistence.records;
 
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,6 @@ public class CoreOrgRecord extends PersistableEntity {
   private String name;
   private String type;
   private boolean isActive;
-  private ZonedDateTime createdAt;
-  private ZonedDateTime updatedAt;
 
   @Override
   public boolean equals(Object o) {

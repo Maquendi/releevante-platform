@@ -3,10 +3,11 @@ package com.main.adapter.api.core.controllers;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.core.SmartLibraryServiceFacade;
-import com.releevante.core.application.dto.ClientSyncResponse;
-import com.releevante.core.application.dto.LibrarySettingsDto;
 import com.releevante.core.application.dto.SmartLibrarySyncDto;
-import com.releevante.identity.application.dto.GrantedAccess;
+import com.releevante.core.application.dto.SyncStatus;
+import com.releevante.core.domain.LibrarySetting;
+import com.releevante.core.domain.SmartLibrary;
+import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.Slid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/aggregator/{slid}")
+@RequestMapping("/sl/{slid}")
 public class SmartLibrarySyncController {
 
   private final SmartLibraryServiceFacade smartLibraryService;
@@ -66,10 +67,12 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/synchronize/loans")
-  public Mono<CustomApiResponse<List<ClientSyncResponse>>> synchronizeLoans(
+  @PostMapping("/loans")
+  public Mono<CustomApiResponse<SmartLibrary>> createLoans(
       @RequestBody SmartLibrarySyncDto loanSynchronizeDto) {
-    return smartLibraryService.synchronizeClients(loanSynchronizeDto).map(CustomApiResponse::from);
+    return smartLibraryService
+        .synchronizeClientsLoans(loanSynchronizeDto)
+        .map(CustomApiResponse::from);
   }
 
   @Operation(
@@ -118,8 +121,8 @@ public class SmartLibrarySyncController {
   }
 
   @Operation(
-      summary = "Synchronize settings",
-      description = "retrieve settings that belongs to the given library")
+      summary = "get smart library settings",
+      description = "get the last setting for the given smart library id")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -156,12 +159,14 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @GetMapping("/synchronize/settings")
-  public Mono<CustomApiResponse<List<LibrarySettingsDto>>> synchronizeLibrarySettings(
-      @PathVariable String slid) {
-    return smartLibraryService
-        .synchronizeLibrarySettings(Slid.of(slid), true)
-        .collectList()
+  @GetMapping("settings")
+  public Mono<CustomApiResponse<List<LibrarySetting>>> getSettings(
+      @RequestParam() String slid, @RequestParam(required = false) SyncStatus status) {
+    return Mono.justOrEmpty(status)
+        .flatMap(
+            syncStatus ->
+                smartLibraryService.getSetting(Slid.of(slid), syncStatus.toBoolean()).collectList())
+        .switchIfEmpty(smartLibraryService.getSetting(Slid.of(slid)).collectList())
         .map(CustomApiResponse::from);
   }
 
@@ -204,12 +209,16 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @GetMapping("/synchronize/accesses")
-  public Mono<CustomApiResponse<List<GrantedAccess>>> synchronizeLibraryAccess(
-      @PathVariable String slid) {
-    return smartLibraryService
-        .synchronizeLibraryAccesses(Slid.of(slid), true)
-        .collectList()
+  @GetMapping("/accesses")
+  public Mono<CustomApiResponse<List<SmartLibraryAccess>>> synchronizeLibraryAccess(
+      @PathVariable String slid, @RequestParam(required = false) SyncStatus status) {
+    return Mono.justOrEmpty(status)
+        .flatMap(
+            syncStatus ->
+                smartLibraryService
+                    .getAccesses(Slid.of(slid), syncStatus.toBoolean())
+                    .collectList())
+        .switchIfEmpty(smartLibraryService.getAccesses(Slid.of(slid)).collectList())
         .map(CustomApiResponse::from);
   }
 }
