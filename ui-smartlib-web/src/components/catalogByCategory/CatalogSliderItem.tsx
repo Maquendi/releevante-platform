@@ -1,16 +1,19 @@
 'use client'
 import {  BooksByCategory } from "@/book/domain/models";
-import React from "react";
-import CatalogSlider from "../CatalogSlider";
+import React, { lazy, Suspense } from "react";
 import { useLocale } from "next-intl";
-
-
+import dynamic from 'next/dynamic'
+ 
+const CatalogSlider = dynamic(() => import("../CatalogSlider"), {
+  loading: () => <p>Loading...</p>,
+})
+ 
 
 export default  function CatalogSliderItem({
   subCategory,
   books,
 }: BooksByCategory) {
-  const locale = useLocale();
+  const locale=useLocale()
   return (
     <div
       key={subCategory.id}
@@ -25,7 +28,7 @@ export default  function CatalogSliderItem({
         </h4>
       </div>
       <div>
-        <CatalogSlider subCategoryId={subCategory.id} books={books} />
+        <CatalogSlider subCategoryId={subCategory?.id} books={books} />
       </div>
     </div>
   );

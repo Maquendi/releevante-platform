@@ -1,4 +1,5 @@
 "use client";
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
@@ -6,8 +7,6 @@ import { Link } from "@/config/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { CategoryBookItem } from "@/book/domain/models";
 import BookItem from "./catalogByCategory/BookItem";
-
-
 
 type SliderProps = {
   books: CategoryBookItem[];
@@ -39,12 +38,12 @@ const Slider: React.FC<SliderProps> = ({
   };
 
   return (
-    <div className=" w-full overflow-hidden ">
-      <div className=" absolute right-3 top-5 flex justify-end pb-1 px-4">
+    <div className="w-full overflow-hidden">
+      <div className="absolute right-3 top-5 flex justify-end pb-1 px-4">
         <div className="flex gap-2">
           <button
             onClick={prevSlide}
-            className="border border-[#CCCACA] grid place-content-center  p-2 rounded-full z-10"
+            className="border border-[#CCCACA] grid place-content-center p-2 rounded-full z-10"
           >
             <ChevronLeft />
           </button>
@@ -69,8 +68,8 @@ const Slider: React.FC<SliderProps> = ({
         ref={ref}
         className="flex overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth mx-2 space-x-3 no-scrollbar"
       >
-        {books.map(async (book) => (
-          <BookItem key={book.isbn} book={book}/>
+        {books.map((book) => (
+          <BookItem key={book.isbn} book={book} />
         ))}
       </div>
     </div>

@@ -65,7 +65,7 @@ const SearchFilter = () => {
       {results.length > 0 && queryTerm && (
         <div className="absolute text-black left-0 w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-64 overflow-y-auto">
           {results.map((book) => (
-            <Link key={book.isbn} href={`/en/bookstest/n/${book.isbn}`}>
+            <Link key={book.id} href={`/en/bookstest/n/${book.id}`}>
               <article className="px-4 py-2 space-x-2 hover:bg-gray-100 cursor-pointer">
                 <span> {book.bookTitle},</span>
                 <span>{book.editionTitle}</span>

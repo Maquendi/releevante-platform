@@ -1,4 +1,3 @@
-"use client";
 import HeaderBanner from "@/components/catalogByCategory/HeaderBanner";
 import RemainingBooksByCategories from "@/components/catalogByCategory/RemainingBooksByCategories";
 import SeeAllBooks from "@/components/catalogByCategory/SeeAllBooks";
