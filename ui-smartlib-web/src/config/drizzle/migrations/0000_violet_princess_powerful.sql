@@ -112,16 +112,25 @@ CREATE TABLE `cart` (
 --> statement-breakpoint
 CREATE TABLE `category` (
 	`id` text PRIMARY KEY NOT NULL,
-	`name` text NOT NULL,
-	`image_url` text NOT NULL
+	`en_name` text NOT NULL,
+	`fr_name` text NOT NULL,
+	`es_name` text NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `category_en_name_unique` ON `category` (`en_name`);--> statement-breakpoint
+CREATE UNIQUE INDEX `category_fr_name_unique` ON `category` (`fr_name`);--> statement-breakpoint
+CREATE UNIQUE INDEX `category_es_name_unique` ON `category` (`es_name`);--> statement-breakpoint
 CREATE TABLE `ftags` (
 	`id` text PRIMARY KEY NOT NULL,
 	`tag_name` text NOT NULL,
-	`tag_value` text NOT NULL
+	`en_tag_value` text NOT NULL,
+	`fr_tag_value` text NOT NULL,
+	`es_tag_value` text NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `ftags_en_tag_value_unique` ON `ftags` (`en_tag_value`);--> statement-breakpoint
+CREATE UNIQUE INDEX `ftags_fr_tag_value_unique` ON `ftags` (`fr_tag_value`);--> statement-breakpoint
+CREATE UNIQUE INDEX `ftags_es_tag_value_unique` ON `ftags` (`es_tag_value`);--> statement-breakpoint
 CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`access_id` text NOT NULL,

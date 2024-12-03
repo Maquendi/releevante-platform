@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "fac2b38b-3251-4e83-a789-d103cb714b81",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5e460a29-c1e4-469f-aa7e-f2d2efc5bad4",
+  "prevId": "fac2b38b-3251-4e83-a789-d103cb714b81",
   "tables": {
     "book_category": {
       "name": "book_category",
@@ -963,35 +963,49 @@
           "name": "max_books_per_loan",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "book_price_discount_percentage": {
           "name": "book_price_discount_percentage",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "book_price_surcharge_percentage": {
           "name": "book_price_surcharge_percentage",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
-        "book_price_reduction_threshold": {
-          "name": "book_price_reduction_threshold",
+        "bookPriceReductionThreshold": {
+          "name": "bookPriceReductionThreshold",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "book_price_reduction_rate_on_threshold_reached": {
           "name": "book_price_reduction_rate_on_threshold_reached",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "session_duration_minutes": {
+          "name": "session_duration_minutes",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "book_usage_count_before_enabling_sale": {
+          "name": "book_usage_count_before_enabling_sale",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {
@@ -1076,7 +1090,9 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {}
+    "columns": {
+      "\"library_settings\".\"book_price_reduction_threshold\"": "\"library_settings\".\"bookPriceReductionThreshold\""
+    }
   },
   "internal": {
     "indexes": {}

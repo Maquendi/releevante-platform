@@ -2,16 +2,17 @@ import { dbConnection } from "../config/db.js";
 import { executeGet } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { Book, BookImage } from "../model/client.js";
-import { arrayGroupBy, arrayGroupByV2 } from "../utils.js";
+import { arrayGroupByV2 } from "../utils.js";
 
 const slid = process.env.slid;
 
-export const synchronizeBooks = async () => {
+export const synchronizeBooks = async (token: string) => {
   let syncComplete = false;
   let page = 0;
   let totalRecordsSynced = 0;
   while (syncComplete == false) {
     const request: ApiRequest = {
+      token,
       resource: `aggregator/${slid}/synchronize/books?page=${page}&pageSize=100`,
     };
     const response = await executeGet<Book[]>(request);

@@ -4,6 +4,7 @@ package com.releevante.identity.adapter.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.releevante.identity.application.dto.AggregatorLoginResponse;
 import com.releevante.identity.application.dto.LoginTokenDto;
 import com.releevante.identity.application.service.auth.JtwTokenService;
 import com.releevante.identity.domain.model.AuthorizedOrigin;
@@ -12,6 +13,7 @@ import com.releevante.identity.domain.model.SmartLibraryAccess;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -48,7 +50,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
   }
 
   @Override
-  public Mono<LoginTokenDto> generateToken(AuthorizedOrigin authorizedOrigin) {
+  public Mono<AggregatorLoginResponse> generateToken(AuthorizedOrigin authorizedOrigin) {
     return signingKeyProvider
         .privateKey()
         .map(
@@ -62,7 +64,12 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
                   .withExpiresAt(Instant.now().plusSeconds(SEVEN_DAYS_IN_SECOND))
                   .sign(algorithm);
             })
-        .map(LoginTokenDto::of);
+        .map(
+            token ->
+                AggregatorLoginResponse.builder()
+                    .token(token)
+                    .expiresAt(ZonedDateTime.now().plusSeconds(SEVEN_DAYS_IN_SECOND))
+                    .build());
   }
 
   @Override

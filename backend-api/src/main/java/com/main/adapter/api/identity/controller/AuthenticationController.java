@@ -150,7 +150,7 @@ public class AuthenticationController {
             })
       })
   @PostMapping("/aggregator")
-  Mono<CustomApiResponse<LoginTokenDto>> aggregatorLogin(@RequestBody AggregatorLogin login) {
+  Mono<CustomApiResponse<AggregatorLoginResponse>> aggregatorLogin(@RequestBody AggregatorLogin login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 }

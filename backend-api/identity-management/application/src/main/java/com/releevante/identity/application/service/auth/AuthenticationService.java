@@ -10,7 +10,7 @@ public interface AuthenticationService {
 
   Mono<PinAuthenticationDto> authenticate(PinLoginDto loginDto);
 
-  Mono<LoginTokenDto> authenticate(AggregatorLogin loginDto);
+  Mono<AggregatorLoginResponse> authenticate(AggregatorLogin loginDto);
 
   Mono<AccountPrincipal> authenticate(LoginTokenDto token);
 }

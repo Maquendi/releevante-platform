@@ -108,7 +108,7 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   }
 
   @Override
-  public Mono<LoginTokenDto> authenticate(AggregatorLogin loginDto) {
+  public Mono<AggregatorLoginResponse> authenticate(AggregatorLogin loginDto) {
     return authorizedOriginRepository
         .findById(loginDto.slid())
         .flatMap(tokenService::generateToken)

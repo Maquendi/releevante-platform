@@ -1,5 +1,5 @@
 import { ApiRequest } from "./model";
-require('dotenv').config();
+require("dotenv").config();
 
 const API_SERVER_URL = `${process.env.SERVER_URL}/api`;
 
@@ -13,9 +13,15 @@ export function buildRequestUrl(request: ApiRequest) {
   return `${API_SERVER_URL}/${resourceUrl}`;
 }
 
-export function buildHttpHeaders() {
+export function buildHttpHeaders(request: ApiRequest) {
+  if (request.token) {
+    return {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${request.token}`,
+    };
+  }
+
   return {
     "Content-Type": "application/json",
-    "x-api-key": AUTH_API_KEY,
   };
 }
