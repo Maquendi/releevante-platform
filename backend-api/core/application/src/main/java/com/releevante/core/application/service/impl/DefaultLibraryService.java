@@ -38,6 +38,7 @@ public class DefaultLibraryService implements SmartLibraryService {
             principal ->
                 smartLibraryRepository
                     .findBy(Slid.of(syncDto.slid()))
+                    .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")))
                     .flatMap(
                         smartLibrary -> {
                           smartLibrary.validateIsActive();

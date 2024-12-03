@@ -1,9 +1,17 @@
 package com.releevante.identity.domain.model;
 
-import com.releevante.types.ImmutableObjectNoBuilder;
-import com.releevante.types.PrimitiveVo;
+import com.releevante.types.ImmutableObject;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@ImmutableObjectNoBuilder
-public abstract class AbstractAuthorizedOrigin extends PrimitiveVo<String> {}
+@ImmutableObject
+public abstract class AbstractAuthorizedOrigin {
+
+  abstract String id();
+
+  abstract String type();
+
+  abstract String orgId();
+
+  abstract boolean isActive();
+}

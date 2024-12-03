@@ -20,8 +20,6 @@ public class BookLoanRecord extends AuditableEntity {
 
   @Id private String id;
 
-  private String origin;
-
   private String externalId;
 
   private ZonedDateTime returnsAt;

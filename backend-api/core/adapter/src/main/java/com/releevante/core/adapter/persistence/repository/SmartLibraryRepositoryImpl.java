@@ -6,6 +6,7 @@ import com.releevante.core.adapter.persistence.dao.*;
 import com.releevante.core.adapter.persistence.records.*;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.ClientRepository;
+import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.Slid;
 import java.util.*;
@@ -27,27 +28,31 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
 
-  final LibrarySettingsHibernateDao librarySettingsHibernateDao;
+  final SettingsRepository settingsRepository;
 
   final BookImageHibernateDao bookImageHibernateDao;
 
   final SmartLibraryAccessControlDao smartLibraryAccessControlDao;
+
+  final AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao;
 
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
       SmartLibraryEventsHibernateDao smartLibraryEventsHibernateDao,
       ClientRepository clientRepository,
       LibraryInventoryHibernateDao libraryInventoryHibernateDao,
-      LibrarySettingsHibernateDao librarySettingsHibernateDao,
+      SettingsRepository settingsRepository,
       BookImageHibernateDao bookImageHibernateDao,
-      SmartLibraryAccessControlDao smartLibraryAccessControlDao) {
+      SmartLibraryAccessControlDao smartLibraryAccessControlDao,
+      AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao) {
     this.smartLibraryDao = smartLibraryDao;
     this.smartLibraryEventsHibernateDao = smartLibraryEventsHibernateDao;
     this.clientRepository = clientRepository;
     this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
-    this.librarySettingsHibernateDao = librarySettingsHibernateDao;
+    this.settingsRepository = settingsRepository;
     this.bookImageHibernateDao = bookImageHibernateDao;
     this.smartLibraryAccessControlDao = smartLibraryAccessControlDao;
+    this.authorizedOriginRecordHibernateDao = authorizedOriginRecordHibernateDao;
   }
 
   @Override
@@ -60,9 +65,9 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
             .collectList();
 
     var smartLibraries =
-        smartLibraryDao
+        authorizedOriginRecordHibernateDao
             .findAllById(sLids.stream().map(Slid::value).collect(Collectors.toSet()))
-            .map(SmartLibraryRecord::toDomain)
+            .map(AuthorizedOriginRecord::toLibrary)
             .collectList();
 
     return Mono.zip(libraryEventFlux, smartLibraries)
@@ -95,7 +100,10 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Override
   public Mono<SmartLibrary> findBy(Slid slid) {
-    var smartLibraryMono = smartLibraryDao.findById(slid.value()).map(SmartLibraryRecord::toDomain);
+    var smartLibraryMono =
+        authorizedOriginRecordHibernateDao
+            .findById(slid.value())
+            .map(AuthorizedOriginRecord::toLibrary);
 
     var libraryEventsMono =
         smartLibraryEventsHibernateDao
@@ -132,14 +140,12 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Override
   public Flux<LibrarySetting> getSetting(Slid slid, boolean synced) {
-    return Flux.from(librarySettingsHibernateDao.findBy(slid.value(), synced))
-        .map(LibrarySettingsRecord::toDomain);
+    return settingsRepository.findBy(slid, synced);
   }
 
   @Override
   public Flux<LibrarySetting> getSetting(Slid slid) {
-    return Flux.from(librarySettingsHibernateDao.findBy(slid.value()))
-        .map(LibrarySettingsRecord::toDomain);
+    return settingsRepository.findBy(slid);
   }
 
   @Override
@@ -159,7 +165,7 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
     return Mono.zip(
             smartLibraryAccessControlDao.setSynchronized(slid.value()).defaultIfEmpty(0),
             libraryInventoryHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0),
-            librarySettingsHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0))
+            settingsRepository.setSynchronized(slid))
         .map(data -> true)
         .defaultIfEmpty(true);
   }

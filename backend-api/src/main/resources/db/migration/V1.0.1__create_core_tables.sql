@@ -40,6 +40,7 @@ CREATE TABLE core.cart_items (
 	isbn varchar(36) NULL,
 	qty numeric NOT NULL,
 	cart_id varchar(36) NOT NULL,
+	for_purchase boolean NOT NULL DEFAULT false,
 	CONSTRAINT cart_items_pk PRIMARY KEY (id),
 	FOREIGN KEY(cart_id) REFERENCES core.carts(id),
 	FOREIGN KEY(isbn) REFERENCES core.books(isbn)
@@ -79,12 +80,10 @@ CREATE TABLE core.org (
 
 CREATE TABLE core.smart_libraries (
 	slid varchar(36) NOT NULL,
-	org_id varchar(36) NOT NULL,
-	is_active boolean NOT NULL DEFAULT false,
+	model_name varchar(100) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT slid_pk PRIMARY KEY (slid),
-	FOREIGN KEY (org_id) REFERENCES core.org(id)
+	CONSTRAINT slid_pk PRIMARY KEY (slid)
 );
 
 CREATE TABLE core.library_inventories (
@@ -104,9 +103,10 @@ CREATE TABLE core.library_settings (
 	id varchar(36) NOT NULL,
 	slid varchar(36) NOT NULL,
 	max_books_per_loan numeric NOT NULL,
-	book_price_discount_percentage numeric NOT NULL DEFAULT 0,
-	book_price_surcharge_percentage numeric NOT NULL DEFAULT 0,
-	book_price_reduction_threshold numeric NOT NULL DEFAULT 3,
+	book_price_discount_percentage numeric NOT NULL,
+	book_price_surcharge_percentage numeric NOT NULL,
+	session_duration_minutes numeric NOT NULL,
+	book_price_reduction_threshold numeric NOT NULL,
 	book_price_reduction_rate_on_threshold_reached numeric NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_sync BOOLEAN NOT NULL DEFAULT false,
@@ -162,6 +162,8 @@ CREATE TABLE core.book_image (
 CREATE TABLE core.authorized_origins (
 	id varchar(36) NOT NULL,
 	type varchar(36) NULL,
+	org_id varchar(36) NOT NULL,
+    is_active boolean NOT NULL DEFAULT false,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT authorized_origin_pk PRIMARY KEY (id)

@@ -1,33 +1,33 @@
-/* (C)2024 */
-package com.main.adapter.api.identity.controller;
+package com.main.adapter.api.core.controllers;
 
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
-import com.main.application.identity.IdentityServiceFacade;
-import com.releevante.identity.application.dto.LoginDto;
-import com.releevante.identity.application.dto.PinAuthenticationDto;
-import com.releevante.identity.application.dto.PinLoginDto;
-import com.releevante.identity.application.dto.UserAuthenticationDto;
+import com.releevante.core.application.dto.LibrarySettingsDto;
+import com.releevante.core.application.dto.PartialSettingDto;
+import com.releevante.core.application.service.SettingService;
+import com.releevante.core.domain.LibrarySetting;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/users/auth")
-public class UserAuthenticationController {
-  final IdentityServiceFacade identityServiceFacade;
+@RequestMapping("/settings")
+public class SettingsController {
 
-  public UserAuthenticationController(IdentityServiceFacade identityServiceFacade) {
-    this.identityServiceFacade = identityServiceFacade;
+  final SettingService settingService;
+
+  public SettingsController(SettingService settingService) {
+    this.settingService = settingService;
   }
 
   @Operation(
-      summary = "User login",
-      description = "authentication for users with username and password")
+      summary = "create smart library settings",
+      description = "create the setting for the given smart library id")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -64,14 +64,16 @@ public class UserAuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasRole('super-admin')")
   @PostMapping
-  Mono<CustomApiResponse<UserAuthenticationDto>> login(@RequestBody LoginDto login) {
-    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
+  public Mono<CustomApiResponse<LibrarySetting>> createSettings(
+      @RequestBody LibrarySettingsDto settings) {
+    return settingService.create(settings).map(CustomApiResponse::from);
   }
 
   @Operation(
-      summary = "User authentication with pin/nfc/qr_code",
-      description = "Authenticate user using pin, nfg uuid or QR code")
+      summary = "update smart library settings",
+      description = "update the setting for the given smart library id")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -108,8 +110,56 @@ public class UserAuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/pin")
-  Mono<CustomApiResponse<PinAuthenticationDto>> login(@RequestBody PinLoginDto login) {
-    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
+  @PreAuthorize("hasAnyRole('super-admin')")
+  @PutMapping("/{setting_id}")
+  public Mono<CustomApiResponse<LibrarySetting>> updateSettings(
+      @PathVariable("setting_id") String settingId, @RequestBody LibrarySettingsDto setting) {
+    return settingService.update(settingId, setting).map(CustomApiResponse::from);
+  }
+
+  @Operation(
+      summary = "update smart library settings",
+      description = "update the setting for the given smart library id")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PreAuthorize("hasAnyRole('super-admin', 'admin')")
+  @PatchMapping("/{setting_id}")
+  public Mono<CustomApiResponse<LibrarySetting>> patchSettings(
+      @PathVariable("setting_id") String settingId, @RequestBody PartialSettingDto setting) {
+    return settingService.update(settingId, setting).map(CustomApiResponse::from);
   }
 }

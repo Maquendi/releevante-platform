@@ -27,6 +27,8 @@ public abstract class AbstractSmartLibrary {
   @JsonIgnore
   abstract OrgId orgId();
 
+  abstract String modelName();
+
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<SmartLibraryStatus> statuses() {

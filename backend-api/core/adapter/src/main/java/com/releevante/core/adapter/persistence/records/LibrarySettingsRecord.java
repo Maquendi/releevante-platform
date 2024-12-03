@@ -4,15 +4,16 @@ import com.releevante.core.domain.LibrarySetting;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "library_settings", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-public class LibrarySettingsRecord extends PersistableEntity {
+public class LibrarySettingsRecord extends SimplePersistable {
   /** id of this setting. */
-  String id;
+  @Id String id;
 
   /** the smart library id to which this setting belongs. */
   String slid;
@@ -51,5 +52,23 @@ public class LibrarySettingsRecord extends PersistableEntity {
         .sessionDurationMinutes(sessionDurationMinutes)
         .isSync(isSync)
         .build();
+  }
+
+  public static LibrarySettingsRecord from(LibrarySetting domain) {
+    var record = new LibrarySettingsRecord();
+    record.setId(domain.id());
+    record.setNew(true);
+    record.setSync(domain.isSync());
+    record.setMaxBooksPerLoan(domain.maxBooksPerLoan());
+    record.setBookPriceDiscountPercentage(domain.bookPriceDiscountPercentage());
+    record.setBookPriceSurchargePercentage(domain.bookPriceSurchargePercentage());
+    record.setBookPriceReductionThreshold(domain.bookPriceReductionThreshold());
+    record.setBookPriceReductionRateOnThresholdReached(
+        domain.bookPriceReductionRateOnThresholdReached());
+    record.setCreatedAt(domain.createdAt());
+    record.setSlid(domain.slid());
+    record.setSessionDurationMinutes(domain.sessionDurationMinutes());
+
+    return record;
   }
 }

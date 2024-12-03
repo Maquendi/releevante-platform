@@ -15,9 +15,6 @@ public interface RoleDao extends ReactiveCrudRepository<RoleRecord, String> {
 
   Flux<RoleRecord> findByRoleIn(List<String> role);
 
-  @Query(
-      "select privilege\n" +
-              "from core.roles\n" +
-              "where role in (:roles)")
+  @Query("select privilege\n" + "from core.roles\n" + "where role in (:roles)")
   Flux<PrivilegeProjection> findAllPrivilegeBy(@Param("roles") List<String> roles);
 }

@@ -10,7 +10,6 @@ import org.springframework.security.web.server.authentication.ServerAuthenticati
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 @Component
 public class JwtServerAuthenticationConverter implements ServerAuthenticationConverter {
@@ -34,7 +33,7 @@ public class JwtServerAuthenticationConverter implements ServerAuthenticationCon
 
   @Override
   public Mono<Authentication> convert(ServerWebExchange exchange) {
-    return Mono.zip(verifyApiKey(exchange), extractJwtToken(exchange)).map(Tuple2::getT2);
+    return extractJwtToken(exchange);
   }
 
   private Mono<Authentication> extractJwtToken(ServerWebExchange exchange) {

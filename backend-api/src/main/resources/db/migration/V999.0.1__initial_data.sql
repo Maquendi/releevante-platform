@@ -37,11 +37,11 @@
     INSERT INTO core.roles(id, role, privilege)
     VALUES ('6593af1c-1427-4bed-8875-184b256ae999','super-admin', 'all:all');
 
-    INSERT INTO core.smart_libraries(slid, org_id, is_active)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b00', '4e11b8d6-c330-4cd6-9d46-e484a79f0b88', true);
+    INSERT INTO core.smart_libraries(slid, model_name)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b00', 'smart library v.0.0.1');
 
-    INSERT INTO core.smart_libraries(slid, org_id, is_active)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f8b99', '4e11b8d6-c797-4cd6-9d46-e484a79f0b66', true);
+    INSERT INTO core.smart_libraries(slid, model_name)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f8b99', 'smart library v.0.0.2');
 
     INSERT INTO core.books(isbn, title, price, correlation_id, author, description, description_fr, description_es, lang, qty)
     VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b66', 'Adentrando a la selva', 145.52, 'c68e5302-d719-488b-9655-aa2739df6c44', 'Homero', 'Deep in the Amazon jungles, there are invaluable treasures, worth exploring.', 'Au cœur de la jungle amazonienne se cachent des trésors inestimables qui valent la peine d’être explorés.', 'En lo profundo de las selvas amazonicas, se encuentran tesoros invaluables, dignos de explorarse.', 'Espanol', 3);
@@ -74,5 +74,8 @@
     (id, "type", slid, created_at)
     VALUES('4e47b8d6-c330-4cd6-9d46-e484a79f8b44', 'online', '4e47b8d6-c330-4cd6-9d46-e484a79f8b99', '2024-11-17 11:43:36.113');
 
-    INSERT INTO core.authorized_origins(id,type)
-    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f4c00', 'smart library v.0.0.1');
+    INSERT INTO core.authorized_origins(id,type, org_id,is_active)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f0b00', 'smart library v.0.0.1', '4e11b8d6-c330-4cd6-9d46-e484a79f0b88', true);
+
+    INSERT INTO core.authorized_origins(id,type, org_id,is_active)
+    VALUES ('4e47b8d6-c330-4cd6-9d46-e484a79f8b99', 'smart library v.0.0.2', '4e11b8d6-c797-4cd6-9d46-e484a79f0b66', true);

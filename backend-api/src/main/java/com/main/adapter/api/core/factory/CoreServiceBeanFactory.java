@@ -6,6 +6,7 @@ import com.releevante.core.application.service.*;
 import com.releevante.core.application.service.impl.DefaultBookServiceImpl;
 import com.releevante.core.application.service.impl.DefaultLibraryService;
 import com.releevante.core.application.service.impl.DefaultTaskExecutionService;
+import com.releevante.core.application.service.impl.SettingServiceImpl;
 import com.releevante.core.domain.repository.*;
 import com.releevante.core.domain.tasks.TaskRepository;
 import com.releevante.identity.application.service.auth.AuthorizationService;
@@ -29,6 +30,8 @@ public class CoreServiceBeanFactory {
 
   @Autowired BookTagRepository bookTagRepository;
 
+  @Autowired SettingsRepository settingsRepository;
+
   @Value("${spring.application.name}")
   String applicationName;
 
@@ -45,6 +48,12 @@ public class CoreServiceBeanFactory {
   public AccountAuthorizationService accountAuthorizationService(
       AuthorizationService authorizationService) {
     return authorizationService::getAccountPrincipal;
+  }
+
+  @Bean()
+  public SettingService settingService(AccountAuthorizationService accountAuthorizationService) {
+    return new SettingServiceImpl(
+        settingsRepository, accountAuthorizationService, smartLibraryRepository);
   }
 
   @Bean

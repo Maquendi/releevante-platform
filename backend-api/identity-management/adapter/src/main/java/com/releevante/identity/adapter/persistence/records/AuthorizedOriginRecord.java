@@ -14,8 +14,10 @@ import org.springframework.data.relational.core.mapping.Table;
 public class AuthorizedOriginRecord extends PersistableEntity {
   @Id String id;
   String type;
+  String orgId;
+  boolean isActive;
 
   public AuthorizedOrigin toDomain() {
-    return AuthorizedOrigin.of(id);
+    return AuthorizedOrigin.builder().id(id).isActive(isActive).orgId(orgId).type(type).build();
   }
 }

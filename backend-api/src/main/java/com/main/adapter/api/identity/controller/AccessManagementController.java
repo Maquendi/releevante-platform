@@ -19,10 +19,10 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/users")
-public class UserAccessManagementController {
+public class AccessManagementController {
   final IdentityServiceFacade identityServiceFacade;
 
-  public UserAccessManagementController(IdentityServiceFacade identityServiceFacade) {
+  public AccessManagementController(IdentityServiceFacade identityServiceFacade) {
     this.identityServiceFacade = identityServiceFacade;
   }
 
