@@ -108,6 +108,7 @@ CREATE TABLE core.library_settings (
 	session_duration_minutes numeric NOT NULL,
 	book_price_reduction_threshold numeric NOT NULL,
 	book_price_reduction_rate_on_threshold_reached numeric NOT NULL,
+	book_usage_count_before_enabling_sale numeric NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_sync BOOLEAN NOT NULL DEFAULT false,
 	CONSTRAINT setting_id_pk PRIMARY KEY (id),
@@ -188,9 +189,19 @@ CREATE TABLE core.loan_items (
 	id varchar(36) NOT NULL,
 	cpy varchar(36) NOT NULL,
 	loan_id varchar(36) NOT NULL,
+	status varchar(50) NOT NULL,
 	CONSTRAINT loan_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
 	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
+);
+
+CREATE TABLE core.loan_item_status (
+	id varchar(36) NOT NULL,
+	item_id varchar(36) NOT NULL,
+	status varchar(50) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT loan_item_status_pk PRIMARY KEY (id),
+	FOREIGN KEY (loan_item_id) REFERENCES core.loan_items(id)
 );
 
 CREATE TABLE core.loan_status (

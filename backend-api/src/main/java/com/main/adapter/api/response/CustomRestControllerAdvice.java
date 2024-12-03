@@ -5,6 +5,8 @@ import com.releevante.types.exceptions.ForbiddenException;
 import com.releevante.types.exceptions.InvalidInputException;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.util.Map;
+
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,6 +36,12 @@ public class CustomRestControllerAdvice {
   @ExceptionHandler(InvalidInputException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public CustomApiResponse<Map<String, Object>> badRequest(Throwable e) {
+    return wrapResponse(HttpStatus.BAD_REQUEST, e);
+  }
+
+  @ExceptionHandler(DuplicateKeyException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public CustomApiResponse<Map<String, Object>> badRequestV2(Throwable e) {
     return wrapResponse(HttpStatus.BAD_REQUEST, e);
   }
 

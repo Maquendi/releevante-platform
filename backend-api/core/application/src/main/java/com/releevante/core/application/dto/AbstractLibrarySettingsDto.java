@@ -26,6 +26,9 @@ public abstract class AbstractLibrarySettingsDto extends AbstractPartialSettingD
   /** determines in percentage, how much of the price of the book should drop */
   abstract float bookPriceReductionRateOnThresholdReached();
 
+  /** how many times a book should be used before enabling sales option */
+  abstract int bookUsageCountBeforeEnablingSale();
+
   public LibrarySetting toDomain(
       SequentialGenerator<String> uuidGen, SequentialGenerator<ZonedDateTime> dateTimeGen) {
     return LibrarySetting.builder()
@@ -38,6 +41,7 @@ public abstract class AbstractLibrarySettingsDto extends AbstractPartialSettingD
         .bookPriceSurchargePercentage(this.bookPriceSurchargePercentage())
         .bookPriceReductionRateOnThresholdReached(this.bookPriceReductionRateOnThresholdReached())
         .createdAt(dateTimeGen.next())
+        .bookUsageCountBeforeEnablingSale(bookUsageCountBeforeEnablingSale())
         .isSync(false)
         .build();
   }

@@ -32,7 +32,7 @@ public class BookLoanRecord extends AuditableEntity {
 
   private String clientId;
 
-  @Transient private Set<LoanItemsRecord> loanDetails = new HashSet<>();
+  @Transient private Set<LoanItemsRecord> loanItems = new HashSet<>();
 
   @Transient private Set<LoanStatusRecord> loanStatus = new HashSet<>();
 
@@ -65,7 +65,7 @@ public class BookLoanRecord extends AuditableEntity {
     record.setExternalId(loan.externalId().value());
     record.setOrigin(loan.origin());
     record.setAudit(loan.audit());
-    record.setLoanDetails(LoanItemsRecord.fromDomain(record, loan.loanDetails()));
+    record.setLoanItems(LoanItemsRecord.fromDomain(record, loan.items()));
     record.setLoanStatus(LoanStatusRecord.fromDomain(record, loan.loanStatus()));
     return record;
   }

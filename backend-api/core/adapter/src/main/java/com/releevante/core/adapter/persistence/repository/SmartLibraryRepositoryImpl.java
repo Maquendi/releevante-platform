@@ -8,9 +8,11 @@ import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.ClientRepository;
 import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
+import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
+import com.releevante.types.ZonedDateTimeGenerator;
+import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,8 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   final SmartLibraryAccessControlDao smartLibraryAccessControlDao;
 
   final AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao;
+
+  final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
 
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
@@ -123,11 +127,11 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   @Transactional
   @Override
   public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary library) {
-    return Flux.fromIterable(library.clients())
-        .flatMap(clientRepository::saveBookLoan)
-        .collectList()
-        .flatMap(ignore -> markInventoryAsBorrowed(library.clients()))
-        .thenReturn(library);
+    var persistLoans =
+        Flux.fromIterable(library.clients()).flatMap(clientRepository::saveBookLoan).collectList();
+    var updateInventory = updateInventoryStatus(library.clients());
+
+    return Flux.merge(persistLoans, updateInventory).collectList().thenReturn(library);
   }
 
   @Override
@@ -170,20 +174,24 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
         .defaultIfEmpty(true);
   }
 
-  public Mono<Void> markInventoryAsBorrowed(List<Client> clients) {
-    return Mono.fromCallable(
-            () ->
-                clients.stream()
-                    .map(Client::loans)
-                    .flatMap(List::stream)
-                    .map(BookLoan::loanDetails)
-                    .flatMap(List::stream)
-                    .map(LoanDetail::bookCopy)
-                    .collect(Collectors.toSet()))
-        .filter(Predicate.not(Set::isEmpty))
+  public Mono<Void> updateInventoryStatus(List<Client> clients) {
+    var updatedAt = dateTimeGenerator.next();
+    return Flux.fromStream(
+            clients.stream()
+                .map(Client::loans)
+                .flatMap(List::stream)
+                .map(BookLoan::items)
+                .flatMap(List::stream))
         .flatMap(
-            bookCopies ->
-                libraryInventoryHibernateDao.updateInventoryStatusByCpy(
-                    BookCopyStatus.BORROWED.name(), bookCopies));
+            item -> {
+              var status =
+                  item.status().stream()
+                      .min((i1, i2) -> i2.createdAt().compareTo(i1.createdAt()))
+                      .map(LoanItemStatus::statuses)
+                      .orElse(LoanItemStatuses.BORROWED);
+              return libraryInventoryHibernateDao.updateInventoryStatusByCpy(
+                  status.name(), updatedAt, item.cpy());
+            })
+        .then();
   }
 }

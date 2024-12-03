@@ -29,7 +29,7 @@ public abstract class AbstractSmartLibrary {
 
   abstract String modelName();
 
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  @JsonIgnore
   @Value.Default
   List<SmartLibraryStatus> statuses() {
     return Collections.emptyList();

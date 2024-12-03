@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookLoanId;
+import com.releevante.core.domain.LoanItem;
+import com.releevante.core.domain.LoanStatus;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
@@ -11,7 +13,6 @@ import com.releevante.types.UuidGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -23,7 +24,7 @@ public abstract class AbstractBookLoanDto {
 
   abstract String externalId();
 
-  abstract List<LoanDetailDto> items();
+  abstract List<LoanItem> items();
 
   abstract ZonedDateTime returnsAt();
 
@@ -33,7 +34,7 @@ public abstract class AbstractBookLoanDto {
 
   abstract ZonedDateTime endTime();
 
-  abstract List<BookLoanStatusDto> status();
+  abstract List<LoanStatus> status();
 
   public BookLoan toDomain(AccountPrincipal principal, Slid slid) {
     var bookLoanId = BookLoanId.of(id().orElse(UuidGenerator.instance().next()));
@@ -48,8 +49,8 @@ public abstract class AbstractBookLoanDto {
         .returnsAt(returnsAt())
         .origin(principal.audience())
         .audit(principal.subject())
-        .loanStatus(status().stream().map(BookLoanStatusDto::toDomain).collect(Collectors.toList()))
-        .loanDetails(items().stream().map(LoanDetailDto::toDomain).collect(Collectors.toList()))
+        .loanStatus(status())
+        .items(items())
         .build();
   }
 }

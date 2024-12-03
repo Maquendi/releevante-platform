@@ -39,6 +39,9 @@ public class LibrarySettingsRecord extends SimplePersistable {
   /** if this setting is synced with the actual smart library it belongs to. */
   boolean isSync;
 
+  /** how many times a book should be used before enabling sales option */
+  int bookUsageCountBeforeEnablingSale;
+
   public LibrarySetting toDomain() {
     return LibrarySetting.builder()
         .id(id)
@@ -51,6 +54,7 @@ public class LibrarySettingsRecord extends SimplePersistable {
         .createdAt(createdAt)
         .sessionDurationMinutes(sessionDurationMinutes)
         .isSync(isSync)
+        .bookUsageCountBeforeEnablingSale(bookUsageCountBeforeEnablingSale)
         .build();
   }
 
@@ -68,7 +72,7 @@ public class LibrarySettingsRecord extends SimplePersistable {
     record.setCreatedAt(domain.createdAt());
     record.setSlid(domain.slid());
     record.setSessionDurationMinutes(domain.sessionDurationMinutes());
-
+    record.setBookUsageCountBeforeEnablingSale(domain.bookUsageCountBeforeEnablingSale());
     return record;
   }
 }

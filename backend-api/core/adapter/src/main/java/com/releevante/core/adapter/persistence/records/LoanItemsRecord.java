@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.LoanDetail;
+import com.releevante.core.domain.LoanItem;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -9,16 +10,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "loan_items", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoanItemsRecord extends PersistableEntity {
+public class LoanItemsRecord extends SimplePersistable {
   @Id private String id;
   private String cpy;
   private String loanId;
+
+  @Transient private Set<LoanItemStatusRecord> loanItemStatuses = new HashSet<>();
 
   @Override
   public boolean equals(Object o) {
@@ -34,17 +38,16 @@ public class LoanItemsRecord extends PersistableEntity {
   }
 
   protected static Set<LoanItemsRecord> fromDomain(
-      BookLoanRecord record, List<LoanDetail> loanDetails) {
-    return loanDetails.stream()
-        .map(loanDetail -> fromDomain(record, loanDetail))
-        .collect(Collectors.toSet());
+      BookLoanRecord record, List<LoanItem> loanItems) {
+    return loanItems.stream().map(item -> fromDomain(record, item)).collect(Collectors.toSet());
   }
 
-  private static LoanItemsRecord fromDomain(BookLoanRecord loan, LoanDetail loanDetail) {
+  private static LoanItemsRecord fromDomain(BookLoanRecord loan, LoanItem item) {
     var record = new LoanItemsRecord();
-    record.setId(loanDetail.id());
-    record.setCpy(loanDetail.bookCopy());
+    record.setId(item.id());
+    record.setCpy(item.cpy());
     record.setLoanId(loan.getId());
+    record.setLoanItemStatuses(LoanItemStatusRecord.many(item.status()));
     return record;
   }
 }

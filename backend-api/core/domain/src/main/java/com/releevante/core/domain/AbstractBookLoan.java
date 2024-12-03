@@ -26,7 +26,7 @@ public abstract class AbstractBookLoan implements Auditable {
   abstract Optional<ZonedDateTime> returnedAt();
 
   @Value.Default
-  List<LoanDetail> loanDetails() {
+  List<LoanItem> items() {
     return Collections.emptyList();
   }
 

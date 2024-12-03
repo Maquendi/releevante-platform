@@ -40,6 +40,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 
   final CartItemHibernateDao cartItemHibernateDao;
 
+  final LoanItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao;
+
   public ClientRepositoryImpl(
       ClientHibernateDao clientHibernateDao,
       ServiceRatingHibernateDao serviceRatingHibernateDao,
@@ -52,7 +54,8 @@ public class ClientRepositoryImpl implements ClientRepository {
       BookReservationHibernateDao bookReservationHibernateDao,
       BookReservationItemHibernateDao bookReservationItemHibernateDao,
       CartHibernateDao cartHibernateDao,
-      CartItemHibernateDao cartItemHibernateDao) {
+      CartItemHibernateDao cartItemHibernateDao,
+      LoanItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao) {
     this.clientHibernateDao = clientHibernateDao;
     this.serviceRatingHibernateDao = serviceRatingHibernateDao;
     this.bookLoanHibernateDao = bookLoanHibernateDao;
@@ -65,6 +68,7 @@ public class ClientRepositoryImpl implements ClientRepository {
     this.bookReservationItemHibernateDao = bookReservationItemHibernateDao;
     this.cartHibernateDao = cartHibernateDao;
     this.cartItemHibernateDao = cartItemHibernateDao;
+    this.loanItemStatusRecordHibernateDao = loanItemStatusRecordHibernateDao;
   }
 
   @Override
@@ -94,13 +98,19 @@ public class ClientRepositoryImpl implements ClientRepository {
 
               var loanItemRecords =
                   loanRecords.stream()
-                      .map(BookLoanRecord::getLoanDetails)
+                      .map(BookLoanRecord::getLoanItems)
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
 
               var loanStatusRecords =
                   loanRecords.stream()
                       .map(BookLoanRecord::getLoanStatus)
+                      .flatMap(Set::stream)
+                      .collect(Collectors.toSet());
+
+              var loanItemStatusRecords =
+                  loanItemRecords.stream()
+                      .map(LoanItemsRecord::getLoanItemStatuses)
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
 
@@ -112,6 +122,10 @@ public class ClientRepositoryImpl implements ClientRepository {
                   .flatMap(
                       ignored ->
                           saveMultipleRecords(loanStatusRecords, loanStatusHibernateDao::saveAll))
+                  .flatMap(
+                      ignored ->
+                          saveMultipleRecords(
+                              loanItemStatusRecords, loanItemStatusRecordHibernateDao::saveAll))
                   .thenReturn(client);
             })
         .defaultIfEmpty(client);
