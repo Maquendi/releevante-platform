@@ -12,6 +12,7 @@ public interface AbstractAuthorizedOrigin {
 
   String type();
 
+  @Value.Default
   default List<String> roles() {
     return Collections.emptyList();
   }

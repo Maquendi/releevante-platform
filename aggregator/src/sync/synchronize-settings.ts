@@ -53,10 +53,12 @@ const insertSettings = async (settings: LibrarySetting[]) => {
           book_usage_count_before_enabling_sale:
             setting.bookUsageCountBeforeEnablingSale,
           created_at: setting.createdAt,
-          updated_at: setting.createdAt
+          updated_at: setting.createdAt,
         }).changes;
-      } catch (error) {
-        return 0;
+      } catch (error: any) {
+        console.log(
+          `skipping error in insertSettings and continue processing ....${error.message}`
+        );
       }
     });
 

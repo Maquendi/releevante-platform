@@ -30,6 +30,7 @@ public class DefaultTaskExecutionService implements TaskExecutionService {
                     .name(taskName)
                     .updatedAt(dateTimeGenerator.next())
                     .startedAt(dateTimeGenerator.next())
+                    .createdAt(dateTimeGenerator.next())
                     .build())
         .map(
             task -> {

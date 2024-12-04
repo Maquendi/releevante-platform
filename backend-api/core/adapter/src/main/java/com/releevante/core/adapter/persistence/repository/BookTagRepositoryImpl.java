@@ -54,6 +54,8 @@ public class BookTagRepositoryImpl implements BookTagRepository {
             projection ->
                 Tag.builder()
                     .id(projection.getId())
+                    .isbn(isbn.value())
+                    .bookTagId(projection.getBookTagId())
                     .name(projection.getName())
                     .value(projection.getValueEn())
                     .valueFr(Optional.ofNullable(projection.getValueFr()))

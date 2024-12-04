@@ -154,6 +154,9 @@ public class BookRepositoryImpl implements BookRepository {
                                                     .map(
                                                         copy ->
                                                             BookCpy.builder()
+                                                                .isbn(first.getIsbn())
+                                                                .createdAt(first.getCreatedAt())
+                                                                .updatedAt(first.getUpdatedAt())
                                                                 .id(copy.getCpy())
                                                                 .isSync(copy.isSync())
                                                                 .status(

@@ -39,8 +39,8 @@ const insertUsers = async (accesses: LibraryAccess[]) => {
           created_at: access.createdAt,
           updated_at: access.createdAt,
         }).changes;
-      } catch (error) {
-        return 0;
+      } catch (error: any) {
+        console.log(`skipping error in insertUsers and continue processing ....${error.message}`);
       }
     });
 

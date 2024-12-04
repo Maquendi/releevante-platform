@@ -11,8 +11,7 @@ export const bookCopieSchema = sqliteTable("books_copies", {
   is_available: integer("is_available", { mode: "boolean" })
     .notNull()
     .default(true),
-  at_position: text("at_position")
-    .notNull(),
+  at_position: text("at_position").default("M10"),
   created_at: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)

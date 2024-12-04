@@ -201,7 +201,7 @@ CREATE TABLE core.loan_item_status (
 	status varchar(50) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT loan_item_status_pk PRIMARY KEY (id),
-	FOREIGN KEY (loan_item_id) REFERENCES core.loan_items(id)
+	FOREIGN KEY (item_id) REFERENCES core.loan_items(id)
 );
 
 CREATE TABLE core.loan_status (
@@ -303,9 +303,10 @@ CREATE TABLE core.tasks (
 	name varchar(50) NOT NULL,
 	started_at timestamp NOT NULL,
 	ended_at timestamp NOT NULL,
-	updated_at timestamp NOT NULL,
 	errors text[] NULL,
 	result numeric NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT task_p_k PRIMARY KEY (id)
 );
 

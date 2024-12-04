@@ -7,17 +7,17 @@ import { getCredential } from "./auth/authenticator";
 const run = async () => {
   let token = await getCredential();
 
-  //let dataSynced = await synchronizeBooks();
+  let dataSynced = await synchronizeBooks(token);
 
-  var dataSynced = await synchronizeLibraryAccess(token);
+  dataSynced += await synchronizeLibraryAccess(token);
 
   dataSynced += await synchronizeSettings(token);
 
   console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
 
-  // if (dataSynced > 0) {
-  //   await markLibrarySynchronized();
-  // }
+  if (dataSynced > 0) {
+    await markLibrarySynchronized(token);
+  }
 };
 
 run();

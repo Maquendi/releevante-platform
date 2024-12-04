@@ -16,5 +16,6 @@ public class BookTagProjection {
   private String valueEn;
   private String valueFr;
   private String valueSp;
+  private String bookTagId;
   private ZonedDateTime createdAt;
 }
