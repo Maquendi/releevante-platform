@@ -46,17 +46,17 @@ export const cartItemSchema = sqliteTable(
       .notNull()
       .references(() => bookSchema.id),
     qty: integer("qty").notNull(),
-    cart_id: text("cart_id")
+    cartId: text("cart_id")
       .notNull()
       .references(() => cartSchema.id),
-    created_at: text("created_at")
+    transactionType:text('transaction_type',{enum:['RENT','PURCHASE']}).notNull(),
+    createdAt: text("created_at")
       .notNull()
       .default(sql`(current_timestamp)`)
       .$defaultFn(() => new Date().toISOString()),
   }
 );
 
-export type CartItemSchema = typeof cartItemSchema.$inferInsert;
 
 export const cartSchemaRelations = relations(cartSchema, ({ many }) => ({
   items: many(cartItemSchema),
@@ -64,7 +64,7 @@ export const cartSchemaRelations = relations(cartSchema, ({ many }) => ({
 
 export const cartItemRelations = relations(cartItemSchema, ({ one }) => ({
   cart: one(cartSchema, {
-    fields: [cartItemSchema.cart_id],
+    fields: [cartItemSchema.cartId],
     references: [cartSchema.id],
   }),
   book: one(bookSchema, {

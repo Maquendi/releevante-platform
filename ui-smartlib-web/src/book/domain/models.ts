@@ -17,6 +17,14 @@ export interface CategoryBookItem {
   imageUrl: string;
   votes: number;
   rating: number;
+  correlationId:string
+}
+
+interface CategoryTranslations{
+  id?: string;
+  esCategoryName: string;
+  frCategoryName: string;
+  enCategoryName: string;
 }
 
 export interface BooksByCategory {
@@ -26,12 +34,7 @@ export interface BooksByCategory {
     enSubCategoryName: string;
     frSubCategoryName: string;
   };
-  category: {
-    id: string;
-    esCategoryName: string;
-    frCategoryName: string;
-    enCategoryName: string;
-  };
+  category:CategoryTranslations
 
   books: CategoryBookItem[];
 }
@@ -69,14 +72,31 @@ export interface BookEdition {
   images: BookImage[];
 }
 
+export interface BookLanguage{
+  bookId:string,
+  language:string
+}
+
 export interface Book {
   id: string;
   bookTitle: string;
   author: string;
   editionTitle: string;
   images?: BookImage[];
-  publisher?: string;
+  publisher: string;
+  enDescription:string;
+  esDescription:string;
+  frDescription:string;
+  publicationDate:string;
+  printLength:string
+  dimensions:string;
+  bookLanguages:BookLanguage[],
+  category:CategoryTranslations,
+  rating?:number
+  votes?:number
+  price?:number
 }
+
 
 export interface CategoryBooks {
   categoryName: string;

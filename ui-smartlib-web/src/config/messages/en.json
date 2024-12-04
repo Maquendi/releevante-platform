@@ -33,5 +33,26 @@
   "SearchBookPage": {
     "bookNotFound": "Book not found",
     "tryTheseBooks": "Try these books instead"
+  },
+  "bookById": {
+    "selectLanguage": "Select a language",
+    "bookSummary": "Book Summary",
+    "bookDetail": "Book Detail",
+    "printLength": "Print Length",
+    "publicationDate": "Publication Date",
+    "dimensions": "Dimensions",
+    "language": "Language",
+    "publisher": "Publisher",
+    "rentBannerBtn":"Rent for free",
+    "buyBannerBtn":"Buy book"
+  },
+  "cart":{
+    "rent":"rent",
+    "purchase": "purchase",
+    "to":"to",
+    "of":"of",
+    "checkout":"checkout",
+    "emptyCart": "You don’t have any book in your cart",
+    "cart": "cart"
   }
 }

@@ -32,5 +32,25 @@
   "SearchBookPage": {
     "bookNotFound": "Livre introuvable",
     "tryTheseBooks": "Essayez ces livres à la place"
+  },
+  "bookById": {
+    "selectLanguage": "Sélectionnez une langue",
+    "bookSummary": "Résumé du livre",
+    "bookDetail": "Détail du livre",
+    "printLength": "Nombre de pages",
+    "publicationDate": "Date de publication",
+    "dimensions": "Dimensions",
+    "language": "Langue",
+    "publisher": "Éditeur",
+    "rentBannerBtn": "Louer gratuitement",
+    "buyBannerBtn": "Acheter le livre"
+  },
+  "cart": {
+    "rent": "louer",
+    "purchase": "acheter",
+    "to": "à",
+    "checkout": "passer à la caisse",
+    "emptyCart": "Vous n'avez aucun livre dans votre panier",
+    "cart": "panier"
   }
 }
