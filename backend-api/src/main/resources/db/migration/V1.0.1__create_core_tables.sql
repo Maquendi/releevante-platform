@@ -40,6 +40,7 @@ CREATE TABLE core.cart_items (
 	isbn varchar(36) NULL,
 	qty numeric NOT NULL,
 	cart_id varchar(36) NOT NULL,
+	for_purchase boolean NOT NULL DEFAULT false,
 	CONSTRAINT cart_items_pk PRIMARY KEY (id),
 	FOREIGN KEY(cart_id) REFERENCES core.carts(id),
 	FOREIGN KEY(isbn) REFERENCES core.books(isbn)
@@ -79,12 +80,10 @@ CREATE TABLE core.org (
 
 CREATE TABLE core.smart_libraries (
 	slid varchar(36) NOT NULL,
-	org_id varchar(36) NOT NULL,
-	is_active boolean NOT NULL DEFAULT false,
+	model_name varchar(100) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT slid_pk PRIMARY KEY (slid),
-	FOREIGN KEY (org_id) REFERENCES core.org(id)
+	CONSTRAINT slid_pk PRIMARY KEY (slid)
 );
 
 CREATE TABLE core.library_inventories (
@@ -104,10 +103,12 @@ CREATE TABLE core.library_settings (
 	id varchar(36) NOT NULL,
 	slid varchar(36) NOT NULL,
 	max_books_per_loan numeric NOT NULL,
-	book_price_discount_percentage numeric NOT NULL DEFAULT 0,
-	book_price_surcharge_percentage numeric NOT NULL DEFAULT 0,
-	book_price_reduction_threshold numeric NOT NULL DEFAULT 3,
+	book_price_discount_percentage numeric NOT NULL,
+	book_price_surcharge_percentage numeric NOT NULL,
+	session_duration_minutes numeric NOT NULL,
+	book_price_reduction_threshold numeric NOT NULL,
 	book_price_reduction_rate_on_threshold_reached numeric NOT NULL,
+	book_usage_count_before_enabling_sale numeric NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_sync BOOLEAN NOT NULL DEFAULT false,
 	CONSTRAINT setting_id_pk PRIMARY KEY (id),
@@ -162,6 +163,8 @@ CREATE TABLE core.book_image (
 CREATE TABLE core.authorized_origins (
 	id varchar(36) NOT NULL,
 	type varchar(36) NULL,
+	org_id varchar(36) NOT NULL,
+    is_active boolean NOT NULL DEFAULT false,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT authorized_origin_pk PRIMARY KEY (id)
@@ -186,9 +189,19 @@ CREATE TABLE core.loan_items (
 	id varchar(36) NOT NULL,
 	cpy varchar(36) NOT NULL,
 	loan_id varchar(36) NOT NULL,
+	status varchar(50) NOT NULL,
 	CONSTRAINT loan_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
 	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
+);
+
+CREATE TABLE core.loan_item_status (
+	id varchar(36) NOT NULL,
+	item_id varchar(36) NOT NULL,
+	status varchar(50) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT loan_item_status_pk PRIMARY KEY (id),
+	FOREIGN KEY (item_id) REFERENCES core.loan_items(id)
 );
 
 CREATE TABLE core.loan_status (
@@ -290,9 +303,10 @@ CREATE TABLE core.tasks (
 	name varchar(50) NOT NULL,
 	started_at timestamp NOT NULL,
 	ended_at timestamp NOT NULL,
-	updated_at timestamp NOT NULL,
 	errors text[] NULL,
 	result numeric NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT task_p_k PRIMARY KEY (id)
 );
 

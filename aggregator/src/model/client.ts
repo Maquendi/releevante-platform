@@ -5,8 +5,28 @@ export interface BookImage {
   sourceUrl: string;
 }
 
-export interface Book {
+export interface Tag {
   id: string;
+  bookTagId: string;
+  isbn: string;
+  name: string;
+  value: string;
+  valueFr: string;
+  valueSp: string;
+  createdAt: Date;
+}
+
+export interface BookCopy {
+  id: string;
+  status: string;
+  isbn: string;
+  atPosition: string;
+  isSync: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Book {
   isbn: string;
   title: string;
   author: string;
@@ -14,24 +34,53 @@ export interface Book {
   price: number;
   correlationId: string;
   description: string;
+  descriptionFr: string;
+  descriptionSp: string;
+  createdAt: Date;
+  updatedAt: Date;
+  keyWords: Tag[];
+  categories: Tag[];
+  subCategories: Tag[];
   images: BookImage[];
+  copies: BookCopy[];
   at_position?: string;
 }
 
 export interface LibrarySetting {
   id: string;
-  maxBookPerLoan: number;
+  slid: string;
+  maxBooksPerLoan: number;
+  sessionDurationMinutes: number;
   bookPriceDiscountPercentage: number;
   bookPriceReductionThreshold: number;
   bookPriceSurchargePercentage: number;
   bookPriceReductionRateOnThresholdReached: number;
+  bookUsageCountBeforeEnablingSale: number;
+  isSync: boolean;
+  createdAt: Date;
+}
+
+interface UserCredential {
+  key: string;
+  value: string;
 }
 
 export interface LibraryAccess {
+  id: string;
+  orgId: string;
+  slid: string;
   userId: string;
-  accessId: string;
   accessDueDays: number;
+  isActive: boolean;
   expiresAt: Date;
-  credential: string;
+  isSync: boolean;
+  createdAt: Date;
+  credential: UserCredential;
   credentialType: string;
+}
+
+export interface ApiCredential {
+  expiresAt: string;
+  token: string;
+  slid?: string;
 }

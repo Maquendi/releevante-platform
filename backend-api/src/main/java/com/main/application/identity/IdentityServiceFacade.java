@@ -26,5 +26,7 @@ public interface IdentityServiceFacade {
 
   Mono<PinAuthenticationDto> authenticate(PinLoginDto loginDto);
 
+  Mono<AggregatorLoginResponse> authenticate(AggregatorLogin loginDto);
+
   Mono<AccountIdDto> create(OrgDto orgDto);
 }

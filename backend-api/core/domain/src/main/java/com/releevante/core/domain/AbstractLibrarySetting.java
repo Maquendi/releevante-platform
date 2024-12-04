@@ -40,4 +40,7 @@ public abstract class AbstractLibrarySetting {
 
   /** if this setting is synced with the actual smart library it belongs to. */
   abstract boolean isSync();
+
+  /** how many times a book should be used before enabling sales option */
+  abstract int bookUsageCountBeforeEnablingSale();
 }

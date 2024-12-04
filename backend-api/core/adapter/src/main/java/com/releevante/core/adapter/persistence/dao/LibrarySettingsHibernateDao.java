@@ -5,6 +5,7 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
@@ -15,13 +16,13 @@ public interface LibrarySettingsHibernateDao
           + "where ls.slid=:slid\n"
           + "and ls.is_sync=:synced\n"
           + "order by ls.created_at desc\n")
-  Mono<LibrarySettingsRecord> findBy(@Param("slid") String slid, @Param("synced") boolean synced);
+  Flux<LibrarySettingsRecord> findBy(@Param("slid") String slid, @Param("synced") boolean synced);
 
   @Query(
       "select * from core.library_settings ls \n"
           + "where ls.slid=:slid\n"
           + "order by ls.created_at desc\n")
-  Mono<LibrarySettingsRecord> findBy(@Param("slid") String slid);
+  Flux<LibrarySettingsRecord> findBy(@Param("slid") String slid);
 
   @Query("update core.library_settings set is_sync = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);

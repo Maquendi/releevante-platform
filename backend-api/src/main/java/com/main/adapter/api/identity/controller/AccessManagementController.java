@@ -4,30 +4,29 @@ package com.main.adapter.api.identity.controller;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.identity.IdentityServiceFacade;
-import com.releevante.identity.application.dto.LoginDto;
-import com.releevante.identity.application.dto.PinAuthenticationDto;
-import com.releevante.identity.application.dto.PinLoginDto;
-import com.releevante.identity.application.dto.UserAuthenticationDto;
+import com.releevante.identity.application.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/users/auth")
-public class UserAuthenticationController {
+@RequestMapping("/users")
+public class AccessManagementController {
   final IdentityServiceFacade identityServiceFacade;
 
-  public UserAuthenticationController(IdentityServiceFacade identityServiceFacade) {
+  public AccessManagementController(IdentityServiceFacade identityServiceFacade) {
     this.identityServiceFacade = identityServiceFacade;
   }
 
-  @Operation(
-      summary = "User login",
-      description = "authentication for users with username and password")
+  @Operation(summary = "User account register", description = "Create a new user account")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -64,14 +63,14 @@ public class UserAuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping
-  Mono<CustomApiResponse<UserAuthenticationDto>> login(@RequestBody LoginDto login) {
-    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
+  @PostMapping("/account")
+  Mono<CustomApiResponse<AccountIdDto>> register(@RequestBody AccountDto account) {
+    return identityServiceFacade.create(account).map(CustomApiResponse::from);
   }
 
   @Operation(
-      summary = "User authentication with pin/nfc/qr_code",
-      description = "Authenticate user using pin, nfg uuid or QR code")
+      summary = "Smart library access",
+      description = "Create a user access for a smart library")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -108,8 +107,8 @@ public class UserAuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/pin")
-  Mono<CustomApiResponse<PinAuthenticationDto>> login(@RequestBody PinLoginDto login) {
-    return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
+  @PostMapping("/access")
+  public Mono<CustomApiResponse<List<GrantedAccess>>> register(@RequestBody UserAccessDto access) {
+    return identityServiceFacade.create(access).map(CustomApiResponse::from);
   }
 }

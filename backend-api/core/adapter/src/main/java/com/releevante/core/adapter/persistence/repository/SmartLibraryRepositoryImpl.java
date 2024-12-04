@@ -6,10 +6,13 @@ import com.releevante.core.adapter.persistence.dao.*;
 import com.releevante.core.adapter.persistence.records.*;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.ClientRepository;
+import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
+import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
+import com.releevante.types.ZonedDateTimeGenerator;
+import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,27 +30,33 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
 
-  final LibrarySettingsHibernateDao librarySettingsHibernateDao;
+  final SettingsRepository settingsRepository;
 
   final BookImageHibernateDao bookImageHibernateDao;
 
   final SmartLibraryAccessControlDao smartLibraryAccessControlDao;
+
+  final AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao;
+
+  final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
 
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
       SmartLibraryEventsHibernateDao smartLibraryEventsHibernateDao,
       ClientRepository clientRepository,
       LibraryInventoryHibernateDao libraryInventoryHibernateDao,
-      LibrarySettingsHibernateDao librarySettingsHibernateDao,
+      SettingsRepository settingsRepository,
       BookImageHibernateDao bookImageHibernateDao,
-      SmartLibraryAccessControlDao smartLibraryAccessControlDao) {
+      SmartLibraryAccessControlDao smartLibraryAccessControlDao,
+      AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao) {
     this.smartLibraryDao = smartLibraryDao;
     this.smartLibraryEventsHibernateDao = smartLibraryEventsHibernateDao;
     this.clientRepository = clientRepository;
     this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
-    this.librarySettingsHibernateDao = librarySettingsHibernateDao;
+    this.settingsRepository = settingsRepository;
     this.bookImageHibernateDao = bookImageHibernateDao;
     this.smartLibraryAccessControlDao = smartLibraryAccessControlDao;
+    this.authorizedOriginRecordHibernateDao = authorizedOriginRecordHibernateDao;
   }
 
   @Override
@@ -60,9 +69,9 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
             .collectList();
 
     var smartLibraries =
-        smartLibraryDao
+        authorizedOriginRecordHibernateDao
             .findAllById(sLids.stream().map(Slid::value).collect(Collectors.toSet()))
-            .map(SmartLibraryRecord::toDomain)
+            .map(AuthorizedOriginRecord::toLibrary)
             .collectList();
 
     return Mono.zip(libraryEventFlux, smartLibraries)
@@ -95,7 +104,10 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Override
   public Mono<SmartLibrary> findBy(Slid slid) {
-    var smartLibraryMono = smartLibraryDao.findById(slid.value()).map(SmartLibraryRecord::toDomain);
+    var smartLibraryMono =
+        authorizedOriginRecordHibernateDao
+            .findById(slid.value())
+            .map(AuthorizedOriginRecord::toLibrary);
 
     var libraryEventsMono =
         smartLibraryEventsHibernateDao
@@ -115,11 +127,11 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   @Transactional
   @Override
   public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary library) {
-    return Flux.fromIterable(library.clients())
-        .flatMap(clientRepository::saveBookLoan)
-        .collectList()
-        .flatMap(ignore -> markInventoryAsBorrowed(library.clients()))
-        .thenReturn(library);
+    var persistLoans =
+        Flux.fromIterable(library.clients()).flatMap(clientRepository::saveBookLoan).collectList();
+    var updateInventory = updateInventoryStatus(library.clients());
+
+    return Flux.merge(persistLoans, updateInventory).collectList().thenReturn(library);
   }
 
   @Override
@@ -132,14 +144,12 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Override
   public Flux<LibrarySetting> getSetting(Slid slid, boolean synced) {
-    return Flux.from(librarySettingsHibernateDao.findBy(slid.value(), synced))
-        .map(LibrarySettingsRecord::toDomain);
+    return settingsRepository.findBy(slid, synced);
   }
 
   @Override
   public Flux<LibrarySetting> getSetting(Slid slid) {
-    return Flux.from(librarySettingsHibernateDao.findBy(slid.value()))
-        .map(LibrarySettingsRecord::toDomain);
+    return settingsRepository.findBy(slid);
   }
 
   @Override
@@ -159,25 +169,29 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
     return Mono.zip(
             smartLibraryAccessControlDao.setSynchronized(slid.value()).defaultIfEmpty(0),
             libraryInventoryHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0),
-            librarySettingsHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0))
+            settingsRepository.setSynchronized(slid))
         .map(data -> true)
         .defaultIfEmpty(true);
   }
 
-  public Mono<Void> markInventoryAsBorrowed(List<Client> clients) {
-    return Mono.fromCallable(
-            () ->
-                clients.stream()
-                    .map(Client::loans)
-                    .flatMap(List::stream)
-                    .map(BookLoan::loanDetails)
-                    .flatMap(List::stream)
-                    .map(LoanDetail::bookCopy)
-                    .collect(Collectors.toSet()))
-        .filter(Predicate.not(Set::isEmpty))
+  public Mono<Void> updateInventoryStatus(List<Client> clients) {
+    var updatedAt = dateTimeGenerator.next();
+    return Flux.fromStream(
+            clients.stream()
+                .map(Client::loans)
+                .flatMap(List::stream)
+                .map(BookLoan::items)
+                .flatMap(List::stream))
         .flatMap(
-            bookCopies ->
-                libraryInventoryHibernateDao.updateInventoryStatusByCpy(
-                    BookCopyStatus.BORROWED.name(), bookCopies));
+            item -> {
+              var status =
+                  item.status().stream()
+                      .min((i1, i2) -> i2.createdAt().compareTo(i1.createdAt()))
+                      .map(LoanItemStatus::statuses)
+                      .orElse(LoanItemStatuses.BORROWED);
+              return libraryInventoryHibernateDao.updateInventoryStatusByCpy(
+                  status.name(), updatedAt, item.cpy());
+            })
+        .then();
   }
 }

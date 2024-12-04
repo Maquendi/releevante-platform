@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a5f24b43-37b6-4fa3-b67e-eec8b53a3237",
+  "id": "fac2b38b-3251-4e83-a789-d103cb714b81",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "book_category": {
@@ -770,22 +770,51 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "en_name": {
+          "name": "en_name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "image_url": {
-          "name": "image_url",
+        "fr_name": {
+          "name": "fr_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "es_name": {
+          "name": "es_name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "category_en_name_unique": {
+          "name": "category_en_name_unique",
+          "columns": [
+            "en_name"
+          ],
+          "isUnique": true
+        },
+        "category_fr_name_unique": {
+          "name": "category_fr_name_unique",
+          "columns": [
+            "fr_name"
+          ],
+          "isUnique": true
+        },
+        "category_es_name_unique": {
+          "name": "category_es_name_unique",
+          "columns": [
+            "es_name"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -808,15 +837,51 @@
           "notNull": true,
           "autoincrement": false
         },
-        "tag_value": {
-          "name": "tag_value",
+        "en_tag_value": {
+          "name": "en_tag_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fr_tag_value": {
+          "name": "fr_tag_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "es_tag_value": {
+          "name": "es_tag_value",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "ftags_en_tag_value_unique": {
+          "name": "ftags_en_tag_value_unique",
+          "columns": [
+            "en_tag_value"
+          ],
+          "isUnique": true
+        },
+        "ftags_fr_tag_value_unique": {
+          "name": "ftags_fr_tag_value_unique",
+          "columns": [
+            "fr_tag_value"
+          ],
+          "isUnique": true
+        },
+        "ftags_es_tag_value_unique": {
+          "name": "ftags_es_tag_value_unique",
+          "columns": [
+            "es_tag_value"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},

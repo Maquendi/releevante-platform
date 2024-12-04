@@ -23,8 +23,18 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
   private static Set<GrantedAuthority> extractAuthorities(AccountPrincipal principal) {
     return principal.roles().stream()
         .peek(System.out::println)
-        .map(SimpleGrantedAuthority::new)
+        .map(
+            role -> {
+              if (isRole(role)) {
+                return new SimpleGrantedAuthority(String.format("ROLE_%s", role));
+              }
+              return new SimpleGrantedAuthority(role);
+            })
         .collect(Collectors.toSet());
+  }
+
+  protected static boolean isRole(String value) {
+    return !value.matches("^[^:]+:[^:]+$\n");
   }
 
   @Override

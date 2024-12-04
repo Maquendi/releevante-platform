@@ -1,8 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.OrgId;
 import com.releevante.core.domain.SmartLibrary;
-import com.releevante.types.Slid;
 import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,18 +19,16 @@ public class SmartLibraryRecord extends PersistableEntity {
   @Id
   private String id;
 
-  private String orgId;
+  private String modelName;
 
   @Transient private Set<SmartLibraryEventRecord> libraryEvents = new HashSet<>();
 
   public static SmartLibraryRecord fromDomain(SmartLibrary smartLibrary) {
     var record = new SmartLibraryRecord();
-
     record.setId(smartLibrary.id().value());
     record.setCreatedAt(smartLibrary.createdAt());
     record.setUpdatedAt(smartLibrary.updatedAt());
-    record.setOrgId(smartLibrary.orgId().value());
-
+    record.setModelName(smartLibrary.modelName());
     return record;
   }
 
@@ -40,19 +36,7 @@ public class SmartLibraryRecord extends PersistableEntity {
     var record = fromDomain(smartLibrary);
     var events = SmartLibraryEventRecord.fromDomain(record, smartLibrary.statuses());
     record.getLibraryEvents().addAll(events);
-
     return record;
-  }
-
-  public SmartLibrary toDomain() {
-    return SmartLibrary.builder()
-        .id(Slid.of(id))
-        .orgId(OrgId.of(orgId))
-        .createdAt(createdAt)
-        .updatedAt(updatedAt)
-        .statuses(Collections.emptyList())
-        .clients(Collections.emptyList())
-        .build();
   }
 
   @Override

@@ -18,7 +18,6 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
   final OrgRepository orgRepository;
   final SmartLibraryAccessControlRepository accessControlRepository;
   final UserRepository userRepository;
-
   final AuthorizedOriginRepository authorizedOriginRepository;
 
   public DefaultUserAuthenticationService(
@@ -105,6 +104,14 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
                 tokenService
                     .generateToken(access)
                     .map(token -> PinAuthenticationDto.from(token, access)))
+        .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
+  }
+
+  @Override
+  public Mono<AggregatorLoginResponse> authenticate(AggregatorLogin loginDto) {
+    return authorizedOriginRepository
+        .findById(loginDto.slid())
+        .flatMap(tokenService::generateToken)
         .switchIfEmpty(Mono.error(new UserUnauthorizedException()));
   }
 

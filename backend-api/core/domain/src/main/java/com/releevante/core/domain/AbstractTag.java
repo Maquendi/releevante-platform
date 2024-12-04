@@ -15,6 +15,10 @@ import org.immutables.value.Value;
 public abstract class AbstractTag {
   abstract String id();
 
+  abstract Optional<String> isbn();
+
+  abstract Optional<String> bookTagId();
+
   abstract String name();
 
   abstract String value();

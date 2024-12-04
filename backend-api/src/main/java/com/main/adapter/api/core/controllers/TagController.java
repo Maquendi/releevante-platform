@@ -63,7 +63,7 @@ public class TagController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/tags")
+  @PostMapping
   public Mono<CustomApiResponse<List<Tag>>> registerBookTags(@RequestBody() TagCreateDto source) {
     return bookService.createTags(source).collectList().map(CustomApiResponse::from);
   }
@@ -107,7 +107,7 @@ public class TagController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @GetMapping("/tags")
+  @GetMapping
   public Mono<CustomApiResponse<List<Tag>>> getTags(@RequestParam("name") TagTypes name) {
     return bookService.getTags(name).collectList().map(CustomApiResponse::from);
   }

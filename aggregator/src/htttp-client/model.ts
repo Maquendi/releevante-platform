@@ -1,5 +1,6 @@
 export interface ApiRequest {
   resource: string;
+  token?: string,
   body?: object;
   queryParams?: Map<string, string | number>;
 }

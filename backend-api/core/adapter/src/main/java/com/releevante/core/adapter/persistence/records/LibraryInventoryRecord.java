@@ -1,11 +1,10 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
-import com.releevante.core.domain.BookCopy;
-import com.releevante.core.domain.BookCopyStatus;
-import com.releevante.core.domain.Isbn;
-import com.releevante.core.domain.LibraryInventory;
+import com.releevante.core.domain.*;
+import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +26,15 @@ public class LibraryInventoryRecord extends PersistableEntity {
   private String slid;
   private boolean isSync;
   private String status;
+
+  public static LibraryInventoryRecord updateFrom(
+      SequentialGenerator<ZonedDateTime> generator, LoanItem item) {
+    var record = new LibraryInventoryRecord();
+    record.setId(item.cpy());
+    record.setNew(false);
+    record.setUpdatedAt(generator.next());
+    return record;
+  }
 
   @Override
   public boolean equals(Object o) {

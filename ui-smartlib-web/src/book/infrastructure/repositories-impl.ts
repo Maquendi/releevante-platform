@@ -195,9 +195,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
           frCategory:categorySchema.frName
         },
         printLength: bookSchema.printLength,
-        enDescription: bookSchema.enDescription,
-        esDescription: bookSchema.esDescription,
-        frDescription: bookSchema.frDescription,
+        enDescription: bookSchema.descriptionEn,
+        esDescription: bookSchema.descriptionEs,
+        frDescription: bookSchema.descriptionFr,
         publicationDate: bookSchema.publicationDate,
         dimensions: bookSchema.dimensions,
         language: bookSchema.language,

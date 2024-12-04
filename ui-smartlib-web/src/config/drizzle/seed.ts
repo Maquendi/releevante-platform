@@ -123,9 +123,9 @@ async function seed() {
           id: uuidv4(),
           correlationId,
           ...baseBookData,
-          enDescription: `${language} description - ${faker.commerce.productDescription()}`,
-          esDescription: `${language} description - ${faker.commerce.productDescription()}`,
-          frDescription: `${language} description - ${faker.commerce.productDescription()}`,
+          descriptionEn: `${language} description - ${faker.commerce.productDescription()}`,
+          descriptionEs: `${language} description - ${faker.commerce.productDescription()}`,
+          descriptionFr: `${language} description - ${faker.commerce.productDescription()}`,
           language,
         });
       }

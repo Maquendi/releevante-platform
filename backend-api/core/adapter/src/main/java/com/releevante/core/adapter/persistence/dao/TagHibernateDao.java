@@ -24,6 +24,7 @@ public interface TagHibernateDao extends ReactiveCrudRepository<TagRecord, Strin
           + "\tt.value_en,\n"
           + "\tt.value_fr,\n"
           + "\tt.value_sp,\n"
+          + "\tbt.id AS book_tag_id,\n"
           + "\tbt.created_at\n"
           + "from\n"
           + "\tcore.tags t\n"

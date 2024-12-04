@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -67,6 +68,7 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasRole('AGGREGATOR')")
   @PostMapping("/loans")
   public Mono<CustomApiResponse<SmartLibrary>> createLoans(
       @RequestBody SmartLibrarySyncDto loanSynchronizeDto) {
@@ -114,10 +116,10 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin')")
   @PutMapping("/synchronize")
-  public Mono<CustomApiResponse<Boolean>> setLibrarySynchronized(
-      @PathVariable("slid") String slid) {
-    return smartLibraryService.setSynchronized(Slid.of(slid)).map(CustomApiResponse::from);
+  public Mono<CustomApiResponse<Boolean>> setLibrarySynchronized(@PathVariable("slid") Slid slid) {
+    return smartLibraryService.setSynchronized(slid).map(CustomApiResponse::from);
   }
 
   @Operation(
@@ -159,14 +161,15 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin', 'admin')")
   @GetMapping("settings")
   public Mono<CustomApiResponse<List<LibrarySetting>>> getSettings(
-      @RequestParam() String slid, @RequestParam(required = false) SyncStatus status) {
+      @PathVariable() Slid slid, @RequestParam(required = false) SyncStatus status) {
     return Mono.justOrEmpty(status)
         .flatMap(
             syncStatus ->
-                smartLibraryService.getSetting(Slid.of(slid), syncStatus.toBoolean()).collectList())
-        .switchIfEmpty(smartLibraryService.getSetting(Slid.of(slid)).collectList())
+                smartLibraryService.getSetting(slid, syncStatus.toBoolean()).collectList())
+        .switchIfEmpty(smartLibraryService.getSetting(slid).collectList())
         .map(CustomApiResponse::from);
   }
 
@@ -209,6 +212,7 @@ public class SmartLibrarySyncController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin', 'admin')")
   @GetMapping("/accesses")
   public Mono<CustomApiResponse<List<SmartLibraryAccess>>> synchronizeLibraryAccess(
       @PathVariable String slid, @RequestParam(required = false) SyncStatus status) {

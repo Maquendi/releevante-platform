@@ -16,7 +16,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SmartLibraryEventRecord extends PersistableEntity {
+public class SmartLibraryEventRecord extends SimplePersistable {
   @Id String id;
   String slid;
   String type;

@@ -3,6 +3,7 @@ package com.releevante.core.domain;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
+import java.time.ZonedDateTime;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -15,4 +16,10 @@ public abstract class AbstractBookCpy {
   abstract boolean isSync();
 
   abstract BookCopyStatus status();
+
+  abstract String isbn();
+
+  abstract ZonedDateTime createdAt();
+
+  abstract ZonedDateTime updatedAt();
 }

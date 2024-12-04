@@ -85,6 +85,11 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
+  public Mono<AggregatorLoginResponse> authenticate(AggregatorLogin loginDto) {
+    return authenticationService.authenticate(loginDto);
+  }
+
+  @Override
   public Mono<AccountIdDto> create(OrgDto orgDto) {
     return orgService.createOrg(orgDto);
   }

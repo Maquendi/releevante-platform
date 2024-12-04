@@ -34,9 +34,9 @@ public class TaskRecord extends PersistableEntity {
     record.setStartedAt(task.startedAt());
     record.setEndedAt(task.finishedAt().orElse(null));
     record.setUpdatedAt(task.updatedAt());
+    record.setCreatedAt(task.createdAt());
     record.setErrors(task.errors());
     record.setResult(task.result().orElse(0L));
-    task.authorizedOrigin().id();
     return record;
   }
 

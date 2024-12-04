@@ -4,7 +4,6 @@ import { bookSchema } from "./books";
 
 export const bookImageSchema = sqliteTable("books_images", {
   id: text("id").primaryKey().notNull(),
-  external_id: text("external_id").notNull(),
   url: text("url").notNull(),
   source_url: text("source_url").notNull(),
   book_isbn: text("book_isbn")
