@@ -4,30 +4,19 @@ import React, { useState, useRef } from "react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import VirtualKeyboard from "../VirtualKeyboard";
-import { useMutation } from "@tanstack/react-query";
-import { authSignIn } from "@/actions/auth-actions";
-import { useRouter } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
+import useAuth from "@/hooks/useAuth";
 
 export default function Passcode() {
   const [input, setInput] = useState<string>("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
   const otpContainerRef = useRef<HTMLDivElement | null>(null);
-  const router = useRouter();
-  const [error, setError] = useState<boolean>(false);
   useOnClickOutside(otpContainerRef, () => setIsKeyboardVisible(false));
-  const { mutateAsync: authSigninAction } = useMutation({
-    mutationFn: authSignIn,
-    onSuccess() {
-      router.push("/catalog");
-    },
-    onError() {
-      setError(true);
-    },
-  });
+
+  const { loginMutation, error, clearError } = useAuth();
 
   const handleInputChange = (val: string) => {
-    if (error) setError(false);
+    if (error) clearError();
     setInput(() => val);
   };
 
@@ -43,7 +32,7 @@ export default function Passcode() {
 
   const handleAuthSubmit = async () => {
     setIsKeyboardVisible(false);
-    await authSigninAction(input);
+    await loginMutation.mutateAsync({ code: input });
   };
 
   return (
@@ -62,8 +51,9 @@ export default function Passcode() {
                 key={index}
                 className={cn(
                   "bg-white text-black py-[1.30rem] border otp-slot px-6 border-gray-500 rounded-md",
-                  input[index] && // Verifica si el contenedor tiene un valor
-                    "bg-[#FDF3E7]  border-black"
+                  input[index] && 
+                    "bg-[#FDF3E7]  border-black",
+                    error && 'bg-[#FFE9F0] border-2 border-[#E60C51] text-[#E60C51]'
                 )}
                 index={index}
                 tabIndex={0}

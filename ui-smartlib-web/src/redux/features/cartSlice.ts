@@ -1,27 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CartItem {
+export interface CartItemState {
   title: string;
   image: string;
   isbn: string;
   qty: number;
+  price?:number,
+  transactionType: 'RENT' | 'PURCHASE'
 }
 
-interface CartState {
-  items: CartItem[];
-  cartHistory: CartItem[];
+export type LanguageType="English" | 'Spanish' | 'French' | null
+
+ interface CartState {
+  items: CartItemState[];
+  cartHistory: CartItemState[];
+  language:LanguageType
 }
 
 const initialState: CartState = {
   items: [],
   cartHistory: [],
+  language:null
 };
 
 const calculateTotalQuantityById = ({
   cartHistory,
   isbn,
 }: {
-  cartHistory: CartItem[];
+  cartHistory: CartItemState[];
   isbn: string;
 }): number => {
   return cartHistory
@@ -33,9 +39,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addItem: (state, { payload }: PayloadAction<CartItem>) => {
+    addItem: (state, { payload }: PayloadAction<CartItemState>) => {
       const isBookExist = state.items.find(
-        (book) => book.isbn === payload.isbn
+        (book) => book.isbn === payload.isbn && book.transactionType === payload.transactionType
       );
       if (isBookExist) {
         isBookExist.qty += payload.qty;
@@ -44,7 +50,7 @@ const cartSlice = createSlice({
       }
       state.cartHistory.push(payload);
     },
-    updateItemQuantity: (state, { payload }: PayloadAction<CartItem>) => {
+    updateItemQuantity: (state, { payload }: PayloadAction<CartItemState>) => {
       const { qty, isbn } = payload;
       const bookInCart = state.items.find((book) => book.isbn === isbn);
 
@@ -55,7 +61,7 @@ const cartSlice = createSlice({
 
       state.items.push(bookInCart);
     },
-    removeItem: (state, { payload }: PayloadAction<CartItem>) => {
+    removeItem: (state, { payload }: PayloadAction<CartItemState>) => {
       state.items = state.items.filter((book) => book.isbn !== payload.isbn);
       const existingQuantityInCart =
         calculateTotalQuantityById({
@@ -68,9 +74,12 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
+    setLanguage(state,{payload}:PayloadAction<{language:LanguageType}>){
+      state.language = payload.language
+    }
   },
 });
 
-export const { addItem, updateItemQuantity, removeItem, clearCart } =
+export const { addItem, updateItemQuantity, removeItem, clearCart,setLanguage } =
   cartSlice.actions;
 export default cartSlice.reducer;

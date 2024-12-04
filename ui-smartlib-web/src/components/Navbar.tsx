@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import SelectLanguage from "./SelectLanguage";
 import Image from "next/image";
 import { Link } from "@/config/i18n/routing";
+import { CartSidebarTrigger } from "./CartSidebar";
 
 const LINKS = [
   {
@@ -14,11 +15,7 @@ const LINKS = [
     path: "/logout",
     value: "logout",
   },
-  {
-    icon: "/icons/cart.svg",
-    path: "/cart",
-    value: "cart",
-  },
+
 ];
 
 export default function Navbar() {
@@ -60,6 +57,7 @@ export default function Navbar() {
             />
           </Link>
         ))}
+        <CartSidebarTrigger/>
       </div>
     </nav>
   );

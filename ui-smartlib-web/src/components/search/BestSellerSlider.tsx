@@ -1,11 +1,11 @@
 'use client'
 import { FetchAllBookByCategory } from '@/actions/book-actions';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react'
 import CatalogSliderItem from '../catalogByCategory/CatalogSliderItem';
 
 export default function BestSellerSlider() {
-    const {data:categoryBooks} =useSuspenseQuery({
+    const {data:categoryBooks} =useQuery({
         queryKey: ["BOOKS_BY_CATEGORIES",null],
         queryFn: () => FetchAllBookByCategory(""),
         refetchOnMount: false,
