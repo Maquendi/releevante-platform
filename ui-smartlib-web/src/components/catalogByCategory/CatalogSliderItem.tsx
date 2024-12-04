@@ -16,12 +16,12 @@ export default  function CatalogSliderItem({
   const locale=useLocale()
   return (
     <div
-      key={subCategory.id}
+      key={subCategory?.id}
       className="relative bg-[#FFFFFF] space-y-6 pt-6 pb-7 px-2  rounded-xl"
     >
       <div className=" h-[44px] flex items-center ">
         <h4 className="text-xl font-medium  space-x-2 pl-2">
-          <span>{subCategory[`${locale}SubCategoryName`]}</span>
+          <span>{subCategory?.[`${locale}SubCategoryName`]}</span>
           <span className="font-light text-secondary-foreground">
             ({books?.length})
           </span>

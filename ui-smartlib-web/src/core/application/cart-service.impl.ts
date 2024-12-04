@@ -21,10 +21,11 @@ export class DefaultCartService implements CartService {
   }
 
   async checkout(dto: CartDto): Promise<Cart> {
-    const cartItems = dto.items.map(({ isbn, qty }) => ({
+    const cartItems = dto.items.map(({ isbn, qty,transactionType }) => ({
       id: uuidv4(),
       isbn,
       qty,
+      transactionType
     }));
 
     const cartId = {

@@ -8,6 +8,7 @@ export interface CartItem {
   id: string;
   isbn: string;
   qty: number;
+  transactionType:'RENT' | 'PURCHASE'
 }
 
 export class Cart {

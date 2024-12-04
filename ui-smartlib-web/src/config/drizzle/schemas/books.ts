@@ -11,9 +11,12 @@ export const bookSchema = sqliteTable("books", {
   editionTitle: text("edition_title").notNull(),
   language: text("language").notNull(),
   author: text("author").notNull(),
-  description: text("description").notNull(),
+  descriptionEn: text("description_en").notNull(),
   descriptionFr: text("description_fr").notNull(),
-  descriptionSp: text("description_sp").notNull(),
+  descriptionEs: text("description_es").notNull(),
+  printLength:integer('print_length').notNull(),
+  publicationDate:text('publicationDate').notNull(),
+  dimensions:text('dimensions').notNull(),
   price: numeric(),
   createdAt: text("created_at")
     .notNull()

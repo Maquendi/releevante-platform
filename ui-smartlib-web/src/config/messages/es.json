@@ -29,8 +29,29 @@
   "SeeAllPage": {
     "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis"
   },
-  "SearchBookPage":{
-        "bookNotFound": "Libro no encontrado",
-      "tryTheseBooks": "Prueba con estos libros en su lugar"
+  "SearchBookPage": {
+    "bookNotFound": "Libro no encontrado",
+    "tryTheseBooks": "Prueba con estos libros en su lugar"
+  },
+  "bookById": {
+    "selectLanguage": "Selecciona un idioma",
+    "bookSummary": "Resumen del libro",
+    "bookDetail": "Detalle del libro",
+    "printLength": "Número de páginas",
+    "publicationDate": "Fecha de publicación",
+    "dimensions": "Dimensiones",
+    "language": "Idioma",
+    "publisher": "Editorial",
+    "rentBannerBtn": "Alquilar gratis",
+    "buyBannerBtn": "Comprar libro"
+  },
+  "cart": {
+    "rent": "alquilar",
+    "purchase": "comprar",
+    "to": "para",
+    "of": "de",
+    "checkout": "finalizar compra",
+    "emptyCart": "No tienes ningún libro en tu carrito",
+    "cart": "carrito"
   }
 }

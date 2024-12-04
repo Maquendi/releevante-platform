@@ -55,9 +55,8 @@ async function seed() {
         esName: "Crecimiento",
       },
     ];
-    
 
-    const ftags:any = [
+    const ftags: any = [
       {
         id: "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
         tagName: "sub_category",
@@ -87,9 +86,8 @@ async function seed() {
         esTagValue: "Más usado",
       },
     ];
-    
 
-    const users:any = [];
+    const users: any = [];
     for (let i = 0; i < 10; i++) {
       users.push({
         id: uuidv4(),
@@ -102,18 +100,35 @@ async function seed() {
       });
     }
 
-    const books:any = [];
+    const books: any = [];
+    const languages = ["English", "Spanish", "French"];
+
     for (let i = 0; i < 20; i++) {
-      books.push({
-        id: uuidv4(),
+      const correlationId = uuidv4();
+      const baseBookData = {
         bookTitle: faker.commerce.productName(),
         editionTitle: faker.commerce.product(),
         author: faker.person.firstName(),
-        description: faker.commerce.productDescription(),
+        printLength: faker.finance.amount({ min: 0, max: 800 }),
         price: faker.commerce.price(),
+        publisher: faker.book.publisher(),
+        dimensions: "9.3 x 0.9 x 7.3",
+        publicationDate: faker.date.anytime().toISOString(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-      });
+      };
+
+      for (const language of languages) {
+        books.push({
+          id: uuidv4(),
+          correlationId,
+          ...baseBookData,
+          descriptionEn: `${language} description - ${faker.commerce.productDescription()}`,
+          descriptionEs: `${language} description - ${faker.commerce.productDescription()}`,
+          descriptionFr: `${language} description - ${faker.commerce.productDescription()}`,
+          language,
+        });
+      }
     }
 
     const bookCategoriesData = books.map((book) => ({
@@ -127,12 +142,12 @@ async function seed() {
     }));
 
     const bookImagesData = books.map((book) => ({
-      id: uuidv4(), 
+      id: uuidv4(),
       external_id: uuidv4(),
       url: faker.image.url(),
       book_isbn: book.id,
       isSincronized: faker.datatype.boolean(),
-      source_url:faker.image.url()
+      source_url: faker.image.url(),
     }));
 
     const bookCopiesData = books.map((book) => ({
@@ -144,8 +159,7 @@ async function seed() {
       updated_at: new Date().toISOString(),
     }));
 
-
-    await db.transaction(async(tx)=>{
+    await db.transaction(async (tx) => {
       await Promise.all([
         tx.insert(categorySchema).values(categories).onConflictDoNothing(),
         tx.insert(ftagsSchema).values(ftags).onConflictDoNothing(),
@@ -156,8 +170,7 @@ async function seed() {
         tx.insert(bookImageSchema).values(bookImagesData),
         tx.insert(bookCopieSchema).values(bookCopiesData),
       ]);
-    })
-  
+    });
 
     console.log("Database seeded successfully");
   } catch (error) {

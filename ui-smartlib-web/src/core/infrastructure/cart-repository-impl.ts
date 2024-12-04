@@ -15,6 +15,7 @@ class CartRepositoryImpl implements CartRepository {
             id: true,
             qty: true,
             isbn: true,
+            transactionType:true
           },
         },
       },
@@ -26,6 +27,7 @@ class CartRepositoryImpl implements CartRepository {
       id: item.id,
       isbn: item.isbn,
       qty: item.qty,
+      transactionType:item.transactionType
     }));
 
     return new Cart(cartId, userId, cartItems);
@@ -53,13 +55,14 @@ class CartRepositoryImpl implements CartRepository {
           return tx
             .insert(cartItemSchema)
             .values({
-              cart_id: cart.id.value,
+              cartId: cart.id.value,
               isbn: cartItem.isbn,
               qty: cartItem.qty,
               id: cartItem.id,
+              transactionType:cartItem.transactionType
             })
             .onConflictDoUpdate({
-              target: [cartItemSchema.id, cartItemSchema.cart_id],
+              target: [cartItemSchema.id, cartItemSchema.cartId],
               set: { qty: cartItem.qty },
             });
         });
@@ -88,10 +91,11 @@ class CartRepositoryImpl implements CartRepository {
 
         const cartItemsInsertion = cart.cartItems.map((cartItem) => {
           return tx.insert(cartItemSchema).values({
-            cart_id: cart.id.value,
+            cartId: cart.id.value,
             isbn: cartItem.isbn,
             qty: cartItem.qty,
             id: cartItem.id,
+            transactionType:cartItem.transactionType
           });
         });
 
