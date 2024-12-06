@@ -2,7 +2,7 @@ import { dbConnection } from "../config/db.js";
 import { executeGet } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { Book, BookCopy, BookImage, Tag } from "../model/client.js";
-import { arrayGroupByV2 } from "../utils.js";
+import { arrayGroupBy } from "../utils.js";
 
 const slid = process.env.slid;
 
@@ -11,20 +11,31 @@ export const synchronizeBooks = async (token: string) => {
   let page = 0;
   let totalRecordsSynced = 0;
   while (syncComplete == false) {
-    const request: ApiRequest = {
-      token,
-      resource: `books?page=${page}&size=10&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
-    };
-    const response = await executeGet<Book[]>(request);
-    const books = response.context.data;
-    page++;
-    syncComplete = books?.length == 0 || !books;
-
-    if (books && books.length) {
-      totalRecordsSynced += await insertBook(books);
-      totalRecordsSynced += await insertTags(books);
-      totalRecordsSynced += await insertImages(books);
-      totalRecordsSynced += await insertBookCopies(books);
+    try {
+      const request: ApiRequest = {
+        token,
+        resource: `books?page=${page}&size=100&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
+      };
+      const response = await executeGet<Book[]>(request);
+      const books = response.context.data;
+      page++;
+      syncComplete = books?.length == 0 || response.statusCode !== 200;
+      if (response.statusCode == 200) {
+        if (books && books.length) {
+          totalRecordsSynced += await insertBook(books);
+          totalRecordsSynced += await insertTags(books);
+          totalRecordsSynced += await insertImages(books);
+          totalRecordsSynced += await insertBookCopies(books);
+          totalRecordsSynced += await insertCategories(books);
+        }
+      } else {
+        console.log(
+          `failed to load data from server error: ${JSON.stringify(response)}`
+        );
+      }
+    } catch (error) {
+      syncComplete = true;
+      console.log(error);
     }
   }
 
@@ -33,24 +44,75 @@ export const synchronizeBooks = async (token: string) => {
   return totalRecordsSynced;
 };
 
-const insertTags = async (books: Book[]): Promise<number> => {
-  let tags: Tag[] = [];
+const insertCategories = async (books: Book[]): Promise<number> => {
+  let bookCategories: Tag[] = [];
 
   books.forEach((book) => {
-    tags = [
-      ...tags,
-      ...book.keyWords,
-      ...book.categories,
-      ...book.subCategories,
-    ];
+    bookCategories = [...bookCategories, ...book.categories];
   });
+
+  const categories = arrayGroupBy(bookCategories, "id");
+
+  const stmt1 = dbConnection.prepare(
+    "INSERT INTO category VALUES (@id, @en_name, @fr_name, @es_name)"
+  );
+
+  let dbChanges = 0;
+
+  Object.keys(categories).forEach((key) => {
+    try {
+      var tag = categories[key][0];
+      dbChanges += stmt1.run({
+        id: tag.id,
+        en_name: tag.value,
+        fr_name: tag.valueFr,
+        es_name: tag.valueSp,
+      }).changes;
+    } catch (error: any) {
+      console.log(
+        `skipping error in category and continue processing ....${error.message}`
+      );
+    }
+  });
+
+  const stmt2 = dbConnection.prepare(
+    "INSERT INTO book_category VALUES (@id, @book_isbn, @category_id)"
+  );
+
+  bookCategories.forEach((tag) => {
+    try {
+      dbChanges += stmt2.run({
+        id: tag.bookTagId,
+        book_isbn: tag.isbn,
+        category_id: tag.id,
+      }).changes;
+    } catch (error: any) {
+      console.log(
+        `skipping error in book_category and continue processing ....${error.message}`
+      );
+    }
+  });
+
+  return dbChanges;
+};
+
+const insertTags = async (books: Book[]): Promise<number> => {
+  let bookTags: Tag[] = [];
+
+  books.forEach((book) => {
+    bookTags = [...bookTags, ...book.keyWords, ...book.subCategories];
+  });
+
+  const fTags = arrayGroupBy(bookTags, "id");
 
   const stmt1 = dbConnection.prepare(
     "INSERT INTO ftags VALUES (@id, @tag_name, @en_tag_value, @fr_tag_value, @es_tag_value)"
   );
   let dbChanges = 0;
-  tags.forEach((tag) => {
+
+  Object.keys(fTags).forEach((key) => {
     try {
+      var tag = fTags[key][0];
       dbChanges += stmt1.run({
         id: tag.id,
         tag_name: tag.name,
@@ -69,7 +131,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
     "INSERT INTO book_ftag VALUES (@id, @book_isbn, @ftag_id)"
   );
 
-  tags.forEach((tag) => {
+  bookTags.forEach((tag) => {
     try {
       dbChanges += stmt2.run({
         id: tag.bookTagId,
@@ -88,7 +150,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
 
 const insertBook = async (books: Book[]) => {
   const stmt = dbConnection.prepare(
-    "INSERT INTO books VALUES (@id, @book_title,  @correlation_id, @edition_title, @language, @author, @description, @description_sp, @description_fr, @price, @created_at, @updated_at)"
+    "INSERT INTO books VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, @price, @created_at, @updated_at)"
   );
   let dbChanges = 0;
 
@@ -101,10 +163,13 @@ const insertBook = async (books: Book[]) => {
         edition_title: book.title,
         language: book.language,
         author: book.author,
-        description: book.description,
-        description_sp: book.descriptionSp,
+        description_en: book.description,
+        description_es: book.descriptionSp,
         description_fr: book.descriptionFr,
         price: book.price,
+        print_length: 1000,
+        publicationDate: book.createdAt,
+        dimensions: "450x896",
         created_at: book.createdAt,
         updated_at: book.updatedAt,
       }).changes;
@@ -120,7 +185,7 @@ const insertBook = async (books: Book[]) => {
 
 const insertImages = async (books: Book[]) => {
   const stmt = dbConnection.prepare(
-    "INSERT INTO books_images VALUES (@id, @book_isbn, @url, @source_url, @isSincronized)"
+    "INSERT INTO books_images VALUES (@id, @url, @source_url, @book_isbn, @isSincronized)"
   );
 
   let dbChanges = 0;
@@ -131,15 +196,13 @@ const insertImages = async (books: Book[]) => {
     bookImages = [...bookImages, ...book.images];
   });
 
-  console.log(bookImages)
-
-  bookImages.forEach((image) => {
+  bookImages.forEach(({ id, isbn, url, sourceUrl }) => {
     try {
       dbChanges += stmt.run({
-        id: image.id,
-        book_isbn: image.isbn,
-        url: image.url.trim(),
-        source_url: image.sourceUrl.trim(),
+        id: id,
+        book_isbn: isbn,
+        url: url,
+        source_url: sourceUrl,
         isSincronized: 0,
       }).changes;
     } catch (error: any) {
