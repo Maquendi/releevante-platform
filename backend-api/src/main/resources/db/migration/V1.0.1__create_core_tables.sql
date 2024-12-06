@@ -20,6 +20,12 @@ CREATE TABLE core.books (
   description_fr varchar(1080) NOT NULL,
   description_es varchar(1080) NOT NULL,
   lang varchar(50) NOT NULL,
+  publisher varchar(120) NOT NULL,
+  publish_date timestamp NOT NULL,
+  print_length numeric NOT NULL,
+  dimensions varchar(60) NOT NULL,
+  public_isbn varchar(50) NULL,
+  binding_type varchar(30) NULL,
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT books_pk PRIMARY KEY(isbn)

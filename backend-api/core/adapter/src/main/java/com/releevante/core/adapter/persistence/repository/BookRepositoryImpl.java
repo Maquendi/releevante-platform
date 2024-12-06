@@ -11,6 +11,7 @@ import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -147,6 +148,13 @@ public class BookRepositoryImpl implements BookRepository {
                                             .descriptionSp(first.getDescriptionEs())
                                             .createdAt(first.getCreatedAt())
                                             .updatedAt(first.getUpdatedAt())
+                                            .bindingType(
+                                                Optional.ofNullable(first.getBindingType()))
+                                            .publicIsbn(Optional.ofNullable(first.getPublicIsbn()))
+                                            .publisher(first.getPublisher())
+                                            .printLength(first.getPrintLength())
+                                            .dimensions(first.getDimensions())
+                                            .publishDate(first.getPublishDate())
                                             .price(first.getPrice())
                                             .title(first.getTitle())
                                             .copies(

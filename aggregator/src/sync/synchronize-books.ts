@@ -150,7 +150,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
 
 const insertBook = async (books: Book[]) => {
   const stmt = dbConnection.prepare(
-    "INSERT INTO books VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, @price, @created_at, @updated_at)"
+    "INSERT INTO books VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, @price, @public_isbn, @publisher, @binding_type, @created_at, @updated_at)"
   );
   let dbChanges = 0;
 
@@ -166,10 +166,13 @@ const insertBook = async (books: Book[]) => {
         description_en: book.description,
         description_es: book.descriptionSp,
         description_fr: book.descriptionFr,
-        price: book.price,
-        print_length: 1000,
+        print_length: book.printLength,
         publicationDate: book.createdAt,
-        dimensions: "450x896",
+        dimensions: book.dimensions,
+        price: book.price,
+        public_isbn: book.publicIsbn,
+        publisher: book.publisher,
+        binding_type: book.bindingType,
         created_at: book.createdAt,
         updated_at: book.updatedAt,
       }).changes;

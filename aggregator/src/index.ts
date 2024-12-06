@@ -4,7 +4,7 @@ import { synchronizeSettings } from "./sync/synchronize-settings";
 import { synchronizeLibraryAccess } from "./sync/synchronize-library-access";
 import { getCredential } from "./auth/authenticator";
 
-const run = async () => {
+const runAsync = async () => {
   let token = await getCredential();
 
   let dataSynced = await synchronizeBooks(token);
@@ -16,8 +16,8 @@ const run = async () => {
   console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
 
   if (dataSynced > 0) {
-    await markLibrarySynchronized(token);
+    //await markLibrarySynchronized(token);
   }
 };
 
-run();
+runAsync();

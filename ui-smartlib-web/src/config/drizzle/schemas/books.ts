@@ -18,6 +18,9 @@ export const bookSchema = sqliteTable("books", {
   publicationDate:text('publicationDate').notNull(),
   dimensions:text('dimensions').notNull(),
   price: numeric(),
+  publicIsbn:text('public_isbn').default(""),
+  publisher:text('publisher').notNull(),
+  bindingType:text('binding_type').notNull(),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)

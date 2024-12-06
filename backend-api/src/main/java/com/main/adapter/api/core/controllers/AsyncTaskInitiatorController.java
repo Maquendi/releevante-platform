@@ -4,7 +4,9 @@ import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.application.service.TaskExecutionService;
+import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
+import com.releevante.types.UuidGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,13 +14,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RestController
 @RequestMapping("/task")
 public class AsyncTaskInitiatorController {
-  private final BookService bookService;
+  final BookService bookService;
 
-  private final TaskExecutionService taskExecutionService;
+  final TaskExecutionService taskExecutionService;
+
+  final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
 
   public AsyncTaskInitiatorController(
       BookService bookService, TaskExecutionService taskExecutionService) {
@@ -67,9 +72,14 @@ public class AsyncTaskInitiatorController {
       })
   @PostMapping("/register-books")
   public Mono<CustomApiResponse<String>> startRegisterBooksTask() {
-    return taskExecutionService
-        .execute("register-books", bookService.executeLoadBooks())
-        .map(CustomApiResponse::from);
+
+    var taskId = uuidGenerator.next();
+    taskExecutionService
+        .execute(taskId, "register-books", bookService.executeLoadBooks())
+        .subscribeOn(Schedulers.boundedElastic())
+        .subscribe();
+
+    return Mono.just(CustomApiResponse.from(taskId));
   }
 
   @Operation(
@@ -115,9 +125,14 @@ public class AsyncTaskInitiatorController {
   @PostMapping("/register-books-inventory/{slid}")
   public Mono<CustomApiResponse<String>> registerLibraryInventory(
       @PathVariable String slid, @RequestParam() String source) {
-    return taskExecutionService
+    var taskId = uuidGenerator.next();
+    taskExecutionService
         .execute(
-            "register-books-inventory", bookService.executeLoadInventory(Slid.of(slid), source))
-        .map(CustomApiResponse::from);
+            taskId,
+            "register-books-inventory",
+            bookService.executeLoadInventory(Slid.of(slid), source))
+        .subscribeOn(Schedulers.boundedElastic())
+        .subscribe();
+    return Mono.just(CustomApiResponse.from(taskId));
   }
 }

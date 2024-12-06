@@ -4,7 +4,6 @@ import com.releevante.core.application.service.TaskExecutionService;
 import com.releevante.core.domain.tasks.Task;
 import com.releevante.core.domain.tasks.TaskRepository;
 import com.releevante.types.SequentialGenerator;
-import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -22,11 +21,11 @@ public class DefaultTaskExecutionService implements TaskExecutionService {
   }
 
   @Override
-  public Mono<String> execute(String taskName, Mono<Long> taskRunner) {
+  public Mono<String> execute(String taskId, String taskName, Mono<Long> taskRunner) {
     return Mono.fromCallable(
             () ->
                 Task.builder()
-                    .id(UuidGenerator.instance().next())
+                    .id(taskId)
                     .name(taskName)
                     .updatedAt(dateTimeGenerator.next())
                     .startedAt(dateTimeGenerator.next())

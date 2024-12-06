@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.ImmutableExt;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
@@ -41,6 +43,18 @@ public abstract class AbstractBook {
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
+
+  abstract Integer printLength();
+
+  abstract LocalDate publishDate();
+
+  abstract String dimensions();
+
+  abstract String publisher();
+
+  abstract Optional<String> publicIsbn();
+
+  abstract Optional<String> bindingType();
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default

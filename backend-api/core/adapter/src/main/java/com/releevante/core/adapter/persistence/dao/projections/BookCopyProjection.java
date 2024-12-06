@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.dao.projections;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +28,10 @@ public class BookCopyProjection {
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
   private boolean isSync;
+  private int printLength;
+  private LocalDate publishDate;
+  public String dimensions;
+  private String publicIsbn;
+  public String publisher;
+  public String bindingType;
 }

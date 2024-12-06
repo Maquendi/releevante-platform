@@ -3,8 +3,10 @@ package com.releevante.core.adapter.persistence.records;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.Isbn;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +34,12 @@ public class BookRecord extends PersistableEntity {
   private String descriptionFr;
   private String descriptionEs;
   private String lang;
+  private int printLength;
+  private String dimensions;
+  private String publisher;
+  private LocalDate publishDate;
+  private String publicIsbn;
+  private String bindingType;
 
   @Transient private Set<BookRatingRecord> ratings = new LinkedHashSet<>();
 
@@ -49,6 +57,12 @@ public class BookRecord extends PersistableEntity {
     record.setAuthor(book.author());
     record.setCorrelationId(book.correlationId());
     record.setLang(book.language());
+    record.setPrintLength(book.printLength());
+    record.setDimensions(book.dimensions());
+    record.setPublisher(book.publisher());
+    record.setPublishDate(book.publishDate());
+    record.setPublicIsbn(book.publicIsbn().orElse(null));
+    record.setBindingType(book.bindingType().orElse(null));
     return record;
   }
 
@@ -63,7 +77,13 @@ public class BookRecord extends PersistableEntity {
         .descriptionFr(descriptionFr)
         .descriptionSp(descriptionEs)
         .correlationId(correlationId)
+        .dimensions(dimensions)
+        .printLength(printLength)
+        .publisher(publisher)
+        .publishDate(publishDate)
         .language(lang)
+        .publicIsbn(Optional.ofNullable(publicIsbn))
+        .bindingType(Optional.ofNullable(bindingType))
         .qty(qty)
         .price(price)
         .title(title)

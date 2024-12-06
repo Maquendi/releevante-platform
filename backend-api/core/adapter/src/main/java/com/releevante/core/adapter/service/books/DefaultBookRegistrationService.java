@@ -14,6 +14,7 @@ import com.releevante.types.SequentialGenerator;
 import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Mono;
 public class DefaultBookRegistrationService implements BookRegistrationService {
 
   private static final String SPREADSHEET_ID = "1JX5MFqjtIs5pJbYIHtADGR27z-X9Tiv2LOb-d_SBjFs";
-  private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:P";
+  private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:V";
   private static final String LIBRARY_INVENTORY_RANGE = "A2:C";
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
 
@@ -190,6 +191,36 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
                               .collect(Collectors.toList()))
                   .orElse(Collections.emptyList());
 
+          var printLength =
+              Optional.of(row.get(BookGSheetUtils.BOOK_PRINT_LENGTH).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .map(Integer::valueOf)
+                  .orElseThrow(() -> new RuntimeException("BOOK_PRINT_LENGTH REQUIRED"));
+
+          var publishDate =
+              Optional.of(row.get(BookGSheetUtils.BOOK_PUBLICATION_DATE).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .map(LocalDate::parse)
+                  .orElseThrow(() -> new RuntimeException("BOOK_PUBLICATION_DATE REQUIRED"));
+
+          var dimensions =
+              Optional.of(row.get(BookGSheetUtils.BOOK_DIMENSIONS).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .orElseThrow(() -> new RuntimeException("BOOK_DIMENSIONS REQUIRED"));
+
+          var publisher =
+              Optional.of(row.get(BookGSheetUtils.BOOK_PUBLISHER).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .orElseThrow(() -> new RuntimeException("BOOK_PUBLISHER REQUIRED"));
+
+          var publicIsbn =
+              Optional.of(row.get(BookGSheetUtils.BOOK_PUBLIC_ISBN).toString().strip())
+                  .filter(Predicate.not(String::isEmpty));
+
+          var bindingType =
+              Optional.of(row.get(BookGSheetUtils.BOOK_BINDING_TYPE).toString().strip())
+                  .filter(Predicate.not(String::isEmpty));
+
           var createdAt = ZonedDateTimeGenerator.instance().next();
           return Book.builder()
               .isbn(Isbn.of(bookId))
@@ -208,6 +239,12 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               .categories(categories)
               .subCategories(subCategories)
               .language(language)
+              .publishDate(publishDate)
+              .publisher(publisher)
+              .printLength(printLength)
+              .dimensions(dimensions)
+              .publicIsbn(publicIsbn)
+              .bindingType(bindingType)
               .build();
         });
   }

@@ -43,7 +43,12 @@ export interface Book {
   subCategories: Tag[];
   images: BookImage[];
   copies: BookCopy[];
-  at_position?: string;
+  publisher: string;
+  printLength: number;
+  publishDate: Date;
+  dimensions: string;
+  bindingType: string;
+  publicIsbn?: string;
 }
 
 export interface LibrarySetting {
