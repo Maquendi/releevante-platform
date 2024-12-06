@@ -81,7 +81,13 @@
     "selectGenres3": "that appeal to you"
   },
   "recommendationsPage": {
-    "recommendationReady": "Your recommendation is ready!",
-    "basedOnResponses": "Based on your responses we suggest you the following"
+    "recommendationReadyTitle1": "Your recommendation",
+    "recommendationReadyTitle2": "recommendation",
+    "recommendationReadyTitle3": "is ready!",
+    "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
+    "editPreferences":"Edit preferences",
+    "rent":"rent",
+    "buy":"buy"
+
   }
 }
