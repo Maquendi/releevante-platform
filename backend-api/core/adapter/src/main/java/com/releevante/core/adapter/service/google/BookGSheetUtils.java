@@ -20,7 +20,7 @@ public class BookGSheetUtils {
   public static final int BOOK_PRINT_LENGTH = 16;
   public static final int BOOK_PUBLICATION_DATE = 17;
   public static final int BOOK_DIMENSIONS = 18;
-  public static final int BOOK_PUBLISHER = 19;
-  public static final int BOOK_PUBLIC_ISBN = 20;
+  public static final int BOOK_PUBLIC_ISBN = 19;
+  public static final int BOOK_PUBLISHER = 20;
   public static final int BOOK_BINDING_TYPE = 21;
 }
