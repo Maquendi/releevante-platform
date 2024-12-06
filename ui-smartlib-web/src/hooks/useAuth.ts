@@ -2,7 +2,7 @@
 import { authSignIn } from "@/actions/auth-actions";
 import { fetchConfiguration } from "@/redux/features/settingsSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import { useRouter } from "@/config/i18n/routing";
 import { useState } from "react";
 
@@ -14,12 +14,13 @@ const useAuth = () => {
   const dispatch = useAppDispatch()
   const router=useRouter()
   const [error, setError] = useState<boolean>(false);
-
+  const queryClient= new QueryClient()
   const loginMutation= useMutation({
     mutationFn:(credentials:Credential)=>authSignIn(credentials.code),
     onSuccess(){
       dispatch(fetchConfiguration())
       router.push("/catalog");
+      queryClient.invalidateQueries({queryKey:['BOOKS_BY_CATEGORIES']})
     }, onError() {
       setError(true);
     },

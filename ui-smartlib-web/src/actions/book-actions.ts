@@ -1,6 +1,7 @@
 'use server'
 
 import { bookServiceFacade } from "@/book/application"
+import { BookByFtagsVibes, FtagsEnum } from "@/book/domain/models"
 
 
 
@@ -24,7 +25,7 @@ export async function FetchAllBooks({limit}:{limit?:number}){
     try {
         return await bookServiceFacade.findAllBooks({limit:limit || 20})
     } catch (error) {
-        throw new Error('Error fetching all books' +  error)
+        throw new Error('Error fetching ftags ' +  error)
     }
 }
 
@@ -39,6 +40,22 @@ export async function FetchBookById(isbn:string){
 export async function FetchAllBookByCategory(categoryId:string){
     try {
         return await bookServiceFacade.findAllBookByCategory(categoryId)
+    } catch (error) {
+        throw new Error('Error fetching books by category' +  error)
+    }
+}
+
+export async function FetchFtagsBy(tagName:FtagsEnum){
+    try {
+        return await bookServiceFacade.getFtagsByType(tagName)
+    } catch (error) {
+        throw new Error('Error fetching books by category' +  error)
+    }
+}
+
+export async function FetchBookByFtagsVibes(tagNames:BookByFtagsVibes){
+    try {
+        return await bookServiceFacade.findBookByVibeTags(tagNames)
     } catch (error) {
         throw new Error('Error fetching books by category' +  error)
     }

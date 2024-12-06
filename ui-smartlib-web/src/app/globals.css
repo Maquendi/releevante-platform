@@ -25,6 +25,9 @@ body {
     font-size: 40px;
     -webkit-text-security: disc;
   }
+  .capitalize-first::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .simple-keyboard {

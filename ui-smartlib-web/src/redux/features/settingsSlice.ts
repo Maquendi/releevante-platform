@@ -15,21 +15,35 @@ interface ConfigurationState {
   error: string | null;
 }
 
+const isValidJSON = (value: string): boolean => {
+  if (!value) return false;
+  try {
+    JSON.parse(value);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const loadFromLocalStorage = (): ConfigurationState => {
-  const storedData = localStorage.getItem("settings");
-  if (storedData) {
-    return {
-      data: JSON.parse(storedData),
-      loading: false,
-      error: null,
-    };
+  if (typeof window !== 'undefined') {
+    const storedData = localStorage.getItem("settings");
+    if (storedData && isValidJSON(storedData)) {
+      return {
+        data: JSON.parse(storedData),
+        loading: false,
+        error: null,
+      };
+    }
   }
   return {
-    data: null,
+    data: null, 
     loading: false,
     error: null,
   };
 };
+
+
 
 const initialState: ConfigurationState = loadFromLocalStorage();
 
@@ -47,7 +61,10 @@ const settingsSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
         // Guardar en localStorage
-        localStorage.setItem("settings", JSON.stringify(action.payload));
+        if(typeof window !== 'undefined'){
+          localStorage.setItem("settings", JSON.stringify(action.payload));
+        }
+
       })
       .addCase(fetchConfiguration.rejected, (state, action) => {
         state.loading = false;

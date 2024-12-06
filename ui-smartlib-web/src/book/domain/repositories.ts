@@ -1,11 +1,13 @@
 
-import { Book, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,   Isbn } from "./models";
+import { Book, BookByFtagsVibes, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,   FtagItem,   FtagsEnum,   Isbn } from "./models";
 
 export interface BookRepository {
   create(book: Book): Promise<Book>;
   findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]>;
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]>;
   updateCopies(books: BookCopy[]): Promise<BookCopy[]>;
+  getFtagsBy(tagName:FtagsEnum):Promise<FtagItem[]>
+  findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
 
   // ***********
   findAllCategories(): Promise<BookCategory[]>;

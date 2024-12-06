@@ -53,5 +53,36 @@
     "checkout": "finalizar compra",
     "emptyCart": "No tienes ningún libro en tu carrito",
     "cart": "carrito"
+  },
+  "readingVibePage": {
+    "readingVibe1": "¿Cuál es tu",
+    "readingVibe2": "estado de ánimo para leer",
+    "reasonForReading": "Comencemos entendiendo tu razón para tomar un libro hoy",
+    "selectPurpose1": "Selecciona el",
+    "selectPurpose2": "propósito",
+    "selectPurpose3": "de tu estado de ánimo actual"
+  },
+  "moodPage": {
+    "currentMoodTitle1": "¿Qué",
+    "currentMoodTitle2": " estado de ánimo ",
+    "currentMoodTitle3": " tienes?",
+    "aboutMoodSubTitle": "Esto se trata de cómo quieres que tu próximo libro te haga sentir",
+    "selectFeeling1": "Selecciona el",
+    "selectFeeling2": "sentimiento",
+    "selectFeeling3": "de tu estado actual"
+  },
+  "flavorOfStoryPage": {
+    "favoriteFlavorTitle1": "¿Cuál es tu",
+  "favoriteFlavorTitle2": "tipo de historia favorita",
+    "narrowDownSubTitle": "Es hora de reducir las opciones a los géneros que más te gustan",
+    "selectGenres1": "Selecciona los",
+  "selectGenres2": "géneros",
+  "selectGenres3": "que te atraen"
+  },
+  "recommendationsPage": {
+    "recommendationReady": "¡Tu recomendación está lista!",
+    "basedOnResponses": "Con base en tus respuestas, te sugerimos lo siguiente"
   }
+  
+
 }

@@ -1,5 +1,5 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
-import { Book, BookCategory, BookCopy, BooksByCategory, BooksPagination } from "../domain/models";
+import { Book, BookByFtagsVibes, BookCategory, BookCopy, BooksByCategory, BooksPagination, FtagItem, FtagsEnum } from "../domain/models";
 import { BookCopySearch, SearchCriteria } from "./dto";
 
 export interface BookService {
@@ -11,7 +11,8 @@ export interface BookService {
   findCopiesBy(filter:SearchCriteria):Promise<BookCopySchema[]>
   findBookById(isbn:string):Promise<Book>
   findAllBooks(params:BooksPagination):Promise<Book[]>
-  
+  getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
+  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
 }
 
 
@@ -22,4 +23,8 @@ export interface BookServiceFacade {
   findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]>;
   findAllBooks(params:BooksPagination):Promise<Book[]>
   findBookById(isbn:string):Promise<Book>
+  getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
+  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
+
+
 }
