@@ -80,7 +80,12 @@
     "selectGenres3": "qui vous attirent"
   },
   "recommendationsPage": {
-    "recommendationReady": "Votre recommandation est prête!",
-    "basedOnResponses": "Sur la base de vos réponses, nous vous suggérons ce qui suit"
-  }
+  "recommendationReadyTitle1": "Your recommendation",
+  "recommendationReadyTitle2": "recommendation",
+  "recommendationReadyTitle3": "is ready!",
+  "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
+  "editPreferences": "Modifier les préférences",
+    "rent": "louer",
+  "buy": "acheter"
+}
 }

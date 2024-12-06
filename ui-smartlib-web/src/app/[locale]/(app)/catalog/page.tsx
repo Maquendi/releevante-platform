@@ -1,4 +1,3 @@
-"use server";
 import {
   FetchAllBookByCategory,
   FetchAllBookCategories,
@@ -12,17 +11,17 @@ import {
 } from "@tanstack/react-query";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { lazy, Suspense } from "react";
-const BooksByCategoryList = lazy(
-  () => import("@/components/catalog/BooksByCategoryList")
-);
+import HelpFindBookBanner from "@/components/HelpFindBookBanner";
+import BookNotFound from "@/components/BookNotFound";
+import CatalogSliderItem from "@/components/catalogByCategory/CatalogSliderItem";
+
 
 
 export default async function CatalogPage({ searchParams }) {
   const categories = await FetchAllBookCategories();
   const selectedCategory = searchParams?.categoryId;
   const queryClient = new QueryClient();
-  queryClient.prefetchQuery({
+  const booksByCategory = await queryClient.fetchQuery({
     queryKey: ["BOOKS_BY_CATEGORIES", selectedCategory],
     queryFn: () => FetchAllBookByCategory(selectedCategory),
   });
@@ -78,18 +77,19 @@ export default async function CatalogPage({ searchParams }) {
           </div>
         </div>
       </header>
-      <Suspense
-        key={`${selectedCategory}`}
-        fallback={
-          <div>
-            <span>Loading...</span>
-          </div>
-        }
-      >
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <BooksByCategoryList categoryId={selectedCategory} />
-        </HydrationBoundary>
-      </Suspense>
+      <section className="space-y-6 px-6">
+    {!booksByCategory?.length && (
+      <div className="space-y-5">
+        <BookNotFound />
+        <HelpFindBookBanner />
+      </div>
+    )}
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      {booksByCategory?.map((item, index) => (
+        <CatalogSliderItem key={index} {...item} />
+      ))}{" "}
+    </HydrationBoundary>
+  </section> 
     </div>
   );
 }

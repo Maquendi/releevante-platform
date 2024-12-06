@@ -26,7 +26,7 @@ export default function Navbar() {
         <SelectLanguage />
         </Suspense>
 
-        <Link href={"/catalog"}>
+        <Link href={"/home"}>
           <Image
             width={40}
             height={40}

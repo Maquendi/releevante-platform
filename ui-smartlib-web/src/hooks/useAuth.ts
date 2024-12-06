@@ -19,7 +19,7 @@ const useAuth = () => {
     mutationFn:(credentials:Credential)=>authSignIn(credentials.code),
     onSuccess(){
       dispatch(fetchConfiguration())
-      router.push("/catalog");
+      router.push("/home");
       queryClient.invalidateQueries({queryKey:['BOOKS_BY_CATEGORIES']})
     }, onError() {
       setError(true);

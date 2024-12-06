@@ -33,7 +33,11 @@ export function useAddBookToCart() {
     const bookId = book.bookLanguages.find(
       (item) => item.language === selectedLanguage
     )?.bookId;
+
+    console.log('cart item payload',book.bookLanguages,book.id)
+
     if (!book || !bookId) return;
+
     return {
       isbn: bookId!,
       title: book.bookTitle,
