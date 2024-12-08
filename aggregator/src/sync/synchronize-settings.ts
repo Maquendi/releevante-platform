@@ -30,8 +30,12 @@ export const synchronizeSettings = async (token: string) => {
 };
 
 const insertSettings = async (settings: LibrarySetting[]) => {
-  const stmt = dbConnection.prepare(
-    "INSERT INTO library_settings VALUES (@id, @max_books_per_loan, @book_price_discount_percentage, @book_price_surcharge_percentage,  @book_price_reduction_threshold,  @book_price_reduction_rate_on_threshold_reached, @session_duration_minutes, @book_usage_count_before_enabling_sale, @created_at, @updated_at)"
+  const create_stmt = dbConnection.prepare(
+    "INSERT INTO library_settings (id, max_books_per_loan, book_price_discount_percentage, book_price_surcharge_percentage, book_price_reduction_threshold, session_duration_minutes,  book_usage_count_before_enabling_sale, book_price_reduction_rate_on_threshold_reached, created_at, updated_at) VALUES (@id, @max_books_per_loan, @book_price_discount_percentage, @book_price_surcharge_percentage,  @book_price_reduction_threshold, @session_duration_minutes,  @book_usage_count_before_enabling_sale, @book_price_reduction_rate_on_threshold_reached, @created_at, @updated_at)"
+  );
+
+  const update_stmt = dbConnection.prepare(
+    "UPDATE library_settings SET max_books_per_loan=?, book_price_discount_percentage=?, book_price_surcharge_percentage=?,  book_price_reduction_threshold=?, session_duration_minutes=?,  book_usage_count_before_enabling_sale=?, book_price_reduction_rate_on_threshold_reached=?, updated_at=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -40,7 +44,7 @@ const insertSettings = async (settings: LibrarySetting[]) => {
     .filter((item) => !item.isSync)
     .forEach((setting) => {
       try {
-        dbChanges += stmt.run({
+        dbChanges += create_stmt.run({
           id: setting.id,
           max_books_per_loan: setting.maxBooksPerLoan,
           book_price_discount_percentage: setting.bookPriceDiscountPercentage,
@@ -48,7 +52,6 @@ const insertSettings = async (settings: LibrarySetting[]) => {
           book_price_reduction_threshold: setting.bookPriceReductionThreshold,
           book_price_reduction_rate_on_threshold_reached:
             setting.bookPriceReductionRateOnThresholdReached,
-
           session_duration_minutes: setting.sessionDurationMinutes,
           book_usage_count_before_enabling_sale:
             setting.bookUsageCountBeforeEnablingSale,
@@ -56,9 +59,17 @@ const insertSettings = async (settings: LibrarySetting[]) => {
           updated_at: setting.createdAt,
         }).changes;
       } catch (error: any) {
-        console.log(
-          `skipping error in insertSettings and continue processing ....${error.message}`
-        );
+        dbChanges += update_stmt.run(
+          setting.maxBooksPerLoan,
+          setting.bookPriceDiscountPercentage,
+          setting.bookPriceSurchargePercentage,
+          setting.bookPriceReductionThreshold,
+          setting.sessionDurationMinutes,
+          setting.bookUsageCountBeforeEnablingSale,
+          setting.bookPriceReductionRateOnThresholdReached,
+          new Date().toDateString(),
+          setting.id
+        ).changes;
       }
     });
 

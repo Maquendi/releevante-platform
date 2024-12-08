@@ -10,11 +10,12 @@ export const synchronizeBooks = async (token: string) => {
   let syncComplete = false;
   let page = 0;
   let totalRecordsSynced = 0;
+  let totalBookCopies = 0;
   while (syncComplete == false) {
     try {
       const request: ApiRequest = {
         token,
-        resource: `books?page=${page}&size=100&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
+        resource: `books?page=${page}&size=400&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
       };
       const response = await executeGet<Book[]>(request);
       const books = response.context.data;
@@ -22,6 +23,7 @@ export const synchronizeBooks = async (token: string) => {
       syncComplete = books?.length == 0 || response.statusCode !== 200;
       if (response.statusCode == 200) {
         if (books && books.length) {
+          totalBookCopies += books.length;
           totalRecordsSynced += await insertBook(books);
           totalRecordsSynced += await insertTags(books);
           totalRecordsSynced += await insertImages(books);
@@ -39,7 +41,7 @@ export const synchronizeBooks = async (token: string) => {
     }
   }
 
-  console.log("TOTAL BOOK RECORDS SYNCHRONIZED: " + totalRecordsSynced);
+  console.log("TOTAL BOOK COPIES SYNCHRONIZED: " + totalBookCopies);
 
   return totalRecordsSynced;
 };
@@ -53,8 +55,12 @@ const insertCategories = async (books: Book[]): Promise<number> => {
 
   const categories = arrayGroupBy(bookCategories, "id");
 
-  const stmt1 = dbConnection.prepare(
-    "INSERT INTO category VALUES (@id, @en_name, @fr_name, @es_name)"
+  const create_stmt1 = dbConnection.prepare(
+    "INSERT INTO category(id, en_name, fr_name, es_name) VALUES (@id, @en_name, @fr_name, @es_name)"
+  );
+
+  const update_stmt1 = dbConnection.prepare(
+    "UPDATE category SET en_name=?, fr_name=?, es_name=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -62,34 +68,39 @@ const insertCategories = async (books: Book[]): Promise<number> => {
   Object.keys(categories).forEach((key) => {
     try {
       var tag = categories[key][0];
-      dbChanges += stmt1.run({
+      dbChanges += create_stmt1.run({
         id: tag.id,
         en_name: tag.value,
         fr_name: tag.valueFr,
         es_name: tag.valueSp,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in category and continue processing ....${error.message}`
-      );
+      dbChanges += update_stmt1.run(
+        tag.value,
+        tag.valueFr,
+        tag.valueSp,
+        tag.id
+      ).changes;
     }
   });
 
-  const stmt2 = dbConnection.prepare(
-    "INSERT INTO book_category VALUES (@id, @book_isbn, @category_id)"
+  const create_stmt2 = dbConnection.prepare(
+    "INSERT INTO book_category(id, book_isbn, category_id) VALUES (@id, @book_isbn, @category_id)"
+  );
+
+  const update_stmt2 = dbConnection.prepare(
+    "UPDATE book_category SET book_isbn=?, category_id=? WHERE id=?"
   );
 
   bookCategories.forEach((tag) => {
     try {
-      dbChanges += stmt2.run({
+      dbChanges += create_stmt2.run({
         id: tag.bookTagId,
         book_isbn: tag.isbn,
         category_id: tag.id,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in book_category and continue processing ....${error.message}`
-      );
+      dbChanges += update_stmt2.run(tag.isbn, tag.id, tag.bookTagId).changes;
     }
   });
 
@@ -100,20 +111,26 @@ const insertTags = async (books: Book[]): Promise<number> => {
   let bookTags: Tag[] = [];
 
   books.forEach((book) => {
-    bookTags = [...bookTags, ...book.keyWords, ...book.subCategories];
+    const keyWords = (book.keyWords?.length && book.keyWords) || [];
+    bookTags = [...bookTags, ...keyWords, ...book.subCategories];
   });
 
   const fTags = arrayGroupBy(bookTags, "id");
 
-  const stmt1 = dbConnection.prepare(
-    "INSERT INTO ftags VALUES (@id, @tag_name, @en_tag_value, @fr_tag_value, @es_tag_value)"
+  const create_stmt1 = dbConnection.prepare(
+    "INSERT INTO ftags(id, tag_name, en_tag_value, fr_tag_value, es_tag_value) VALUES (@id, @tag_name, @en_tag_value, @fr_tag_value, @es_tag_value)"
   );
+
+  const update_stmt1 = dbConnection.prepare(
+    "UPDATE ftags SET tag_name=?, en_tag_value=?, fr_tag_value=?, es_tag_value=? WHERE id=?"
+  );
+
   let dbChanges = 0;
 
   Object.keys(fTags).forEach((key) => {
     try {
       var tag = fTags[key][0];
-      dbChanges += stmt1.run({
+      dbChanges += create_stmt1.run({
         id: tag.id,
         tag_name: tag.name,
         en_tag_value: tag.value,
@@ -121,27 +138,37 @@ const insertTags = async (books: Book[]): Promise<number> => {
         es_tag_value: tag.valueSp || tag.value,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in ftags and continue processing ....${error.message}`
-      );
+      try {
+        dbChanges += update_stmt1.run(
+          tag.name,
+          tag.value,
+          tag.valueFr || tag.value,
+          tag.valueSp || tag.value,
+          tag.id
+        ).changes;
+      } catch (error: any) {
+        console.log("Failed updating tags: " + error.message);
+      }
     }
   });
 
-  const stmt2 = dbConnection.prepare(
-    "INSERT INTO book_ftag VALUES (@id, @book_isbn, @ftag_id)"
+  const create_stmt2 = dbConnection.prepare(
+    "INSERT INTO book_ftag(id, book_isbn, ftag_id) VALUES (@id, @book_isbn, @ftag_id)"
+  );
+
+  const update_stmt2 = dbConnection.prepare(
+    "UPDATE book_ftag SET book_isbn=?, ftag_id=? WHERE id=?"
   );
 
   bookTags.forEach((tag) => {
     try {
-      dbChanges += stmt2.run({
+      dbChanges += create_stmt2.run({
         id: tag.bookTagId,
         book_isbn: tag.isbn,
         ftag_id: tag.id,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in book_ftag and continue processing ....${error.message}`
-      );
+      dbChanges += update_stmt2.run(tag.isbn, tag.id, tag.bookTagId).changes;
     }
   });
 
@@ -149,14 +176,19 @@ const insertTags = async (books: Book[]): Promise<number> => {
 };
 
 const insertBook = async (books: Book[]) => {
-  const stmt = dbConnection.prepare(
-    "INSERT INTO books VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, @price, @public_isbn, @publisher, @binding_type, @created_at, @updated_at)"
+  const create_stmt = dbConnection.prepare(
+    "INSERT INTO books(id, book_title, correlation_id, edition_title, language, author, description_en, description_fr, description_es, print_length, publicationDate, dimensions, price, public_isbn, publisher, binding_type, created_at, updated_at) VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, @price, @public_isbn, @publisher, @binding_type, @created_at, @updated_at)"
   );
+
+  const update_stmt = dbConnection.prepare(
+    "UPDATE books SET book_title=?, correlation_id=?, edition_title=?, language=?, author=?, description_en=?, description_fr=?, description_es=?, print_length=?, publicationDate=?, dimensions=?, price=?, public_isbn=?, publisher=?, binding_type=?, updated_at=? WHERE id=?"
+  );
+
   let dbChanges = 0;
 
   books.forEach((book) => {
     try {
-      dbChanges += stmt.run({
+      dbChanges += create_stmt.run({
         id: book.isbn,
         book_title: book.title,
         correlation_id: book.correlationId,
@@ -167,7 +199,7 @@ const insertBook = async (books: Book[]) => {
         description_es: book.descriptionSp,
         description_fr: book.descriptionFr,
         print_length: book.printLength,
-        publicationDate: book.createdAt,
+        publicationDate: book.publishDate,
         dimensions: book.dimensions,
         price: book.price,
         public_isbn: book.publicIsbn,
@@ -177,9 +209,25 @@ const insertBook = async (books: Book[]) => {
         updated_at: book.updatedAt,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in insertBook and continue processing ....${error.message}`
-      );
+      dbChanges += update_stmt.run(
+        book.title,
+        book.correlationId,
+        book.title,
+        book.language,
+        book.author,
+        book.description,
+        book.descriptionFr,
+        book.descriptionSp,
+        book.printLength,
+        book.publishDate,
+        book.dimensions,
+        book.price,
+        book.publicIsbn,
+        book.publisher,
+        book.bindingType,
+        book.updatedAt,
+        book.isbn
+      ).changes;
     }
   });
 
@@ -187,8 +235,12 @@ const insertBook = async (books: Book[]) => {
 };
 
 const insertImages = async (books: Book[]) => {
-  const stmt = dbConnection.prepare(
-    "INSERT INTO books_images VALUES (@id, @url, @source_url, @book_isbn, @isSincronized)"
+  const create_stmt = dbConnection.prepare(
+    "INSERT INTO books_images(id, url, source_url, book_isbn, isSincronized) VALUES (@id, @url, @source_url, @book_isbn, @isSincronized)"
+  );
+
+  const update_stmt = dbConnection.prepare(
+    "UPDATE books_images SET url=?, source_url=?, book_isbn=?, isSincronized=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -201,7 +253,7 @@ const insertImages = async (books: Book[]) => {
 
   bookImages.forEach(({ id, isbn, url, sourceUrl }) => {
     try {
-      dbChanges += stmt.run({
+      dbChanges += create_stmt.run({
         id: id,
         book_isbn: isbn,
         url: url,
@@ -209,9 +261,7 @@ const insertImages = async (books: Book[]) => {
         isSincronized: 0,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in insertImages and continue processing ....${error.message}`
-      );
+      dbChanges += update_stmt.run(url, sourceUrl, isbn, 0, id).changes;
     }
   });
 
@@ -219,8 +269,12 @@ const insertImages = async (books: Book[]) => {
 };
 
 const insertBookCopies = async (books: Book[]) => {
-  const stmt = dbConnection.prepare(
-    "INSERT INTO books_copies VALUES (@id, @book_isbn, @is_available, @at_position, @created_at, @updated_at)"
+  const create_stmt = dbConnection.prepare(
+    "INSERT INTO books_copies(id, book_isbn, is_available, at_position, created_at, updated_at) VALUES (@id, @book_isbn, @is_available, @at_position, @created_at, @updated_at)"
+  );
+
+  const update_stmt = dbConnection.prepare(
+    "UPDATE books_copies SET book_isbn=?, is_available=?, at_position=?, updated_at=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -233,7 +287,7 @@ const insertBookCopies = async (books: Book[]) => {
 
   bookCopies.forEach((copy) => {
     try {
-      dbChanges += stmt.run({
+      dbChanges += create_stmt.run({
         id: copy.id,
         book_isbn: copy.isbn,
         is_available: 1,
@@ -242,9 +296,13 @@ const insertBookCopies = async (books: Book[]) => {
         updated_at: copy.updatedAt,
       }).changes;
     } catch (error: any) {
-      console.log(
-        `skipping error in insertBookCopies and continue processing ....${error.message}`
-      );
+      dbChanges += update_stmt.run(
+        copy.isbn,
+        1,
+        copy.atPosition,
+        copy.updatedAt,
+        copy.id
+      ).changes;
     }
   });
 

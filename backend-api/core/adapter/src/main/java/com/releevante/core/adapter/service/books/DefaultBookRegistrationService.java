@@ -142,13 +142,16 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
 
           imageUrls.add(bookImage1);
 
-          Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_2).toString().strip())
-              .filter(Predicate.not(String::isEmpty))
-              .ifPresent(imageUrls::add);
 
-          Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_3).toString().strip())
-              .filter(Predicate.not(String::isEmpty))
-              .ifPresent(imageUrls::add);
+          try {
+              Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_2).toString().strip())
+                      .filter(Predicate.not(String::isEmpty))
+                      .ifPresent(imageUrls::add);
+
+              Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_3).toString().strip())
+                      .filter(Predicate.not(String::isEmpty))
+                      .ifPresent(imageUrls::add);
+          }catch (Exception ignored) {}
 
           var bookImages = imageFrom(imageUrls, bookId);
 

@@ -12,9 +12,9 @@ export const ftagsSchema = sqliteTable("ftags", {
   tagName: text("tag_name", {
     enum:ftagsEnum
   }).notNull(),
-  enTagValue: text("en_tag_value").notNull().unique(),
-  frTagValue: text("fr_tag_value").notNull().unique(),
-  esTagValue: text("es_tag_value").notNull().unique(),
+  enTagValue: text("en_tag_value").notNull(),
+  frTagValue: text("fr_tag_value").notNull(),
+  esTagValue: text("es_tag_value").notNull(),
 });
 
 export const bookLayoutSchemaRelations = relations(ftagsSchema, ({ many }) => ({

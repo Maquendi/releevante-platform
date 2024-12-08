@@ -1,7 +1,7 @@
 
 export const ftagsEnum= [
-  "sub_category",
-  "keywords",
+  "subcategory",
+  "keyword",
   "book_status",
   "reading_vibe",
   "mood_vibe",

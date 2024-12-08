@@ -1,4 +1,5 @@
-import FetchLibrarySettings, { LibrarySettings } from "@/actions/settings-actions";
+import FetchLibrarySettings from "@/actions/settings-actions";
+import { LibrarySettings } from "@/core/domain/settings.model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -26,7 +27,7 @@ const isValidJSON = (value: string): boolean => {
 };
 
 const loadFromLocalStorage = (): ConfigurationState => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     const storedData = localStorage.getItem("settings");
     if (storedData && isValidJSON(storedData)) {
       return {
@@ -37,13 +38,11 @@ const loadFromLocalStorage = (): ConfigurationState => {
     }
   }
   return {
-    data: null, 
+    data: null,
     loading: false,
     error: null,
   };
 };
-
-
 
 const initialState: ConfigurationState = loadFromLocalStorage();
 
@@ -57,15 +56,17 @@ const settingsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchConfiguration.fulfilled, (state, action: PayloadAction<LibrarySettings>) => {
-        state.loading = false;
-        state.data = action.payload;
-        // Guardar en localStorage
-        if(typeof window !== 'undefined'){
-          localStorage.setItem("settings", JSON.stringify(action.payload));
+      .addCase(
+        fetchConfiguration.fulfilled,
+        (state, action: PayloadAction<LibrarySettings>) => {
+          state.loading = false;
+          state.data = action.payload;
+          // Guardar en localStorage
+          if (typeof window !== "undefined") {
+            localStorage.setItem("settings", JSON.stringify(action.payload));
+          }
         }
-
-      })
+      )
       .addCase(fetchConfiguration.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch configuration";

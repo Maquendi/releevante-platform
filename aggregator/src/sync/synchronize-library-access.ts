@@ -21,8 +21,12 @@ export const synchronizeLibraryAccess = async (token: string) => {
 };
 
 const insertUsers = async (accesses: LibraryAccess[]) => {
-  const stmt = dbConnection.prepare(
-    "INSERT INTO user VALUES (@id, @access_id, @credential, @is_active, @expires_at, @created_at, @updated_at)"
+  const create_stmt = dbConnection.prepare(
+    "INSERT INTO user(id, access_id, credential, is_active, expires_at, created_at, updated_at) VALUES (@id, @access_id, @credential, @is_active, @expires_at, @created_at, @updated_at)"
+  );
+
+  const update_stmt = dbConnection.prepare(
+    "UPDATE user SET access_id=?, credential=?, is_active=?, expires_at=?, updated_at=? WHERE id=?"
   );
   let dbChanges = 0;
 
@@ -30,7 +34,7 @@ const insertUsers = async (accesses: LibraryAccess[]) => {
     .filter((item) => !item.isSync)
     .forEach((access) => {
       try {
-        dbChanges += stmt.run({
+        dbChanges += create_stmt.run({
           id: access.userId,
           access_id: access.id,
           credential: access.credential.value,
@@ -40,7 +44,14 @@ const insertUsers = async (accesses: LibraryAccess[]) => {
           updated_at: access.createdAt,
         }).changes;
       } catch (error: any) {
-        console.log(`skipping error in insertUsers and continue processing ....${error.message}`);
+        dbChanges += update_stmt.run(
+          access.id,
+          access.credential.value,
+          (access.isActive && 1) || 0,
+          access.expiresAt,
+          access.createdAt,
+          access.userId
+        ).changes;
       }
     });
 

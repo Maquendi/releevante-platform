@@ -50,7 +50,7 @@ export default async function HomePage() {
               className="bg-primary text-center w-full flex-grow-1 mt-2 px-6 py-4 rounded-full font-medium text-sm text-white"
               href="/catalog"
             >
-              Brouse all the books
+              Browse all the books
             </Link>
           </div>
         </article>
@@ -76,7 +76,7 @@ export default async function HomePage() {
               className="bg-primary text-center w-full flex-grow-1 mt-2 px-6 py-4 rounded-full font-medium text-sm text-white"
               href="/vibes/readingvibe"
             >
-              Brouse all the books
+              Browse all the books
             </Link>
           </div>
         </article>

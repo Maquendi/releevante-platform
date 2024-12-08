@@ -34,6 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
+sqlite-dev.db
 sqlite-dev.db-shm
 sqlite-dev.db-wal

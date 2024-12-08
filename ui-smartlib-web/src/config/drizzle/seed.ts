@@ -18,28 +18,28 @@ import { createHashFromString } from "@/lib/utils";
 const subCategoriesftags: any = [
   {
     id: "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
-    tagName: "sub_category",
+    tagName: "subcategory",
     enTagValue: "Best sellers",
     frTagValue: "Meilleures ventes",
     esTagValue: "Más vendidos",
   },
   {
     id: "6f16h7e5-dg8h-9g6h-g7hb-2h4hdh0h218e",
-    tagName: "sub_category",
+    tagName: "subcategory",
     enTagValue: "Trendy",
     frTagValue: "À la mode",
     esTagValue: "De moda",
   },
   {
     id: "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
-    tagName: "sub_category",
+    tagName: "subcategory",
     enTagValue: "Popular",
     frTagValue: "Populaire",
     esTagValue: "Popular",
   },
   {
     id: "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
-    tagName: "sub_category",
+    tagName: "subcategory",
     enTagValue: "Most used",
     frTagValue: "Le plus utilisé",
     esTagValue: "Más usado",

@@ -137,10 +137,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .where(
         and(
           categoryId ? eq(bookCategorySchema.categoryId, categoryId) : undefined,
-          eq(ftagsSchema.tagName,'sub_category'),
+          eq(ftagsSchema.tagName,'subcategory'),
         )
       )
       .groupBy(bookSchema.correlationId);
+
+      console.log(results)
 
     const groupedBooks = results.reduce(
       (acc, { category, subCategory, ...book }) => {
@@ -196,7 +198,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         bookTitle: bookSchema.bookTitle,
         editionTitle: bookSchema.editionTitle,
         author: bookSchema.author,
-        publisher: bookSchema.author,
+        publisher: bookSchema.publisher,
         images: jsonAgg({
           id: bookImageSchema.id,
           url: bookImageSchema.url,

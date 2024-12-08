@@ -1,21 +1,12 @@
-'use server'
+"use server";
 
-import { dbGetOne } from "@/lib/db/drizzle-client"
+import { settingsFacade } from "@/core/application";
+import { LibrarySettings } from "@/core/domain/settings.model";
 
-export interface LibrarySettings {
-    id: string;
-    maxBooksPerLoan: string;
-    bookPriceDiscountPercentage: string;
-    bookPriceSurchargePercentage: string;
-    bookPriceReductionThreshold: string;
-    bookPriceReductionRateOnThresholdReached: string;
-  }
-  
-
-export default async function FetchLibrarySettings():Promise<LibrarySettings> {
+export default async function FetchLibrarySettings(): Promise<LibrarySettings> {
   try {
-    return await dbGetOne("librarySettingsSchema")
+    return await settingsFacade.getLibrarySetting();
   } catch (error) {
-   throw new Error('Faild to load configuration') 
+    throw new Error("Faild to load configuration");
   }
 }

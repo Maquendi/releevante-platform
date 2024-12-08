@@ -6,6 +6,8 @@ import { CartServiceFacade } from "./facade";
 import { BookLoanServiceImpl } from "./loan-service.impl";
 import { defaultBookLoanRepositoryImpl } from "../infrastructure/book-loan-repository.impl";
 import { bookServiceFacade } from "@/book/application";
+import { SettingsFacade } from "./settings.facade";
+import { defaultSettingsRepository } from "../infrastructure/settings-repository.impl";
 
 const bridgeIoApiClient = new DefaultBridgeIoApiClient();
 const coreApiClient = new CoreApiClientImpl();
@@ -26,3 +28,5 @@ export const cartServiceFacade = new CartServiceFacade(
   defaultCartService,
   bookLoanService
 );
+
+export const settingsFacade = new SettingsFacade(defaultSettingsRepository);

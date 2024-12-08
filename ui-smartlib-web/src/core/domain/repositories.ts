@@ -1,6 +1,7 @@
 import { BookCopy } from "@/book/domain/models";
 import { Cart, CartId } from "./cart.model";
 import { BookLoan } from "./loan.model";
+import { LibrarySettings } from "./settings.model";
 
 export interface TransactionCallback {
   execute(): Promise<void>;
@@ -9,7 +10,7 @@ export interface TransactionCallback {
 export interface CartRepository {
   save(cart: Cart): Promise<Cart>;
   update(cart: Cart): Promise<Cart>;
-  find(cartId: CartId): Promise<Cart>
+  find(cartId: CartId): Promise<Cart>;
 }
 
 export interface LoanRepository {
@@ -18,4 +19,8 @@ export interface LoanRepository {
     bookCopies: BookCopy[],
     transactionCb: TransactionCallback
   ): Promise<void>;
+}
+
+export interface SettingsRepository {
+  getSetting(): Promise<LibrarySettings>;
 }
