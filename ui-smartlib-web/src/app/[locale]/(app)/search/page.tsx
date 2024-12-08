@@ -89,7 +89,7 @@ export default function SearchBooksPage() {
           {data?.map((item) => (
             <article key={item.id}>
               <Link
-                href={`/catalog/book/${item.id}`}
+                href={`/catalog/book/${item.correlationId}`}
                 className="py-3 borde-y cursor-pointer px-6 flex gap-3 items-center justify-between rounded-md border-b border-secondary hover:bg-gray-50"
               >
                 <div className="flex gap-3 items-center ">

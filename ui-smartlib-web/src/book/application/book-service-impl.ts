@@ -1,5 +1,5 @@
 import { BookCopySchema } from "@/config/drizzle/schemas";
-import { BookCategory, Book, BookCopy, BooksPagination, BooksByCategory } from "../domain/models";
+import { BookCategory, Book, BookCopy, BooksPagination, BooksByCategory, FtagItem, FtagsEnum, BookByFtagsVibes } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
 import { BookCopySearch, SearchCriteria } from "./dto";
@@ -53,5 +53,13 @@ import { BookService } from "./service.definitions";
 
   async findAllBooks(params:BooksPagination):Promise<Book[]>{
     return await this.bookRepository.findAllBooks(params)
+  }
+
+ async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
+    return await this.bookRepository.getFtagsBy(tagName)
+  }
+
+  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
+    return this.bookRepository.findByVibeTags(tagsValues)
   }
 }

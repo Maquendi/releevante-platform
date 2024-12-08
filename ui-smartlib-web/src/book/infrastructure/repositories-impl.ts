@@ -2,16 +2,18 @@ import { dbGetAll, dbGetOne, dbPut } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
 import {
   Book,
+  BookByFtagsVibes,
   BookCategory,
   BookCompartment,
   BookCopy,
-  BookLanguage,
   BooksByCategory,
   BooksPagination,
+  FtagItem,
+  FtagsEnum,
   Isbn,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, avg, eq, like, or, sql } from "drizzle-orm";
+import { and, eq, inArray, like, ne, or, sql } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,
@@ -26,6 +28,7 @@ import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
 import { da } from "@faker-js/faker";
 import { jsonAgg } from "@/lib/db/helpers";
+import { Console } from "console";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -47,6 +50,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
     });
 
     return data.then((results) => results.map((res) => res as BookCopy));
+  }
+
+  async getFtagsBy(tagName: FtagsEnum): Promise<FtagItem[]> {
+    return dbGetAll("ftagsSchema", {
+      where: eq(ftagsSchema.tagName, tagName),
+    });
   }
 
   async updateCopies(bookCopies: BookCopy[]): Promise<BookCopy[]> {
@@ -108,7 +117,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         bookTitle: bookSchema.bookTitle,
         publisher: bookSchema.author,
         imageUrl: bookImageSchema.url,
-        correlationId:bookSchema.correlationId,
+        correlationId: bookSchema.correlationId,
         rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
         votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
       })
@@ -126,20 +135,23 @@ class DefaultBookRepositoryImpl implements BookRepository {
         eq(categorySchema.id, bookCategorySchema.categoryId)
       )
       .where(
-        categoryId ? eq(bookCategorySchema.categoryId, categoryId) : undefined
+        and(
+          categoryId ? eq(bookCategorySchema.categoryId, categoryId) : undefined,
+          eq(ftagsSchema.tagName,'sub_category'),
+        )
       )
       .groupBy(bookSchema.correlationId);
 
     const groupedBooks = results.reduce(
       (acc, { category, subCategory, ...book }) => {
-        if (!acc[subCategory?.id || '']) {
-          acc[subCategory?.id || ''] = {
+        if (!acc[subCategory?.id || ""]) {
+          acc[subCategory?.id || ""] = {
             category,
             subCategory,
             books: [],
           };
         }
-        acc[subCategory?.id || ''].books.push(book);
+        acc[subCategory?.id || ""].books.push(book);
         return acc;
       },
       {}
@@ -162,6 +174,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         bookTitle: true,
         author: true,
         editionTitle: true,
+        correlationId:true
       },
       with: {
         images: {
@@ -177,7 +190,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async findById(correlationId: string): Promise<Book> {
-    const result:any = await db
+    const result: any = await db
       .select({
         id: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
@@ -188,11 +201,11 @@ class DefaultBookRepositoryImpl implements BookRepository {
           id: bookImageSchema.id,
           url: bookImageSchema.url,
         }),
-        price:bookSchema.price,
-        category:{
-          enCategory:categorySchema.enName,
-          esCategory:categorySchema.esName,
-          frCategory:categorySchema.frName
+        price: bookSchema.price,
+        category: {
+          enCategory: categorySchema.enName,
+          esCategory: categorySchema.esName,
+          frCategory: categorySchema.frName,
         },
         printLength: bookSchema.printLength,
         enDescription: bookSchema.descriptionEn,
@@ -207,23 +220,98 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .from(bookSchema)
       .leftJoin(bookImageSchema, eq(bookSchema.id, bookImageSchema.book_isbn))
       .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
-      .leftJoin(bookCategorySchema,eq(bookCategorySchema.bookIsbn,bookSchema.id))
-      .leftJoin(categorySchema,eq(categorySchema.id,bookCategorySchema.categoryId))
+      .leftJoin(
+        bookCategorySchema,
+        eq(bookCategorySchema.bookIsbn, bookSchema.id)
+      )
+      .leftJoin(
+        categorySchema,
+        eq(categorySchema.id, bookCategorySchema.categoryId)
+      )
       .groupBy(bookSchema.id, bookImageSchema.book_isbn)
       .where(eq(bookSchema.correlationId, correlationId));
 
     const bookFound = result?.length ? result[0] : null;
 
-    const bookLanguages = result?.map(item=>({bookId:item?.id,language:item?.language})) || []
+    const bookLanguages =
+      result?.map((item) => ({ bookId: item?.id, language: item?.language })) ||
+      [];
 
     const bookItem = {
       ...bookFound,
-      bookLanguages
-    }
+      bookLanguages,
+    };
 
-    return bookItem as Book
+    return bookItem as Book;
+  }
 
+  async findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
+    const tagsIdsArr = Object.values(tagsValues);
+    const result: any = await db
+      .select({
+        id: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        editionTitle: bookSchema.editionTitle,
+        author: bookSchema.author,
+        publisher: bookSchema.author,
+        images: jsonAgg({
+          id: bookImageSchema.id,
+          url: bookImageSchema.url,
+        }),
+        price: bookSchema.price,
+        category: {
+          enCategory: categorySchema.enName,
+          esCategory: categorySchema.esName,
+          frCategory: categorySchema.frName,
+        },
+        printLength: bookSchema.printLength,
+        enDescription: bookSchema.descriptionEn,
+        esDescription: bookSchema.descriptionEs,
+        frDescription: bookSchema.descriptionFr,
+        publicationDate: bookSchema.publicationDate,
+        dimensions: bookSchema.dimensions,
+        language: jsonAgg({
+          bookId: bookSchema.id,
+          language: bookSchema.language,
+        }),
+        tagCount: sql`count(${bookFtagSchema.ftagId})`,
+        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
+        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
+      })
+      .from(bookSchema)
+      .leftJoin(bookImageSchema, eq(bookSchema.id, bookImageSchema.book_isbn))
+      .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
+      .leftJoin(
+        bookCategorySchema,
+        eq(bookCategorySchema.bookIsbn, bookSchema.id)
+      )
+      .leftJoin(
+        categorySchema,
+        eq(categorySchema.id, bookCategorySchema.categoryId)
+      )
+      .leftJoin(bookFtagSchema, eq(bookSchema.id, bookFtagSchema.bookIsbn))
+      .groupBy(bookSchema.correlationId)
+      .orderBy(sql`count(${bookFtagSchema.ftagId}) DESC`)
+      .limit(1)
+      .where(inArray(bookFtagSchema.ftagId, tagsIdsArr));
 
+    const bookFound = result?.length ? result[0] : null;
+    const bookLanguages = bookFound?.language.reduce(
+      (acc: any[], { bookId, language }) => {
+        if (!acc.some((item) => item.language === language)) {
+          acc.push({ bookId, language });
+        }
+        return acc;
+      },
+      []
+    );
+
+    const bookItem = {
+      ...bookFound,
+      bookLanguages,
+    };
+
+    return bookItem as Book;
   }
 
   async findAllBooks(bookFiler: BooksPagination): Promise<Book[]> {
@@ -236,7 +324,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         bookTitle: true,
         author: true,
         editionTitle: true,
-        correlationId:true
+        correlationId: true,
       },
       with: {
         images: {

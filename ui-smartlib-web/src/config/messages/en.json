@@ -43,16 +43,51 @@
     "dimensions": "Dimensions",
     "language": "Language",
     "publisher": "Publisher",
-    "rentBannerBtn":"Rent for free",
-    "buyBannerBtn":"Buy book"
+    "rentBannerBtn": "Rent for free",
+    "buyBannerBtn": "Buy book"
   },
-  "cart":{
-    "rent":"rent",
+  "cart": {
+    "rent": "rent",
     "purchase": "purchase",
-    "to":"to",
-    "of":"of",
-    "checkout":"checkout",
+    "to": "to",
+    "of": "of",
+    "checkout": "checkout",
     "emptyCart": "You don’t have any book in your cart",
     "cart": "cart"
+  },
+  "readingVibePage": {
+    "readingVibe1": "What’s your",
+    "readingVibe2": "reading vibe",
+    "reasonForReading": "Let’s start by understanding your reason for picking up a book today",
+    "selectPurpose1": "Select the",
+    "selectPurpose2": "purpose",
+    "selectPurpose3": " of your current reading vibe"
+  },
+  "moodPage": {
+    "currentMoodTitle1": "What",
+    "currentMoodTitle2": " mood ",
+    "currentMoodTitle3": " are you in?",
+    "aboutMoodSubTitle": "This is all about how you want your next book to make you feel",
+    "selectFeeling1": "Select the",
+    "selectFeeling2": "feeling",
+    "selectFeeling3": "of your current state of mind"
+  },
+  "flavorOfStoryPage": {
+    "favoriteFlavorTitle1": "What’s your favorite",
+    "favoriteFlavorTitle2": "flavor of story",
+    "narrowDownSubTitle": "Time to narrow things down to the genres you love most",
+    "selectGenres1": "Select the",
+    "selectGenres2": "genres",
+    "selectGenres3": "that appeal to you"
+  },
+  "recommendationsPage": {
+    "recommendationReadyTitle1": "Your recommendation",
+    "recommendationReadyTitle2": "recommendation",
+    "recommendationReadyTitle3": "is ready!",
+    "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
+    "editPreferences":"Edit preferences",
+    "rent":"rent",
+    "buy":"buy"
+
   }
 }
