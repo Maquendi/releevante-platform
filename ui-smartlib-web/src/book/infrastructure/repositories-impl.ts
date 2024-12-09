@@ -107,6 +107,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
           enCategoryName: categorySchema.enName,
           id: bookCategorySchema.categoryId,
         },
+
         subCategory: {
           id: ftagsSchema.id,
           esSubCategoryName: ftagsSchema.esTagValue,
@@ -142,7 +143,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
       )
       .groupBy(bookSchema.correlationId);
 
-      console.log(results)
+      
 
     const groupedBooks = results.reduce(
       (acc, { category, subCategory, ...book }) => {
@@ -160,7 +161,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
     );
 
     const data = Object.values(groupedBooks);
-
+    //console.log(JSON.stringify(data))
     return data as BooksByCategory[];
   }
 

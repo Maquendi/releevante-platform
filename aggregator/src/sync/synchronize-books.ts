@@ -6,6 +6,13 @@ import { arrayGroupBy } from "../utils.js";
 
 const slid = process.env.slid;
 
+const tagNameMapper: any = {
+  vibe: "reading_vibe",
+  flavor: "flavor_story_vibe",
+  subcategory: "subcategory",
+  mood: "mood_vibe",
+};
+
 export const synchronizeBooks = async (token: string) => {
   let syncComplete = false;
   let page = 0;
@@ -50,7 +57,10 @@ const insertCategories = async (books: Book[]): Promise<number> => {
   let bookCategories: Tag[] = [];
 
   books.forEach((book) => {
-    bookCategories = [...bookCategories, ...book.categories];
+    bookCategories = [
+      ...bookCategories,
+      ...book.tags.filter((tag) => tag.name === "category"),
+    ];
   });
 
   const categories = arrayGroupBy(bookCategories, "id");
@@ -111,8 +121,10 @@ const insertTags = async (books: Book[]): Promise<number> => {
   let bookTags: Tag[] = [];
 
   books.forEach((book) => {
-    const keyWords = (book.keyWords?.length && book.keyWords) || [];
-    bookTags = [...bookTags, ...keyWords, ...book.subCategories];
+    bookTags = [
+      ...bookTags,
+      ...book.tags.filter((tag) => tag.name !== "category"),
+    ];
   });
 
   const fTags = arrayGroupBy(bookTags, "id");
@@ -132,7 +144,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
       var tag = fTags[key][0];
       dbChanges += create_stmt1.run({
         id: tag.id,
-        tag_name: tag.name,
+        tag_name: tagNameMapper[tag.name] || tag.name,
         en_tag_value: tag.value,
         fr_tag_value: tag.valueFr || tag.value,
         es_tag_value: tag.valueSp || tag.value,
@@ -140,7 +152,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
     } catch (error: any) {
       try {
         dbChanges += update_stmt1.run(
-          tag.name,
+          tagNameMapper[tag.name] || tag.name,
           tag.value,
           tag.valueFr || tag.value,
           tag.valueSp || tag.value,

@@ -17,10 +17,13 @@ public class BookGSheetUtils {
   public static final int BOOK_DIMENSIONS = 13;
   public static final int BOOK_PUBLIC_ISBN = 14;
   public static final int BOOK_PUBLISHER = 15;
-  public static final int BOOK_CATEGORIES = 16;
-  public static final int BOOK_SUB_CATEGORIES = 17;
-  public static final int BOOK_BINDING_TYPE = 18;
-  public static final int BOOK_IMAGE_1 = 19;
-  public static final int BOOK_IMAGE_2 = 20;
-  public static final int BOOK_IMAGE_3 = 21;
+  public static final int BOOK_MOOD = 16;
+  public static final int BOOK_FLAVOR = 17;
+  public static final int BOOK_READING_VIBE = 18;
+  public static final int BOOK_CATEGORIES = 19;
+  public static final int BOOK_SUB_CATEGORIES = 20;
+  public static final int BOOK_BINDING_TYPE = 21;
+  public static final int BOOK_IMAGE_1 = 22;
+  public static final int BOOK_IMAGE_2 = 23;
+  public static final int BOOK_IMAGE_3 = 24;
 }

@@ -38,9 +38,7 @@ export interface Book {
   descriptionSp: string;
   createdAt: Date;
   updatedAt: Date;
-  keyWords: Tag[];
-  categories: Tag[];
-  subCategories: Tag[];
+  tags: Tag[];
   images: BookImage[];
   copies: BookCopy[];
   publisher: string;

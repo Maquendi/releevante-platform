@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 public class DefaultBookRegistrationService implements BookRegistrationService {
 
   private static final String SPREADSHEET_ID = "1JX5MFqjtIs5pJbYIHtADGR27z-X9Tiv2LOb-d_SBjFs";
-  private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:V";
+  private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:W";
   private static final String LIBRARY_INVENTORY_RANGE = "A2:C";
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
 
@@ -142,16 +142,16 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
 
           imageUrls.add(bookImage1);
 
-
           try {
-              Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_2).toString().strip())
-                      .filter(Predicate.not(String::isEmpty))
-                      .ifPresent(imageUrls::add);
+            Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_2).toString().strip())
+                .filter(Predicate.not(String::isEmpty))
+                .ifPresent(imageUrls::add);
 
-              Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_3).toString().strip())
-                      .filter(Predicate.not(String::isEmpty))
-                      .ifPresent(imageUrls::add);
-          }catch (Exception ignored) {}
+            Optional.of(row.get(BookGSheetUtils.BOOK_IMAGE_3).toString().strip())
+                .filter(Predicate.not(String::isEmpty))
+                .ifPresent(imageUrls::add);
+          } catch (Exception ignored) {
+          }
 
           var bookImages = imageFrom(imageUrls, bookId);
 
@@ -194,6 +194,48 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
                               .collect(Collectors.toList()))
                   .orElse(Collections.emptyList());
 
+          var moodTags =
+              Optional.of(row.get(BookGSheetUtils.BOOK_MOOD).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .map(keywords -> keywords.split(COMMA_SEPARATOR))
+                  .map(Stream::of)
+                  .map(
+                      stream ->
+                          stream
+                              .map(String::strip)
+                              .map(value -> value.replace(".", ","))
+                              .map(tag -> buildTag(TagTypes.mood, tag))
+                              .collect(Collectors.toList()))
+                  .orElse(Collections.emptyList());
+
+          var flavorTags =
+              Optional.of(row.get(BookGSheetUtils.BOOK_FLAVOR).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .map(keywords -> keywords.split(COMMA_SEPARATOR))
+                  .map(Stream::of)
+                  .map(
+                      stream ->
+                          stream
+                              .map(String::strip)
+                              .map(value -> value.replace(".", ","))
+                              .map(tag -> buildTag(TagTypes.flavor, tag))
+                              .collect(Collectors.toList()))
+                  .orElse(Collections.emptyList());
+
+          var readingVibeTags =
+              Optional.of(row.get(BookGSheetUtils.BOOK_READING_VIBE).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .map(keywords -> keywords.split(COMMA_SEPARATOR))
+                  .map(Stream::of)
+                  .map(
+                      stream ->
+                          stream
+                              .map(String::strip)
+                              .map(value -> value.replace(".", ","))
+                              .map(tag -> buildTag(TagTypes.vibe, tag))
+                              .collect(Collectors.toList()))
+                  .orElse(Collections.emptyList());
+
           var printLength =
               Optional.of(row.get(BookGSheetUtils.BOOK_PRINT_LENGTH).toString().strip())
                   .filter(Predicate.not(String::isEmpty))
@@ -225,6 +267,14 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
                   .filter(Predicate.not(String::isEmpty));
 
           var createdAt = ZonedDateTimeGenerator.instance().next();
+
+          var bookTags = new ArrayList<>(categories);
+          bookTags.addAll(subCategories);
+          bookTags.addAll(readingVibeTags);
+          bookTags.addAll(moodTags);
+          bookTags.addAll(keyWords);
+          bookTags.addAll(flavorTags);
+
           return Book.builder()
               .isbn(Isbn.of(bookId))
               .title(title)
@@ -238,9 +288,6 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               .createdAt(createdAt)
               .updatedAt(createdAt)
               .correlationId(correlationId)
-              .keyWords(keyWords)
-              .categories(categories)
-              .subCategories(subCategories)
               .language(language)
               .publishDate(publishDate)
               .publisher(publisher)
@@ -248,6 +295,7 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               .dimensions(dimensions)
               .publicIsbn(publicIsbn)
               .bindingType(bindingType)
+              .tags(bookTags)
               .build();
         });
   }
@@ -256,6 +304,8 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
     return Tag.builder()
         .name(name.name())
         .value(value)
+        .valueSp(value)
+        .valueFr(value)
         .id(uuidGenerator.next())
         .createdAt(dateTimeGenerator.next())
         .build();

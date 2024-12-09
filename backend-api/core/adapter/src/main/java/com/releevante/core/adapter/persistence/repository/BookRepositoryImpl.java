@@ -86,22 +86,7 @@ public class BookRepositoryImpl implements BookRepository {
 
   private Flux<BookTagRecord> persistBookTags(List<Book> books) {
     return Flux.fromStream(books.stream())
-        .flatMap(
-            book -> {
-              var tags = book.joinTags();
-              return Flux.fromStream(book.keyWords().stream())
-                  .flatMap(this::getTag)
-                  .map(toBookTag(book))
-                  .collectList()
-                  .flatMapMany(
-                      keyWords ->
-                          tagHibernateDao
-                              .findAllByValueIn(tags)
-                              .map(toBookTag(book))
-                              .collectList()
-                              .map(validateCategoryTags(tags))
-                              .flatMapMany(categories -> combine(keyWords, categories)));
-            })
+        .flatMap(book -> Flux.fromIterable(book.tags()).flatMap(this::getTag).map(toBookTag(book)))
         .collectList()
         .flatMapMany(bookTagHibernateDao::saveAll);
   }
@@ -109,21 +94,7 @@ public class BookRepositoryImpl implements BookRepository {
   private Mono<TagRecord> getTag(Tag tag) {
     return tagHibernateDao
         .findFirstByValueIgnoreCase(tag.value())
-        .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.fromKeyWord(tag))));
-  }
-
-  Function<List<BookTagRecord>, List<BookTagRecord>> validateCategoryTags(List<String> tags) {
-    return list -> {
-      if (list.isEmpty()) {
-        throw new RuntimeException("Failed to find tags");
-      }
-
-      if (tags.size() != list.size()) {
-        throw new RuntimeException("Failed to find all category or subCategory tags");
-      }
-
-      return list;
-    };
+        .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.from(tag))));
   }
 
   private Flux<Book> find(Flux<BookCopyProjection> bookPublisher, int size) {
@@ -173,10 +144,6 @@ public class BookRepositoryImpl implements BookRepository {
                                                                 .build())
                                                     .collect(Collectors.toList()))
                                             .build())));
-  }
-
-  private Flux<BookTagRecord> combine(List<BookTagRecord> list1, List<BookTagRecord> list2) {
-    return Flux.merge(Flux.fromIterable(list1), Flux.fromIterable(list2));
   }
 
   private Function<TagRecord, BookTagRecord> toBookTag(Book book) {

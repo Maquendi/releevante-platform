@@ -319,9 +319,9 @@ CREATE TABLE core.tasks (
 CREATE TABLE core.tags (
     id varchar(36) NOT NULL,
 	name varchar(50) NOT NULL,
-	value_en varchar(50) NOT NULL,
-	value_fr varchar(50) NULL,
-	value_sp varchar(50) NULL,
+	value_en varchar(255) NOT NULL,
+	value_fr varchar(255) NULL,
+	value_sp varchar(255) NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT tag_p_k PRIMARY KEY (id)

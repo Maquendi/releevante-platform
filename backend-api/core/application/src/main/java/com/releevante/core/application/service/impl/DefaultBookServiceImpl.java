@@ -161,26 +161,7 @@ public class DefaultBookServiceImpl implements BookService {
                   data -> {
                     var images = data.getT1();
                     var tags = data.getT2();
-
-                    var categories =
-                        tags.stream()
-                            .filter(tag -> tag.name().equals(TagTypes.category.name()))
-                            .toList();
-
-                    var subCategories =
-                        tags.stream()
-                            .filter(tag -> tag.name().equals(TagTypes.subcategory.name()))
-                            .toList();
-
-                    var keyWords =
-                        tags.stream()
-                            .filter(tag -> tag.name().equals(TagTypes.keyword.name()))
-                            .toList();
-
-                    return book.withCategories(categories)
-                        .withSubCategories(subCategories)
-                        .withKeyWords(keyWords)
-                        .withImages(images);
+                    return book.withTags(tags).withImages(images);
                   });
         });
   }
