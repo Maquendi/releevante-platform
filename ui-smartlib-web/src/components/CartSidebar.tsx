@@ -13,6 +13,8 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
+import useGetBooks from "@/hooks/useGetBooks";
+import { useRouter } from "@/config/i18n/routing";
 
 export function CartSidebarTrigger() {
   const { setOpen, open } = useSidebar();
@@ -50,21 +52,12 @@ export function CartEmpty() {
 }
 
 export function CartSidebar() {
-  const cartItems = useAppSelector((state) => state.cart.items);
   const settings = useAppSelector((state) => state.settings);
   const { open } = useSidebar();
-
   const t = useTranslations("cart");
-  const rentItems = useMemo(() => {
-    return cartItems.filter((item) => item.transactionType === "RENT") || [];
-  }, [cartItems]);
-
-  const purchaseItems = useMemo(() => {
-    return (
-      cartItems.filter((item) => item.transactionType === "PURCHASE") || []
-    );
-  }, [cartItems]);
-
+  const {rentItems,purchaseItems}=useGetBooks()
+  const router = useRouter()
+ 
   return (
     <div className="relative">
       {open && (
@@ -176,7 +169,8 @@ export function CartSidebar() {
 
           <div className=" bg-white py-3 flex justify-center border-t border-secondary">
             <Button
-              disabled={!cartItems?.length}
+              disabled={!rentItems?.length && !purchaseItems?.length}
+              onClick={()=>router.push('/checkout')}
               className=" py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent  "
             >
               <span className=" first-letter:uppercase"> {t("checkout")}</span>

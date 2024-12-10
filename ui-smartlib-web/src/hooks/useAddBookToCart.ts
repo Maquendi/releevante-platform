@@ -34,7 +34,6 @@ export function useAddBookToCart() {
       (item) => item.language === selectedLanguage
     )?.bookId;
 
-    console.log('cart item payload',book.bookLanguages,book.id)
 
     if (!book || !bookId) return;
 
@@ -44,6 +43,8 @@ export function useAddBookToCart() {
       image: book.images?.[0]?.url || "",
       qty: 1,
       price: book.price,
+      category:book.category,
+      author:book.author
     };
   };
 
