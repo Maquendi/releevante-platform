@@ -85,9 +85,16 @@
     "recommendationReadyTitle2": "recommendation",
     "recommendationReadyTitle3": "is ready!",
     "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
-    "editPreferences":"Edit preferences",
-    "rent":"rent",
-    "buy":"buy"
-
+    "editPreferences": "Edit preferences",
+    "rent": "rent",
+    "buy": "buy"
+  },
+  "reviewMyCart":{
+    "myCart":"my cart",
+    "moveToBuy":"Move to buy",
+    "moveToRent":"Move to rent",
+    "rentAnotherBook":"Rent another book",
+    "confirmWithdrawal":"confirm withdrawal",
+    "purchaseMsg":"The book will be pay when you do the check out at the hotel"
   }
 }

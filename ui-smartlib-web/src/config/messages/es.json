@@ -73,23 +73,27 @@
   },
   "flavorOfStoryPage": {
     "favoriteFlavorTitle1": "¿Cuál es tu",
-  "favoriteFlavorTitle2": "tipo de historia favorita",
+    "favoriteFlavorTitle2": "tipo de historia favorita",
     "narrowDownSubTitle": "Es hora de reducir las opciones a los géneros que más te gustan",
     "selectGenres1": "Selecciona los",
-  "selectGenres2": "géneros",
-  "selectGenres3": "que te atraen"
+    "selectGenres2": "géneros",
+    "selectGenres3": "que te atraen"
   },
   "recommendationsPage": {
-  "recommendationReadyTitle1": "Tu recomendación",
-  "recommendationReadyTitle2": "recomendación",
-  "recommendationReadyTitle3": "está lista!",
-  "basedOnResponsesSubtitle": "Basado en tus respuestas, te sugerimos lo siguiente",
-  "editPreferences": "Editar preferencias",
-  "rent": "alquilar",
-  "buy": "comprar"
-
-
-}
-  
-
+    "recommendationReadyTitle1": "Tu recomendación",
+    "recommendationReadyTitle2": "recomendación",
+    "recommendationReadyTitle3": "está lista!",
+    "basedOnResponsesSubtitle": "Basado en tus respuestas, te sugerimos lo siguiente",
+    "editPreferences": "Editar preferencias",
+    "rent": "alquilar",
+    "buy": "comprar"
+  },
+  "reviewMyCart": {
+    "myCart": "mi carrito",
+    "moveToBuy": "Mover a compra",
+    "moveToRent": "Mover a renta",
+    "rentAnotherBook": "Rentar otro libro",
+    "confirmWithdrawal": "Confirmar retiro",
+    "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel"
+  }
 }

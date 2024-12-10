@@ -48,7 +48,7 @@ export interface CategoryBookItem {
   correlationId:string
 }
 
-interface CategoryTranslations{
+export interface CategoryTranslations{
   id?: string;
   esCategoryName: string;
   frCategoryName: string;

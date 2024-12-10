@@ -1,39 +1,33 @@
+import { CategoryTranslations } from "@/book/domain/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export type TransaccionType = "RENT" | "PURCHASE";
 
 export interface CartItemState {
   title: string;
   image: string;
   isbn: string;
   qty: number;
-  price?:number,
-  transactionType: 'RENT' | 'PURCHASE'
+  price?: number;
+  author: string;
+  category: CategoryTranslations;
+  transactionType: TransaccionType;
 }
 
-export type LanguageType="English" | 'Spanish' | 'French' | null
+export type LanguageType = "English" | "Spanish" | "French" | null;
 
- interface CartState {
+interface CartState {
   items: CartItemState[];
   cartHistory: CartItemState[];
-  language:LanguageType
+  language: LanguageType;
 }
 
 const initialState: CartState = {
   items: [],
   cartHistory: [],
-  language:null
+  language: null,
 };
 
-const calculateTotalQuantityById = ({
-  cartHistory,
-  isbn,
-}: {
-  cartHistory: CartItemState[];
-  isbn: string;
-}): number => {
-  return cartHistory
-    .filter((item) => item.isbn === isbn)
-    .reduce((acc, item) => acc + item.qty, 0);
-};
 
 const cartSlice = createSlice({
   name: "cart",
@@ -41,7 +35,9 @@ const cartSlice = createSlice({
   reducers: {
     addItem: (state, { payload }: PayloadAction<CartItemState>) => {
       const isBookExist = state.items.find(
-        (book) => book.isbn === payload.isbn && book.transactionType === payload.transactionType
+        (book) =>
+          book.isbn === payload.isbn &&
+          book.transactionType === payload.transactionType
       );
       if (isBookExist) {
         isBookExist.qty += payload.qty;
@@ -61,25 +57,37 @@ const cartSlice = createSlice({
 
       state.items.push(bookInCart);
     },
-    removeItem: (state, { payload }: PayloadAction<CartItemState>) => {
-      state.items = state.items.filter((book) => book.isbn !== payload.isbn);
-      const existingQuantityInCart =
-        calculateTotalQuantityById({
-          cartHistory: state.cartHistory,
-          isbn: payload.isbn,
-        }) || 0;
-      if (!existingQuantityInCart) return;
-      state.cartHistory.push({ ...payload, qty: -existingQuantityInCart });
+    updateItem: (state, { payload }: PayloadAction<Partial<CartItemState>>) => {
+      const { isbn, ...fieldsToUpdate } = payload;
+      state.items = state.items.map((item) => {
+        if (item.isbn === isbn) {
+          return {
+            ...item,
+            ...fieldsToUpdate,
+          };
+        }
+        return item;
+      });
+    },
+    removeItem: (state, { payload }: PayloadAction<Partial<CartItemState>>) => {
+      const { isbn } = payload;
+      state.items = state.items.filter((book) => book.isbn !== isbn);
     },
     clearCart: (state) => {
       state.items = [];
     },
-    setLanguage(state,{payload}:PayloadAction<{language:LanguageType}>){
-      state.language = payload.language
-    }
+    setLanguage(state, { payload }: PayloadAction<{ language: LanguageType }>) {
+      state.language = payload.language;
+    },
   },
 });
 
-export const { addItem, updateItemQuantity, removeItem, clearCart,setLanguage } =
-  cartSlice.actions;
+export const {
+  addItem,
+  updateItemQuantity,
+  removeItem,
+  clearCart,
+  setLanguage,
+  updateItem,
+} = cartSlice.actions;
 export default cartSlice.reducer;
