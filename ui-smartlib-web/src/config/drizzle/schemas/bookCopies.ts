@@ -2,6 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { bookSchema } from "./books";
 import { bookLayoutSchema } from "./bookLayout";
+import { LoanItemsSchema } from "./LoanItems";
 
 export const bookCopieSchema = sqliteTable("books_copies", {
   id: text("id").primaryKey(),
@@ -33,5 +34,12 @@ export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
     references: [bookLayoutSchema.id],
   }),
 }));
+
+export const BookCopyLoanItemsSchemaRelations = relations(
+  bookCopieSchema,
+  ({ many }) => ({
+    loanItems: many(LoanItemsSchema),
+  })
+);
 
 export type BookCopySchema = typeof bookCopieSchema.$inferSelect;
