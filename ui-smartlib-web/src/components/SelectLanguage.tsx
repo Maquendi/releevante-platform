@@ -27,7 +27,13 @@ export default function SelectLanguage() {
 
   return (
     <>
-      {!path.endsWith("catalog") && !path.includes('auth') && !path.endsWith('readingvibe') &&  !path.endsWith('flavorofstory') &&  !path.endsWith('mood') && !path.includes('home') ? (
+      {!path.endsWith("catalog") &&
+      !path.includes("auth") &&
+      !path.endsWith("readingvibe") &&
+      !path.endsWith("flavorofstory") &&
+      !path.endsWith("mood") &&
+      !path.includes("home") &&
+      !path.endsWith("/thanks")? (
         <div>
           <Link
             className="flex cursor-pointer gap-5 justify-between  items-center pl-3 pr-7 z-50"

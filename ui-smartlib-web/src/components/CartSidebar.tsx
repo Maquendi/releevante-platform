@@ -170,7 +170,7 @@ export function CartSidebar() {
           <div className=" bg-white py-3 flex justify-center border-t border-secondary">
             <Button
               disabled={!rentItems?.length && !purchaseItems?.length}
-              onClick={()=>router.push('/checkout')}
+              onClick={()=>router.push('/reviewcart')}
               className=" py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent  "
             >
               <span className=" first-letter:uppercase"> {t("checkout")}</span>
