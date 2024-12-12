@@ -95,5 +95,30 @@
     "rentAnotherBook": "Rentar otro libro",
     "confirmWithdrawal": "Confirmar retiro",
     "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel"
+  },
+  "checkout": {
+    "readInstructions": "Lea las instrucciones a continuación",
+    "yourBooks": "Tus libros",
+    "pickYourBook": "Elige tu libro",
+    "openingDoor1": "Abriendo la",
+    "openingDoor2": "puerta",
+    "firstStepTitle": "Primer paso",
+    "firstStepContent1": "Ve a la",
+    "firstStepContent2": "puerta",
+    "firstStepContent3": "después de elegir el libro, la puerta se cerrará automáticamente.",
+    "nextStepTitle": "Siguiente paso",
+    "nextStepContent": "Por favor, elige tu próximo libro de nuevo.",
+    "closeDoorTime1": "La puerta",
+    "closeDoorTime2": "se cerrará en",
+    "closeDoorTime3": "minutos"
+  },
+  "thanksPage": {
+    "title": "¡Feliz lectura!",
+    "content": "Gracias por usar nuestro servicio. Por favor, recuerde devolver los libros antes de su salida del hotel",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
   }
+  
+ 
 }

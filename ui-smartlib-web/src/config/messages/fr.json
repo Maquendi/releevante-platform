@@ -89,12 +89,34 @@
     "buy": "acheter"
   },
   "reviewMyCart": {
-  "myCart": "mon panier",
-  "moveToBuy": "Déplacer à l'achat",
-  "moveToRent": "Déplacer à la location",
-  "rentAnotherBook": "Louer un autre livre",
-  "confirmWithdrawal": "Confirmer le retrait",
-  "purchaseMsg": "Le livre sera payé lors de votre départ de l'hôtel"
-}
-
+    "myCart": "mon panier",
+    "moveToBuy": "Déplacer à l'achat",
+    "moveToRent": "Déplacer à la location",
+    "rentAnotherBook": "Louer un autre livre",
+    "confirmWithdrawal": "Confirmer le retrait",
+    "purchaseMsg": "Le livre sera payé lors de votre départ de l'hôtel"
+  },
+  "checkout": {
+    "readInstructions": "Lisez les instructions ci-dessous",
+    "yourBooks": "Vos livres",
+    "pickYourBook": "Choisissez votre livre",
+    "openingDoor1": "Ouverture de la",
+    "openingDoor2": "porte",
+    "firstStepTitle": "Première étape",
+    "firstStepContent1": "Allez à la",
+    "firstStepContent2": "porte",
+    "firstStepContent3": "après avoir choisi le livre, la porte se fermera automatiquement.",
+    "nextStepTitle": "Étape suivante",
+    "nextStepContent": "Veuillez choisir à nouveau votre prochain livre.",
+    "closeDoorTime1": "La porte",
+    "closeDoorTime2": "se fermera dans",
+    "closeDoorTime3": "minutes"
+  },
+  "thanksPage": {
+    "title": "Bonne lecture !",
+    "content": "Merci d'utiliser notre service. Veuillez vous rappeler de retourner les livres avant votre départ de l'hôtel",
+    "closeSessionTime1": "La session",
+    "closeSessionTime2": "se fermera dans",
+    "closeSessionTime3": "minutes"
+  }
 }

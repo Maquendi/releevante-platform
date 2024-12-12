@@ -96,5 +96,28 @@
     "rentAnotherBook":"Rent another book",
     "confirmWithdrawal":"confirm withdrawal",
     "purchaseMsg":"The book will be pay when you do the check out at the hotel"
+  },
+  "checkout":{
+    "readInstructions":"Read the instructions below",
+    "yourBooks":"Your books",
+    "pickYourBook":"Pick your book",
+    "openingDoor1":"Opening the",
+    "openingDoor2":"door",
+    "firstStepTitle":"First step",
+    "firstStepContent1":"Go to the",
+    "firstStepContent2":"door",
+    "firstStepContent3":"after pick the book the door will close automatically.",
+    "nextStepTitle":"Next step",
+    "nextStepContent":"Please, again to pick your next book.",
+    "closeDoorTime1":"The door",
+    "closeDoorTime2":"will close in",
+    "closeDoorTime3":"minutes"
+  },
+  "thanksPage":{
+    "title":"Happy reading!",
+    "content":"Thanks for using our service. Please, remember to return the books before your checkout at the hotel",
+    "closeSessionTime1":"The session",
+    "closeSessionTime2":"will close in",
+    "closeSessionTime3":"minutes"
   }
 }
