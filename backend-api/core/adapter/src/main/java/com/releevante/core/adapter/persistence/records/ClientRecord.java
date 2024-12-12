@@ -38,7 +38,7 @@ public class ClientRecord extends PersistableEntity {
     record.setId(client.id().value());
     record.setCreatedAt(client.createdAt());
     record.setUpdatedAt(client.updatedAt());
-    record.setNew(client.isNew());
+    record.setNew(true);
     record.setExternalId(client.externalId().value());
     return record;
   }
@@ -65,6 +65,17 @@ public class ClientRecord extends PersistableEntity {
               var loanRecords = BookLoanRecord.fromDomain(clientRecord, loans);
               clientRecord.getBookLoans().addAll(loanRecords);
               return clientRecord;
+            });
+  }
+
+  public Mono<ClientRecord> merge(Client client) {
+    return Mono.just(client.loans())
+        .filter(Predicate.not(List::isEmpty))
+        .map(
+            loans -> {
+              var loanRecords = BookLoanRecord.fromDomain(this, loans);
+              this.getBookLoans().addAll(loanRecords);
+              return this;
             });
   }
 

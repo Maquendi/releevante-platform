@@ -91,7 +91,10 @@ public class ClientRepositoryImpl implements ClientRepository {
 
   @Override
   public Mono<Client> saveBookLoan(Client client) {
-    return ClientRecord.bookLoans(client)
+    return clientHibernateDao
+        .findByIdOrExternalId(client.id().value())
+        .flatMap(clientRecord -> clientRecord.merge(client))
+        .switchIfEmpty(ClientRecord.bookLoans(client))
         .flatMap(
             clientRecord -> {
               var loanRecords = clientRecord.getBookLoans();

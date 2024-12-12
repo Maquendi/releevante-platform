@@ -16,11 +16,15 @@ import org.immutables.value.Value;
 public abstract class AbstractClient {
   abstract ClientId id();
 
-  abstract ClientId externalId();
+  @Value.Default
+  ZonedDateTime createdAt() {
+    return ZonedDateTime.now();
+  }
 
-  abstract ZonedDateTime createdAt();
-
-  abstract ZonedDateTime updatedAt();
+  @Value.Default
+  ZonedDateTime updatedAt() {
+    return ZonedDateTime.now();
+  }
 
   @Value.Default
   List<BookSale> purchases() {
@@ -47,10 +51,5 @@ public abstract class AbstractClient {
   @Value.Default
   List<Cart> carts() {
     return Collections.emptyList();
-  }
-
-  @Value.Default
-  public Boolean isNew() {
-    return true;
   }
 }

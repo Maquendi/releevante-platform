@@ -2,7 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { bookSchema } from "./books";
 import { bookLayoutSchema } from "./bookLayout";
-import { LoanItemsSchema } from "./LoanItems";
+import { loanItemSchema } from "./LoanItems";
 
 export const bookCopieSchema = sqliteTable("books_copies", {
   id: text("id").primaryKey(),
@@ -24,21 +24,18 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .$onUpdateFn(() => new Date().toISOString()),
 });
 
-export const bookCopieRelations = relations(bookCopieSchema, ({ one }) => ({
-  book: one(bookSchema, {
-    fields: [bookCopieSchema.book_isbn],
-    references: [bookSchema.id],
-  }),
-  bookPosition: one(bookLayoutSchema, {
-    fields: [bookCopieSchema.at_position],
-    references: [bookLayoutSchema.id],
-  }),
-}));
-
-export const BookCopyLoanItemsSchemaRelations = relations(
+export const bookCopieRelations = relations(
   bookCopieSchema,
-  ({ many }) => ({
-    loanItems: many(LoanItemsSchema),
+  ({ one, many }) => ({
+    book: one(bookSchema, {
+      fields: [bookCopieSchema.book_isbn],
+      references: [bookSchema.id],
+    }),
+    bookPosition: one(bookLayoutSchema, {
+      fields: [bookCopieSchema.at_position],
+      references: [bookLayoutSchema.id],
+    }),
+    loanItems: many(loanItemSchema),
   })
 );
 

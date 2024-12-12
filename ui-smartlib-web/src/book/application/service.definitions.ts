@@ -1,6 +1,5 @@
-import { BookCopySchema } from "@/config/drizzle/schemas";
 import { Book, BookByFtagsVibes, BookCategory, BookCopy, BooksByCategory, BooksPagination, FtagItem, FtagsEnum } from "../domain/models";
-import { BookCopySearch, SearchCriteria } from "./dto";
+import { BookCopySearch } from "./dto";
 
 export interface BookService {
   findAllBookCategory(): Promise<BookCategory[]>;
@@ -8,7 +7,6 @@ export interface BookService {
   findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]>;
   findAvailableCopiesByIsbn(search: BookCopySearch[]): Promise<BookCopy[]>;
   markUnavailable(books: BookCopy[]): Promise<BookCopy[]>;
-  findCopiesBy(filter:SearchCriteria):Promise<BookCopySchema[]>
   findBookById(isbn:string):Promise<Book>
   findAllBooks(params:BooksPagination):Promise<Book[]>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>

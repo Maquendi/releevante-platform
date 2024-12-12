@@ -1,4 +1,4 @@
-import { dbGetAll, dbGetOne, dbPut } from "@/lib/db/drizzle-client";
+import { dbGetAll, dbPut } from "@/lib/db/drizzle-client";
 import { SearchCriteria } from "../application/dto";
 import {
   Book,
@@ -10,10 +10,13 @@ import {
   BooksPagination,
   FtagItem,
   FtagsEnum,
+  IBook,
   Isbn,
+  LibraryInventory,
+  SubCategoryGraph,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, eq, inArray, like, ne, or, sql } from "drizzle-orm";
+import { and, eq, inArray, like, or, sql } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,
@@ -26,9 +29,8 @@ import {
 import { db } from "@/config/drizzle/db";
 import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
-import { da } from "@faker-js/faker";
 import { jsonAgg } from "@/lib/db/helpers";
-import { Console } from "console";
+import { arrayGroupingBy } from "@/lib/utils";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -98,6 +100,139 @@ class DefaultBookRepositoryImpl implements BookRepository {
     });
   }
 
+  async loanLibraryInventory(
+    searchCategoryId?: string
+  ): Promise<LibraryInventory> {
+    const whereClause = searchCategoryId
+      ? or(
+          and(
+            eq(ftagsSchema.tagName, "category"),
+            eq(ftagsSchema.id, searchCategoryId)
+          ),
+          eq(ftagsSchema.tagName, "subcategory")
+        )
+      : or(
+          and(eq(ftagsSchema.tagName, "category")),
+          eq(ftagsSchema.tagName, "subcategory")
+        );
+
+    const data = await db
+      .select({
+        isbn: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        correlationId: bookSchema.correlationId,
+        editionTitle: bookSchema.editionTitle,
+        language: bookSchema.language,
+        author: bookSchema.author,
+        descriptionEn: bookSchema.descriptionEn,
+        descriptionFr: bookSchema.descriptionFr,
+        descriptionEs: bookSchema.descriptionEs,
+        printLength: bookSchema.printLength,
+        publicationDate: bookSchema.publicationDate,
+        dimensions: bookSchema.dimensions,
+        price: bookSchema.price,
+        publicIsbn: bookSchema.publicIsbn,
+        publisher: bookSchema.publisher,
+        bindingType: bookSchema.bindingType,
+        image: bookSchema.image,
+        tagId: ftagsSchema.id,
+        tagName: ftagsSchema.tagName,
+        enValue: ftagsSchema.enTagValue,
+        frValue: ftagsSchema.frTagValue,
+        esValue: ftagsSchema.esTagValue,
+      })
+      .from(bookSchema)
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
+      .where(whereClause)
+      .orderBy(bookSchema.id);
+
+    const filteredByCategory = data.filter(
+      (book) => book.tagName == "category"
+    );
+
+    const filteredSubCategoryTagName = data.filter(
+      (book) => book.tagName == "subcategory"
+    );
+
+    const groupedByCategoryEnValue = arrayGroupingBy(
+      filteredByCategory,
+      "enValue"
+    );
+
+    const findSubcategories = (isbn: string) => {
+      return filteredSubCategoryTagName.filter((book) => book.isbn === isbn);
+    };
+
+    const groupedByIsbn = arrayGroupingBy(data, "isbn");
+
+    const books = Object.keys(groupedByIsbn).map((isbn) => {
+      const firstBook = groupedByIsbn[isbn][0];
+      return this.buildBook(firstBook);
+    });
+
+    const categories = Object.keys(groupedByCategoryEnValue).map((enValue) => {
+      const booksList = groupedByCategoryEnValue[enValue];
+      const sample = booksList[0];
+      const subCategories = {};
+      booksList.forEach((book: any) => {
+        findSubcategories(book.isbn).forEach((sub: any) => {
+          const { enValue, frValue, esValue, tagId, isbn } = sub;
+          const subCategory = subCategories[enValue];
+          if (subCategory) {
+            subCategory.books.push({ isbn });
+          } else {
+            subCategories[enValue] = {
+              id: tagId,
+              en: enValue,
+              fr: frValue,
+              es: esValue,
+              books: [{ isbn }],
+            };
+          }
+        });
+      });
+      return {
+        id: sample.tagId,
+        en: enValue,
+        fr: sample.frValue,
+        es: sample.esValue,
+        subCategories: Object.values(subCategories) as SubCategoryGraph[],
+      };
+    });
+
+    const libraryInventory = {
+      inventory: books,
+      categories,
+    };
+    return libraryInventory;
+  }
+
+  private buildBook(book: any): IBook {
+    return {
+      isbn: book.isbn,
+      bookTitle: book.bookTitle,
+      correlationId: book.correlationId,
+      editionTitle: book.editionTitle,
+      language: book.language,
+      author: book.author,
+      en: book.descriptionEn,
+      fr: book.descriptionFr,
+      es: book.descriptionEs,
+      printLength: book.printLength,
+      publicationDate: book.publicationDate,
+      dimensions: book.dimensions,
+      price: book.price,
+      publicIsbn: book.publicIsbn,
+      publisher: book.publisher,
+      bindingType: book.bindingType,
+      image: book.image,
+      qty: book.qty || 0,
+      rating: book.rating || 0,
+      votes: book.votes || 0,
+    };
+  }
+
   async findAllByCategory(categoryId?: string): Promise<BooksByCategory[]> {
     const results = await db
       .select({
@@ -137,13 +272,13 @@ class DefaultBookRepositoryImpl implements BookRepository {
       )
       .where(
         and(
-          categoryId ? eq(bookCategorySchema.categoryId, categoryId) : undefined,
-          eq(ftagsSchema.tagName,'subcategory'),
+          categoryId
+            ? eq(bookCategorySchema.categoryId, categoryId)
+            : undefined,
+          eq(ftagsSchema.tagName, "subcategory")
         )
       )
       .groupBy(bookSchema.correlationId);
-
-      
 
     const groupedBooks = results.reduce(
       (acc, { category, subCategory, ...book }) => {
@@ -161,7 +296,6 @@ class DefaultBookRepositoryImpl implements BookRepository {
     );
 
     const data = Object.values(groupedBooks);
-    //console.log(JSON.stringify(data))
     return data as BooksByCategory[];
   }
 
@@ -177,7 +311,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         bookTitle: true,
         author: true,
         editionTitle: true,
-        correlationId:true
+        correlationId: true,
       },
       with: {
         images: {

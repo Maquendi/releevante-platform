@@ -123,7 +123,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
   books.forEach((book) => {
     bookTags = [
       ...bookTags,
-      ...book.tags.filter((tag) => tag.name !== "category"),
+      ...book.tags,
     ];
   });
 

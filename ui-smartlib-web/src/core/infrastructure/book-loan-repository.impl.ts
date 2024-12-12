@@ -6,10 +6,8 @@ import { executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { eq } from "drizzle-orm";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
-import {
-  bookLoanDetailSchema,
-  bookLoanSchema,
-} from "@/config/drizzle/schemas/bookLoan";
+import { bookLoanSchema } from "@/config/drizzle/schemas/bookLoan";
+import { loanItemSchema } from "@/config/drizzle/schemas/LoanItems";
 
 export class BookLoanRepositoryImpl implements LoanRepository {
   async save(
@@ -38,11 +36,11 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         const loanInsertion = await tx.insert(bookLoanSchema).values(loanData);
 
         const loanDetailInsertion = loan.details.map((detail) => {
-          return tx.insert(bookLoanDetailSchema).values({
+          return tx.insert(loanItemSchema).values({
             isbn: detail.isbn,
             id: detail.id,
-            book_copy_id: detail.book_copy_id,
-            book_loan_id: loan.id,
+            bookCopyId: detail.book_copy_id,
+            loanId: loan.id,
           });
         });
 

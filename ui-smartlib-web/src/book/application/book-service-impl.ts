@@ -1,15 +1,20 @@
-import { BookCopySchema } from "@/config/drizzle/schemas";
-import { BookCategory, Book, BookCopy, BooksPagination, BooksByCategory, FtagItem, FtagsEnum, BookByFtagsVibes } from "../domain/models";
+import {
+  BookCategory,
+  Book,
+  BookCopy,
+  BooksPagination,
+  BooksByCategory,
+  FtagItem,
+  FtagsEnum,
+  BookByFtagsVibes,
+} from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
 import { BookCopySearch, SearchCriteria } from "./dto";
 import { BookService } from "./service.definitions";
 
- export class DefaultBookServiceImpl implements BookService {
+export class DefaultBookServiceImpl implements BookService {
   constructor(private bookRepository: BookRepository) {}
-  findCopiesBy(filter: SearchCriteria): Promise<BookCopySchema[]> {
-    throw new Error("Method not implemented." + filter.filter);
-  }
 
   async markUnavailable(bookCopies: BookCopy[]): Promise<BookCopy[]> {
     return this.bookRepository.updateCopies(
@@ -34,32 +39,32 @@ import { BookService } from "./service.definitions";
     return (await Promise.all(seachPromises)).flat();
   }
 
-
   async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {
-    return await this.bookRepository.findAllBy(searchCriteria)
+    return await this.bookRepository.findAllBy(searchCriteria);
   }
 
-  async findAllBookByCategory(categoryId:string):Promise<BooksByCategory[]>{
-    return await this.bookRepository.findAllByCategory(categoryId)
+  async findAllBookByCategory(categoryId: string): Promise<BooksByCategory[]> {
+    const result = this.bookRepository.loanLibraryInventory();
+    return await this.bookRepository.findAllByCategory(categoryId);
   }
 
-  async findAllBookCategory():Promise<BookCategory[]>{
-    return await this.bookRepository.findAllCategories()
+  async findAllBookCategory(): Promise<BookCategory[]> {
+    return await this.bookRepository.findAllCategories();
   }
 
-  async findBookById(isbn:string):Promise<Book>{
-    return await this.bookRepository.findById(isbn)
+  async findBookById(isbn: string): Promise<Book> {
+    return await this.bookRepository.findById(isbn);
   }
 
-  async findAllBooks(params:BooksPagination):Promise<Book[]>{
-    return await this.bookRepository.findAllBooks(params)
+  async findAllBooks(params: BooksPagination): Promise<Book[]> {
+    return await this.bookRepository.findAllBooks(params);
   }
 
- async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
-    return await this.bookRepository.getFtagsBy(tagName)
+  async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
+    return await this.bookRepository.getFtagsBy(tagName);
   }
 
   findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
-    return this.bookRepository.findByVibeTags(tagsValues)
+    return this.bookRepository.findByVibeTags(tagsValues);
   }
 }

@@ -14,3 +14,10 @@ export const createHashFromString = async (string) => {
     .join("");
   return hashHex;
 };
+
+export const arrayGroupingBy = function <T>(xs: T[], key: string) {
+  return xs.reduce(function (rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};

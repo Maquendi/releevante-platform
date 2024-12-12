@@ -15,8 +15,6 @@ import org.immutables.value.Value;
 @JsonSerialize(as = BookLoan.class)
 @ImmutableExt
 public abstract class AbstractBookLoan implements Auditable {
-  abstract BookLoanId externalId();
-
   abstract BookLoanId id();
 
   /** estimated time for book return */

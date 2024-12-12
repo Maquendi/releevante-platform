@@ -12,7 +12,7 @@ export function useAddBookToCart() {
   const settings = useAppSelector((store) => store.settings.data);
 
   const maxBookAllowed = useMemo(() => {
-    return settings ? parseInt(settings.maxBooksPerLoan!) : 4;
+    return settings ? settings.maxBooksPerLoan! : 4;
   }, [settings]);
 
   const booksInCartCount = useMemo(() => {

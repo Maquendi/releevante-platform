@@ -1,22 +1,12 @@
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
-import { LoanItemsSchema } from "./LoanItems";
+import { loanItemSchema } from "./LoanItems";
+import { loanStatusSchema } from "./LoanStatus";
 
-const LoanStatusValues = [
-  "RETURNED_ON_TIME",
-  "RETURNED_BEFORE_TIME",
-  "RETURNED_OVERDUE",
-  "CURRENT",
-  "OVERDUE",
-] as const;
-
-export const BookLoanSchema = sqliteTable("book_loan", {
+export const bookLoanSchema = sqliteTable("book_loans", {
   id: text("id").primaryKey().notNull(),
   userId: text("user_id").notNull(),
   cartId: text("cart_id").notNull(),
-  status: text("status", { enum: LoanStatusValues })
-    .notNull()
-    .default("CURRENT"),
   returnsAt: text("returns_at").notNull(),
   isSincronized: integer("isSincronized", { mode: "boolean" }).default(false),
   created_at: text("created_at")
@@ -29,8 +19,11 @@ export const BookLoanSchema = sqliteTable("book_loan", {
 });
 
 export const BookLoanSchemaRelations = relations(
-  BookLoanSchema,
+  bookLoanSchema,
   ({ many }) => ({
-    loanItems: many(LoanItemsSchema),
+    loanItems: many(loanItemSchema),
+    statuses: many(loanStatusSchema),
   })
 );
+
+export type BookLoanSchema = typeof bookLoanSchema.$inferSelect;

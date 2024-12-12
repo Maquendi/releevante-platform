@@ -1,5 +1,5 @@
 
-import { Book, BookByFtagsVibes, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,   FtagItem,   FtagsEnum,   Isbn } from "./models";
+import { Book, BookByFtagsVibes, BookCategory, BookCompartment, BookCopy,  BooksByCategory,  BooksPagination,   CategoryGraph,   FtagItem,   FtagsEnum,   Isbn, LibraryInventory } from "./models";
 
 export interface BookRepository {
   create(book: Book): Promise<Book>;
@@ -15,6 +15,7 @@ export interface BookRepository {
   findAllBy(query: string): Promise<Book[]>; // just return book id and name,
   findById(isbn: string): Promise<Book>; // return with images
   findAllBooks(params:BooksPagination):Promise<Book[]>
+  loanLibraryInventory(): Promise<LibraryInventory>
 }
 
 

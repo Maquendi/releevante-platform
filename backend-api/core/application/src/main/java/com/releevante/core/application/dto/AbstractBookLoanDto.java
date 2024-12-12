@@ -9,10 +9,8 @@ import com.releevante.core.domain.LoanStatus;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
-import com.releevante.types.UuidGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -20,9 +18,7 @@ import org.immutables.value.Value;
 @JsonSerialize(as = BookLoanDto.class)
 @ImmutableExt
 public abstract class AbstractBookLoanDto {
-  abstract Optional<String> id();
-
-  abstract String externalId();
+  abstract String id();
 
   abstract List<LoanItem> items();
 
@@ -37,12 +33,9 @@ public abstract class AbstractBookLoanDto {
   abstract List<LoanStatus> status();
 
   public BookLoan toDomain(AccountPrincipal principal, Slid slid) {
-    var bookLoanId = BookLoanId.of(id().orElse(UuidGenerator.instance().next()));
-    var externalId = BookLoanId.of(externalId());
     return BookLoan.builder()
         .origin(slid.value())
-        .id(bookLoanId)
-        .externalId(externalId)
+        .id(BookLoanId.of(id()))
         .isNew(id().isEmpty())
         .createdAt(createdAt())
         .updatedAt(updatedAt())

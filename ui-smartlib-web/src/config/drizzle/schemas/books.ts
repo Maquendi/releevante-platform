@@ -14,13 +14,17 @@ export const bookSchema = sqliteTable("books", {
   descriptionEn: text("description_en").notNull(),
   descriptionFr: text("description_fr").notNull(),
   descriptionEs: text("description_es").notNull(),
-  printLength:integer('print_length').notNull(),
-  publicationDate:text('publicationDate').notNull(),
-  dimensions:text('dimensions').notNull(),
+  printLength: integer("print_length").notNull(),
+  publicationDate: text("publicationDate").notNull(),
+  dimensions: text("dimensions").notNull(),
   price: numeric(),
-  publicIsbn:text('public_isbn').default(""),
-  publisher:text('publisher').notNull(),
-  bindingType:text('binding_type').notNull(),
+  publicIsbn: text("public_isbn").default(""),
+  publisher: text("publisher").notNull(),
+  bindingType: text("binding_type").notNull(),
+  image: text("image").notNull(),
+  qty: numeric(),
+  rating: numeric(),
+  votes: numeric(),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)

@@ -7,11 +7,7 @@ import com.releevante.core.domain.ClientId;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
-import com.releevante.types.UuidGenerator;
-import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -19,30 +15,14 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ClientSyncDto.class)
 @ImmutableExt
 public abstract class AbstractClientSyncDto {
+  abstract String id();
 
-  abstract Optional<String> id();
-
-  abstract String externalId();
-
-  abstract ZonedDateTime createdAt();
-
-  abstract ZonedDateTime updatedAt();
-
-  abstract List<BookLoanDto> loans();
+  abstract BookLoanDto loan();
 
   public Client toDomain(AccountPrincipal principal, Slid slid) {
-    var clientId = ClientId.of(id().orElse(UuidGenerator.instance().next()));
-    var externalId = ClientId.of(externalId());
     return Client.builder()
-        .id(clientId)
-        .externalId(externalId)
-        .isNew(id().isEmpty())
-        .createdAt(createdAt())
-        .updatedAt(updatedAt())
-        .loans(
-            loans().stream()
-                .map(loan -> loan.toDomain(principal, slid))
-                .collect(Collectors.toList()))
+        .id(ClientId.of(id()))
+        .loans(List.of(loan().toDomain(principal, slid)))
         .build();
   }
 }
