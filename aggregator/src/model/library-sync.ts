@@ -20,7 +20,6 @@ enum LoanItemStatuses {
 
 export interface LoanItemStatus {
   id: string;
-  itemId: string;
   status: LoanItemStatuses;
   createdAt: Date;
 }
@@ -34,29 +33,39 @@ export interface LoanStatus {
 export interface LoanItem {
   id: string;
   cpy: string;
-  status: LoanItemStatus[];
+  statuses: LoanItemStatus[];
 }
 
 export interface LoanSyncDto {
   id?: string;
   externalId: string;
-  returnsAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  endTime: Date;
+  returnsAt?: Date;
+  createdAt?: Date;
   status: LoanStatus[];
   items: LoanItem[];
 }
 
 export interface ClientSyncDto {
-  id?: string;
-  externalId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  loans: LoanSyncDto[];
+  id: string;
+  loan: LoanSyncDto;
 }
 
 export interface LibrarySyncDto {
   slid: string;
   clients: ClientSyncDto[];
+}
+
+export interface LoanCreateResponse {
+  id: string;
+  exteralId: string;
+}
+
+export interface ClientSyncReponse {
+  id: string;
+  loans: LoanCreateResponse[];
+}
+
+export interface LibrarySyncResponse {
+  id: string;
+  clients: ClientSyncReponse[];
 }

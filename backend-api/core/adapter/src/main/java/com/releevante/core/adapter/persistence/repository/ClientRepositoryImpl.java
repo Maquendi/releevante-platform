@@ -92,7 +92,7 @@ public class ClientRepositoryImpl implements ClientRepository {
   @Override
   public Mono<Client> saveBookLoan(Client client) {
     return clientHibernateDao
-        .findByIdOrExternalId(client.id().value())
+        .findById(client.id().value())
         .flatMap(clientRecord -> clientRecord.merge(client))
         .switchIfEmpty(ClientRecord.bookLoans(client))
         .flatMap(
@@ -117,9 +117,11 @@ public class ClientRepositoryImpl implements ClientRepository {
                       .flatMap(Set::stream)
                       .collect(Collectors.toSet());
 
+              var loans =
+                  loanRecords.stream().filter(AuditableEntity::isNew).collect(Collectors.toSet());
+
               return saveClient(clientRecord)
-                  .flatMap(
-                      (ignored) -> saveMultipleRecords(loanRecords, bookLoanHibernateDao::saveAll))
+                  .flatMap((ignored) -> saveMultipleRecords(loans, bookLoanHibernateDao::saveAll))
                   .flatMap(
                       ignore -> saveMultipleRecords(loanItemRecords, loanItemHibernateDao::saveAll))
                   .flatMap(

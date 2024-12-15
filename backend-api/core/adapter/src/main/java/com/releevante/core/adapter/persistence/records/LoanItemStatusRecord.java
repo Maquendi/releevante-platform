@@ -1,8 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.LoanItemStatus;
-import com.releevante.core.domain.LoanItemStatuses;
-import java.util.List;
+import com.releevante.core.domain.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -14,21 +12,27 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoanItemStatusRecord extends SimplePersistable {
+public class LoanItemStatusRecord extends AuditableEntity {
   String id;
   String itemId;
   LoanItemStatuses status;
 
-  public static Set<LoanItemStatusRecord> many(List<LoanItemStatus> statuses) {
-    return statuses.stream().map(LoanItemStatusRecord::fromDomain).collect(Collectors.toSet());
+  public static Set<LoanItemStatusRecord> from(
+      LoanItemsRecord record, LoanItem item, BookLoan loan) {
+    return item.statuses().stream()
+        .map((status) -> fromDomain(record, status, loan))
+        .collect(Collectors.toSet());
   }
 
-  protected static LoanItemStatusRecord fromDomain(LoanItemStatus item) {
+  protected static LoanItemStatusRecord fromDomain(
+      LoanItemsRecord loanItemsRecord, LoanItemStatus status, BookLoan loan) {
     var record = new LoanItemStatusRecord();
-    record.setId(item.id());
-    record.setItemId(item.itemId());
-    record.setStatus(item.statuses());
-    record.setCreatedAt(item.createdAt());
+    record.setId(status.id());
+    record.setItemId(loanItemsRecord.getId());
+    record.setStatus(status.status());
+    record.setCreatedAt(status.createdAt());
+    record.setOrigin(loan.origin());
+    record.setAudit(loan.audit());
     return record;
   }
 }

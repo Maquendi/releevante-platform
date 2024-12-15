@@ -1,7 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
+import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.LoanStatus;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -19,21 +19,20 @@ public class LoanStatusRecord extends AuditableEntity {
   private String loanId;
   private String status;
 
-  public static Set<LoanStatusRecord> fromDomain(
-      BookLoanRecord loan, List<LoanStatus> loanStatuses) {
-    return loanStatuses.stream()
+  public static Set<LoanStatusRecord> fromDomain(BookLoan loan) {
+    return loan.loanStatus().stream()
         .map(status -> fromDomain(loan, status))
         .collect(Collectors.toSet());
   }
 
-  private static LoanStatusRecord fromDomain(BookLoanRecord loan, LoanStatus loanStatus) {
+  private static LoanStatusRecord fromDomain(BookLoan loan, LoanStatus loanStatus) {
     var record = new LoanStatusRecord();
     record.setId(loanStatus.id());
     record.setCreatedAt(loanStatus.createdAt());
     record.setStatus(loanStatus.status().name());
-    record.setLoanId(loan.getId());
-    record.setOrigin(loan.getOrigin());
-    record.setAudit(loan.getAudit());
+    record.setLoanId(loan.id().value());
+    record.setOrigin(loan.origin());
+    record.setAudit(loan.audit());
     return record;
   }
 }

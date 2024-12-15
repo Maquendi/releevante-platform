@@ -1,8 +1,6 @@
 package com.releevante.core.application.service;
 
 import com.releevante.core.application.dto.*;
-import com.releevante.core.domain.BookCopy;
-import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.LibrarySetting;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.AccountPrincipal;
@@ -14,13 +12,9 @@ import reactor.core.publisher.Mono;
 public interface SmartLibraryService {
   Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto syncDto);
 
-  Flux<BookLoanDto> getBookLoanByClient(ClientId clientId);
-
   Flux<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Set<Slid> sLids);
 
   Flux<SmartLibraryDto> findAll(Set<Slid> sLids);
-
-  Flux<BookCopy> synchronizeLibraryBooks(Slid slid, boolean synced, int offset, int pageSize);
 
   Flux<LibrarySetting> getSetting(Slid slid, boolean synced);
 

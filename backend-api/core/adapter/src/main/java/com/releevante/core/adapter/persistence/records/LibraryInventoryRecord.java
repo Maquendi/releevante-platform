@@ -30,7 +30,6 @@ public class LibraryInventoryRecord extends PersistableEntity {
   public static LibraryInventoryRecord updateFrom(
       SequentialGenerator<ZonedDateTime> generator, LoanItem item) {
     var record = new LibraryInventoryRecord();
-    record.setId(item.cpy());
     record.setNew(false);
     record.setUpdatedAt(generator.next());
     return record;

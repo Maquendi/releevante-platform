@@ -14,9 +14,7 @@ public abstract class AbstractLoanItemStatus {
 
   abstract String id();
 
-  abstract String itemId();
-
-  abstract LoanItemStatuses statuses();
+  abstract LoanItemStatuses status();
 
   abstract ZonedDateTime createdAt();
 }

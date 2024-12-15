@@ -44,7 +44,7 @@ export class DefaultBookServiceImpl implements BookService {
   }
 
   async findAllBookByCategory(categoryId: string): Promise<BooksByCategory[]> {
-    const result = this.bookRepository.loanLibraryInventory();
+    this.bookRepository.loanLibraryInventory(categoryId);
     return await this.bookRepository.findAllByCategory(categoryId);
   }
 

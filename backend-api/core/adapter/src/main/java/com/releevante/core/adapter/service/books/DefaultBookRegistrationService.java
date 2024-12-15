@@ -295,6 +295,8 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               .dimensions(dimensions)
               .publicIsbn(publicIsbn)
               .bindingType(bindingType)
+              .rating(0f)
+              .votes(0)
               .tags(bookTags)
               .build();
         });

@@ -129,17 +129,9 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary library) {
     var persistLoans =
         Flux.fromIterable(library.clients()).flatMap(clientRepository::saveBookLoan).collectList();
-    var updateInventory = updateInventoryStatus(library.clients());
+    // var updateInventory = updateInventoryStatus(library.clients());
 
-    return Flux.merge(persistLoans, updateInventory).collectList().thenReturn(library);
-  }
-
-  @Override
-  public Flux<BookCopy> findAllBookCopiesUnSynced(
-      Slid slid, boolean synced, int offset, int pageSize) {
-    return libraryInventoryHibernateDao
-        .findAllCopies(slid.value(), synced, offset * pageSize, pageSize)
-        .map(LibraryInventoryRecord::fromProjection);
+    return persistLoans.thenReturn(library);
   }
 
   @Override
@@ -174,24 +166,25 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
         .defaultIfEmpty(true);
   }
 
-  public Mono<Void> updateInventoryStatus(List<Client> clients) {
-    var updatedAt = dateTimeGenerator.next();
-    return Flux.fromStream(
-            clients.stream()
-                .map(Client::loans)
-                .flatMap(List::stream)
-                .map(BookLoan::items)
-                .flatMap(List::stream))
-        .flatMap(
-            item -> {
-              var status =
-                  item.status().stream()
-                      .min((i1, i2) -> i2.createdAt().compareTo(i1.createdAt()))
-                      .map(LoanItemStatus::statuses)
-                      .orElse(LoanItemStatuses.BORROWED);
-              return libraryInventoryHibernateDao.updateInventoryStatusByCpy(
-                  status.name(), updatedAt, item.cpy());
-            })
-        .then();
-  }
+  //  public Mono<Void> updateInventoryStatus(List<Client> clients) {
+  //    var updatedAt = dateTimeGenerator.next();
+  //    return Flux.fromStream(
+  //            clients.stream()
+  //                .map(Client::loans)
+  //                .flatMap(List::stream)
+  //                .map(BookLoan::loanStatus)
+  //                .flatMap(List::stream))
+  //        .flatMap(
+  //            loanStatus -> {
+  //              var status =
+  //                      loanStatus.itemStatuses().stream()
+  //                      .min((i1, i2) -> i2.createdAt().compareTo(i1.createdAt()))
+  //                      .map(LoanItemStatus::statuses)
+  //                      .orElse(LoanItemStatuses.BORROWED);
+  //
+  //              return libraryInventoryHibernateDao.updateInventoryStatusByCpy(
+  //                  status.name(), updatedAt, item.cpy());
+  //            })
+  //        .then();
+  //  }
 }

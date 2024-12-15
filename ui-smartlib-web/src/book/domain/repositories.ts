@@ -15,7 +15,7 @@ export interface BookRepository {
   findAllBy(query: string): Promise<Book[]>; // just return book id and name,
   findById(isbn: string): Promise<Book>; // return with images
   findAllBooks(params:BooksPagination):Promise<Book[]>
-  loanLibraryInventory(): Promise<LibraryInventory>
+  loanLibraryInventory(searchCategoryId?:string): Promise<LibraryInventory>
 }
 
 

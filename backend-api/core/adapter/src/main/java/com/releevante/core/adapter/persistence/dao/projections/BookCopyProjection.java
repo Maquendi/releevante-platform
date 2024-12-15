@@ -34,4 +34,6 @@ public class BookCopyProjection {
   private String publicIsbn;
   public String publisher;
   public String bindingType;
+  public float rating;
+  public int votes;
 }

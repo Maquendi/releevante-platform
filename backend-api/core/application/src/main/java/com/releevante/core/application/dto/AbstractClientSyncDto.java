@@ -17,7 +17,7 @@ import org.immutables.value.Value;
 public abstract class AbstractClientSyncDto {
   abstract String id();
 
-  abstract BookLoanDto loan();
+  abstract BookLoanSyncDto loan();
 
   public Client toDomain(AccountPrincipal principal, Slid slid) {
     return Client.builder()

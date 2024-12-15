@@ -173,6 +173,6 @@ export interface CategoryGraph {
 }
 
 export interface LibraryInventory {
-  inventory: IBook[];
   categories: CategoryGraph[];
+  inventory: IBook[];
 }

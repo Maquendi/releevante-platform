@@ -9,4 +9,8 @@ public interface BookLoanRepository {
   Flux<BookLoan> findActiveLoans(Slid slid);
 
   Flux<BookLoan> findCreatedInRange(ZonedDateTime start, ZonedDateTime end);
+
+  //  Mono<Long> addLoanStatuses(List<LoanStatus> statuses);
+  //
+  //  Mono<Long> addLoanItemStatuses(List<LoanItemStatus> loanItemStatuses);
 }

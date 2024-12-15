@@ -6,5 +6,6 @@ public enum BookLoanStatusValues {
   PARTIAL_RETURN,
   RETURNED_OVERDUE,
   CURRENT,
-  OVERDUE
+  OVERDUE,
+  CHECKING_OUT
 }

@@ -3,7 +3,6 @@ CREATE SCHEMA core AUTHORIZATION coex;
 
 CREATE TABLE core.clients (
 	id varchar(36) NOT NULL,
-	external_id varchar(36) NOT NULL,
     created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT clients_pk PRIMARY KEY (id)
@@ -26,6 +25,8 @@ CREATE TABLE core.books (
   dimensions varchar(60) NOT NULL,
   public_isbn varchar(50) NULL,
   binding_type varchar(30) NULL,
+  rating numeric NOT NULL,
+  votes numeric NOT NULL,
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT books_pk PRIMARY KEY(isbn)
@@ -181,21 +182,20 @@ CREATE TABLE core.book_loans (
 	external_id varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
 	returns_at timestamp NOT NULL,
-	returned_at timestamp NULL,
 	audit varchar(36) NOT NULL,
 	origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_loans_pk PRIMARY KEY (id),
 	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
 	FOREIGN KEY (client_id) REFERENCES core.clients(id)
 );
 
+CREATE INDEX IF NOT EXISTS loan_external_id_idx ON core.book_loans USING btree(external_id);
+
 CREATE TABLE core.loan_items (
 	id varchar(36) NOT NULL,
 	cpy varchar(36) NOT NULL,
 	loan_id varchar(36) NOT NULL,
-	status varchar(50) NOT NULL,
 	CONSTRAINT loan_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
 	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
@@ -206,6 +206,8 @@ CREATE TABLE core.loan_item_status (
 	item_id varchar(36) NOT NULL,
 	status varchar(50) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		audit varchar(36) NOT NULL,
+    	origin varchar(36) NOT NULL,
 	CONSTRAINT loan_item_status_pk PRIMARY KEY (id),
 	FOREIGN KEY (item_id) REFERENCES core.loan_items(id)
 );
@@ -217,7 +219,6 @@ CREATE TABLE core.loan_status (
 	audit varchar(36) NOT NULL,
     origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT loan_status_pk PRIMARY KEY (id),
 	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
 );

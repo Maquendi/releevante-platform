@@ -1,10 +1,8 @@
 package com.releevante.core.adapter.persistence.records;
 
+import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.LoanItem;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,17 +35,16 @@ public class LoanItemsRecord extends SimplePersistable {
     return getClass().hashCode();
   }
 
-  protected static Set<LoanItemsRecord> fromDomain(
-      BookLoanRecord record, List<LoanItem> loanItems) {
-    return loanItems.stream().map(item -> fromDomain(record, item)).collect(Collectors.toSet());
+  protected static Set<LoanItemsRecord> fromDomain(BookLoan loan) {
+    return loan.items().stream().map(item -> from(loan, item)).collect(Collectors.toSet());
   }
 
-  private static LoanItemsRecord fromDomain(BookLoanRecord loan, LoanItem item) {
+  private static LoanItemsRecord from(BookLoan loan, LoanItem item) {
     var record = new LoanItemsRecord();
     record.setId(item.id());
-    record.setCpy(item.cpy());
-    record.setLoanId(loan.getId());
-    record.setLoanItemStatuses(LoanItemStatusRecord.many(item.status()));
+    record.setCpy(item.cpy().orElse(null));
+    record.setLoanId(loan.id().value());
+    record.setLoanItemStatuses(LoanItemStatusRecord.from(record, item, loan));
     return record;
   }
 }

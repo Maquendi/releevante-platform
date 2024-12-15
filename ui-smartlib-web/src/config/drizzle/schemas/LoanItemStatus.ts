@@ -1,4 +1,4 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { loanItemSchema } from "./LoanItems";
 
@@ -19,6 +19,7 @@ export const loanItemStatusSchema = sqliteTable("loan_item_status", {
     .notNull()
     .references(() => loanItemSchema.id),
   status: text("status", { enum: LoanItemStatusValues }).notNull(),
+  isSynced: integer("is_synced", { mode: "boolean" }).default(false),
   created_at: text("created_at")
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString()),

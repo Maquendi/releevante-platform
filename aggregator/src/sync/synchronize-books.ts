@@ -2,7 +2,7 @@ import { dbConnection } from "../config/db.js";
 import { executeGet } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { Book, BookCopy, BookImage, Tag } from "../model/client.js";
-import { arrayGroupBy } from "../utils.js";
+import { arrayGroupinBy } from "../utils.js";
 
 const slid = process.env.slid;
 
@@ -22,7 +22,7 @@ export const synchronizeBooks = async (token: string) => {
     try {
       const request: ApiRequest = {
         token,
-        resource: `books?page=${page}&size=400&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
+        resource: `books?page=${page}&size=2000&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
       };
       const response = await executeGet<Book[]>(request);
       const books = response.context.data;
@@ -63,7 +63,7 @@ const insertCategories = async (books: Book[]): Promise<number> => {
     ];
   });
 
-  const categories = arrayGroupBy(bookCategories, "id");
+  const categories = arrayGroupinBy(bookCategories, "id");
 
   const create_stmt1 = dbConnection.prepare(
     "INSERT INTO category(id, en_name, fr_name, es_name) VALUES (@id, @en_name, @fr_name, @es_name)"
@@ -121,13 +121,10 @@ const insertTags = async (books: Book[]): Promise<number> => {
   let bookTags: Tag[] = [];
 
   books.forEach((book) => {
-    bookTags = [
-      ...bookTags,
-      ...book.tags,
-    ];
+    bookTags = [...bookTags, ...book.tags];
   });
 
-  const fTags = arrayGroupBy(bookTags, "id");
+  const fTags = arrayGroupinBy(bookTags, "id");
 
   const create_stmt1 = dbConnection.prepare(
     "INSERT INTO ftags(id, tag_name, en_tag_value, fr_tag_value, es_tag_value) VALUES (@id, @tag_name, @en_tag_value, @fr_tag_value, @es_tag_value)"
@@ -189,11 +186,18 @@ const insertTags = async (books: Book[]): Promise<number> => {
 
 const insertBook = async (books: Book[]) => {
   const create_stmt = dbConnection.prepare(
-    "INSERT INTO books(id, book_title, correlation_id, edition_title, language, author, description_en, description_fr, description_es, print_length, publicationDate, dimensions, price, public_isbn, publisher, binding_type, created_at, updated_at) VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, @price, @public_isbn, @publisher, @binding_type, @created_at, @updated_at)"
+    `INSERT INTO books(id, book_title, correlation_id, edition_title, language, author,  
+    description_en, description_fr, description_es, print_length, publicationDate,  
+    dimensions, price, public_isbn, publisher, binding_type,  
+    image, qty, created_at, rating, votes, updated_at)  
+    VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en,  
+    @description_fr, @description_es,  @print_length, @publicationDate, @dimensions,  
+    @price, @public_isbn, @publisher, @binding_type,  
+    @image, @qty, @rating, @votes, @created_at, @updated_at)`
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE books SET book_title=?, correlation_id=?, edition_title=?, language=?, author=?, description_en=?, description_fr=?, description_es=?, print_length=?, publicationDate=?, dimensions=?, price=?, public_isbn=?, publisher=?, binding_type=?, updated_at=? WHERE id=?"
+    "UPDATE books SET book_title=?, correlation_id=?, edition_title=?, language=?, author=?, description_en=?, description_fr=?, description_es=?, print_length=?, publicationDate=?, dimensions=?, price=?, public_isbn=?, publisher=?, binding_type=?, rating=?, votes=?, updated_at=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -217,6 +221,10 @@ const insertBook = async (books: Book[]) => {
         public_isbn: book.publicIsbn,
         publisher: book.publisher,
         binding_type: book.bindingType,
+        image: book.images[0].url,
+        rating: book.rating || 0,
+        votes: book.votes || 0,
+        qty: book.qty,
         created_at: book.createdAt,
         updated_at: book.updatedAt,
       }).changes;
@@ -237,6 +245,8 @@ const insertBook = async (books: Book[]) => {
         book.publicIsbn,
         book.publisher,
         book.bindingType,
+        book.rating,
+        book.votes,
         book.updatedAt,
         book.isbn
       ).changes;

@@ -8,6 +8,7 @@ import {
   BookCopy,
   BooksByCategory,
   BooksPagination,
+  CategoryGraph,
   FtagItem,
   FtagsEnum,
   IBook,
@@ -147,32 +148,45 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .where(whereClause)
       .orderBy(bookSchema.id);
 
-    const filteredByCategory = data.filter(
-      (book) => book.tagName == "category"
-    );
+    const groupedByCategoryValue = {};
+    const groupedByIsbn = {};
+    const books = {};
 
-    const filteredSubCategoryTagName = data.filter(
-      (book) => book.tagName == "subcategory"
-    );
+    data.forEach((item) => {
+      let key = item.enValue as string;
 
-    const groupedByCategoryEnValue = arrayGroupingBy(
-      filteredByCategory,
-      "enValue"
-    );
+      if (!searchCategoryId) {
+        if (!books[item.isbn]) {
+          books[item.isbn] = this.buildBook(item);
+        }
+      }
 
-    const findSubcategories = (isbn: string) => {
-      return filteredSubCategoryTagName.filter((book) => book.isbn === isbn);
-    };
-
-    const groupedByIsbn = arrayGroupingBy(data, "isbn");
-
-    const books = Object.keys(groupedByIsbn).map((isbn) => {
-      const firstBook = groupedByIsbn[isbn][0];
-      return this.buildBook(firstBook);
+      if (item.tagName == "category") {
+        const category = groupedByCategoryValue[key];
+        if (category) {
+          category.push(item);
+        } else {
+          groupedByCategoryValue[key] = [item];
+        }
+      } else {
+        key = item.isbn;
+        const subCategory = groupedByIsbn[key];
+        if (subCategory) {
+          subCategory.push(item);
+        } else {
+          groupedByIsbn[key] = [item];
+        }
+      }
     });
 
-    const categories = Object.keys(groupedByCategoryEnValue).map((enValue) => {
-      const booksList = groupedByCategoryEnValue[enValue];
+    const findSubcategories = (isbn: string) => {
+      return groupedByIsbn[isbn];
+    };
+
+    const categories: CategoryGraph[] = [];
+
+    for (const enValue in groupedByCategoryValue) {
+      const booksList = groupedByCategoryValue[enValue];
       const sample = booksList[0];
       const subCategories = {};
       booksList.forEach((book: any) => {
@@ -192,20 +206,22 @@ class DefaultBookRepositoryImpl implements BookRepository {
           }
         });
       });
-      return {
+      const category = {
         id: sample.tagId,
         en: enValue,
         fr: sample.frValue,
         es: sample.esValue,
         subCategories: Object.values(subCategories) as SubCategoryGraph[],
       };
-    });
 
-    const libraryInventory = {
-      inventory: books,
+      categories.push(category);
+    }
+
+    const bookInventory = {
+      inventory: Object.values(books) as IBook[],
       categories,
     };
-    return libraryInventory;
+    return bookInventory;
   }
 
   private buildBook(book: any): IBook {

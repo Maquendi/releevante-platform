@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class WithOrigin extends PersistableEntity {
+public abstract class WithOrigin extends SimplePersistable {
   protected String origin;
 }

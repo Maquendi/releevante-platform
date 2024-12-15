@@ -24,12 +24,6 @@ public class BookLoanRecord extends AuditableEntity {
 
   private ZonedDateTime returnsAt;
 
-  private ZonedDateTime returnedAt;
-
-  private ZonedDateTime createdAt;
-
-  private ZonedDateTime updatedAt;
-
   private String clientId;
 
   @Transient private Set<LoanItemsRecord> loanItems = new HashSet<>();
@@ -40,11 +34,8 @@ public class BookLoanRecord extends AuditableEntity {
     return BookLoan.builder()
         .id(BookLoanId.of(id))
         .origin(origin)
-        .returnedAt(returnedAt)
         .returnsAt(returnsAt)
         .createdAt(createdAt)
-        .updatedAt(updatedAt)
-        .externalId(BookLoanId.of(externalId))
         .build();
   }
 
@@ -55,18 +46,16 @@ public class BookLoanRecord extends AuditableEntity {
   private static BookLoanRecord fromDomain(ClientRecord client, BookLoan loan) {
     var record = new BookLoanRecord();
     record.setId(loan.id().value());
-    record.setOrigin(loan.origin());
-    record.setCreatedAt(loan.createdAt());
-    record.setUpdatedAt(loan.updatedAt());
-    record.setReturnsAt(loan.returnsAt());
-    record.setReturnedAt(loan.returnedAt().orElse(null));
-    record.setNew(loan.isNew());
-    record.setClientId(client.getId());
     record.setExternalId(loan.externalId().value());
     record.setOrigin(loan.origin());
+    record.setCreatedAt(loan.createdAt().orElse(null));
+    record.setReturnsAt(loan.returnsAt().orElse(null));
+    record.setNew(loan.isNew());
+    record.setClientId(client.getId());
+    record.setOrigin(loan.origin());
     record.setAudit(loan.audit());
-    record.setLoanItems(LoanItemsRecord.fromDomain(record, loan.items()));
-    record.setLoanStatus(LoanStatusRecord.fromDomain(record, loan.loanStatus()));
+    record.setLoanItems(LoanItemsRecord.fromDomain(loan));
+    record.setLoanStatus(LoanStatusRecord.fromDomain(loan));
     return record;
   }
 

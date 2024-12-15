@@ -17,11 +17,17 @@ import org.immutables.value.Value;
 public abstract class AbstractBookLoan implements Auditable {
   abstract BookLoanId id();
 
-  /** estimated time for book return */
-  abstract ZonedDateTime returnsAt();
+  abstract BookLoanId externalId();
 
-  /** actual date when book is returned */
-  abstract Optional<ZonedDateTime> returnedAt();
+  /** estimated time for book return */
+  abstract Optional<ZonedDateTime> returnsAt();
+
+  abstract Optional<ZonedDateTime> createdAt();
+
+  @Value.Default
+  Boolean isNew() {
+    return true;
+  }
 
   @Value.Default
   List<LoanItem> items() {
@@ -31,14 +37,5 @@ public abstract class AbstractBookLoan implements Auditable {
   @Value.Default
   List<LoanStatus> loanStatus() {
     return Collections.emptyList();
-  }
-
-  abstract ZonedDateTime createdAt();
-
-  abstract ZonedDateTime updatedAt();
-
-  @Value.Default
-  Boolean isNew() {
-    return true;
   }
 }

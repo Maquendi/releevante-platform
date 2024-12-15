@@ -53,6 +53,10 @@ public abstract class AbstractBook {
 
   abstract Optional<String> bindingType();
 
+  abstract Float rating();
+
+  abstract Integer votes();
+
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<Tag> tags() {

@@ -15,8 +15,6 @@ public interface SmartLibraryRepository {
 
   Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary smartLibrary);
 
-  Flux<BookCopy> findAllBookCopiesUnSynced(Slid slid, boolean synced, int offset, int pageSize);
-
   Flux<LibrarySetting> getSetting(Slid slid, boolean synced);
 
   Flux<LibrarySetting> getSetting(Slid slid);

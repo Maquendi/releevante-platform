@@ -47,6 +47,9 @@ export interface Book {
   dimensions: string;
   bindingType: string;
   publicIsbn?: string;
+  rating: number;
+  votes: number;
+  qty: number;
 }
 
 export interface LibrarySetting {

@@ -40,6 +40,8 @@ public class BookRecord extends PersistableEntity {
   private LocalDate publishDate;
   private String publicIsbn;
   private String bindingType;
+  private float rating;
+  private int votes;
 
   @Transient private Set<BookRatingRecord> ratings = new LinkedHashSet<>();
 
@@ -63,6 +65,8 @@ public class BookRecord extends PersistableEntity {
     record.setPublishDate(book.publishDate());
     record.setPublicIsbn(book.publicIsbn().orElse(null));
     record.setBindingType(book.bindingType().orElse(null));
+    record.setRating(book.rating());
+    record.setVotes(book.votes());
     return record;
   }
 
@@ -84,6 +88,8 @@ public class BookRecord extends PersistableEntity {
         .language(lang)
         .publicIsbn(Optional.ofNullable(publicIsbn))
         .bindingType(Optional.ofNullable(bindingType))
+        .votes(votes)
+        .rating(rating)
         .qty(qty)
         .price(price)
         .title(title)

@@ -2,43 +2,40 @@ package com.releevante.core.application.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.releevante.core.domain.BookLoan;
-import com.releevante.core.domain.BookLoanId;
-import com.releevante.core.domain.LoanItem;
-import com.releevante.core.domain.LoanStatus;
+import com.releevante.core.domain.*;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
+import com.releevante.types.UuidGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable()
-@JsonDeserialize(as = BookLoanDto.class)
-@JsonSerialize(as = BookLoanDto.class)
+@JsonDeserialize(as = BookLoanSyncDto.class)
+@JsonSerialize(as = BookLoanSyncDto.class)
 @ImmutableExt
-public abstract class AbstractBookLoanDto {
-  abstract String id();
+public abstract class AbstractBookLoanSyncDto {
+  abstract String externalId();
+
+  abstract Optional<String> id();
 
   abstract List<LoanItem> items();
 
-  abstract ZonedDateTime returnsAt();
+  abstract Optional<ZonedDateTime> returnsAt();
 
-  abstract ZonedDateTime createdAt();
-
-  abstract ZonedDateTime updatedAt();
-
-  abstract ZonedDateTime endTime();
+  abstract Optional<ZonedDateTime> createdAt();
 
   abstract List<LoanStatus> status();
 
   public BookLoan toDomain(AccountPrincipal principal, Slid slid) {
     return BookLoan.builder()
         .origin(slid.value())
-        .id(BookLoanId.of(id()))
+        .externalId(BookLoanId.of(externalId()))
+        .id(id().map(BookLoanId::of).orElse(BookLoanId.of(UuidGenerator.instance().next())))
         .isNew(id().isEmpty())
         .createdAt(createdAt())
-        .updatedAt(updatedAt())
         .returnsAt(returnsAt())
         .origin(principal.audience())
         .audit(principal.subject())

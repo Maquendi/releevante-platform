@@ -19,8 +19,6 @@ import reactor.core.publisher.Mono;
 public class ClientRecord extends PersistableEntity {
   @Id String id;
 
-  String externalId;
-
   @Transient ServiceRatingRecord serviceRating;
 
   @Transient Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
@@ -39,7 +37,6 @@ public class ClientRecord extends PersistableEntity {
     record.setCreatedAt(client.createdAt());
     record.setUpdatedAt(client.updatedAt());
     record.setNew(true);
-    record.setExternalId(client.externalId().value());
     return record;
   }
 
@@ -75,6 +72,7 @@ public class ClientRecord extends PersistableEntity {
             loans -> {
               var loanRecords = BookLoanRecord.fromDomain(this, loans);
               this.getBookLoans().addAll(loanRecords);
+              this.setNew(false);
               return this;
             });
   }
@@ -129,13 +127,7 @@ public class ClientRecord extends PersistableEntity {
   }
 
   public Client toDomain() {
-    return Client.builder()
-        .externalId(Optional.ofNullable(externalId).map(ClientId::of).orElse(ClientId.of(getId())))
-        .isNew(false)
-        .createdAt(createdAt)
-        .updatedAt(updatedAt)
-        .id(ClientId.of(id))
-        .build();
+    return Client.builder().createdAt(createdAt).updatedAt(updatedAt).id(ClientId.of(id)).build();
   }
 
   @Override

@@ -3,7 +3,6 @@ package com.main.application.core;
 import com.main.application.identity.IdentityServiceFacade;
 import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.SmartLibraryService;
-import com.releevante.core.domain.BookCopy;
 import com.releevante.core.domain.LibrarySetting;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.identity.domain.model.SmartLibraryAccess;
@@ -35,12 +34,6 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   public Flux<SmartLibraryDto> smartLibrariesValidated(
       AccountPrincipal principal, Set<Slid> sLids) {
     return smartLibraryService.smartLibrariesValidated(principal, sLids);
-  }
-
-  @Override
-  public Flux<BookCopy> synchronizeLibraryBooks(
-      Slid slid, boolean synced, int offset, int pageSize) {
-    return smartLibraryService.synchronizeLibraryBooks(slid, synced, offset, pageSize);
   }
 
   @Override
