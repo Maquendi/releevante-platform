@@ -1,19 +1,53 @@
 import { UserId } from "@/identity/domain/models";
-import { CartId } from "./cart.model";
 
-export interface BookLoanDetail {
+export enum LoanStatuses {
+  "RETURNED_ON_TIME",
+  "RETURNED_BEFORE_TIME",
+  "RETURNED_OVERDUE",
+  "CURRENT",
+  "OVERDUE",
+  "PENDING",
+  "CHECKING_OUT",
+}
+
+export enum LoanItemStatusValues {
+  REPORTED_LOST,
+  LOST,
+  RETURNED,
+  REPORTED_DAMAGE,
+  DAMAGED,
+  REPORTED_SOLD,
+  SOLD,
+  BORROWED,
+}
+
+export interface BookLoanItemStatus {
+  id: string;
+  itemId: string;
+  status: LoanItemStatusValues;
+  createdAt: Date
+}
+
+export interface BookLoanItem {
   id: string;
   isbn: string;
-  book_copy_id: string;
+  cpy: string;
+  position: string;
+}
+
+export interface BookLoanStatus {
+  id: string;
+  loanId: string;
+  status: LoanStatuses;
+  isSynced: boolean;
+  createdAt: Date;
 }
 
 export interface BookLoan {
   id: string;
-  userId: UserId;
-  cartId: CartId;
-  itemsCount: number;
-  status: "onschedule" | "late";
-  details: BookLoanDetail[];
-  startTime?: Date;
-  endTime?: Date;
+  clientId: UserId;
+  loanItems: BookLoanItem[];
+  createdAt: Date;
+  returnsAt: Date;
+  status: BookLoanStatus[];
 }

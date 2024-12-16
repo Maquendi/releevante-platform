@@ -1,7 +1,6 @@
 import { Cart } from "../domain/cart.model";
 import { CartService } from "./service.definition";
 import { CartRepository } from "../domain/repositories";
-import { BookServiceFacade } from "@/book/application/service.definitions";
 import { v4 as uuidv4 } from "uuid";
 import { CartDto } from "./dto";
 /**
@@ -9,10 +8,7 @@ import { CartDto } from "./dto";
  */
 
 export class DefaultCartService implements CartService {
-  constructor(
-    private bookService: BookServiceFacade,
-    private cartRepository: CartRepository
-  ) {}
+  constructor(private cartRepository: CartRepository) {}
 
   async onCheckOutFailed(cart: Cart): Promise<Cart> {
     cart.markFailed();
@@ -21,11 +17,11 @@ export class DefaultCartService implements CartService {
   }
 
   async checkout(dto: CartDto): Promise<Cart> {
-    const cartItems = dto.items.map(({ isbn, qty,transactionType }) => ({
+    const cartItems = dto.items.map(({ isbn, qty, transactionType }) => ({
       id: uuidv4(),
       isbn,
       qty,
-      transactionType
+      transactionType,
     }));
 
     const cartId = {

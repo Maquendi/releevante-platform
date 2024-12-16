@@ -1,56 +1,71 @@
 import { BookServiceFacade } from "@/book/application/service.definitions";
 import { Cart } from "../domain/cart.model";
-import { BookLoan, BookLoanDetail } from "../domain/loan.model";
 import {
-  BookLoanService,
-  BridgeIoApiClient,
-  CoreApiClient,
-} from "./service.definition";
+  BookLoan,
+  BookLoanItem,
+  BookLoanItemStatus,
+  BookLoanStatus,
+  LoanStatuses,
+} from "../domain/loan.model";
+import { BookLoanService } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
-import { LoanRepository, TransactionCallback } from "../domain/repositories";
+import { LoanRepository } from "../domain/repositories";
 
 export class BookLoanServiceImpl implements BookLoanService {
   constructor(
     private bookLoanRepository: LoanRepository,
-    private bookService: BookServiceFacade,
-    coreApiClient: CoreApiClient,
-    private bridgeIoClient: BridgeIoApiClient
+    private bookService: BookServiceFacade
   ) {}
 
-  // interact with bridge.io for door/compartment opening.
+  addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus> {
+    return this.bookLoanRepository.addLoanItemStatus(status);
+  }
+
   async checkout(cart: Cart): Promise<BookLoan> {
-    const bookCopySearch = cart.cartItems.map(({ isbn, qty }) => ({ isbn, qty }));
+    const bookCopySearch = cart.cartItems.map(({ isbn, qty }) => ({
+      isbn,
+      qty,
+    }));
 
     const bookCopies = await this.bookService.findAvailableCopiesByIsbn(
       bookCopySearch
     );
 
-    const loanDetails: BookLoanDetail[] = bookCopies.map(({ isbn, id }) => ({
+    const loanItems: BookLoanItem[] = bookCopies.map(
+      ({ isbn, id, at_position }) => ({
+        id: uuidv4(),
+        isbn,
+        cpy: id,
+        position: at_position,
+      })
+    );
+
+    const today = new Date();
+
+    const returnsAt = today;
+
+    returnsAt.setDate(returnsAt.getDate() + 5);
+
+    const loanId = uuidv4();
+
+    const loanStatus: BookLoanStatus = {
       id: uuidv4(),
-      isbn,
-      book_copy_id: id,
-    }));
+      loanId: loanId,
+      status: LoanStatuses.CHECKING_OUT,
+      createdAt: today,
+      isSynced: false,
+    };
 
     const bookLoan: BookLoan = {
-      id: uuidv4(),
-      cartId: cart.id,
-      userId: cart.userId,
-      itemsCount: bookCopies.length,
-      status: "onschedule",
-      details: loanDetails,
-      startTime: new Date(),
-      endTime: new Date(),
+      id: loanId,
+      clientId: cart.userId,
+      loanItems: loanItems,
+      createdAt: today,
+      returnsAt: returnsAt,
+      status: [loanStatus],
     };
 
-    const compartments = bookCopies.map((book) => ({
-      compartment: book.at_position,
-    }));
-
-    const transactionCb: TransactionCallback = {
-      execute: async () => this.bridgeIoClient.openCompartments(compartments),
-    };
-
-    await this.bookLoanRepository.save(bookLoan, bookCopies, transactionCb);
+    await this.bookLoanRepository.save(bookLoan);
 
     return bookLoan;
   }

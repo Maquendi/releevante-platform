@@ -1,7 +1,11 @@
 import { BookCompartment } from "@/book/domain/models";
 import { Cart } from "../domain/cart.model";
 import { CartDto } from "./dto";
-import { BookLoan } from "../domain/loan.model";
+import {
+  BookLoan,
+  BookLoanItem,
+  BookLoanItemStatus,
+} from "../domain/loan.model";
 
 export interface CartService {
   checkout(dto: CartDto): Promise<Cart>;
@@ -22,4 +26,5 @@ export interface BridgeIoApiClient {
 
 export interface BookLoanService {
   checkout(cart: Cart): Promise<BookLoan>;
+  addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
 }

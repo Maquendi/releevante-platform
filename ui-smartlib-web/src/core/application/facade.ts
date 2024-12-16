@@ -1,6 +1,11 @@
-import { Cart } from "../domain/cart.model";
-import { CartDto } from "./dto";
+import {
+  BookLoan,
+  BookLoanItem,
+  BookLoanItemStatus,
+} from "../domain/loan.model";
+import { CartDto, LoanItemStatusDto } from "./dto";
 import { CartService, BookLoanService } from "./service.definition";
+import { v4 as uuidv4 } from "uuid";
 
 /***
  * A cart service facade
@@ -16,15 +21,27 @@ export class CartServiceFacade {
    * @param cartDto cart dto,
    * @returns
    */
-  async checkout(dto: CartDto): Promise<Cart> {
+  async checkout(dto: CartDto): Promise<BookLoan> {
     const cart = await this.cartService.checkout(dto);
 
     try {
-      await this.bookLoanService.checkout(cart);
+      return await this.bookLoanService.checkout(cart);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       await this.cartService.onCheckOutFailed(cart);
+      throw error;
     }
-    return cart;
+  }
+
+  async newLoanItemStatus(dto: LoanItemStatusDto): Promise<BookLoanItemStatus> {
+
+    const status: BookLoanItemStatus = {
+      id: uuidv4(),
+      createdAt: new Date(),
+      itemId: dto.itemId,
+      status:dto.status
+    }
+    
+    return await this.bookLoanService.addLoanItemStatus(status);
   }
 }

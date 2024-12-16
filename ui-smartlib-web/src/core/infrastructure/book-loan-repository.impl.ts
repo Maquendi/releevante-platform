@@ -1,20 +1,20 @@
-import { BookCopy } from "@/book/domain/models";
-import { BookLoan } from "../domain/loan.model";
-import { LoanRepository, TransactionCallback } from "../domain/repositories";
-import { bookCopieSchema } from "@/config/drizzle/schemas";
+import {
+  BookLoan,
+  BookLoanItem,
+  BookLoanItemStatus,
+} from "../domain/loan.model";
+import { LoanRepository } from "../domain/repositories";
 import { executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
-import { eq } from "drizzle-orm";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { bookLoanSchema } from "@/config/drizzle/schemas/bookLoan";
 import { loanItemSchema } from "@/config/drizzle/schemas/LoanItems";
+import { loanStatusSchema } from "@/config/drizzle/schemas/LoanStatus";
+import { db } from "@/config/drizzle/db";
+import { loanItemStatusSchema } from "@/config/drizzle/schemas/LoanItemStatus";
 
 export class BookLoanRepositoryImpl implements LoanRepository {
-  async save(
-    loan: BookLoan,
-    bookCopies: BookCopy[],
-    transactionCb: TransactionCallback
-  ): Promise<void> {
+  async save(loan: BookLoan): Promise<void> {
     /**
      * transaction operation
      */
@@ -25,42 +25,55 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       ): Promise<void> {
         const loanData = {
           id: loan.id,
-          cart_id: loan.cartId.value,
-          user_id: loan.userId.value,
-          status: loan.status,
-          end_time: loan.endTime,
-          start_time: loan.startTime,
-          total_items: loan.itemsCount,
+          client_id: loan.clientId.value,
+          returns_at: loan.returnsAt,
+          created_at: loan.createdAt,
         } as any;
 
         const loanInsertion = await tx.insert(bookLoanSchema).values(loanData);
 
-        const loanDetailInsertion = loan.details.map((detail) => {
+        const loanItemsInsertion = loan.loanItems.map((item) => {
           return tx.insert(loanItemSchema).values({
-            isbn: detail.isbn,
-            id: detail.id,
-            bookCopyId: detail.book_copy_id,
+            isbn: item.isbn,
+            id: item.id,
+            bookCopyId: item.cpy,
             loanId: loan.id,
-          });
+            created_at: loan.createdAt,
+            updated_at: loan.createdAt,
+          } as any);
         });
 
-        const bookCopiesUpdation = bookCopies.map(async (copy) => {
-          return tx
-            .update(bookCopieSchema)
-            .set({ is_available: false })
-            .where(eq(bookCopieSchema.id, copy.id));
+        const loanStatusInsertion = loan.status.map((status) => {
+          return tx.insert(loanStatusSchema).values({
+            id: status.id,
+            loanId: status.loanId,
+            isSynced: status.isSynced,
+            status: status.status.toString(),
+            created_at: status.createdAt,
+          } as any);
         });
 
         await Promise.all([
           loanInsertion,
-          ...loanDetailInsertion,
-          ...bookCopiesUpdation,
-          transactionCb.execute(),
+          ...loanItemsInsertion,
+          ...loanStatusInsertion,
         ]);
       },
     };
 
     await executeTransaction(transaction);
+  }
+
+  async addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus> {
+    await db.insert(loanItemStatusSchema).values({
+      id: status.id,
+      itemId: status.itemId,
+      status: status.status,
+      isSynced: false,
+      created_at: status.createdAt,
+    } as any);
+
+    return status;
   }
 }
 

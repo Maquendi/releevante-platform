@@ -9,6 +9,7 @@ const LoanStatusValues = [
   "CURRENT",
   "OVERDUE",
   "PENDING",
+  "CHECKING_OUT",
 ] as const;
 
 export const loanStatusSchema = sqliteTable("loan_status", {
