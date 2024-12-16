@@ -5,7 +5,7 @@ import {
   BookLoanItem,
   BookLoanItemStatus,
   BookLoanStatus,
-  LoanStatuses,
+  LoanStatusValues,
 } from "../domain/loan.model";
 import { BookLoanService } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
@@ -16,6 +16,10 @@ export class BookLoanServiceImpl implements BookLoanService {
     private bookLoanRepository: LoanRepository,
     private bookService: BookServiceFacade
   ) {}
+
+  addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus> {
+    return this.bookLoanRepository.addLoanStatus(status);
+  }
 
   addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus> {
     return this.bookLoanRepository.addLoanItemStatus(status);
@@ -51,9 +55,8 @@ export class BookLoanServiceImpl implements BookLoanService {
     const loanStatus: BookLoanStatus = {
       id: uuidv4(),
       loanId: loanId,
-      status: LoanStatuses.CHECKING_OUT,
+      status: LoanStatusValues.CHECKING_OUT,
       createdAt: today,
-      isSynced: false,
     };
 
     const bookLoan: BookLoan = {

@@ -5,6 +5,7 @@ import {
   BookLoan,
   BookLoanItem,
   BookLoanItemStatus,
+  BookLoanStatus,
 } from "../domain/loan.model";
 
 export interface CartService {
@@ -27,4 +28,5 @@ export interface BridgeIoApiClient {
 export interface BookLoanService {
   checkout(cart: Cart): Promise<BookLoan>;
   addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
+  addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus>;
 }

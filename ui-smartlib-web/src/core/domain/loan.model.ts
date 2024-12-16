@@ -1,6 +1,6 @@
 import { UserId } from "@/identity/domain/models";
 
-export enum LoanStatuses {
+export enum LoanStatusValues {
   "RETURNED_ON_TIME",
   "RETURNED_BEFORE_TIME",
   "RETURNED_OVERDUE",
@@ -38,8 +38,7 @@ export interface BookLoanItem {
 export interface BookLoanStatus {
   id: string;
   loanId: string;
-  status: LoanStatuses;
-  isSynced: boolean;
+  status: LoanStatusValues;
   createdAt: Date;
 }
 

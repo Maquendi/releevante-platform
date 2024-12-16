@@ -2,6 +2,7 @@ import {
   BookLoan,
   BookLoanItem,
   BookLoanItemStatus,
+  BookLoanStatus,
 } from "../domain/loan.model";
 import { LoanRepository } from "../domain/repositories";
 import { executeTransaction } from "@/lib/db/drizzle-client";
@@ -47,7 +48,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
           return tx.insert(loanStatusSchema).values({
             id: status.id,
             loanId: status.loanId,
-            isSynced: status.isSynced,
+            isSynced: false,
             status: status.status.toString(),
             created_at: status.createdAt,
           } as any);
@@ -64,10 +65,24 @@ export class BookLoanRepositoryImpl implements LoanRepository {
     await executeTransaction(transaction);
   }
 
-  async addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus> {
+  async addLoanItemStatus(
+    status: BookLoanItemStatus
+  ): Promise<BookLoanItemStatus> {
     await db.insert(loanItemStatusSchema).values({
       id: status.id,
       itemId: status.itemId,
+      status: status.status,
+      isSynced: false,
+      created_at: status.createdAt,
+    } as any);
+
+    return status;
+  }
+
+  async addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus> {
+    await db.insert(loanStatusSchema).values({
+      id: status.id,
+      loanId: status.loanId,
       status: status.status,
       isSynced: false,
       created_at: status.createdAt,

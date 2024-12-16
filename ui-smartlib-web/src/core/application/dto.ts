@@ -1,5 +1,5 @@
 import { UserId } from "@/identity/domain/models";
-import { LoanItemStatusValues } from "../domain/loan.model";
+import { LoanItemStatusValues, LoanStatusValues } from "../domain/loan.model";
 
 export type CartItemDto = {
   isbn: string;
@@ -15,4 +15,9 @@ export interface CartDto {
 export interface LoanItemStatusDto {
   itemId: string;
   status: LoanItemStatusValues;
+}
+
+export interface LoanStatusDto {
+  loanId: string;
+  status: LoanStatusValues;
 }
