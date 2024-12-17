@@ -45,6 +45,7 @@ export interface CategoryBookItem {
   votes: number;
   rating: number;
   correlationId: string;
+  categories:FtagItem[]
 }
 
 export interface CategoryTranslations {
@@ -57,9 +58,9 @@ export interface CategoryTranslations {
 export interface BooksByCategory {
   subCategory: {
     id: string;
-    esSubCategoryName: string;
-    enSubCategoryName: string;
-    frSubCategoryName: string;
+    enName: string;
+    esName: string;
+    frName: string;
   };
   books: CategoryBookItem[];
 }
@@ -108,7 +109,7 @@ export interface Book {
   author: string;
   correlationId: string;
   editionTitle: string;
-  images?: BookImage[];
+  image: string;
   publisher: string;
   enDescription: string;
   esDescription: string;
@@ -116,8 +117,8 @@ export interface Book {
   publicationDate: string;
   printLength: number;
   dimensions: string;
-  bookLanguages: BookLanguage[];
-  category: CategoryTranslations;
+  languages: BookLanguage[];
+  categories:BookCategory[]
   rating?: number;
   votes?: number;
   price?: number;

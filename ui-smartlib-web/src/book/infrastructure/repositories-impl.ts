@@ -108,7 +108,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
           esName: ftagsSchema.esTagValue,
           enName: ftagsSchema.enTagValue,
           frName: ftagsSchema.frTagValue,
-          tagName: ftagsSchema.tagName, 
+          tagName: ftagsSchema.tagName,
         }),
         isbn: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
@@ -123,33 +123,40 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .leftJoin(bookRatingsSchema, eq(bookRatingsSchema.isbn, bookSchema.id))
       .groupBy(bookSchema.correlationId);
-  
+
     const groupedBooks: { [key: string]: any } = {};
-  
+
     results.forEach(({ tags, ...book }) => {
-      const subCategoryTags = tags?.filter(tag => tag.tagName === "subcategory"); 
-  
-      subCategoryTags.forEach(subCat => {
+      const subCategoryTags = tags?.filter(
+        (tag) => tag.tagName === "subcategory"
+      );
+      const categoriesTags = tags?.filter((tag) => tag.tagName === "category");
+
+      subCategoryTags.forEach((subCat) => {
         const subCategoryId = subCat.id || "";
         if (!groupedBooks[subCategoryId]) {
           groupedBooks[subCategoryId] = {
-            subCategory: subCat, 
+            subCategory: subCat,
             books: [],
-            bookIds: new Set(), 
+            bookIds: new Set(),
           };
         }
-  
+
         if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
-          groupedBooks[subCategoryId].books.push(book);
+          groupedBooks[subCategoryId].books.push({
+            ...book,
+            categories: categoriesTags,
+          });
           groupedBooks[subCategoryId].bookIds.add(book.isbn);
         }
       });
     });
-  
-    const data = Object.values(groupedBooks).map(({ bookIds, ...rest }) => rest);
+
+    const data = Object.values(groupedBooks).map(
+      ({ bookIds, ...rest }) => rest
+    );
     return data as BooksByCategory[];
   }
-  
 
   async loanLibraryInventoryOriginal(
     searchCategoryId?: string
@@ -201,7 +208,6 @@ class DefaultBookRepositoryImpl implements BookRepository {
     const groupedByCategoryValue = {};
     const groupedByIsbn = {};
     const books = {};
-
 
     data.forEach((item) => {
       let key = item.enValue as string;
@@ -345,9 +351,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
         )
       )
       .groupBy(bookSchema.correlationId);
-  
+
     const groupedBooks: { [key: string]: any } = {};
-  
+
     results.forEach(({ category, subCategory, ...book }) => {
       subCategory?.forEach((subCat) => {
         const subCategoryId = subCat.id || "";
@@ -356,22 +362,23 @@ class DefaultBookRepositoryImpl implements BookRepository {
             category,
             subCategory: subCat,
             books: [],
-            bookIds: new Set(), 
+            bookIds: new Set(),
           };
         }
-  
+
         if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
           groupedBooks[subCategoryId].books.push(book);
           groupedBooks[subCategoryId].bookIds.add(book.isbn);
         }
       });
     });
-  
-    const data = Object.values(groupedBooks).map(({ bookIds, ...rest }) => rest);
-  
+
+    const data = Object.values(groupedBooks).map(
+      ({ bookIds, ...rest }) => rest
+    );
+
     return data as BooksByCategory[];
   }
-  
 
   async findAllBy(query: string): Promise<Book[]> {
     const results = await dbGetAll("bookSchema", {
@@ -386,14 +393,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         author: true,
         editionTitle: true,
         correlationId: true,
-      },
-      with: {
-        images: {
-          columns: {
-            id: true,
-            url: true,
-          },
-        },
+        image: true,
       },
     });
 
@@ -408,16 +408,15 @@ class DefaultBookRepositoryImpl implements BookRepository {
         editionTitle: bookSchema.editionTitle,
         author: bookSchema.author,
         publisher: bookSchema.publisher,
-        images: jsonAgg({
-          id: bookImageSchema.id,
-          url: bookImageSchema.url,
-        }),
+        image: bookSchema.image,
         price: bookSchema.price,
-        category: {
-          enCategory: categorySchema.enName,
-          esCategory: categorySchema.esName,
-          frCategory: categorySchema.frName,
-        },
+        ftags: jsonAgg({
+          id: ftagsSchema.id,
+          tagName: ftagsSchema.tagName,
+          enTagValue: ftagsSchema.enTagValue,
+          esTagValue: ftagsSchema.esTagValue,
+          frTagValue: ftagsSchema.frTagValue,
+        }),
         printLength: bookSchema.printLength,
         enDescription: bookSchema.descriptionEn,
         esDescription: bookSchema.descriptionEs,
@@ -432,22 +431,25 @@ class DefaultBookRepositoryImpl implements BookRepository {
         votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
       })
       .from(bookSchema)
-      .leftJoin(bookImageSchema, eq(bookSchema.id, bookImageSchema.book_isbn))
       .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
-      .leftJoin(
-        bookCategorySchema,
-        eq(bookCategorySchema.bookIsbn, bookSchema.id)
-      )
-      .leftJoin(
-        categorySchema,
-        eq(categorySchema.id, bookCategorySchema.categoryId)
-      )
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .groupBy(bookSchema.correlationId)
       .where(eq(bookSchema.correlationId, correlationId));
 
     const bookFound = result?.length ? result[0] : null;
 
-    const bookLanguages = bookFound?.language.reduce(
+    const categories = bookFound?.ftags.reduce((acc, tag) => {
+      if (
+        tag.tagName === "category" &&
+        !acc.some((item) => item.id === tag.id)
+      ) {
+        acc.push(tag);
+      }
+      return acc;
+    }, []);
+
+    const languages = bookFound?.language.reduce(
       (acc: any[], { bookId, language }) => {
         if (!acc.some((item) => item.language === language)) {
           acc.push({ bookId, language });
@@ -459,7 +461,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
 
     const bookItem = {
       ...bookFound,
-      bookLanguages,
+      languages,
+      categories,
     };
 
     return bookItem as Book;
@@ -474,16 +477,15 @@ class DefaultBookRepositoryImpl implements BookRepository {
         editionTitle: bookSchema.editionTitle,
         author: bookSchema.author,
         publisher: bookSchema.author,
-        images: jsonAgg({
-          id: bookImageSchema.id,
-          url: bookImageSchema.url,
-        }),
+        image: bookSchema.image,
         price: bookSchema.price,
-        category: {
-          enCategory: categorySchema.enName,
-          esCategory: categorySchema.esName,
-          frCategory: categorySchema.frName,
-        },
+        ftags: jsonAgg({
+          id: ftagsSchema.id,
+          tagName: ftagsSchema.tagName,
+          enTagValue: ftagsSchema.enTagValue,
+          esTagValue: ftagsSchema.esTagValue,
+          frTagValue: ftagsSchema.frTagValue,
+        }),
         printLength: bookSchema.printLength,
         enDescription: bookSchema.descriptionEn,
         esDescription: bookSchema.descriptionEs,
@@ -499,24 +501,21 @@ class DefaultBookRepositoryImpl implements BookRepository {
         votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
       })
       .from(bookSchema)
-      .leftJoin(bookImageSchema, eq(bookSchema.id, bookImageSchema.book_isbn))
       .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
-      .leftJoin(
-        bookCategorySchema,
-        eq(bookCategorySchema.bookIsbn, bookSchema.id)
-      )
-      .leftJoin(
-        categorySchema,
-        eq(categorySchema.id, bookCategorySchema.categoryId)
-      )
       .leftJoin(bookFtagSchema, eq(bookSchema.id, bookFtagSchema.bookIsbn))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .groupBy(bookSchema.correlationId)
       .orderBy(sql`count(${bookFtagSchema.ftagId}) DESC`)
       .limit(1)
-      .where(inArray(bookFtagSchema.ftagId, tagsIdsArr));
+      .where(
+        or(
+          eq(ftagsSchema.tagName, "category"),
+          inArray(bookFtagSchema.ftagId, tagsIdsArr)
+        )
+      );
 
     const bookFound = result?.length ? result[0] : null;
-    const bookLanguages = bookFound?.language.reduce(
+    const languages = bookFound?.language.reduce(
       (acc: any[], { bookId, language }) => {
         if (!acc.some((item) => item.language === language)) {
           acc.push({ bookId, language });
@@ -526,9 +525,20 @@ class DefaultBookRepositoryImpl implements BookRepository {
       []
     );
 
+    const categories = bookFound?.ftags.reduce((acc, tag) => {
+      if (
+        tag.tagName === "category" &&
+        !acc.some((item) => item.id === tag.id)
+      ) {
+        acc.push(tag);
+      }
+      return acc;
+    }, []);
+
     const bookItem = {
       ...bookFound,
-      bookLanguages,
+      categories,
+      languages,
     };
 
     return bookItem as Book;
@@ -543,16 +553,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: true,
         bookTitle: true,
         author: true,
+        image: true,
         editionTitle: true,
         correlationId: true,
-      },
-      with: {
-        images: {
-          columns: {
-            id: true,
-            url: true,
-          },
-        },
       },
       limit,
       offset,
