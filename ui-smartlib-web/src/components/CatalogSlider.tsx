@@ -20,7 +20,7 @@ const Slider: React.FC<SliderProps> = ({
   slidesToShow = 3,
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const t = useTranslations("homePage");
+  const t = useTranslations("catalogPage");
   const searchParams = useSearchParams();
 
   const nextSlide = () => {

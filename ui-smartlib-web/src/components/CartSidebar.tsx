@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/sidebar";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
-import { useMemo } from "react";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import useGetBooks from "@/hooks/useGetBooks";
@@ -51,7 +50,7 @@ export function CartEmpty() {
   );
 }
 
-export function CartSidebar() {
+export default function CartSidebar() {
   const settings = useAppSelector((state) => state.settings);
   const { open } = useSidebar();
   const t = useTranslations("cart");

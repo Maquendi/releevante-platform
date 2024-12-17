@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addItem } from "@/redux/features/cartSlice";
-import { Book, BookCategory, BookLanguage } from "@/book/domain/models";
+import { Book, BookLanguage } from "@/book/domain/models";
 
 export function useAddBookToCart() {
   const dispatch = useAppDispatch();
@@ -30,7 +30,7 @@ export function useAddBookToCart() {
   };
 
   const cartItemPayload = (book: Book) => {
-    const bookId = book.bookLanguages.find(
+    const bookId = book.languages.find(
       (item) => item.language === selectedLanguage
     )?.bookId;
 
@@ -40,10 +40,10 @@ export function useAddBookToCart() {
     return {
       isbn: bookId!,
       title: book.bookTitle,
-      image: book.images?.[0]?.url || "",
+      image: book.image,
       qty: 1,
       price: book.price,
-      category:book.category,
+      categories:book.categories,
       author:book.author
     };
   };

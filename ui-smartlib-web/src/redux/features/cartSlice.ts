@@ -1,4 +1,4 @@
-import { CategoryTranslations } from "@/book/domain/models";
+import { CategoryTranslations, FtagItem } from "@/book/domain/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type TransaccionType = "RENT" | "PURCHASE";
@@ -10,7 +10,7 @@ export interface CartItemState {
   qty: number;
   price?: number;
   author: string;
-  category: CategoryTranslations;
+  categories: FtagItem[];
   transactionType: TransaccionType;
 }
 

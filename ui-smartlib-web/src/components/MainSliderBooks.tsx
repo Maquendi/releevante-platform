@@ -39,14 +39,12 @@ export default function MainSliderBooks() {
     queryFn: () => FetchAllBooks({ limit: 25 }),
   });
 
-  const bookList = useMemo(() => {
-    return books?.filter((book) => book?.images?.length);
-  }, [books]);
+
 
   return (
     <div>
       <Slider {...settings}>
-        {bookList?.map((book, index) => (
+        {books?.map((book, index) => (
           <article key={index}>
             <div
               className={`relative duration-500 mx-2 rounded-lg z-10  ${
@@ -64,9 +62,7 @@ export default function MainSliderBooks() {
                 sizes="(max-width: 768px) 100vw, 50vw"
                 fill
                 src={
-                  book?.images?.length
-                    ? book.images[0].url!
-                    : "/images/releevante.svg"
+                  book?.image
                 }
                 alt={`image-for-${book.bookTitle}`}
               ></Image>

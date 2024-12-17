@@ -1,10 +1,11 @@
 "use client";
 
-import { FetchAllBookByCategory } from "@/actions/book-actions";
+import { FetchAllBookByCategory, FetchAllBookCategories } from "@/actions/book-actions";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import BookItem from "./BookItem";
 import { useLocale } from "next-intl";
+import useFilterBooksByCategory from "@/hooks/useFilterBooksByCategory";
 
 interface SeeAllBooksPros {
   subCategoryId: string;
@@ -13,23 +14,30 @@ interface SeeAllBooksPros {
 
 function SeeAllBooks({ subCategoryId, categoryId }: SeeAllBooksPros) {
   const locale = useLocale();
-  const { data: categoryBooks } = useQuery({
-    queryKey: ["BOOKS_BY_CATEGORIES", categoryId],
-    queryFn: () => FetchAllBookByCategory(categoryId),
+  const booksByCategory = useFilterBooksByCategory({ categoryId });
+  const { data: categories } = useQuery({
+    queryKey: ["CATEGORIES"],
+    queryFn: async () => await FetchAllBookCategories(),
+    refetchOnMount:false,
+    refetchOnWindowFocus:false
   });
 
   const bookByCategory = useMemo(() => {
-    const data = categoryBooks?.filter(
+    const data = booksByCategory?.filter(
       (item) => item.subCategory.id === subCategoryId
     );
     return data?.length ? data[0] : null;
-  }, [categoryBooks, subCategoryId]);
+  }, [booksByCategory, subCategoryId]);
 
+
+  const currentCategory=useMemo(()=>{
+    return categories?.filter(item=>item.id === categoryId)
+  },[categories])
   return (
     <div className="min-h-[250px]">
       <h2 className="text-xl font-medium space-x-2 mb-5">
         {categoryId ? (
-          <span>{bookByCategory?.category[`${locale}CategoryName`]}</span>
+          <span>{currentCategory?.[`${locale}CategoryName`]}</span>
         ) : (
           <span>All</span>
         )}
