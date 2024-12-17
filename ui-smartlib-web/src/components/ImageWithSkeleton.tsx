@@ -17,14 +17,14 @@ const ImageWithSkeleton = ({ src, width, height, alt, className }: ImageWithSkel
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div suppressHydrationWarning className="relative !bg-gray-200" style={{minWidth:`${width}px`,minHeight:`${height}px`}}>
+    <div suppressHydrationWarning className="relative !bg-gray-200 rounded-md" style={{minWidth:`${width}px`,minHeight:`${height}px`}}>
       {isLoading && <Skeleton className="absolute inset-0 bg-gray-100 w-full h-full" />}
       <Image
         src={src || "/images/reeleante.svg"}
         fill
         alt={alt}
         sizes="w-full h-full"
-        className={cn('transition-opacity',className,isLoading && "w-full h-full object-contain opacity-0 bg-gray-100")}
+        className={cn('transition-opacity',className,isLoading && "w-full h-full rounded-md object-contain object-top opacity-0 bg-gray-100")}
         onLoad={() => setIsLoading(false)}
       />
     </div>

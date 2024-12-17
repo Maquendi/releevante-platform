@@ -7,6 +7,7 @@ import {
   BooksPagination,
   FtagItem,
   FtagsEnum,
+  LibraryInventory,
 } from "../domain/models";
 import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
@@ -41,5 +42,9 @@ import { BookService, BookServiceFacade } from "./service.definitions";
 
   findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
     return this.bookService.findBookByVibeTags(tagsValues)
+  }
+
+  loanLibraryInventory(): Promise<BooksByCategory[]> {
+    return this.bookService.loanLibraryInventory()
   }
 }

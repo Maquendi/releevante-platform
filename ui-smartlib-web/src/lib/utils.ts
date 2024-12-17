@@ -15,9 +15,18 @@ export const createHashFromString = async (string) => {
   return hashHex;
 };
 
-export const arrayGroupingBy = function <T>(xs: T[], key: string) {
-  return xs.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
+type RegionType = 'en-US' | 'fr-FR' | 'es-DO';
+
+export function formatDateByRegion(date:Date, region:RegionType = 'en-US') {
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true, 
+  };
+
+  const formattedDate = new Intl.DateTimeFormat(region, options as any).format(date);
+  return formattedDate;
+}

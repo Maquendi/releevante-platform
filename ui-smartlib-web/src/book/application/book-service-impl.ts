@@ -7,6 +7,7 @@ import {
   FtagItem,
   FtagsEnum,
   BookByFtagsVibes,
+  LibraryInventory,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
@@ -49,7 +50,7 @@ export class DefaultBookServiceImpl implements BookService {
   }
 
   async findAllBookCategory(): Promise<BookCategory[]> {
-    return await this.bookRepository.findAllCategories();
+    return await this.bookRepository.getFtagsBy('category');
   }
 
   async findBookById(isbn: string): Promise<Book> {
@@ -66,5 +67,9 @@ export class DefaultBookServiceImpl implements BookService {
 
   findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
     return this.bookRepository.findByVibeTags(tagsValues);
+  }
+
+  async loanLibraryInventory(): Promise<BooksByCategory[]> {
+    return this.bookRepository.loanLibraryInventory()
   }
 }

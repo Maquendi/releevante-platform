@@ -26,9 +26,10 @@ export interface BookByFtagsVibes {
 
 export interface BookCategory {
   id: string;
-  esName: string;
-  frName: string;
-  enName: string;
+  tagName: FtagsEnum;
+  enTagValue: string;
+  frTagValue: string;
+  esTagValue: string;
 }
 
 export interface BookImage {
@@ -60,8 +61,6 @@ export interface BooksByCategory {
     enSubCategoryName: string;
     frSubCategoryName: string;
   };
-  category: CategoryTranslations;
-
   books: CategoryBookItem[];
 }
 

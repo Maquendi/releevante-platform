@@ -10,12 +10,12 @@ export interface BookRepository {
   findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
 
   // ***********
-  findAllCategories(): Promise<BookCategory[]>;
+  // findAllCategories(): Promise<BookCategory[]>;
   findAllByCategory(categoryId:string): Promise<BooksByCategory[]>; // return with images
   findAllBy(query: string): Promise<Book[]>; // just return book id and name,
   findById(isbn: string): Promise<Book>; // return with images
   findAllBooks(params:BooksPagination):Promise<Book[]>
-  loanLibraryInventory(searchCategoryId?:string): Promise<LibraryInventory>
+  loanLibraryInventory(searchCategoryId?:string): Promise<BooksByCategory[]>
 }
 
 

@@ -118,6 +118,15 @@
     "closeSessionTime1": "La sesión",
     "closeSessionTime2": "se cerrará en",
     "closeSessionTime3": "minutos"
+  },
+  "returnBook": {
+    "yourRentedBooks": "Tus libros alquilados",
+    "bookToReturn": "¿Qué libro quieres devolver hoy?",
+    "book": "libros",
+    "rentAnotherBook": "Alquilar otro libro",
+    "back": "regresar",
+    "return": "devolver",
+    "returnDate": "fecha de devolución"
   }
   
  

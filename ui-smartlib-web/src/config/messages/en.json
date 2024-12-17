@@ -119,5 +119,15 @@
     "closeSessionTime1":"The session",
     "closeSessionTime2":"will close in",
     "closeSessionTime3":"minutes"
+  },
+  "returnBook":{
+    "yourRentedBooks":"Your rented books",
+    "bookToReturn":"Which book do you want to return today?",
+    "book":"books",
+    "rentAnotherBook":"Rent another book",
+    "back": "back",
+    "return": "return",
+    "returnDate": "return date"
+
   }
 }
