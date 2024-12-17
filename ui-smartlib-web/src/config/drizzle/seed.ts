@@ -5,7 +5,6 @@ import {
   bookCategorySchema,
   bookCopieSchema,
   bookFtagSchema,
-  bookImageSchema,
   bookSchema,
   categorySchema,
   ftagsSchema,
@@ -157,7 +156,7 @@ const moodVibesftags: any = [
   },
 ];
 
-const flavorStoryVibesftags:any = [
+const flavorStoryVibesftags: any = [
   {
     id: "fbbd3d38-906f-4b80-9a85-cc295a3fbc76",
     tagName: "flavor_story_vibe",
@@ -216,51 +215,103 @@ const flavorStoryVibesftags:any = [
   },
 ];
 
-
-const ftags=[...subCategoriesftags,...readingVibesftags,...moodVibesftags,...flavorStoryVibesftags]
-
-const categories = [
+const fTagscategories = [
   {
     id: "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
-    enName: "Mystery",
-    frName: "Mystère",
-    esName: "Misterio",
+    tagName: "category",
+    enTagValue: "Mystery",
+    frTagValue: "Mystère",
+    esTagValue: "Misterio",
   },
   {
     id: "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
-    enName: "Romance",
-    frName: "Romantique",
-    esName: "Romance",
+    tagName: "category",
+    enTagValue: "Romance",
+    frTagValue: "Romantique",
+    esTagValue: "Romance",
   },
   {
     id: "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
-    enName: "Adventure",
-    frName: "Aventure",
-    esName: "Aventura",
+    tagName: "category",
+    enTagValue: "Adventure",
+    frTagValue: "Aventure",
+    esTagValue: "Aventura",
   },
   {
     id: "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
-    enName: "Thriller",
-    frName: "Thriller",
-    esName: "Suspenso",
+    tagName: "category",
+    enTagValue: "Thriller",
+    frTagValue: "Thriller",
+    esTagValue: "Suspenso",
   },
   {
     id: "03cc5e3e-c6e9-474e-8780-84094ed2deee",
-    enName: "Fantasy",
-    frName: "Fantaisie",
-    esName: "Fantasía",
+    tagName: "category",
+    enTagValue: "Fantasy",
+    frTagValue: "Fantaisie",
+    esTagValue: "Fantasía",
   },
   {
     id: "5e466399-87be-4447-b808-834bba6941ee",
-    enName: "Growth",
-    frName: "Croissance",
-    esName: "Crecimiento",
+    tagName: "category",
+    enTagValue: "Growth",
+    frTagValue: "Croissance",
+    esTagValue: "Crecimiento",
   },
 ];
 
+const ftags = [
+  ...subCategoriesftags,
+  ...readingVibesftags,
+  ...moodVibesftags,
+  ...flavorStoryVibesftags,
+  ...fTagscategories
+];
+
+// const categories = [
+//   {
+//     id: "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+//     tagName:'category',
+//     enTagValue: "Mystery",
+//     frTagValue: "Mystère",
+//     esTagValue: "Misterio",
+//   },
+//   {
+//     id: "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+//     enName: "Romance",
+//     frName: "Romantique",
+//     esName: "Romance",
+//   },
+//   {
+//     id: "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+//     enName: "Adventure",
+//     frName: "Aventure",
+//     esName: "Aventura",
+//   },
+//   {
+//     id: "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+//     enName: "Thriller",
+//     frName: "Thriller",
+//     esName: "Suspenso",
+//   },
+//   {
+//     id: "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+//     enName: "Fantasy",
+//     frName: "Fantaisie",
+//     esName: "Fantasía",
+//   },
+//   {
+//     id: "5e466399-87be-4447-b808-834bba6941ee",
+//     enName: "Growth",
+//     frName: "Croissance",
+//     esName: "Crecimiento",
+//   },
+// ];
+
+
+
 async function seed() {
   try {
-   
     const users: any = [];
     for (let i = 0; i < 10; i++) {
       users.push({
@@ -288,6 +339,8 @@ async function seed() {
         publisher: faker.book.publisher(),
         dimensions: "9.3 x 0.9 x 7.3",
         publicationDate: faker.date.anytime().toISOString(),
+        bindingType: "",
+        image: faker.image.url(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -305,23 +358,19 @@ async function seed() {
       }
     }
 
-    const bookCategoriesData = books.map((book) => ({
+    // const bookCategoriesData = books.map((book) => ({
+    //   bookIsbn: book.id,
+    //   categoryId: categories[Math.floor(Math.random() * categories.length)].id,
+    // }));
+
+    const bookFtagsCategoriesData = books.map((book) => ({
       bookIsbn: book.id,
-      categoryId: categories[Math.floor(Math.random() * categories.length)].id,
+      ftagId: fTagscategories[Math.floor(Math.random() * fTagscategories.length)].id,
     }));
 
     const bookFtagsData = books.map((book) => ({
       bookIsbn: book.id,
       ftagId: ftags[Math.floor(Math.random() * ftags.length)].id,
-    }));
-
-    const bookImagesData = books.map((book) => ({
-      id: uuidv4(),
-      external_id: uuidv4(),
-      url: faker.image.url(),
-      book_isbn: book.id,
-      isSincronized: faker.datatype.boolean(),
-      source_url: faker.image.url(),
     }));
 
     const bookCopiesData = books.map((book) => ({
@@ -333,20 +382,16 @@ async function seed() {
       updated_at: new Date().toISOString(),
     }));
 
-
+    const totalBookFtagsData=[...bookFtagsCategoriesData,...bookFtagsData]
     await db.transaction(async (tx) => {
       await Promise.all([
-        tx.insert(categorySchema).values(categories).onConflictDoNothing(),
         tx.insert(ftagsSchema).values(ftags).onConflictDoNothing(),
         tx.insert(userSchema).values(users),
         tx.insert(bookSchema).values(books),
-        tx.insert(bookCategorySchema).values(bookCategoriesData),
-        tx.insert(bookImageSchema).values(bookImagesData),
         tx.insert(bookCopieSchema).values(bookCopiesData),
-        tx.insert(bookFtagSchema).values(bookFtagsData),
+        tx.insert(bookFtagSchema).values(totalBookFtagsData),
       ]);
     });
-
 
     console.log("Database seeded successfully");
   } catch (error) {

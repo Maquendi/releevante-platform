@@ -1,5 +1,6 @@
 "use client";
 
+import SimpleNavbar from "@/components/SimpleNavbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link, useRouter } from "@/config/i18n/routing";
 import useGetBooks from "@/hooks/useGetBooks";
@@ -85,28 +86,7 @@ export default function ReviewCartPage() {
 
   return (
     <section className="grid grid-rows-[auto_1fr,auto] h-screen">
-      <div className="flex justify-between items-center px-6 py-3 bg-white">
-        <Link href={`/catalog`}>
-          <div className="flex gap-5 items-center">
-            <ArrowLeft />
-            <p className=" first-letter:uppercase font-medium">
-              {tReviewCart("myCart")}
-            </p>
-          </div>
-        </Link>
-
-        <div>
-          <figure>
-            <Image
-              width={150}
-              height={70}
-              src="/images/releevante.svg"
-              alt="Remove book from cart"
-              className="w-[120px] h-auto rounded-md object-cover"
-            />
-          </figure>
-        </div>
-      </div>
+     <SimpleNavbar href="/catalog" intName="reviewMyCart" intValue="myCart"/>
       <div className="overflow-y-auto px-4 py-4 space-y-6">
         {rentItems?.length > 0 && (
           <div className="pt-7 grid bg-white rounded-xl space-y-5">
