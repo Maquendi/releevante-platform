@@ -26,9 +26,10 @@ export interface BookByFtagsVibes {
 
 export interface BookCategory {
   id: string;
-  esName: string;
-  frName: string;
-  enName: string;
+  tagName: FtagsEnum;
+  enTagValue: string;
+  frTagValue: string;
+  esTagValue: string;
 }
 
 export interface BookImage {
@@ -44,6 +45,7 @@ export interface CategoryBookItem {
   votes: number;
   rating: number;
   correlationId: string;
+  categories:FtagItem[]
 }
 
 export interface CategoryTranslations {
@@ -56,12 +58,10 @@ export interface CategoryTranslations {
 export interface BooksByCategory {
   subCategory: {
     id: string;
-    esSubCategoryName: string;
-    enSubCategoryName: string;
-    frSubCategoryName: string;
+    enName: string;
+    esName: string;
+    frName: string;
   };
-  category: CategoryTranslations;
-
   books: CategoryBookItem[];
 }
 
@@ -109,7 +109,7 @@ export interface Book {
   author: string;
   correlationId: string;
   editionTitle: string;
-  images?: BookImage[];
+  image: string;
   publisher: string;
   enDescription: string;
   esDescription: string;
@@ -117,8 +117,8 @@ export interface Book {
   publicationDate: string;
   printLength: number;
   dimensions: string;
-  bookLanguages: BookLanguage[];
-  category: CategoryTranslations;
+  languages: BookLanguage[];
+  categories:BookCategory[]
   rating?: number;
   votes?: number;
   price?: number;

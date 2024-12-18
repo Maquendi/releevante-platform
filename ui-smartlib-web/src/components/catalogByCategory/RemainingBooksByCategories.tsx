@@ -1,9 +1,8 @@
 "use client";
 
-import { FetchAllBookByCategory } from "@/actions/book-actions";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import CatalogSliderItem from "./CatalogSliderItem";
+import useFilterBooksByCategory from "@/hooks/useFilterBooksByCategory";
 
 
 interface RemainingBooksByCategoriesPros {
@@ -16,21 +15,18 @@ export default function RemainingBooksByCategories({
     subCategoryId,
     categoryId
 }:RemainingBooksByCategoriesPros) {
-  const { data: categoryBooks } = useQuery({
-    queryKey: ["BOOKS_BY_CATEGORIES",categoryId],
-    queryFn: () => FetchAllBookByCategory(categoryId),
-  });
+  const booksByCategory=useFilterBooksByCategory({categoryId})
 
   const remainingCategories = useMemo(() => {
-    return categoryBooks?.filter(
+    return booksByCategory?.filter(
       (item) => item.subCategory.id !== subCategoryId
     ) || []
-  }, [categoryBooks, subCategoryId]);
+  }, [booksByCategory, subCategoryId]);
 
 
   return <div className="space-y-5">
     {remainingCategories.map(item=>(
-        <CatalogSliderItem key={item.category.id} {...item}/>
+        <CatalogSliderItem key={item?.subCategory.id} {...item}/>
     ))}
   </div>;
 }

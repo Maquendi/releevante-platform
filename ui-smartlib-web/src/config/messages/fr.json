@@ -16,7 +16,7 @@
     "footerText": "Vous avez des difficultés à scanner votre bracelet?",
     "footerBtn": "Scanner le bracelet"
   },
-  "homePage": {
+  "catalogPage": {
     "title": "Bon après-midi!",
     "subTitle": "Explorez et louez gratuitement notre riche collection de livres",
     "selectCategory": "Sélectionnez une catégorie",
@@ -118,5 +118,14 @@
     "closeSessionTime1": "La session",
     "closeSessionTime2": "se fermera dans",
     "closeSessionTime3": "minutes"
+  },
+  "returnBook": {
+    "yourRentedBooks": "Vos livres loués",
+    "bookToReturn": "Quel livre souhaitez-vous rendre aujourd'hui ?",
+    "book": "livre",
+    "rentAnotherBook": "Louer un autre livre",
+    "back": "retour",
+    "return": "retourner",
+    "returnDate": "date de retour"
   }
 }

@@ -45,6 +45,15 @@ export async function FetchAllBookByCategory(categoryId:string){
     }
 }
 
+export async function LoanLibraryInventory(){
+    try {
+        return await bookServiceFacade.loanLibraryInventory()
+    } catch (error) {
+        throw new Error('Error to load library inventory' +  error)
+    }
+}
+
+
 export async function FetchFtagsBy(tagName:FtagsEnum){
     try {
         return await bookServiceFacade.getFtagsByType(tagName)

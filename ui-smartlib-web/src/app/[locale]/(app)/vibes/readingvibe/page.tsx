@@ -2,10 +2,9 @@ import { FetchFtagsBy } from "@/actions/book-actions";
 import NextPrevVibesBtns from "@/components/vibes/NextPrevVibesBtns";
 import VibeItemsList from "@/components/vibes/VibeItemsList";
 import VibesStateIndicator from "@/components/vibes/VibesStateIndicator";
-import { cn } from "@/lib/utils";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { split } from "postcss/lib/list";
 
 // Definir los íconos correspondientes a cada tag
 const tagIcons: Record<string, string> = {
@@ -21,9 +20,20 @@ const tagIcons: Record<string, string> = {
 
 export default async function ReadingVidePage() {
   const t = await getTranslations("readingVibePage");
-  const readingVibeTags = await FetchFtagsBy("reading_vibe");
+  const queryClient = new QueryClient();
+  const readingVibeTags = await queryClient.ensureQueryData({
+    queryKey: ["READING_VIBE"],
+    queryFn: async () => await FetchFtagsBy('reading_vibe'),
+  });
+
+
+  await queryClient.prefetchQuery({
+    queryKey: ["MOOD_VIBE"],
+    queryFn: async () => await FetchFtagsBy('mood_vibe'),
+  });
 
   return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
     <div className="bg-white min-h-[91vh] overflow-hidden grid grid-rows-[auto_1fr]">
       <header className="px-7 flex items-center pt-3 justify-between mt-5 border-b border-gray-200 pb-10">
         <div>
@@ -64,5 +74,7 @@ export default async function ReadingVidePage() {
 
       </section>
     </div>
+    </HydrationBoundary>
+
   );
 }

@@ -17,11 +17,11 @@ export default function SelectLanguage({ booklanguages }: SelectLanguageProp) {
 
   const sortedBookLanguages = useMemo(() => {
     return [...booklanguages].sort((a, b) => {
-      if (a.language === "English") return -1; 
-      if (b.language === "English") return 1;  
-      if (a.language === "Spanish") return -1; 
+      if (a.language === "English") return -1;
+      if (b.language === "English") return 1;
+      if (a.language === "Spanish") return -1;
       if (b.language === "Spanish") return 1;
-      return 0; 
+      return 0;
     });
   }, [booklanguages]);
 
@@ -29,6 +29,7 @@ export default function SelectLanguage({ booklanguages }: SelectLanguageProp) {
     <div className="flex gap-4 items-center">
       {sortedBookLanguages.map(({ bookId, language }) => (
         <button
+          suppressHydrationWarning
           className={cn(
             "font-medium flex gap-2 items-center px-5 py-4 rounded-full border border-secondary",
             language === selectedLanguage && "bg-black text-white"

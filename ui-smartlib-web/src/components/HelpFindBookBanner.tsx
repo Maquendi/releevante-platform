@@ -1,10 +1,11 @@
+'use client'
 import React from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 export default function HelpFindBookBanner() {
-  const t = useTranslations("homePage");
+  const t = useTranslations("catalogPage");
 
   return (
     <div className="relative flex justify-between bg-[#E4E73D]  rounded-md p-8 overflow-hidden">

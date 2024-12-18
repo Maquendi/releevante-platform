@@ -1,28 +1,39 @@
-'use client'
+"use client";
 
-import { FetchAllBookByCategory } from "@/actions/book-actions";
+import {
+  LoanLibraryInventory,
+} from "@/actions/book-actions";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 
-interface FilterBooksByCategryProps{
-    subCategoryId:string
+interface FilterBooksByCategryProps {
+  categoryId?: string;
 }
-export default function useFilterBooksByCategory({subCategoryId}:FilterBooksByCategryProps) {
+export default function useFilterBooksByCategory({
+  categoryId,
+}: FilterBooksByCategryProps) {
 
-    const { data: categoryBooks } = useQuery({
-        queryKey: ["BOOKS_BY_CATEGORIES"],
-        queryFn: () => FetchAllBookByCategory(''),
-      });
-    
-      const bookByCategory = useMemo(() => {
-        const data = categoryBooks?.filter(
-          (item) => item.subCategory.id === subCategoryId
-        );
-        return data?.length ? data[0] : null;
-      }, [categoryBooks, subCategoryId]);
+  const { data: categoryBooks } = useQuery({
+    queryKey: ["BOOKS_BY_CATEGORIES"],
+    queryFn: () => LoanLibraryInventory(),
+    refetchOnMount:false,
+    refetchOnWindowFocus:false
+  });
 
-  return ({
-    bookByCategory
+  if (!categoryId) {
+    return categoryBooks;
   }
-  )
+
+  const filteredItems = categoryBooks?.map(
+    ({ subCategory, books: bookList }) => {
+      const filteredBooks = bookList.filter((book) =>
+        book.categories.some((category) => category.id === categoryId)
+      );
+      return {
+        subCategory,
+        books: filteredBooks,
+      };
+    }
+  );
+
+  return filteredItems;
 }

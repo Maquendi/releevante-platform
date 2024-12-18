@@ -1,12 +1,12 @@
 "use client";
 
+import SimpleNavbar from "@/components/SimpleNavbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link, useRouter } from "@/config/i18n/routing";
 import useGetBooks from "@/hooks/useGetBooks";
 import { cn } from "@/lib/utils";
 import { removeItem, updateItem } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { ArrowLeft } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -28,9 +28,11 @@ const CartItem = ({ item, buttonTextTl, onButtonClick, onTrashClick }) => {
           />
         </figure>
         <div className="space-y-1">
-          <p className="text-xs bg-primary px-2 py-1 rounded-sm font-medium text-white w-fit">
-            {item.category?.[`${locale}Category`]}
-          </p>
+          <div className="flex gap-1">
+          {item.categories?.map(category=><p key={category.enTagValue} className="text-xs bg-primary px-2 py-1 rounded-sm font-medium text-white w-fit">
+            {category?.[`${locale}TagValue`]}
+          </p>)}
+          </div>
           <h4 className="text-2xl font-medium">{item.title}</h4>
           <p className="text-secondary-foreground">{item.author}</p>
         </div>
@@ -83,31 +85,11 @@ export default function ReviewCartPage() {
     router.push('/catalog')
   },[rentItems,purchaseItems,router])
 
+
   return (
     <section className="grid grid-rows-[auto_1fr,auto] h-screen">
-      <div className="flex justify-between items-center px-6 py-3 bg-white">
-        <Link href={`/catalog`}>
-          <div className="flex gap-5 items-center">
-            <ArrowLeft />
-            <p className=" first-letter:uppercase font-medium">
-              {tReviewCart("myCart")}
-            </p>
-          </div>
-        </Link>
-
-        <div>
-          <figure>
-            <Image
-              width={150}
-              height={70}
-              src="/images/releevante.svg"
-              alt="Remove book from cart"
-              className="w-[120px] h-auto rounded-md object-cover"
-            />
-          </figure>
-        </div>
-      </div>
-      <div className="overflow-y-auto px-4 py-4 space-y-6">
+     <SimpleNavbar href="/catalog" intName="reviewMyCart" intValue="myCart"/>
+      <div suppressHydrationWarning className="overflow-y-auto px-4 py-4 space-y-6">
         {rentItems?.length > 0 && (
           <div className="pt-7 grid bg-white rounded-xl space-y-5">
             <div className="px-4">

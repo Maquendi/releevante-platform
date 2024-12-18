@@ -2,7 +2,6 @@ import { FetchBookByFtagsVibes } from "@/actions/book-actions";
 import BookByIdBanner from "@/components/bookById/BookByIdBanner";
 import AddToCartRecomendation from "@/components/vibes/AddToCartRecomendation";
 import VibesStateIndicator from "@/components/vibes/VibesStateIndicator";
-import { da } from "@faker-js/faker";
 import { QueryClient } from "@tanstack/react-query";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";

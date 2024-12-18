@@ -30,7 +30,7 @@ export default function AddToCartRecomendation({
     <div
       className={cn(
         "py-4 px-3 flex items-center justify-between gap-4 fixed bottom-0 left-0 right-0 bg-white transition-transform ease-in-out duration-300",
-        isBookInCart(book.bookLanguages) && "translate-y-full"
+        isBookInCart(book.languages) && "translate-y-full"
       )}
     >
       <div>

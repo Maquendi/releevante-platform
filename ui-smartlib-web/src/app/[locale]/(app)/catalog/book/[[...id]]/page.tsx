@@ -1,11 +1,7 @@
 import { FetchBookById } from "@/actions/book-actions";
-import Rating from "@/components/Rating";
 import { getLocale, getTranslations } from "next-intl/server";
-import Image from "next/image";
 import React from "react";
 import dynamic from "next/dynamic";
-import SelectLanguage from "@/components/bookById/SelectLanguage";
-import AddBookToCartBanner from "@/components/bookById/AddBookToCartBanner";
 import {
   dehydrate,
   HydrationBoundary,
@@ -14,6 +10,14 @@ import {
 import BookByIdBanner from "@/components/bookById/BookByIdBanner";
 const BestSellerSlider = dynamic(
   () => import("@/components/search/BestSellerSlider"),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  }
+);
+
+const AddBookToCartBanner = dynamic(
+  () => import("@/components/bookById/AddBookToCartBanner"),
   {
     loading: () => <p>Loading...</p>,
     ssr: false,
@@ -63,7 +67,7 @@ export default async function Page({ params }) {
             <h4 className="text-secondary-foreground text-sm mb-2">
               {t("language")}
             </h4>
-            <p>{book?.bookLanguages?.map((item) => item.language).join(",")}</p>
+            <p>{book?.languages?.map((item) => item.language).join(",")}</p>
           </div>
           <div className="bg-white py-5 px-4 rounded-md font-light">
             <h4 className="text-secondary-foreground text-sm mb-2">

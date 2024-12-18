@@ -94,7 +94,7 @@ export default function SearchBooksPage() {
               >
                 <div className="flex gap-3 items-center ">
                   <Image
-                    src={item.images?.length ? item.images[0].url : ""}
+                    src={item.image}
                     width={100}
                     height={100}
                     className="w-[70px] h-[90px] object-cover rounded-md"

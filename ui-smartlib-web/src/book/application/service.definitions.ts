@@ -1,4 +1,4 @@
-import { Book, BookByFtagsVibes, BookCategory, BookCopy, BooksByCategory, BooksPagination, FtagItem, FtagsEnum } from "../domain/models";
+import { Book, BookByFtagsVibes, BookCategory, BookCopy, BooksByCategory, BooksPagination, FtagItem, FtagsEnum, LibraryInventory } from "../domain/models";
 import { BookCopySearch } from "./dto";
 
 export interface BookService {
@@ -11,6 +11,8 @@ export interface BookService {
   findAllBooks(params:BooksPagination):Promise<Book[]>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
   findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
+  loanLibraryInventory(): Promise<BooksByCategory[]>
+
 }
 
 
@@ -23,6 +25,6 @@ export interface BookServiceFacade {
   findBookById(isbn:string):Promise<Book>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
   findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
-
+  loanLibraryInventory(): Promise<BooksByCategory[]>
 
 }

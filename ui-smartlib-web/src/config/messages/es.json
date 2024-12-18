@@ -16,7 +16,7 @@
     "footerText": "¿Tienes problemas para escanear tu pulsera?",
     "footerBtn": "Escanear pulsera"
   },
-  "homePage": {
+  "catalogPage": {
     "title": "¡Buenas tardes!",
     "subTitle": "Explora y alquila gratis nuestra rica colección de libros",
     "selectCategory": "Selecciona una categoría",
@@ -118,6 +118,15 @@
     "closeSessionTime1": "La sesión",
     "closeSessionTime2": "se cerrará en",
     "closeSessionTime3": "minutos"
+  },
+  "returnBook": {
+    "yourRentedBooks": "Tus libros alquilados",
+    "bookToReturn": "¿Qué libro quieres devolver hoy?",
+    "book": "libros",
+    "rentAnotherBook": "Alquilar otro libro",
+    "back": "regresar",
+    "return": "devolver",
+    "returnDate": "fecha de devolución"
   }
   
  
