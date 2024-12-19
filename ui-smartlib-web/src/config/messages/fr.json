@@ -121,11 +121,34 @@
   },
   "returnBook": {
     "yourRentedBooks": "Vos livres loués",
-    "bookToReturn": "Quel livre souhaitez-vous rendre aujourd'hui ?",
-    "book": "livre",
+    "bookToReturn": "Quel livre voulez-vous retourner aujourd'hui ?",
+    "book": "livres",
     "rentAnotherBook": "Louer un autre livre",
     "back": "retour",
     "return": "retourner",
-    "returnDate": "date de retour"
+    "returnDate": "date de retour",
+    "noRentedBooks": "Vous n'avez pas encore de livre loué. Découvrez la meilleure option dans votre bibliothèque personnelle maintenant.",
+    "rentBook": "Louer un livre"
+  },
+  "depositPage": {
+    "depositBookTitle1": "Déposez ce livre sur",
+    "depositBookTitle2": "la porte",
+    "firstStepTitle": "Première étape",
+    "firstStepContent1": "Allez à la",
+    "firstStepContent2": "porte",
+    "firstStepContent3": "après avoir inséré le livre, la porte se fermera automatiquement. Veuillez vous assurer d'insérer correctement le livre.",
+    "nextStepTitle": "Étape suivante",
+    "nextStepContent": "Veuillez revenir pour rendre votre prochain livre.",
+    "closeDoorTime1": "La porte",
+    "closeDoorTime2": "se fermera dans",
+    "closeDoorTime3": "minutes"
+  },
+  "returnThanksPage": {
+    "thanksForReturn1": "Merci pour le retour",
+    "thanksForReturn2": "du livre",
+    "returnBookBtn": "D'accord, retournez un autre livre",
+    "closeSessionTime1": "La session",
+    "closeSessionTime2": "se fermera dans",
+    "closeSessionTime3": "minutes"
   }
 }

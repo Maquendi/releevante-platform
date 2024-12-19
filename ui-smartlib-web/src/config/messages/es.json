@@ -124,10 +124,31 @@
     "bookToReturn": "¿Qué libro quieres devolver hoy?",
     "book": "libros",
     "rentAnotherBook": "Alquilar otro libro",
-    "back": "regresar",
+    "back": "volver",
     "return": "devolver",
-    "returnDate": "fecha de devolución"
+    "returnDate": "fecha de devolución",
+    "noRentedBooks": "Aún no tienes ningún libro alquilado. Descubre la mejor opción en tu biblioteca personal ahora.",
+    "rentBook": "Alquilar un libro"
+  },
+  "depositPage": {
+    "depositBookTitle1": "Deposita este libro en",
+    "depositBookTitle2": "la puerta",
+    "firstStepTitle": "Primer paso",
+    "firstStepContent1": "Dirígete a la",
+    "firstStepContent2": "puerta",
+    "firstStepContent3": "después de introducir el libro, la puerta se cerrará automáticamente. Por favor, asegúrate de insertar el libro correctamente.",
+    "nextStepTitle": "Siguiente paso",
+    "nextStepContent": "Por favor, regresa para devolver tu próximo libro.",
+    "closeDoorTime1": "La puerta",
+    "closeDoorTime2": "se cerrará en",
+    "closeDoorTime3": "minutos"
+  },
+  "returnThanksPage": {
+    "thanksForReturn1": "Gracias por devolver",
+    "thanksForReturn2": "el libro",
+    "returnBookBtn": "Ok, devolver otro libro",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
   }
-  
- 
 }

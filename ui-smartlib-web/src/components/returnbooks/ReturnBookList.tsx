@@ -5,6 +5,8 @@ import { Button } from "../ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { formatDateByRegion } from "@/lib/utils";
+import EmptyRentedBooks from "./EmptyRentedBooks";
+import { Link } from "@/config/i18n/routing";
 
 const TIME_REGIONS = {
   en: "en-US",
@@ -55,8 +57,8 @@ export default function ReturnBookList() {
   const locale = useLocale();
 
   return (
-    <div className="bg-white py-5 px-4 rounded-md space-y-5">
-      <div className="flex justify-between">
+    <div className="bg-white pt-5  rounded-md space-y-5">
+      <div className="flex justify-between px-4">
         <div className="flex gap-1 items-center text-xl font-medium">
           <p>{t("book")}</p>
           <p className="space-x-1 text-gray-500">
@@ -82,14 +84,30 @@ export default function ReturnBookList() {
           </p>
         </div>
       </div>
-      <div className="space-y-3">
-        {books?.map((item) => (
-          <ReturnItem
-            key={item.isbn}
-            item={item}
-            onButtonClick={() => console.log("")}
-          />
-        ))}
+      <div className="space-y-3 px-4 pb-2">
+        {books?.length > 0 ? (
+          books?.map((item) => (
+            <ReturnItem
+              key={item.isbn}
+              item={item}
+              onButtonClick={() => console.log("")}
+            />
+          ))
+        ) : (
+          <EmptyRentedBooks />
+        )}
+      </div>
+      <div className="flex relative   justify-center py-4 border-t border-gray-200 ">
+        <Link
+          href={"/catalog"}
+          className="m-auto border rounded-full font-medium tracking-wider text-sm py-4 px-7 border-primary text-primary bg-transparent"
+        >
+          {books?.length > 0 ? (
+            t("rentAnotherBook")
+          ):(
+            t("rentBook")
+          )}
+        </Link>
       </div>
     </div>
   );

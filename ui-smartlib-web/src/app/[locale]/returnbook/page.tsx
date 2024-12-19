@@ -16,14 +16,6 @@ export default function ReturnBook() {
       </header>
       <section className="px-5">
         <ReturnBookList />
-        <div className="flex rounded-b rounded-md justify-center items-center border-t border-secondary  py-3 px-5 bg-white">
-          <Link
-            href={"/catalog"}
-            className="m-auto border rounded-full font-medium tracking-wider text-sm py-4 px-7 border-primary text-primary bg-transparent"
-          >
-            {t("rentAnotherBook")}
-          </Link>
-        </div>
       </section>
     </div>
   );

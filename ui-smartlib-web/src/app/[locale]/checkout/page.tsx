@@ -54,7 +54,7 @@ export default function CheckoutPage() {
                   width={250}
                   height={350}
                   alt={`${currentBook?.title} image`}
-                  className="m-auto rounded-md w-[210px] h-[270px]"
+                  className="m-auto object-cover rounded-md w-[210px] h-[270px]"
                 />
               </figure>
             </div>
