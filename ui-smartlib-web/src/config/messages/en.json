@@ -127,7 +127,30 @@
     "rentAnotherBook":"Rent another book",
     "back": "back",
     "return": "return",
-    "returnDate": "return date"
-
+    "returnDate": "return date",
+    "noRentedBooks":"You don’t have any book rented yet. Find out the best option in your personal library now.",
+    "rentBook":"Rent a book"
+  },
+  "depositPage":{
+    "depositBookTitle1":"Deposit this book on",
+    "depositBookTitle2":"door",
+    "firstStepTitle":"First step",
+    "firstStepContent1":"Go to the",
+    "firstStepContent2":"door",
+    "firstStepContent3":"after enter the book the door will close automatically. Please ensure to insert the book correctly.",
+    "nextStepTitle":"Next step",
+    "nextStepContent":"Please, come again to return your next book.",
+    "closeDoorTime1":"The door",
+    "closeDoorTime2":"will close in",
+    "closeDoorTime3":"minutes"
+  },
+  "returnThanksPage":{
+    "thanksForReturn1":"Thanks for return",
+    "thanksForReturn2":"book",
+    "returnBookBtn":"Ok, return another book",
+    "closeSessionTime1":"The session",
+    "closeSessionTime2":"will close in",
+    "closeSessionTime3":"minutes"
   }
+  
 }
