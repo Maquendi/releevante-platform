@@ -150,5 +150,17 @@
     "closeSessionTime1": "La session",
     "closeSessionTime2": "se fermera dans",
     "closeSessionTime3": "minutes"
+  },
+  "ratingPage": {
+    "title": "Faites-nous savoir votre niveau de satisfaction",
+    "subTitle": "Veuillez nous évaluer pour améliorer nos produits. Nous sommes ravis de vous écouter et d'améliorer notre service.",
+    "feelUsingApp": "Comment vous sentez-vous en utilisant notre application ?",
+    "commentTitle": "Souhaitez-vous ajouter une suggestion ou un commentaire ?",
+    "commentPlaceHolder": "Écrivez un commentaire ici",
+    "optional": "Optionnel",
+    "submit": "Soumettre",
+    "closeSessionTime1": "La session",
+    "closeSessionTime2": "se fermera dans",
+    "closeSessionTime3": "minutes"
   }
 }

@@ -33,7 +33,8 @@ export default function SelectLanguage() {
       !path.endsWith("flavorofstory") &&
       !path.endsWith("mood") &&
       !path.includes("home") &&
-      !path.endsWith("/thanks")? (
+      !path.endsWith("/thanks") && 
+      !path.endsWith("/rating")? (
         <div>
           <Link
             className="flex cursor-pointer gap-5 justify-between  items-center pl-3 pr-7 z-50"

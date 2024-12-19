@@ -151,6 +151,18 @@
     "closeSessionTime1":"The session",
     "closeSessionTime2":"will close in",
     "closeSessionTime3":"minutes"
+  },
+  "ratingPage":{
+    "title":"Let us know your level of satisfaction",
+    "subTitle":"Please, rate us to improve our products. We are super happy to hear you and improve our service.",
+    "feelUsingApp":"How do you feel using our app?",
+    "commentTitle":"Would you like to add a suggestion or comment?",
+    "commentPlaceHolder":"Write a comment here",
+    "optional":"Optional",
+    "submit":"Submit",
+    "closeSessionTime1":"The session",
+    "closeSessionTime2":"will close in",
+    "closeSessionTime3":"minutes"
   }
   
 }
