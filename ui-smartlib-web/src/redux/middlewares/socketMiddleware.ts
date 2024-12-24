@@ -1,6 +1,7 @@
 // src/middleware/socketMiddleware.js
 import { io, Socket } from "socket.io-client";
 import { updateItemStatus } from "../features/checkoutSlice";
+import { clearInterval } from "timers";
 
 const SOCKET_URL = "http://localhost:7777";
 
@@ -53,18 +54,45 @@ const socketMiddleware = (store) => {
 
       case "socket/emit":
         if (socket) {
-          const copies = action.payload
-          setTimeout(()=> {
-            const selected = copies[0];
-            store.dispatch(
-              updateItemStatus({
-                itemStatus: {
-                  cpy: 
-                },
-              })
-            );
-          }, 15000)
-          //socket.emit(action.event, action.payload);
+          const copies = action.payload;
+
+          const statuses = [
+            "checkout_started",
+            "door_opening",
+            "opened_waiting",
+            "checkout_successful",
+          ];
+
+          let index = 0;
+          let stidx = 0;
+
+          const interval = setInterval(() => {
+            try {
+              let item: any = null;
+              try {
+                item = copies[index];
+              } catch (error) {
+                clearInterval(interval);
+              }
+
+              const status = statuses[stidx];
+              const itemStatus = {
+                cpy: item.cpy,
+                isbn: item.isbn,
+                status,
+              } as any;
+              store.dispatch(
+                updateItemStatus({
+                  itemStatus,
+                })
+              );
+              stidx++;
+            } catch (error) {
+              index++;
+              stidx = 0;
+            }
+          }, 10000);
+          socket.emit(action.event, copies);
         }
         break;
 

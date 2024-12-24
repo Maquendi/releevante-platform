@@ -77,6 +77,9 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   async save(cart: Cart): Promise<Cart> {
+
+    console.log("SAVING RECORDS " + JSON.stringify(cart))
+
     const transaction: ClientTransaction = {
       execute: async function (
         tx: SQLiteTransaction<any, any, any, any>
@@ -95,7 +98,7 @@ class CartRepositoryImpl implements CartRepository {
             isbn: cartItem.isbn,
             qty: cartItem.qty,
             id: cartItem.id,
-            transactionType:cartItem.transactionType
+            transactionType: cartItem.transactionType
           });
         });
 

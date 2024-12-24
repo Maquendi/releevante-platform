@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ItemStatus = {
   cpy: string;
+  isbn: string;
   status:
     | "checkout_started"
     | "checkout_successful"

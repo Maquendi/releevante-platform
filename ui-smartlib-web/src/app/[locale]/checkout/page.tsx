@@ -10,7 +10,9 @@ import { useDispatch } from "react-redux";
 
 export default function CheckoutPage() {
   const cartItems = useAppSelector((state) => state.cart.items);
-  const currentItemStatus = useAppSelector((state)=> state.checkoutReducer.itemStatus)
+  const currentItemStatus = useAppSelector(
+    (state) => state.checkoutReducer.itemStatus
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const t = useTranslations("checkout");
   const dispatch = useDispatch();
@@ -19,12 +21,12 @@ export default function CheckoutPage() {
     // if (!cartItems?.length) redirect("/home");
     //mutation every time current index changes, to open book door.
 
-    console.log("");
+    console.log(currentItemStatus);
     checkout(cartItems).then((res) => {
       const copies = res.loanItems;
       dispatch({ type: "socket/emit", event: "checkout", payload: copies });
     });
-  }, [currentItemStatus]);
+  }, [cartItems]);
 
   const currentBook = useMemo(() => {
     return cartItems[currentIndex];

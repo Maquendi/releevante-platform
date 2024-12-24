@@ -1,6 +1,5 @@
-import { BookCopy } from "@/book/domain/models";
 import { Cart, CartId } from "./cart.model";
-import { BookLoan, BookLoanItem, BookLoanItemStatus, BookLoanStatus } from "./loan.model";
+import { BookLoan, BookLoanItemStatus, BookLoanStatus } from "./loan.model";
 import { LibrarySettings } from "./settings.model";
 
 export interface TransactionCallback {
