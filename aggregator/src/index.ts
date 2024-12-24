@@ -14,6 +14,7 @@ const runAsync = async () => {
 
   dataSynced += await synchronizeSettings(token);
 
+ 
   console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
 
   if (dataSynced > 0) {

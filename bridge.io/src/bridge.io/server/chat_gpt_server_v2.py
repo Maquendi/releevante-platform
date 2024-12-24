@@ -26,6 +26,11 @@ async def on_message(sid, data):
     print(f"Message from {sid}: {data}")
     await sio.emit("response", f"Echo: {data}")
 
+@sio.on("checkout")
+async def on_message(sid, data):
+    print(f"checkout event from {sid}: {data}")
+    await sio.emit("response", f"Echo: {data}")
+
 @sio.on("disconnect")
 async def disconnect(sid):
     print(f"Client disconnected: {sid}")

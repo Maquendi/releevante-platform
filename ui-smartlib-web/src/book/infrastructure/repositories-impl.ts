@@ -152,9 +152,13 @@ class DefaultBookRepositoryImpl implements BookRepository {
       });
     });
 
+    console.log("***************************************************************************")
     const data = Object.values(groupedBooks).map(
       ({ bookIds, ...rest }) => rest
     );
+
+    console.log(JSON.stringify(data))
+
     return data as BooksByCategory[];
   }
 

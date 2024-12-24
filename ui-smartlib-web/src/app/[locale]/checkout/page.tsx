@@ -1,20 +1,30 @@
 "use client";
 
+import { checkout } from "@/actions/cart-actions";
 import { redirect } from "@/config/i18n/routing";
 import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function CheckoutPage() {
   const cartItems = useAppSelector((state) => state.cart.items);
+  const currentItemStatus = useAppSelector((state)=> state.checkoutReducer.itemStatus)
   const [currentIndex, setCurrentIndex] = useState(0);
   const t = useTranslations("checkout");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // if (!cartItems?.length) redirect("/home");
     //mutation every time current index changes, to open book door.
-  }, [cartItems]);
+
+    console.log("");
+    checkout(cartItems).then((res) => {
+      const copies = res.loanItems;
+      dispatch({ type: "socket/emit", event: "checkout", payload: copies });
+    });
+  }, [currentItemStatus]);
 
   const currentBook = useMemo(() => {
     return cartItems[currentIndex];
@@ -95,7 +105,8 @@ export default function CheckoutPage() {
           </div>
           <div className="pb-2">
             <p className="font-medium space-x-1">
-              <span> {t("closeDoorTime1")}</span> <span>1</span><span>{t("closeDoorTime2")}</span> 3
+              <span> {t("closeDoorTime1")}</span> <span>1</span>
+              <span>{t("closeDoorTime2")}</span> 3
               <span>{t("closeDoorTime3")}</span>
             </p>
           </div>

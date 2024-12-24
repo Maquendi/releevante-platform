@@ -5,11 +5,10 @@ import { Roboto } from "next/font/google";
 import SocketIoClient from "@/components/socket/socket-client";
 
 const roboto = Roboto({
-  weight: ["100","300","400", "500", "700"],
+  weight: ["100", "300", "400", "500", "700"],
   subsets: ["latin"],
   display: "swap",
 });
-
 
 export default async function LocaleLayout({
   children,
@@ -18,16 +17,13 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-
   const messages = await getMessages();
 
   return (
     <html lang={locale}>
       <body className={roboto.className}>
         <Providers messages={messages} locale={locale}>
-        <SocketIoClient></SocketIoClient>
-        {/* <WebSocketConnection></WebSocketConnection> */}
-          {children}
+          <SocketIoClient>{children}</SocketIoClient>
         </Providers>
       </body>
     </html>

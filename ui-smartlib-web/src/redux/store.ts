@@ -5,18 +5,20 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import cartReducer from "./features/cartSlice";
 import settingReducer from "./features/settingsSlice";
 import videReducer from "./features/vibeSlice";
+import socketMiddleware from "./middlewares/socketMiddleware";
+import checkoutReducer from "./features/checkoutSlice";
 
 export const store = configureStore({
   reducer: {
     counterReducer,
-    cart:cartReducer,
-    settings:settingReducer,
-    vide:videReducer,
-    [userApi.reducerPath]: userApi.reducer,
+    cart: cartReducer,
+    settings: settingReducer,
+    vide: videReducer,
+    checkoutReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([userApi.middleware]),
+    getDefaultMiddleware().concat([socketMiddleware]),
 });
 
 setupListeners(store.dispatch);
