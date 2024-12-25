@@ -11,7 +11,7 @@ import {
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
-import { BookCopySearch, SearchCriteria } from "./dto";
+import { BookCopySearch, BookRatingDto, SearchCriteria } from "./dto";
 import { BookService } from "./service.definitions";
 
 export class DefaultBookServiceImpl implements BookService {
@@ -72,4 +72,5 @@ export class DefaultBookServiceImpl implements BookService {
   async loanLibraryInventory(): Promise<BooksByCategory[]> {
     return this.bookRepository.loanLibraryInventory()
   }
+
 }
