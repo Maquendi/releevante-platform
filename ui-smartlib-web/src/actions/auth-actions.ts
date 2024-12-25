@@ -18,3 +18,11 @@ export const authSignIn = async (passcode: string) => {
     throw new Error("Error signing in: " + error);
   }
 };
+
+export const authSignOut = async () => {
+  try {
+    (await cookies()).delete(process.env.AUTH_COOKIE!);
+  } catch (error) {
+    throw new Error("Error signing out: " + error);
+  }
+};

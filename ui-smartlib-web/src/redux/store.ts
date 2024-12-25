@@ -10,15 +10,16 @@ import checkoutReducer from "./features/checkoutSlice";
 
 export const store = configureStore({
   reducer: {
-    counterReducer,
+    counter: counterReducer,
     cart: cartReducer,
     settings: settingReducer,
     vide: videReducer,
-    checkoutReducer,
+    checkout: checkoutReducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([socketMiddleware]),
+    getDefaultMiddleware().concat([socketMiddleware, userApi.middleware]), 
 });
 
 setupListeners(store.dispatch);
