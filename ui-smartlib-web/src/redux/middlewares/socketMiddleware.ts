@@ -1,6 +1,6 @@
 // src/middleware/socketMiddleware.js
 import { io, Socket } from "socket.io-client";
-import { updateItemStatus } from "../features/checkoutSlice";
+import { CurrentBook, setCurrentCopy } from "../features/checkoutSlice";
 
 const SOCKET_URL = "http://localhost:7777";
 
@@ -30,11 +30,11 @@ const socketMiddleware = (store) => {
 
           // Example: Listen for server events
           socket.on("checkout_status", (data) => {
-            store.dispatch(
-              updateItemStatus({
-                itemStatus: data,
-              })
-            );
+            // store.dispatch(
+            //   updateItemStatus({
+            //     itemStatus: data,
+            //   })
+            // );
           });
 
           socket.on("health_report", (msg) => {
@@ -53,18 +53,31 @@ const socketMiddleware = (store) => {
 
       case "socket/emit":
         if (socket) {
-          const copies = action.payload
-          setTimeout(()=> {
-            const selected = copies[0];
-            store.dispatch(
-              updateItemStatus({
-                itemStatus: {
-                  cpy: 
-                },
-              })
-            );
-          }, 15000)
-          //socket.emit(action.event, action.payload);
+          const copies = action.payload;
+
+          (async () => {
+            for (const copy of copies) {
+              const { isbn } = copy;
+
+              store.dispatch(
+                setCurrentCopy({
+                  isbn,
+                  status: "checkout_started",
+                })
+              );
+
+              await new Promise((resolve) => setTimeout(resolve, 5000));
+
+              store.dispatch(
+                setCurrentCopy({
+                  isbn,
+                  status: "checkout_successful",
+                })
+              );
+            }
+          })();
+
+          break;
         }
         break;
 
