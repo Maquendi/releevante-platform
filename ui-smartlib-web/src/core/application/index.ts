@@ -13,7 +13,6 @@ const bridgeIoApiClient = new DefaultBridgeIoApiClient();
 const coreApiClient = new CoreApiClientImpl();
 
 const defaultCartService = new DefaultCartService(
-  bookServiceFacade,
   defaultCartRepository
 );
 

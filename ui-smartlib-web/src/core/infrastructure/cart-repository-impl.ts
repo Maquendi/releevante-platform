@@ -4,7 +4,7 @@ import { CartRepository } from "../domain/repositories";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { eq } from "drizzle-orm";
-import { dbGetOne,  executeTransaction } from "@/lib/db/drizzle-client";
+import { dbGetOne, executeTransaction } from "@/lib/db/drizzle-client";
 
 class CartRepositoryImpl implements CartRepository {
   async find(cartId: CartId): Promise<Cart> {
@@ -15,7 +15,7 @@ class CartRepositoryImpl implements CartRepository {
             id: true,
             qty: true,
             isbn: true,
-            transactionType:true
+            transactionType: true,
           },
         },
       },
@@ -27,7 +27,7 @@ class CartRepositoryImpl implements CartRepository {
       id: item.id,
       isbn: item.isbn,
       qty: item.qty,
-      transactionType:item.transactionType
+      transactionType: item.transactionType,
     }));
 
     return new Cart(cartId, userId, cartItems);
@@ -59,7 +59,7 @@ class CartRepositoryImpl implements CartRepository {
               isbn: cartItem.isbn,
               qty: cartItem.qty,
               id: cartItem.id,
-              transactionType:cartItem.transactionType
+              transactionType: cartItem.transactionType,
             })
             .onConflictDoUpdate({
               target: [cartItemSchema.id, cartItemSchema.cartId],
@@ -89,17 +89,19 @@ class CartRepositoryImpl implements CartRepository {
 
         const cartInsertion = tx.insert(cartSchema).values(cartData);
 
-        const cartItemsInsertion = cart.cartItems.map((cartItem) => {
-          return tx.insert(cartItemSchema).values({
+        const cartItems = cart.cartItems.map((cartItem) => {
+          return {
             cartId: cart.id.value,
             isbn: cartItem.isbn,
             qty: cartItem.qty,
             id: cartItem.id,
-            transactionType:cartItem.transactionType
-          });
+            transactionType: cartItem.transactionType,
+          };
         });
 
-        await Promise.all([cartInsertion, ...cartItemsInsertion]);
+        const cartItemsInsertion = tx.insert(cartItemSchema).values(cartItems);
+
+        await Promise.all([cartInsertion, cartItemsInsertion]);
       },
     };
 

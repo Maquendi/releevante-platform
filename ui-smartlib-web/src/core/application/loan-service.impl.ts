@@ -35,10 +35,12 @@ export class BookLoanServiceImpl implements BookLoanService {
       bookCopySearch
     );
 
+  
+
     const loanItems: BookLoanItem[] = bookCopies.map(
-      ({ isbn, id, at_position }) => ({
+      ({ book_isbn, id, at_position }) => ({
         id: uuidv4(),
-        isbn,
+        isbn:book_isbn,
         cpy: id,
         position: at_position,
       })

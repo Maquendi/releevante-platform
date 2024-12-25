@@ -19,7 +19,7 @@ export const loanStatusSchema = sqliteTable("loan_status", {
     .references(() => bookLoanSchema.id),
   status: text("status", { enum: LoanStatusValues }).notNull(),
   isSynced: integer("is_synced", { mode: "boolean" }).default(false),
-  created_at: text("created_at")
+  createdAt: text("created_at")
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString()),
 });

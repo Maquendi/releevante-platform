@@ -26,9 +26,9 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       ): Promise<void> {
         const loanData = {
           id: loan.id,
-          client_id: loan.clientId.value,
-          returns_at: loan.returnsAt,
-          created_at: loan.createdAt,
+          clientId: loan.clientId.value,
+          returnsAt: loan.returnsAt.toISOString(),
+          createdAt: loan.createdAt.toISOString(),
         } as any;
 
         const loanInsertion = await tx.insert(bookLoanSchema).values(loanData);
@@ -39,8 +39,8 @@ export class BookLoanRepositoryImpl implements LoanRepository {
             id: item.id,
             bookCopyId: item.cpy,
             loanId: loan.id,
-            created_at: loan.createdAt,
-            updated_at: loan.createdAt,
+            createdAt: loan.createdAt.toISOString(),
+            updatedAt: loan.createdAt.toISOString(),
           } as any);
         });
 
@@ -50,7 +50,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
             loanId: status.loanId,
             isSynced: false,
             status: status.status.toString(),
-            created_at: status.createdAt,
+            createdAt: status.createdAt.toISOString(),
           } as any);
         });
 

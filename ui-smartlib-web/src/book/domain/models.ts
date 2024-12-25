@@ -69,7 +69,7 @@ export interface BookCopy {
   id: string;
   is_available: boolean;
   at_position: string;
-  isbn: string;
+  book_isbn: string;
 }
 
 export interface BookCompartment {

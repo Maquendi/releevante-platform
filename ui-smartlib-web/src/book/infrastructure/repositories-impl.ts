@@ -38,12 +38,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]> {
-    const data = dbGetAll("bookCopieSchema", {
+    const data =  dbGetAll("bookCopieSchema", {
       columns: {
         id: true,
         is_available: true,
         at_position: true,
-        isbn: true,
+        book_isbn:true
       },
       where: and(
         eq(bookCopieSchema.book_isbn, isbn.value),
@@ -51,6 +51,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
       ),
     });
 
+    
     return data.then((results) => results.map((res) => res as BookCopy));
   }
 
@@ -115,13 +116,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
         publisher: bookSchema.author,
         imageUrl: bookSchema.image,
         correlationId: bookSchema.correlationId,
-        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}), 0) as int)`,
-        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}), 0) as int)`,
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
       })
       .from(bookSchema)
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .leftJoin(bookRatingsSchema, eq(bookRatingsSchema.isbn, bookSchema.id))
       .groupBy(bookSchema.correlationId);
 
     const groupedBooks: { [key: string]: any } = {};
@@ -152,12 +152,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
       });
     });
 
-    console.log("***************************************************************************")
     const data = Object.values(groupedBooks).map(
       ({ bookIds, ...rest }) => rest
     );
-
-    console.log(JSON.stringify(data))
 
     return data as BooksByCategory[];
   }
