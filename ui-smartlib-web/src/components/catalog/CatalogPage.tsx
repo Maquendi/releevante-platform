@@ -23,6 +23,8 @@ export default function CatalogList({ categoryId }: CatalogPageProps) {
     refetchOnMount:false,
     refetchOnWindowFocus:false
   });
+
+  
   const booksByCategory = useFilterBooksByCategory({ categoryId });
   const locale=useLocale()
   
