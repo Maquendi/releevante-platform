@@ -1,6 +1,7 @@
 // src/middleware/socketMiddleware.js
 import { io, Socket } from "socket.io-client";
 import { CurrentBook, setCurrentCopy } from "../features/checkoutSlice";
+import { clearInterval } from "timers";
 
 const SOCKET_URL = "http://localhost:7777";
 
@@ -53,6 +54,7 @@ const socketMiddleware = (store) => {
 
       case "socket/emit":
         if (socket) {
+       
           const copies = action.payload;
 
           (async () => {
@@ -76,8 +78,6 @@ const socketMiddleware = (store) => {
               );
             }
           })();
-
-          break;
         }
         break;
 
