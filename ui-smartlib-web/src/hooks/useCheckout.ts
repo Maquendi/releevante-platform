@@ -10,11 +10,11 @@ import { useRouter } from "@/config/i18n/routing";
 export function useCheckout() {
   const cartItems = useAppSelector((state) => state.cart.items);
   const { currentBook, completedBooks } = useAppSelector(
-    (state) => state.checkoutReducer
+    (state) => state.checkout
   );
   const dispatch = useDispatch();
   const router = useRouter();
-  const hasClearedData = useRef(false); // Ref para evitar la repetición de despachos
+  const hasClearedData = useRef(false); 
 
   const { mutate: addCartItemsMutation } = useMutation({
     mutationFn: checkout,
