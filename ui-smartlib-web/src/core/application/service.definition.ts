@@ -7,6 +7,7 @@ import {
   BookLoanItemStatus,
   BookLoanStatus,
 } from "../domain/loan.model";
+import { Rating } from "../domain/service-rating.model";
 
 export interface CartService {
   checkout(dto: CartDto): Promise<Cart>;
@@ -30,3 +31,9 @@ export interface BookLoanService {
   addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
   addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus>;
 }
+
+export interface ServiceRatingService {
+  saveServiceReview(bookReview: Rating): Promise<Rating[]>
+}
+
+

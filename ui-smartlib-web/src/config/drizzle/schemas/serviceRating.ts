@@ -10,6 +10,7 @@ export const serviceRatingsSchema = sqliteTable("service_ratings", {
     .notNull()
     .references(() => userSchema.id),
   rating: integer("rating").notNull(),
+  comment:text('comment'),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)

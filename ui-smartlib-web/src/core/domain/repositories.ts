@@ -1,5 +1,6 @@
 import { Cart, CartId } from "./cart.model";
 import { BookLoan, BookLoanItemStatus, BookLoanStatus } from "./loan.model";
+import { Rating } from "./service-rating.model";
 import { LibrarySettings } from "./settings.model";
 
 export interface TransactionCallback {
@@ -21,3 +22,8 @@ export interface LoanRepository {
 export interface SettingsRepository {
   getSetting(): Promise<LibrarySettings>;
 }
+
+export interface ServiceRepository {
+  saveServiceReview(bookReview:Rating):Promise<Rating[]>
+}
+

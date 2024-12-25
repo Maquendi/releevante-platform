@@ -31,6 +31,7 @@ import { db } from "@/config/drizzle/db";
 import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
 import { jsonAgg } from "@/lib/db/helpers";
+import { serviceRatingsSchema } from "@/config/drizzle/schemas/serviceRating";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -564,6 +565,9 @@ class DefaultBookRepositoryImpl implements BookRepository {
 
     return results;
   }
+
+
+ 
 }
 
 export const defaultBookRepository = new DefaultBookRepositoryImpl();

@@ -15,3 +15,9 @@ export interface BookCopySearchResults {
   qty: number;
   bookCopies: BookCopy[];
 }
+
+export interface BookRatingDto{
+  clientId: string;   
+  rating: number;      
+  comment?: string;    
+}

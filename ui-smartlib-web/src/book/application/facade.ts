@@ -9,7 +9,7 @@ import {
   FtagsEnum,
   LibraryInventory,
 } from "../domain/models";
-import { BookCopySearch } from "./dto";
+import { BookCopySearch, BookRatingDto } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
 
  export class BookServiceFacadeImpl implements BookServiceFacade {
@@ -47,4 +47,5 @@ import { BookService, BookServiceFacade } from "./service.definitions";
   loanLibraryInventory(): Promise<BooksByCategory[]> {
     return this.bookService.loanLibraryInventory()
   }
+ 
 }
