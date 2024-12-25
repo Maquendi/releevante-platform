@@ -15,7 +15,7 @@ type KeyboardRef = {
 };
 
 interface KeyboardProps {
-  handleInputChangeFn: (input: string) => void;
+  setInputText:  Dispatch<SetStateAction<string>>;
   open: boolean;
   state: string;
   isNumeric?: boolean;
@@ -23,7 +23,7 @@ interface KeyboardProps {
 }
 
 const VirtualKeyboard = ({
-  handleInputChangeFn,
+  setInputText,
   open,
   state,
   isNumeric = false,
@@ -35,7 +35,8 @@ const VirtualKeyboard = ({
   useOnClickOutside(keyboardContainerRef, () => setOpen(false));
 
   const onChange = (input: string) => {
-    handleInputChangeFn(input);
+    console.log('on change keyboard',input)
+    setInputText(input);
   };
 
   const onKeyPress = (button: string) => {

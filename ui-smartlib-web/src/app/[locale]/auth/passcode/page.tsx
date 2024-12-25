@@ -39,6 +39,7 @@ const SigninPasscode = () => {
           {t("footerBtn")}
         </Link>
       </div>
+      
    </>
   );
 };

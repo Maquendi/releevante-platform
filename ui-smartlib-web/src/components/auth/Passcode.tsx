@@ -70,7 +70,7 @@ export default function Passcode() {
       </div>
 
       <VirtualKeyboard
-        handleInputChangeFn={handleInputChange}
+        setInputText={setInput}
         open={isKeyboardVisible}
         setOpen={setIsKeyboardVisible}
         state={input}

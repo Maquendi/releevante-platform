@@ -112,7 +112,7 @@ export default function SearchBooksPage() {
         </div>
       </div>
       <VirtualKeyboard
-        handleInputChangeFn={handleInputChange}
+        setInputText={setSearchQuery}
         open={isKeyboardVisible}
         setOpen={setIsKeyboardVisible}
         state={searchQuery}
