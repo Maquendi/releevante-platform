@@ -7,6 +7,8 @@ import Image from "next/image";
 import { formatDateByRegion } from "@/lib/utils";
 import EmptyRentedBooks from "./EmptyRentedBooks";
 import { Link } from "@/config/i18n/routing";
+import { useQuery } from "@tanstack/react-query";
+import { FetchUserBooksLoan } from "@/actions/cart-actions";
 
 const TIME_REGIONS = {
   en: "en-US",
@@ -31,10 +33,14 @@ const ReturnItem = ({ item, onButtonClick }) => {
           />
         </figure>
         <div className="space-y-1">
-          <p className="text-xs bg-primary px-2 py-1 rounded-sm font-medium text-white w-fit">
-            {item.category?.[`${locale}Category`]}
-          </p>
-          <h4 className="text-2xl font-medium">{item.title}</h4>
+          <div className="flex gap-1">
+            {item.categories.map(category=>(
+              <p key={category.enCategory} className="text-xs bg-primary px-2 py-1 rounded-sm font-medium text-white w-fit">
+              {category?.[`${locale}Category`]}
+            </p>
+            ))}
+          </div>
+          <h4 className="text-2xl font-medium">{item.bookTitle}</h4>
           <p className="text-secondary-foreground">{item.author}</p>
         </div>
       </div>
@@ -55,6 +61,11 @@ export default function ReturnBookList() {
   const settings = useAppSelector((state) => state.settings);
   const t = useTranslations("returnBook");
   const locale = useLocale();
+  const {data:userReturnBooks,isPending} = useQuery({
+    queryKey: ["RETURN_BOOKS"],
+    queryFn: async()=> await FetchUserBooksLoan(),
+  });
+
 
   return (
     <div className="bg-white pt-5  rounded-md space-y-5">
@@ -75,25 +86,30 @@ export default function ReturnBookList() {
         <div className="text-sm font-medium text-gray-500">
           <p className="first-letter:uppercase">
             <span>{t("returnDate")}</span>:{" "}
-            <span>
-              {formatDateByRegion(
-                new Date(),
-                TIME_REGIONS?.[locale] || "en-US"
-              )}
-            </span>
+            {
+              userReturnBooks?.returnDate && (
+                <span>
+                {formatDateByRegion(
+                  new Date(userReturnBooks.returnDate),
+                  TIME_REGIONS?.[locale] || "en-US"
+                )}
+              </span>
+              )
+            }
           </p>
         </div>
       </div>
       <div className="space-y-3 px-4 pb-2">
-        {books?.length > 0 ? (
-          books?.map((item) => (
+        {userReturnBooks?.books?.length && (
+          userReturnBooks.books.map((item) => (
             <ReturnItem
-              key={item.isbn}
+              key={item.id}
               item={item}
               onButtonClick={() => console.log("")}
             />
           ))
-        ) : (
+        ) }
+        {!userReturnBooks?.books?.length && !isPending && (
           <EmptyRentedBooks />
         )}
       </div>
@@ -102,11 +118,7 @@ export default function ReturnBookList() {
           href={"/catalog"}
           className="m-auto border rounded-full font-medium tracking-wider text-sm py-4 px-7 border-primary text-primary bg-transparent"
         >
-          {books?.length > 0 ? (
-            t("rentAnotherBook")
-          ):(
-            t("rentBook")
-          )}
+          {books?.length > 0 ? t("rentAnotherBook") : t("rentBook")}
         </Link>
       </div>
     </div>

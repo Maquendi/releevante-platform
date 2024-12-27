@@ -21,3 +21,21 @@ export const checkout = async (cartItems: CartItemDto[]): Promise<BookLoan> => {
     throw new Error("error checkout" + error);
   }
 };
+
+export const FetchUserBooksLoan = async () => {
+  const cookieStore = await cookies()
+  const authCookie = cookieStore.get(process.env.AUTH_COOKIE!)
+
+  try {
+    const payload = extractPayload(authCookie!.value!)
+
+    const userId = {
+      value: payload.sub,
+    };
+    return await cartServiceFacade.getUserLoanBooks(userId)
+  } catch (error) {
+    console.log("error checkout" + error);
+    throw new Error("error checkout" + error);
+  }
+};
+

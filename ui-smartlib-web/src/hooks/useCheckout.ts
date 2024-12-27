@@ -15,18 +15,22 @@ export function useCheckout() {
   const dispatch = useDispatch();
   const router = useRouter();
   const hasClearedData = useRef(false); 
+  const hasCheckedOut = useRef(false); 
 
   const { mutate: addCartItemsMutation } = useMutation({
     mutationFn: checkout,
     onSuccess(data) {
       const copies = data.loanItems;
+      console.log('copies checkout',copies)
       dispatch({ type: "socket/emit", event: "checkout", payload: copies });
     },
   });
 
   useEffect(() => {
     if (!cartItems || cartItems?.length === 0) return;
+    if(hasCheckedOut.current)return
     addCartItemsMutation(cartItems);
+    hasCheckedOut.current=true
   }, [cartItems, addCartItemsMutation]);
 
   const currentBookShowing = useMemo(() => {

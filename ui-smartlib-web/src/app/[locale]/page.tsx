@@ -1,7 +1,8 @@
-'use server'
+"use server";
 import { FetchAllBooks } from "@/actions/book-actions";
+import { FetchUserBooksLoan } from "@/actions/cart-actions";
 import MainSliderBooks from "@/components/MainSliderBooks";
-import {  buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
 import {
@@ -49,14 +50,15 @@ export default async function Home() {
         </HydrationBoundary>
       </div>
       <div className="grid place-content-center fixed bottom-8 left-[50%] -translate-x-[50%] z-50">
-     
-
         <Link
-          className={cn(buttonVariants(),"rounded-3xl font-medium text-xs hover:text-primary ")}
-          href={'/auth'}
+          className={cn(
+            buttonVariants(),
+            "rounded-3xl font-medium text-xs hover:text-primary "
+          )}
+          href={"/auth"}
         >
           Search a book
-          </Link>
+        </Link>
       </div>
       <div className="fixed -bottom-12 -left-16 h-[600px] w-full z-0">
         <figure className="relative w-full h-full">
