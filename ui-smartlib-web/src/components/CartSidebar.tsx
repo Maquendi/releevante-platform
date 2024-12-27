@@ -17,9 +17,10 @@ import { useRouter } from "@/config/i18n/routing";
 
 export function CartSidebarTrigger() {
   const { setOpen, open } = useSidebar();
+  const numItemsInCart = useAppSelector((store) => store.cart.items?.length) || 0
 
   return (
-    <button onClick={() => setOpen(!open)}>
+    <button className="relative" onClick={() => setOpen(!open)}>
       <Image
         src="/icons/cart.svg"
         className="w-[30px] h-[30px]"
@@ -27,6 +28,11 @@ export function CartSidebarTrigger() {
         height={40}
         alt="cart icon"
       />
+      {numItemsInCart > 0 && (
+        <p className="grid place-content-center pt-[0.100rem] absolute -top-3 -right-2.5 font-medium text-xs text-white w-6 h-6 rounded-full  bg-[#FF2D55]">
+          {numItemsInCart}
+        </p>
+      )}
     </button>
   );
 }
@@ -54,9 +60,9 @@ export default function CartSidebar() {
   const settings = useAppSelector((state) => state.settings);
   const { open } = useSidebar();
   const t = useTranslations("cart");
-  const {rentItems,purchaseItems}=useGetBooks()
-  const router = useRouter()
- 
+  const { rentItems, purchaseItems } = useGetBooks();
+  const router = useRouter();
+
   return (
     <div className="relative">
       {open && (
@@ -169,7 +175,7 @@ export default function CartSidebar() {
           <div className=" bg-white py-3 flex justify-center border-t border-secondary">
             <Button
               disabled={!rentItems?.length && !purchaseItems?.length}
-              onClick={()=>router.push('/reviewcart')}
+              onClick={() => router.push("/reviewcart")}
               className=" py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent  "
             >
               <span className=" first-letter:uppercase"> {t("checkout")}</span>

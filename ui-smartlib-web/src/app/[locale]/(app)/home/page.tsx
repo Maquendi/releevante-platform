@@ -9,6 +9,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import React from "react";
@@ -27,9 +28,10 @@ export default async function HomePage() {
 
   await queryClient.prefetchQuery({
     queryKey: ["READING_VIBE"],
-    queryFn: async () => await FetchFtagsBy('reading_vibe'),
+    queryFn: async () => await FetchFtagsBy("reading_vibe"),
   });
-  
+  const tHome = await getTranslations("HomePage");
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="pb-3">
@@ -50,7 +52,7 @@ export default async function HomePage() {
           </div>
         </header>
         <section className="flex gap-5 mt-5 px-5">
-          <article className="px-5 space-y-8 rounded-xl bg-white border border-gray-300 pt-5 pb-8">
+          <article className="grid grid-rows-[auto_1fr_auto] px-5 space-y-8 rounded-xl bg-white border border-gray-300 pt-5 pb-8">
             <figure>
               <Image
                 priority
@@ -62,23 +64,21 @@ export default async function HomePage() {
               />
             </figure>
             <div className="space-y-1">
-              <h3 className="text-2xl font-semibold">Show me all the books</h3>
-              <p className="font-thin">
-                Explore our entire library of books! Browse through a vast
-                collection of genres, themes, and authors to discover your next
-                great read
-              </p>
+              <h3 className="text-2xl font-semibold">
+                {tHome("showAllBooksTitle")}
+              </h3>
+              <p className="font-thin">{tHome("showAllBooksText")}</p>
             </div>
             <div className="flex">
               <Link
                 className="bg-primary text-center w-full flex-grow-1 mt-2 px-6 py-4 rounded-full font-medium text-sm text-white"
                 href="/catalog"
               >
-                Browse all the books
+                {tHome("showAllBooksBtn")}
               </Link>
             </div>
           </article>
-          <article className="px-5 space-y-8 rounded-xl bg-white border border-gray-300 pt-5 pb-8">
+          <article className="grid grid-rows-[auto_1fr_auto] px-5 space-y-8 rounded-xl bg-white border border-gray-300 pt-5 pb-8">
             <figure>
               <Image
                 priority
@@ -92,19 +92,16 @@ export default async function HomePage() {
             <div className="space-y-1">
               <h3 className="text-2xl font-semibold">
                 {" "}
-                Help me find the right book
+                {tHome("helpFindBookTitle")}
               </h3>
-              <p className="font-thin">
-                Let us guide you! We’ll recommend the perfect book tailored just
-                for you, just answer a few quick questions
-              </p>
+              <p className="font-thin">{tHome("helpFindBookText")}</p>
             </div>
             <div className="flex">
               <Link
                 className="bg-primary text-center w-full flex-grow-1 mt-2 px-6 py-4 rounded-full font-medium text-sm text-white"
                 href="/vibes/readingvibe"
               >
-                Browse all the books
+                {tHome("helpFindBookBtn")}
               </Link>
             </div>
           </article>

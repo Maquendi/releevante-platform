@@ -7,6 +7,7 @@ import useGetBooks from "@/hooks/useGetBooks";
 import { cn } from "@/lib/utils";
 import { removeItem, updateItem } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { Info } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -133,7 +134,7 @@ export default function ReviewCartPage() {
         )}
         {purchaseItems?.length > 0 && (
           <div className="pt-7 pb-5 px-5 bg-white rounded-xl space-y-5">
-            <div>
+            <div className="flex justify-between items-center">
               <h3 className="space-x-1 font-medium flex text-secondary-foreground">
                 <p className="space-x-1">
                   <span className="capitalize text-black">{t("to")}</span>
@@ -150,6 +151,10 @@ export default function ReviewCartPage() {
                   )
                 </p>
               </h3>
+              <p className="flex gap-1 items-center bg-[#E1F9FF] text-xs  py-2 rounded-md pl-1 pr-3">
+                <Info size={20} className="fill-black text-white"/>
+                 {tReviewCart('purchaseMsg')}
+              </p>
             </div>
             <div className="space-y-4">
               {purchaseItems.map((item) => (

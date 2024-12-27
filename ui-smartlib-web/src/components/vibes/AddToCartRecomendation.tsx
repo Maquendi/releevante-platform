@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useAddBookToCart } from "@/hooks/useAddBookToCart";
 import { Book } from "@/book/domain/models";
+import { DialogReadMoreBooksDialog } from "./ReadMoreBooksDialog";
 
 interface AddToCartRecomendationProps {
   book: Book;
@@ -41,16 +42,7 @@ export default function AddToCartRecomendation({
         </Button>
       </div>
       <div className="space-x-4">
-        <Button
-          disabled={
-            !selectedLanguage ||
-            booksInCartCount.rentItemsCount >= maxBookAllowed!
-          }
-          onClick={() => handleAddToCart("RENT", book)}
-          className="py-7  px-8 rounded-full font-medium hover:text-black hover:bg-accent"
-        >
-          <span className="first-letter:uppercase"> {t("rent")}</span>
-        </Button>
+        <DialogReadMoreBooksDialog book={book}/>
 
         <Button
           disabled={

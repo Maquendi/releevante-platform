@@ -1,7 +1,15 @@
 {
-  "HomePage": {
+  "AuthPage": {
     "title": "Welcome to the Smart Library",
     "subTitle": "Hold your wristband to the kiosk scanner to access our book collection for rent or purchase."
+  },
+  "HomePage":{
+    "showAllBooksTitle":"Show me all the books",
+    "showAllBooksText":"Explore our entire library of books! Browse through a vast collection of genres, themes, and authors to discover your next great read",
+    "showAllBooksBtn":"Browse all the books",
+    "helpFindBookTitle":"Help me find the right book",
+    "helpFindBookText":" Let us guide you! We’ll recommend the perfect book tailored just for you, just answer a few quick questions",
+    "helpFindBookBtn":"Suggest me a books"
   },
   "wristbandScanAuth": {
     "header": "Welcome to your personal library!",

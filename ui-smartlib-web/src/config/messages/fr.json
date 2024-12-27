@@ -1,6 +1,14 @@
 {
-  "home": {
+  "AuthPage": {
     "title": "Bienvenue à la Bibliothèque Intelligente"
+  },
+  "HomePage": {
+    "showAllBooksTitle": "Montrez-moi tous les livres",
+    "showAllBooksText": "Explorez notre bibliothèque complète de livres ! Parcourez une vaste collection de genres, de thèmes et d’auteurs pour découvrir votre prochaine grande lecture.",
+    "showAllBooksBtn": "Voir tous les livres",
+    "helpFindBookTitle": "Aidez-moi à trouver le livre parfait",
+    "helpFindBookText": "Laissez-nous vous guider ! Nous vous recommanderons le livre parfait adapté juste pour vous, il suffit de répondre à quelques questions rapides.",
+    "helpFindBookBtn": "Suggérez-moi des livres"
   },
   "wristbandScanAuth": {
     "header": "Bienvenue dans votre bibliothèque personnelle !",
