@@ -50,3 +50,22 @@ export interface BookLoan {
   returnsAt: Date;
   status: BookLoanStatus[];
 }
+
+
+interface BookLoanQuery {
+  id: number; 
+  bookTitle: string; 
+  author: string; 
+  image: string; 
+  categories: {
+    enCategory: string; 
+    frCategory: string; 
+    esCategory: string; 
+    isbn: string; 
+  }[];
+}
+
+export interface LoanGroup {
+  returnDate: string; 
+  books: BookLoanQuery[];
+}

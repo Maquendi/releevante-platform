@@ -3,9 +3,10 @@ import {
   BookLoanItem,
   BookLoanItemStatus,
   BookLoanStatus,
+  LoanGroup,
 } from "../domain/loan.model";
 import { LoanRepository } from "../domain/repositories";
-import { executeTransaction } from "@/lib/db/drizzle-client";
+import { dbGetAll, executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { bookLoanSchema } from "@/config/drizzle/schemas/bookLoan";
@@ -13,6 +14,14 @@ import { loanItemSchema } from "@/config/drizzle/schemas/LoanItems";
 import { loanStatusSchema } from "@/config/drizzle/schemas/LoanStatus";
 import { db } from "@/config/drizzle/db";
 import { loanItemStatusSchema } from "@/config/drizzle/schemas/LoanItemStatus";
+import { eq, gt, inArray, or, sql, and } from "drizzle-orm";
+import { jsonAgg } from "@/lib/db/helpers";
+import {
+  bookFtagSchema,
+  bookSchema,
+  ftagsSchema,
+} from "@/config/drizzle/schemas";
+import { UserId } from "@/identity/domain/models";
 
 export class BookLoanRepositoryImpl implements LoanRepository {
   async save(loan: BookLoan): Promise<void> {
@@ -89,6 +98,71 @@ export class BookLoanRepositoryImpl implements LoanRepository {
     } as any);
 
     return status;
+  }
+
+  async getUserLoanBooks(clientId: UserId): Promise<LoanGroup> {
+    const lastStatus = db.$with("LastStatus").as(
+      db
+        .select({
+          loanId: loanStatusSchema.loanId,
+          status: loanStatusSchema.status,
+          rowNum:
+            sql`ROW_NUMBER() OVER (PARTITION BY ${loanStatusSchema.loanId} ORDER BY ${loanStatusSchema.createdAt} DESC)`.as(
+              "rn"
+            ),
+        })
+        .from(loanStatusSchema)
+    );
+
+    const data = await db
+      .with(lastStatus)
+      .select({
+        returnDate: bookLoanSchema.returnsAt,
+        id: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        author: bookSchema.author,
+        image:bookSchema.image,
+        categories: jsonAgg({
+          enCategory: ftagsSchema.enTagValue,
+          frCategory: ftagsSchema.frTagValue,
+          esCategory: ftagsSchema.esTagValue,
+          isbn: bookFtagSchema.bookIsbn,
+        }),
+      })
+      .from(bookLoanSchema)
+      .innerJoin(
+        lastStatus,
+        and(eq(lastStatus.loanId, bookLoanSchema.id), eq(lastStatus.rowNum, 1))
+      )
+      .leftJoin(loanItemSchema, eq(loanItemSchema.loanId, bookLoanSchema.id))
+      .leftJoin(bookSchema, eq(loanItemSchema.isbn, bookSchema.id))
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
+      .leftJoin(
+        ftagsSchema,
+        and(
+          eq(ftagsSchema.id, bookFtagSchema.ftagId),
+          eq(ftagsSchema.tagName, "category")
+        )
+      )
+      .where(
+        and(
+          eq(bookLoanSchema.clientId, clientId.value),
+          inArray(lastStatus.status, ["CURRENT", "OVERDUE", "PENDING"])
+        )
+      )
+      .groupBy(bookLoanSchema.id, bookSchema.id);
+
+    const groupedResults =   Object.values(data.reduce((acc, { returnDate, ...book }) => {
+      if (!acc[returnDate]) {
+        acc[returnDate] = { returnDate, books: [] };
+      }
+      acc[returnDate].books.push(book);
+      return acc;
+    }, {}))
+
+    const result = groupedResults.length > 0 ? groupedResults[0]:[]
+    return result  as LoanGroup
+
   }
 }
 
