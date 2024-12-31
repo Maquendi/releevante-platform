@@ -1,5 +1,5 @@
 "use server";
-import { FetchAllBooks } from "@/actions/book-actions";
+import { FetchAllBooks, LoanLibraryInventory } from "@/actions/book-actions";
 import RestHomePage from "@/components/restHome/RestHomePage";
 import {
   dehydrate,
@@ -11,7 +11,7 @@ export default async function Home() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["ALL_BOOKS"],
-    queryFn: () => FetchAllBooks({ limit: 25 }),
+    queryFn: () => LoanLibraryInventory({ limit: 25 }),
   });
 
 

@@ -1,4 +1,6 @@
+
 import {
+  FetchAllBookByCategory,
   FetchAllBookCategories,
   LoanLibraryInventory,
 } from "@/actions/book-actions";
@@ -16,7 +18,7 @@ export default async function CatalogPage({ searchParams }) {
   const queryClient = new QueryClient();
   await queryClient.ensureQueryData({
     queryKey: ["BOOKS_BY_CATEGORIES"],
-    queryFn: async() => await LoanLibraryInventory(),
+    queryFn: async() => await FetchAllBookByCategory(),
   });
   await queryClient.ensureQueryData({
     queryKey: ["CATEGORIES"],

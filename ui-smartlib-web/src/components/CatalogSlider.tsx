@@ -5,11 +5,11 @@ import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
 import { useSearchParams } from "next/navigation";
-import { CategoryBookItem } from "@/book/domain/models";
 import BookItem from "./catalogByCategory/BookItem";
+import { BookItems } from "@/book/domain/models";
 
 type SliderProps = {
-  books: CategoryBookItem[];
+  books: BookItems[];
   slidesToShow?: number;
   subCategoryId?: string;
 };

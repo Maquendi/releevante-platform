@@ -1,7 +1,7 @@
 import {
+  FetchAllBookByCategory,
   FetchAllBookCategories,
   FetchFtagsBy,
-  LoanLibraryInventory,
 } from "@/actions/book-actions";
 import { Link } from "@/config/i18n/routing";
 import {
@@ -9,7 +9,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import React from "react";
@@ -19,7 +18,7 @@ export default async function HomePage() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["BOOKS_BY_CATEGORIES"],
-    queryFn: async () => await LoanLibraryInventory(),
+    queryFn: async () => await FetchAllBookByCategory(),
   });
   await queryClient.prefetchQuery({
     queryKey: ["CATEGORIES"],

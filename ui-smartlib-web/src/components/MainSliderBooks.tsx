@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useQuery } from "@tanstack/react-query";
-import { FetchAllBooks } from "@/actions/book-actions";
+import {  LoanLibraryInventory } from "@/actions/book-actions";
 import Image from "next/image";
 import { useRouter } from "@/config/i18n/routing";
 
@@ -39,7 +39,7 @@ export default function MainSliderBooks() {
 
   const { data: books } = useQuery({
     queryKey: ["ALL_BOOKS"],
-    queryFn: () => FetchAllBooks({ limit: 25 }),
+    queryFn: () => LoanLibraryInventory({ limit: 25 }),
   });
 
   return (

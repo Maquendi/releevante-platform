@@ -2,7 +2,7 @@
 
 import { bookServiceFacade } from "@/book/application";
 import { BookRatingDto } from "@/book/application/dto";
-import { BookByFtagsVibes, FtagsEnum } from "@/book/domain/models";
+import { BookByFtagsVibes, BooksPagination, FtagsEnum } from "@/book/domain/models";
 import { extractPayload } from "@/lib/jwt-parser";
 import { cookies } from "next/headers";
 
@@ -39,15 +39,15 @@ export async function FetchBookById(isbn: string) {
   }
 }
 
-export async function FetchAllBookByCategory(categoryId: string) {
+export async function FetchAllBookByCategory() {
   try {
-    return await bookServiceFacade.findAllBookByCategory(categoryId);
+    return await bookServiceFacade.findAllBookByCategory();
   } catch (error) {
     throw new Error("Error fetching books by category" + error);
   }
 }
 
-export async function LoanLibraryInventory() {
+export async function LoanLibraryInventory(pagination:BooksPagination) {
   try {
     return await bookServiceFacade.loanLibraryInventory();
   } catch (error) {
@@ -70,5 +70,23 @@ export async function FetchBookByFtagsVibes(tagNames: BookByFtagsVibes) {
     throw new Error("Error fetching books by category" + error);
   }
 }
+
+export async function FetchUnsyncBooksLocal() {
+  try {
+    return await bookServiceFacade.getUnsyncBooksLocal();
+  } catch (error) {
+    throw new Error("Error fetching books by category" + error);
+  }
+}
+
+
+export async function SyncBookImages(bookId:string) {
+  try {
+    return await bookServiceFacade.syncBookImages(bookId);
+  } catch (error) {
+    throw new Error("Error fetching books by category" + error);
+  }
+}
+
 
 
