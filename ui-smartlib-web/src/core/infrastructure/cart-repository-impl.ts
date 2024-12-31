@@ -80,6 +80,9 @@ class CartRepositoryImpl implements CartRepository {
 
     console.log("SAVING RECORDS " + JSON.stringify(cart))
 
+
+    console.log("SAVING RECORDS " + JSON.stringify(cart))
+
     const transaction: ClientTransaction = {
       execute: async function (
         tx: SQLiteTransaction<any, any, any, any>

@@ -3,6 +3,8 @@ import {
   BookByFtagsVibes,
   BookCategory,
   BookCopy,
+  BookImage,
+  BookItems,
   BooksByCategory,
   BooksPagination,
   FtagItem,
@@ -17,8 +19,8 @@ import { BookService, BookServiceFacade } from "./service.definitions";
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
   }
-  async findAllBookByCategory(categoryId: string): Promise<BooksByCategory[]> {
-    return await this.bookService.findAllBookByCategory(categoryId);
+  async findAllBookByCategory(): Promise<BooksByCategory[]> {
+    return await this.bookService.findAllBookByCategory();
   }
   async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {
     return await this.bookService.findAllBookBySearchCriteria(searchCriteria);
@@ -44,8 +46,16 @@ import { BookService, BookServiceFacade } from "./service.definitions";
     return this.bookService.findBookByVibeTags(tagsValues)
   }
 
-  loanLibraryInventory(): Promise<BooksByCategory[]> {
+  loanLibraryInventory(): Promise<BookItems[]> {
     return this.bookService.loanLibraryInventory()
+  }
+
+  getUnsyncBooksLocal(): Promise<BookImage[]> {
+    return this.bookService.getUnsyncBooksLocal()
+  }
+
+  syncBookImages(bookId: string): Promise<void> {
+    return this.bookService.syncBookImages(bookId)
   }
  
 }

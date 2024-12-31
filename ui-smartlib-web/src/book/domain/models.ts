@@ -18,6 +18,11 @@ export interface FtagItem {
   esTagValue: string;
 }
 
+export interface BookImage {
+  id: string;
+  image:string
+}
+
 export interface BookByFtagsVibes {
   readingvibe: string;
   moodVibe: string;
@@ -32,21 +37,13 @@ export interface BookCategory {
   esTagValue: string;
 }
 
-export interface BookImage {
-  id: string;
-  url: string;
-}
 
-export interface CategoryBookItem {
-  isbn: string;
-  bookTitle: string;
-  author: string;
-  imageUrl: string;
-  votes: number;
-  rating: number;
-  correlationId: string;
-  categories:FtagItem[]
-}
+// export interface BookItems {
+//   id: string;
+//   title: string;
+//   publisher: string;
+//   images: BookImage[];
+// }
 
 export interface CategoryTranslations {
   id?: string;
@@ -55,6 +52,20 @@ export interface CategoryTranslations {
   enCategoryName: string;
 }
 
+export interface BookItems {
+  categories:FtagItem[],
+  subCategories:FtagItem[]
+  isbn: string;
+  bookTitle: string;
+  publisher: string;
+  image: string;
+  votes: string;
+  rating: string;
+  correlationId: string;
+}
+
+
+
 export interface BooksByCategory {
   subCategory: {
     id: string;
@@ -62,7 +73,7 @@ export interface BooksByCategory {
     esName: string;
     frName: string;
   };
-  books: CategoryBookItem[];
+  books: BookItems[];
 }
 
 export interface BookCopy {
@@ -80,12 +91,6 @@ export interface Isbn {
   value: string;
 }
 
-export interface BookItems {
-  id: string;
-  title: string;
-  publisher: string;
-  images: BookImage[];
-}
 
 export interface BooksPagination {
   limit?: number;

@@ -6,6 +6,8 @@ import {
   BookCategory,
   BookCompartment,
   BookCopy,
+  BookImage,
+  BookItems,
   BooksByCategory,
   BooksPagination,
   CategoryGraph,
@@ -39,12 +41,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]> {
-    const data =  dbGetAll("bookCopieSchema", {
+    const data = dbGetAll("bookCopieSchema", {
       columns: {
         id: true,
         is_available: true,
         at_position: true,
-        book_isbn:true
+        book_isbn: true,
       },
       where: and(
         eq(bookCopieSchema.book_isbn, isbn.value),
@@ -52,7 +54,6 @@ class DefaultBookRepositoryImpl implements BookRepository {
       ),
     });
 
-    
     return data.then((results) => results.map((res) => res as BookCopy));
   }
 
@@ -60,6 +61,20 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return dbGetAll("ftagsSchema", {
       where: eq(ftagsSchema.tagName, tagName),
     });
+  }
+
+  async getUnsyncBooksLocal(): Promise<BookImage[]> {
+    return dbGetAll('bookSchema', {
+      where: eq(bookSchema.isImageSyncLocal, false),
+      columns:{
+        id:true,
+        image:true
+      }
+    });
+  }
+
+  async syncBookImages(bookId:string): Promise<void> {
+    await db.update(bookSchema).set({isImageSyncLocal:true}).where(eq(bookSchema.id,bookId))
   }
 
   async updateCopies(bookCopies: BookCopy[]): Promise<BookCopy[]> {
@@ -102,7 +117,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
   //   });
   // }
 
-  async loanLibraryInventory(): Promise<BooksByCategory[]> {
+  async loanLibraryInventory(): Promise<BookItems[]> {
     const results = await db
       .select({
         tags: jsonAgg({
@@ -115,7 +130,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         publisher: bookSchema.author,
-        imageUrl: bookSchema.image,
+        image: bookSchema.image,
         correlationId: bookSchema.correlationId,
         rating: bookSchema.rating,
         votes: bookSchema.votes,
@@ -125,40 +140,17 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
       .groupBy(bookSchema.correlationId);
 
-    const groupedBooks: { [key: string]: any } = {};
-
-    results.forEach(({ tags, ...book }) => {
-      const subCategoryTags = tags?.filter(
+    const groupedItems = results.map(({tags,...rest})=>{
+      const subCategories = tags?.filter(
         (tag) => tag.tagName === "subcategory"
       );
-      const categoriesTags = tags?.filter((tag) => tag.tagName === "category");
-
-      subCategoryTags.forEach((subCat) => {
-        const subCategoryId = subCat.id || "";
-        if (!groupedBooks[subCategoryId]) {
-          groupedBooks[subCategoryId] = {
-            subCategory: subCat,
-            books: [],
-            bookIds: new Set(),
-          };
-        }
-
-        if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
-          groupedBooks[subCategoryId].books.push({
-            ...book,
-            categories: categoriesTags,
-          });
-          groupedBooks[subCategoryId].bookIds.add(book.isbn);
-        }
-      });
-    });
-
-    const data = Object.values(groupedBooks).map(
-      ({ bookIds, ...rest }) => rest
-    );
-
-    return data as BooksByCategory[];
+      const categories = tags?.filter((tag) => tag.tagName === "category");
+      return {categories,subCategories,...rest}
+    })
+    return groupedItems as BookItems[]
   }
+
+  
 
   async loanLibraryInventoryOriginal(
     searchCategoryId?: string
@@ -326,7 +318,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         publisher: bookSchema.author,
-        imageUrl: bookImageSchema.url,
+        image: bookImageSchema.url,
         correlationId: bookSchema.correlationId,
         rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
         votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
@@ -565,9 +557,6 @@ class DefaultBookRepositoryImpl implements BookRepository {
 
     return results;
   }
-
-
- 
 }
 
 export const defaultBookRepository = new DefaultBookRepositoryImpl();
