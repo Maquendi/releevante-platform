@@ -388,7 +388,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         editionTitle: true,
         correlationId: true,
         image: true,
-      },
+      }, 
     });
 
     return results as Book[];
