@@ -2,13 +2,15 @@ import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addItem } from "@/redux/features/cartSlice";
 import { Book, BookLanguage } from "@/book/domain/models";
+import useSyncImagesIndexDb from "./useSyncImagesIndexDb";
 
 export function useAddBookToCart() {
   const dispatch = useAppDispatch();
-
+  const {getImageByBookId}= useSyncImagesIndexDb()
   const { items: cartItems, language: selectedLanguage } = useAppSelector(
     (state) => state.cart
   );
+
   const settings = useAppSelector((store) => store.settings.data);
 
   const maxBookAllowed = useMemo(() => {
@@ -29,7 +31,7 @@ export function useAddBookToCart() {
     return bookLanguages.some((book) => cartIsbns.includes(book.bookId));
   };
 
-  const cartItemPayload = (book: Book) => {
+  const cartItemPayload = async (book: Book) => {
     const bookId = book.languages.find(
       (item) => item.language === selectedLanguage
     )?.bookId;
@@ -37,10 +39,12 @@ export function useAddBookToCart() {
 
     if (!book || !bookId) return;
 
+    const blobImage= await getImageByBookId(bookId)
+    
     return {
       isbn: bookId!,
       title: book.bookTitle,
-      image: book.image,
+      image: blobImage as string,
       qty: 1,
       price: book.price,
       categories:book.categories,
@@ -48,7 +52,7 @@ export function useAddBookToCart() {
     };
   };
 
-  const handleAddToCart = (transactionType: "RENT" | "PURCHASE", book: any) => {
+  const handleAddToCart = async (transactionType: "RENT" | "PURCHASE", book: any) => {
     if (
       transactionType === "RENT" &&
       booksInCartCount.rentItemsCount >= maxBookAllowed
@@ -59,7 +63,7 @@ export function useAddBookToCart() {
       booksInCartCount.purchaseItemsCount >= maxBookAllowed
     )
       return;
-    const payload = cartItemPayload(book);
+    const payload = await cartItemPayload(book);
     if (payload) {
       dispatch(addItem({ ...payload, transactionType }));
     }

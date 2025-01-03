@@ -1,10 +1,12 @@
-"use client";
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import Rating from "../Rating";
 import Image from "next/image";
 import { Book } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
 import dynamic from 'next/dynamic'
+import useSyncImagesIndexDb from "@/hooks/useSyncImagesIndexDb";
+import ImageWithSkeleton from "../ImageWithSkeleton";
 const SelectLanguage = dynamic(() => import( "./SelectLanguage"), {
   ssr:false
 })
@@ -15,17 +17,21 @@ interface BookByIdBannerProps {
 export default function BookByIdBanner({ book }: BookByIdBannerProps) {
   const locale = useLocale();
   const t = useTranslations("bookById");
+  const [bookImage,setBookImage]=useState<string | null>(null)
+  const {getImageByBookId}=useSyncImagesIndexDb()
+  useEffect(()=>{
+    getImageByBookId(book.id)
+    .then((image)=>{
+      if(!image)return
+      setBookImage(image as string)
+    })
+  },[book])
+
 
   return (
     <div className="flex gap-5 p-3 rounded-md m-auto bg-white px-5 py-10">
       <div>
-        <Image
-          src={book?.image}
-          width={300}
-          height={300}
-          className="w-[240px] h-[280px] rounded-xl object-cover bg-gray-200"
-          alt={`${book?.bookTitle} book image`}
-        />
+       <ImageWithSkeleton className="rounded-xl object-cover" src={bookImage || ''} width={250} height={300} alt="image book"/>
       </div>
       <div className="space-y-4 flex-1">
         <div className="flex gap-2 mb-5">

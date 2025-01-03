@@ -40,7 +40,7 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
     >
       <Button
         disabled={!selectedLanguage || booksInCartCount.rentItemsCount >= maxBookAllowed!}
-        onClick={() => handleAddToCart("RENT", book)}
+        onClick={async() => await handleAddToCart("RENT", book)}
         className="py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent"
       >
         {t("rentBannerBtn")}
@@ -49,7 +49,7 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
       <Button
         disabled={!selectedLanguage || booksInCartCount.purchaseItemsCount >= maxBookAllowed!}
         variant="outline"
-        onClick={() => handleAddToCart("PURCHASE", book)}
+        onClick={async() => await handleAddToCart("PURCHASE", book)}
         className="py-7 px-8 rounded-full font-medium bg-transparent border-black"
       >
         <p className="flex items-center">

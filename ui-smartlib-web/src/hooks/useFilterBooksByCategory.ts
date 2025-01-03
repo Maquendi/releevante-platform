@@ -2,70 +2,49 @@
 
 import { useQuery } from "@tanstack/react-query";
 import useSyncImagesIndexDb from "./useSyncImagesIndexDb";
-import { useCallback, useEffect, useState } from "react";
 import { FetchAllBookByCategory } from "@/actions/book-actions";
-import { createUrlFromBlob } from "@/lib/blob-parser";
 
-interface FilterBooksByCategryProps {
+
+
+interface FilterBooksByCategoryProps {
   categoryId?: string;
 }
 
 export default function useFilterBooksByCategory({
   categoryId,
-}: FilterBooksByCategryProps) {
-  const { data: groupedBooks } = useQuery({
-    queryKey: ["BOOKS_BY_CATEGORIES"],
+}: FilterBooksByCategoryProps) {
+  const { getAllBookImages } = useSyncImagesIndexDb();
+
+  const { data: booksWithImages =[] } = useQuery({
+    queryKey: ["BOOKS_WITH_IMAGES"],
     queryFn: async () => {
-      const data = await FetchAllBookByCategory();
-      return data;
+      const [groupedBooks, images] = await Promise.all([
+        FetchAllBookByCategory(),
+        getAllBookImages()
+      ]);
+
+      return groupedBooks?.map((group: any) => ({
+        ...group,
+        books: group.books.map((book) => ({
+          ...book,
+          image: images[book.isbn] || null,
+        })),
+      })) || [];
     },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000,
+    select: (data) => {
+      if (!categoryId) return data;
+
+      return data
+        .map((group) => ({
+          subCategory: group.subCategory,
+          books: group.books.filter((book) =>
+            book.categories.some((category) => category.id === categoryId)
+          ),
+        }))
+        .filter((group) => group.books.length > 0);
+    },
   });
 
-  const { getAllBookImages } = useSyncImagesIndexDb();
-  const [dataWithImages, setDataWithImages] = useState<any[]>([]);
-
-  const processBooks = useCallback(async () => {
-    const allImages = await getAllBookImages();
-    if (!groupedBooks) return;
-
-    const imageMap = allImages.reduce((map, { id, image }) => {
-      const blobUrl=createUrlFromBlob(image)
-      map[id] = blobUrl;
-      return map;
-    }, {} as Record<string, Blob | null>);
-
-    const updatedGroupedBooks = groupedBooks.map((group: any) => ({
-      ...group,
-      books: group.books.map((book: any) => ({
-        ...book,
-        image: imageMap[book.isbn] || null,
-      })),
-    }));
-
-    setDataWithImages(updatedGroupedBooks);
-  }, [groupedBooks]); 
-
-  useEffect(() => {
-    processBooks();
-  }, [groupedBooks]); 
-
-  if (!categoryId) {
-    return dataWithImages;
-  }
-
-  const filteredItems = dataWithImages
-    ?.map(({ subCategory, books: bookList }) => {
-      const filteredBooks = bookList.filter((book) =>
-        book.categories.some((category: any) => category.id === categoryId)
-      );
-      return {
-        subCategory,
-        books: filteredBooks,
-      };
-    })
-    .filter((item) => item.books.length > 0);
-
-  return filteredItems;
+  return booksWithImages || [];
 }

@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import {  LoanLibraryInventory } from "@/actions/book-actions";
 import Image from "next/image";
 import { useRouter } from "@/config/i18n/routing";
+import useGetAllBooks from "@/hooks/useGetAllBooks";
 
 export default function MainSliderBooks() {
   const [oldSlide, setOldSlide] = useState(0);
@@ -37,10 +38,7 @@ export default function MainSliderBooks() {
 
   const getNextSlide = (index) => (index === activeSlide + 1 ? true : false);
 
-  const { data: books } = useQuery({
-    queryKey: ["ALL_BOOKS"],
-    queryFn: () => LoanLibraryInventory({ limit: 25 }),
-  });
+  const {books}=useGetAllBooks({limit:25})
 
   return (
     <div>
@@ -63,7 +61,7 @@ export default function MainSliderBooks() {
                 className="rounded-xl object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 fill
-                src={book?.image}
+                src={book?.image as any}
                 alt={`image-for-${book.bookTitle}`}
               ></Image>
             </div>

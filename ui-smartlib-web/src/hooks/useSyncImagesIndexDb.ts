@@ -1,10 +1,36 @@
 "use client";
 
 import { FetchUnsyncBooksLocal, SyncBookImages } from "@/actions/book-actions";
-import { getSingleBookFromIndexDb, openIndexedDB, performDBAction, setBookInIndexDb } from "@/lib/db/indexDb-client";
+import { createBlobFromUrl, createUrlFromBlob } from "@/lib/blob-parser";
+import {
+  getSingleBookFromIndexDb,
+  openIndexedDB,
+  performDBAction,
+  setBookInIndexDb,
+} from "@/lib/db/indexDb-client";
+import { addImages, setImages } from "@/redux/features/imagesSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useQuery } from "@tanstack/react-query";
 
+interface BookImage{
+  id:string
+  image:any
+}
+
 export default function useSyncImagesIndexDb() {
+
+  const {cachedImages:currentCachedImages} = useAppSelector(state=>state.cachedImages)
+  const dispatch = useAppDispatch()
+
+  const groupImagesToObject=(allImages:BookImage[])=>{
+    const imageMap = allImages.reduce((map, { id, image }) => {
+      const blobUrl=createUrlFromBlob(image)
+      map[id] = blobUrl as any
+      return map;
+    }, {} as Record<string, Blob | null>);
+    return imageMap
+  }
+
   const syncBooks = async () => {
     try {
       const books = await FetchUnsyncBooksLocal();
@@ -16,10 +42,21 @@ export default function useSyncImagesIndexDb() {
 
       const db = await openIndexedDB();
 
+      const bookImagesToStore= await Promise.all(books.map(async({id,image})=>({
+        id,
+        image: await createBlobFromUrl(image)
+     })))
+
+       const images = groupImagesToObject(bookImagesToStore)
+       dispatch(addImages({cachedImages:images}))
+
       try {
-        const bookSyncPromises = books.map((book) =>
-          setBookInIndexDb(db, book)
-        );
+        const bookSyncPromises = bookImagesToStore.map(({id,image}) =>
+           performDBAction(db, "put", {
+            id,
+            image
+           })
+          )
         await Promise.all(bookSyncPromises);
       } catch (error) {
         console.log("error sync books in index db");
@@ -44,13 +81,28 @@ export default function useSyncImagesIndexDb() {
     }
   };
 
-  const getAllBookImages = async ()=>{
+  const getAllBookImages = async () => {
+    if(currentCachedImages)return  currentCachedImages   
     const db = await openIndexedDB();
-    return await performDBAction(db,'getAll')
-  }
+    const cachedImages= await performDBAction(db, "getAll");
+    const images= groupImagesToObject(cachedImages)
+    dispatch(setImages({cachedImages:images}))
+    return images
+  };
+
+  const getImageByBookId = async (bookId:string) => {
+    if(currentCachedImages) {
+      return currentCachedImages?.[bookId] || null
+    }
+    const db = await openIndexedDB();
+    const storedImage= await getSingleBookFromIndexDb(db, bookId);
+
+    return await createUrlFromBlob(storedImage.image)
+  };
 
   return {
     syncBooks,
-    getAllBookImages
+    getAllBookImages,
+    getImageByBookId
   };
 }
