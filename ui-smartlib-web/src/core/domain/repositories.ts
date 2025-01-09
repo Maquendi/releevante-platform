@@ -18,7 +18,7 @@ export interface LoanRepository {
   save(loan: BookLoan): Promise<void>;
   addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
   addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus>
- getUserLoanBooks(clientId: UserId): Promise<LoanGroup>}
+ getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]>}
 
 export interface SettingsRepository {
   getSetting(): Promise<LibrarySettings>;

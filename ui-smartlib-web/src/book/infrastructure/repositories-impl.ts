@@ -381,6 +381,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         like(bookSchema.author, `%${query}%`),
         like(bookSchema.editionTitle, `%${query}%`)
       ),
+      limit:(!query ? 20 : undefined),
       columns: {
         id: true,
         bookTitle: true,
@@ -388,10 +389,17 @@ class DefaultBookRepositoryImpl implements BookRepository {
         editionTitle: true,
         correlationId: true,
         image: true,
-      }, 
+      }
     });
 
-    return results as Book[];
+    const filteredBooks=results.reduce((acc,book)=>{
+      if(!acc[book.correlationId]){
+        acc[book.correlationId]=book
+      }
+      return acc
+    },{})
+
+    return Object.values(filteredBooks)
   }
 
   async findById(correlationId: string): Promise<Book> {
@@ -417,46 +425,67 @@ class DefaultBookRepositoryImpl implements BookRepository {
         frDescription: bookSchema.descriptionFr,
         publicationDate: bookSchema.publicationDate,
         dimensions: bookSchema.dimensions,
-        language: jsonAgg({
+        language: {
           bookId: bookSchema.id,
-          language: bookSchema.language,
+          name: bookSchema.language,
+        },
+        condition:jsonAgg({
+          state:bookCopieSchema.condition
         }),
-        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
-        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
       })
       .from(bookSchema)
-      .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .groupBy(bookSchema.correlationId)
-      .where(eq(bookSchema.correlationId, correlationId));
+      .leftJoin(bookCopieSchema,eq(bookCopieSchema.book_isbn,bookSchema.id))
+      .where(eq(bookSchema.correlationId, correlationId))
+      .groupBy(bookSchema.id)
 
     const bookFound = result?.length ? result[0] : null;
+    console.log('result',bookFound)
 
-    const categories = bookFound?.ftags.reduce((acc, tag) => {
-      if (
-        tag.tagName === "category" &&
-        !acc.some((item) => item.id === tag.id)
-      ) {
-        acc.push(tag);
-      }
+    const categories = result?.reduce((acc, {ftags}) => {
+      ftags.forEach(tag=>{
+         if(tag.tagName === "category" &&
+          !acc.some((item) => item.id === tag.id)){
+            acc.push(tag);
+          }
+      })     
       return acc;
     }, []);
 
-    const languages = bookFound?.language.reduce(
-      (acc: any[], { bookId, language }) => {
+    const languages = result.reduce(
+      (acc: any[], { id, language }) => {
         if (!acc.some((item) => item.language === language)) {
-          acc.push({ bookId, language });
+          acc.push({ bookId:id, language:language.name });
         }
         return acc;
       },
       []
     );
 
+    const condition = result.reduce(
+      (acc: any[], {  language , condition}) => {
+        if (language?.name && !acc[language.name]) {
+         const usedCount = condition.filter((item=>item.state === 'USED'))?.length
+         const newCount = condition.filter((item=>item.state === 'NEW'))?.length
+         acc[language.name]={
+          new:newCount,
+          used:usedCount
+         }
+        }
+        return acc;
+      },
+      {}
+    );
+
+
     const bookItem = {
       ...bookFound,
       languages,
       categories,
+      condition
     };
 
     return bookItem as Book;

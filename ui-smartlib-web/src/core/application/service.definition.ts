@@ -32,7 +32,7 @@ export interface BookLoanService {
   checkout(cart: Cart): Promise<BookLoan>;
   addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
   addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus>;
-  getUserLoanBooks(clientId:UserId):Promise<LoanGroup>
+  getUserLoanBooks(clientId:UserId):Promise<LoanGroup[]>
 }
 
 export interface ServiceRatingService {

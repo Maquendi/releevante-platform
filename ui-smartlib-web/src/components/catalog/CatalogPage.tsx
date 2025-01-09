@@ -71,7 +71,7 @@ export default function CatalogList({ categoryId }: CatalogPageProps) {
                 href={`/catalog?categoryId=${category?.id}`}
                 key={category?.id}
               >
-                {category[`${locale}TagValue`] || ""}
+                {category?.[`${locale}TagValue`] || ""}
               </Link>
             ))}
           </div>

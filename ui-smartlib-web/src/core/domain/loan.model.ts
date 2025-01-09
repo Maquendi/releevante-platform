@@ -9,24 +9,24 @@ export enum LoanStatusValues {
   "PENDING",
   "CHECKING_OUT",
 }
+export type LoanItemStatusValues = 
+  | "REPORTED_LOST"
+  | "LOST"
+  | "RETURNED"
+  | "REPORTED_DAMAGE"
+  | "DAMAGED"
+  | "REPORTED_SOLD"
+  | "SOLD"
+  | "BORROWED";
 
-export enum LoanItemStatusValues {
-  REPORTED_LOST,
-  LOST,
-  RETURNED,
-  REPORTED_DAMAGE,
-  DAMAGED,
-  REPORTED_SOLD,
-  SOLD,
-  BORROWED,
-}
 
 export interface BookLoanItemStatus {
   id: string;
   itemId: string;
   status: LoanItemStatusValues;
-  createdAt: Date
+  createdAt: string
 }
+
 
 export interface BookLoanItem {
   id: string;
@@ -53,9 +53,10 @@ export interface BookLoan {
 
 
 interface BookLoanQuery {
-  id: number; 
+  id: string; 
   bookTitle: string; 
   author: string; 
+  loanItemId:string
   image: string; 
   categories: {
     enCategory: string; 

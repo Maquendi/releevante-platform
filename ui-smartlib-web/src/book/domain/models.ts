@@ -108,9 +108,20 @@ export interface BookLanguage {
   language: string;
 }
 
+interface BookConditionStatus{
+  new:number,
+  used:number
+}
+interface BookCondition{
+  spanish:BookConditionStatus;
+  french:BookConditionStatus;
+  english:BookConditionStatus;
+}
+
 export interface Book {
   id: string;
   bookTitle: string;
+  condition:BookCondition
   author: string;
   correlationId: string;
   editionTitle: string;
@@ -128,6 +139,7 @@ export interface Book {
   votes?: number;
   price?: number;
 }
+
 
 export interface CategoryBooks {
   categoryName: string;

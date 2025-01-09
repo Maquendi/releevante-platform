@@ -40,7 +40,7 @@ export default function SelectLanguage({ booklanguages }: SelectLanguageProp) {
           {selectedLanguage === language && (
             <CircleCheck className="h-4 w-4 fill-white text-black" />
           )}
-          {language}
+          <span className="first-letter:uppercase"> {language}</span>
         </button>
       ))}
     </div>

@@ -25,6 +25,7 @@ export default function SelectLanguage() {
   const searchParams = useSearchParams();
   const locale = useLocale();
 
+
   return (
     <>
       {!path.endsWith("catalog") &&
@@ -36,11 +37,9 @@ export default function SelectLanguage() {
       !path.endsWith("/thanks") && 
       !path.endsWith("/rating")? (
         <div>
-          <Link
+          <button
             className="flex cursor-pointer gap-5 justify-between  items-center pl-3 pr-7 z-50"
-            href="/catalog"
-            replace
-            scroll={true}
+            onClick={()=>router.back()}
           >
             <Image
               src="/icons/arrow_left.svg"
@@ -50,7 +49,7 @@ export default function SelectLanguage() {
               className="w-[30px] h-[30px] cursor-pointer"
             />
             <span className="font-medium z-40 cursor-pointer">Back</span>
-          </Link>
+          </button>
         </div>
       ) : (
         <Select

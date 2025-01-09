@@ -6,7 +6,7 @@ import { buttonVariants } from '../ui/button';
 import Image from 'next/image';
 import MainSliderBooks from '../MainSliderBooks';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
-import useSyncImagesIndexDb from '@/hooks/useSyncImagesIndexDb';
+import useSyncImagesIndexDb from '@/hooks/useImagesIndexDb';
 
 export default function RestHomePage() {
   const refSliderContainer = useRef(null);

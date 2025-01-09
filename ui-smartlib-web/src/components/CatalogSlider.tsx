@@ -68,7 +68,7 @@ const Slider: React.FC<SliderProps> = ({
         ref={ref}
         className="flex overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth mx-2 space-x-3 no-scrollbar"
       >
-        {books.map((book) => (
+        {books?.map((book) => (
           <BookItem key={book.isbn} book={book} />
         ))}
       </div>

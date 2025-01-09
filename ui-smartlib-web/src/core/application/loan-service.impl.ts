@@ -37,7 +37,6 @@ export class BookLoanServiceImpl implements BookLoanService {
       bookCopySearch
     );
 
-  
 
     const loanItems: BookLoanItem[] = bookCopies.map(
       ({ book_isbn, id, at_position }) => ({
@@ -77,7 +76,7 @@ export class BookLoanServiceImpl implements BookLoanService {
     return bookLoan;
   }
 
-  getUserLoanBooks(clientId: UserId): Promise<LoanGroup> {
+  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
     return this.bookLoanRepository.getUserLoanBooks(clientId)
   }
 }

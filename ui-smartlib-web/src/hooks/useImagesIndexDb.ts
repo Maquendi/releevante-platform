@@ -11,13 +11,14 @@ import {
 import { addImages, setImages } from "@/redux/features/imagesSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 interface BookImage{
   id:string
   image:any
 }
 
-export default function useSyncImagesIndexDb() {
+export default function useImagesIndexDb() {
 
   const {cachedImages:currentCachedImages} = useAppSelector(state=>state.cachedImages)
   const dispatch = useAppDispatch()
@@ -27,7 +28,7 @@ export default function useSyncImagesIndexDb() {
       const blobUrl=createUrlFromBlob(image)
       map[id] = blobUrl as any
       return map;
-    }, {} as Record<string, Blob | null>);
+    }, {} as Record<string, string>);
     return imageMap
   }
 
@@ -86,9 +87,15 @@ export default function useSyncImagesIndexDb() {
     const db = await openIndexedDB();
     const cachedImages= await performDBAction(db, "getAll");
     const images= groupImagesToObject(cachedImages)
-    dispatch(setImages({cachedImages:images}))
     return images
   };
+
+  useEffect(()=>{
+    (async()=>{
+      const images = await getAllBookImages()
+      dispatch(setImages({cachedImages:images}))
+    })()
+  },[])
 
   const getImageByBookId = async (bookId:string) => {
     if(currentCachedImages) {
@@ -102,6 +109,7 @@ export default function useSyncImagesIndexDb() {
 
   return {
     syncBooks,
+    images:currentCachedImages,
     getAllBookImages,
     getImageByBookId
   };

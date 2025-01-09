@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ImagesState {
-    cachedImages: Record<string, Blob | null> | null
+    cachedImages: Record<string, string> | null
 }
 
 interface ImageToAdd {
     id: string;
-    image: Blob;
+    image: string;
 }
 
 const initialState: ImagesState = {

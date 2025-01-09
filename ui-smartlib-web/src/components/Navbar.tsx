@@ -3,7 +3,6 @@ import React, { Suspense, useState } from "react";
 import SelectLanguage from "./SelectLanguage";
 import Image from "next/image";
 import { Link, usePathname, useRouter } from "@/config/i18n/routing";
-import { CartSidebarTrigger } from "./CartSidebar";
 import useAuth from "@/hooks/useAuth";
 import {
   DropdownMenu,
@@ -14,15 +13,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
+import dynamic from 'next/dynamic';
+
+const CartSidebarTrigger = dynamic(() => import( "./CartSidebarTrigger"), {
+  ssr: false,
+});
 
 function LogoutDropDown() {
   const { logoutMutation } = useAuth();
   const [open, setOpen] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleLogout = async () => {
     await logoutMutation.mutateAsync();
-    router.push("/");
   };
 
   return (
@@ -59,6 +61,7 @@ function LogoutDropDown() {
 
 export default function Navbar() {
   const path = usePathname();
+  const { isUserSignin } = useAuth();
   return (
     <nav className="flex justify-between items-center px-6 bg-white py-2 border border-b border-secondary">
       <div className="flex gap-2 items-center">
@@ -99,7 +102,7 @@ export default function Navbar() {
             />
           </Link>
         )}
-        <LogoutDropDown />
+        {isUserSignin && (<LogoutDropDown />)}
         {!path.endsWith("home") && <CartSidebarTrigger />}
       </div>
     </nav>

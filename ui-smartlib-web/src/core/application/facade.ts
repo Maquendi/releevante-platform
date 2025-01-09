@@ -26,7 +26,7 @@ export class CartServiceFacade {
    */
   async checkout(dto: CartDto): Promise<BookLoan> {
     const cart = await this.cartService.checkout(dto);
-
+    console.log('cart checkout dto',dto)
     try {
       return await this.bookLoanService.checkout(cart);
     } catch (error) {
@@ -39,7 +39,7 @@ export class CartServiceFacade {
   async newLoanItemStatus(dto: LoanItemStatusDto): Promise<BookLoanItemStatus> {
     const status: BookLoanItemStatus = {
       id: uuidv4(),
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       itemId: dto.itemId,
       status: dto.status,
     };
@@ -56,7 +56,7 @@ export class CartServiceFacade {
     return await this.bookLoanService.addLoanStatus(status);
   }
 
-  getUserLoanBooks(clientId: UserId): Promise<LoanGroup> {
+  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
     return this.bookLoanService.getUserLoanBooks(clientId)
   }
 }

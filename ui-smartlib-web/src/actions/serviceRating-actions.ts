@@ -2,6 +2,7 @@
 import { serviceRatingFacade } from "@/core/application";
 import { extractPayload } from "@/lib/jwt-parser";
 import { cookies } from "next/headers";
+import { getAuthToken } from "./auth-actions";
 
 export interface ServiceRatingAction {
     rating: number;
@@ -10,15 +11,14 @@ export interface ServiceRatingAction {
   
 
 export async function SaveBookReview(review: ServiceRatingAction) {
-    const cookieStore = await cookies();
-    const authCookie = cookieStore.get(process.env.AUTH_COOKIE!);
+ 
   
     try {
-      const payload = extractPayload(authCookie!.value!);
-  
+    const {userId}= await getAuthToken()
+
       return await serviceRatingFacade.saveServiceReview({
         ...review,
-        clientId: payload.sub,
+        clientId: userId?.value!,
       });
     } catch (error) {
       throw new Error("error saving book review" + error);

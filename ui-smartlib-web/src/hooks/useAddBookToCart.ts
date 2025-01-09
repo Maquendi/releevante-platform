@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addItem } from "@/redux/features/cartSlice";
 import { Book, BookLanguage } from "@/book/domain/models";
-import useSyncImagesIndexDb from "./useSyncImagesIndexDb";
+import useSyncImagesIndexDb from "./useImagesIndexDb";
 
 export function useAddBookToCart() {
   const dispatch = useAppDispatch();
-  const {getImageByBookId}= useSyncImagesIndexDb()
+  const {images}= useSyncImagesIndexDb()
   const { items: cartItems, language: selectedLanguage } = useAppSelector(
     (state) => state.cart
   );
@@ -39,12 +39,11 @@ export function useAddBookToCart() {
 
     if (!book || !bookId) return;
 
-    const blobImage= await getImageByBookId(bookId)
     
     return {
       isbn: bookId!,
       title: book.bookTitle,
-      image: blobImage as string,
+      image: images?.[book?.id] || book?.image as string,
       qty: 1,
       price: book.price,
       categories:book.categories,

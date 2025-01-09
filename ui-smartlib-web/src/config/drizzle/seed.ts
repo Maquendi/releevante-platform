@@ -326,7 +326,7 @@ async function seed() {
     }
 
     const books: any = [];
-    const languages = ["English", "Spanish", "French"];
+    const languages = ["english", "spanish", "french"];
 
     for (let i = 0; i < 20; i++) {
       const correlationId = uuidv4();
@@ -373,10 +373,12 @@ async function seed() {
       ftagId: ftags[Math.floor(Math.random() * ftags.length)].id,
     }));
 
+    const bookCopyCondition=['USED','NEW']
     const bookCopiesData = books.map((book) => ({
       id: uuidv4(),
       book_isbn: book.id,
       is_available: faker.datatype.boolean(),
+      condition:bookCopyCondition[Math.floor(Math.random() * bookCopyCondition.length)],
       at_position: faker.book.series(),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

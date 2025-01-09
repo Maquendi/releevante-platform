@@ -8,6 +8,7 @@ import videReducer from "./features/vibeSlice";
 import socketMiddleware from "./middlewares/socketMiddleware";
 import checkoutReducer from "./features/checkoutSlice";
 import imagesReducer from "./features/imagesSlice";
+import returnbooksReducer from "./features/returnbookSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     vide: videReducer,
     checkout: checkoutReducer,
     cachedImages:imagesReducer,
+    returnbooks:returnbooksReducer,
     [userApi.reducerPath]: userApi.reducer,
   },
   devTools: process.env.NODE_ENV !== "production",

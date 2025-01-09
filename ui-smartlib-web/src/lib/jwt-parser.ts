@@ -24,6 +24,8 @@ export function extractPayload(token: string): JwtPayload {
   }
 }
 
+
+
 export function signToken<T extends object>(payload: T) {
   try {
     return jwt.sign(payload, privateKey, { algorithm: "RS256" });

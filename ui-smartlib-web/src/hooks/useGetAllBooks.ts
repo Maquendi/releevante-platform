@@ -1,36 +1,37 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import useSyncImagesIndexDb from "./useSyncImagesIndexDb";
+import useImagesIndexDb from "./useImagesIndexDb";
 import { LoanLibraryInventory } from "@/actions/book-actions";
-
 
 interface GetBooksProps {
   limit?: number;
 }
 
 export default function useGetAllBooks({ limit }: GetBooksProps) {
-  const { getAllBookImages } = useSyncImagesIndexDb();
+  const { images } = useImagesIndexDb();
 
-  const { data: books = [], isLoading, error } = useQuery({
+  const {
+    data: books = [],
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["ALL_BOOKS"],
-    queryFn: async () => {
-      const [books, images] = await Promise.all([
-        LoanLibraryInventory({ limit }),
-        getAllBookImages()
-      ]);
-
-      return books?.map((book) => ({
-        ...book,
-        image: images?.[book.isbn] || null
-      })) || [];
-    },
+    queryFn: async () => await LoanLibraryInventory({ limit }),
     staleTime: 5 * 60 * 1000,
+    select(books) {
+      return (
+        books?.map((book) => ({
+          ...book,
+          image: images?.[book?.isbn] || book?.image,
+        })) || []
+      );
+    },
   });
 
   return {
     books,
     isLoading,
-    error
+    error,
   };
 }

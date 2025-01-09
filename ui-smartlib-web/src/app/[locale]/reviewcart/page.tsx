@@ -23,7 +23,7 @@ const CartItem = ({ item, buttonTextTl, onButtonClick, onTrashClick }) => {
           <Image
             width={300}
             height={200}
-            src={item.image}
+            src={item?.image || ''}
             alt="book item in cart"
             className="w-[110px] h-[135px] rounded-md object-cover"
           />

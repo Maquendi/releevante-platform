@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import useSyncImagesIndexDb from "./useSyncImagesIndexDb";
+import useSyncImagesIndexDb from "./useImagesIndexDb";
 import { FetchAllBookByCategory } from "@/actions/book-actions";
 
 
@@ -13,21 +13,18 @@ interface FilterBooksByCategoryProps {
 export default function useFilterBooksByCategory({
   categoryId,
 }: FilterBooksByCategoryProps) {
-  const { getAllBookImages } = useSyncImagesIndexDb();
+  const { images } = useSyncImagesIndexDb();
 
   const { data: booksWithImages =[] } = useQuery({
     queryKey: ["BOOKS_WITH_IMAGES"],
     queryFn: async () => {
-      const [groupedBooks, images] = await Promise.all([
-        FetchAllBookByCategory(),
-        getAllBookImages()
-      ]);
+      const groupedBooks = await FetchAllBookByCategory()
 
       return groupedBooks?.map((group: any) => ({
         ...group,
         books: group.books.map((book) => ({
           ...book,
-          image: images[book.isbn] || null,
+          image: images?.[book.isbn] || book.image,
         })),
       })) || [];
     },

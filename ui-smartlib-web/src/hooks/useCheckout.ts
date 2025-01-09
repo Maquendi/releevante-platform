@@ -21,8 +21,7 @@ export function useCheckout() {
     mutationFn: checkout,
     onSuccess(data) {
       const copies = data.loanItems;
-      console.log('copies checkout',copies)
-      dispatch({ type: "socket/emit", event: "checkout", payload: copies });
+      dispatch({ type: "socket/checkout", event: "checkout", payload: copies });
     },
   });
 
@@ -51,7 +50,7 @@ export function useCheckout() {
       (item) => item.status === "checkout_successful"
     );
     if (isAllBookProcessed && completedBooks.length === cartItems.length) {
-      clearAllData(); // Llama solo una vez
+      clearAllData(); 
       router.push("/checkout/thanks");
     }
   }, [cartItems, completedBooks, router]);

@@ -1,19 +1,44 @@
 "use client";
+import { returnSingleBook } from "@/actions/returnbook-actions";
+import { useRouter } from "@/config/i18n/routing";
+import useImagesIndexDb from "@/hooks/useImagesIndexDb";
+import { useReturnBook } from "@/hooks/useReturnBook";
 import { useAppSelector } from "@/redux/hooks";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { RefreshCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import {  useMemo, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 export default function DepositPage() {
-  const cartItems = useAppSelector((state) => state.cart.items);
-  const [currentIndex, setCurrentIndex] = useState(1);
   const t = useTranslations("depositPage");
+  const { currentReturnBook, completedBooks } = useAppSelector(
+    (state) => state.returnbooks
+  );
+  const dispatch = useDispatch();
+  const router= useRouter()
+  const queryClient = useQueryClient()
+  
+  const { mutate: returnBookMutation } = useMutation({
+    mutationFn: returnSingleBook,
+    onSuccess(loanItem) {
+      queryClient.invalidateQueries({queryKey:['RETURN_BOOKS'],exact:true,refetchType:'all'})
+      dispatch({ type: "socket/returnbook", event: "checkout", payload: loanItem });
+    },
+  });
 
+  useEffect(()=>{
+    if(!currentReturnBook.itemId)return
+    returnBookMutation(currentReturnBook)
+  },[])
 
-  const currentBook = useMemo(() => {
-    return cartItems[currentIndex];
-  }, [currentIndex, cartItems]);
+  useEffect(()=>{
+    if(currentReturnBook.status === 'return_successful'){
+      router.push('/returnbook/thanks')
+    }
+  },[currentReturnBook])
+
 
   return (
     <div>
@@ -23,7 +48,7 @@ export default function DepositPage() {
             src="/images/releevante.svg"
             width={250}
             height={350}
-            alt={`${currentBook?.title} image`}
+            alt={`${currentReturnBook?.bookTitle} image`}
             className="m-auto object-cover rounded-md w-[110px] h-auto"
           />{" "}
         </div>
@@ -41,13 +66,13 @@ export default function DepositPage() {
           <div>
             <figure className="relative  w-[230px] h-[270px] m-auto">
               <Image
-                src={currentBook?.image}
+                src={currentReturnBook?.image}
                 fill
-                alt={`${currentBook?.title} image`}
+                alt={`${currentReturnBook?.bookTitle} image`}
                 className=" m-auto object-cover rounded-md"
               />
               <div className="absolute -top-3 left-[50%] -translate-x-[50%] bg-white border border-primary p-1.5 rounded-full">
-                <RefreshCcw size={12} />
+                <RefreshCcw size={12} className=" animate-spin" />
               </div>
             </figure>
           </div>

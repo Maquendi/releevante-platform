@@ -10,6 +10,8 @@ export default function CheckoutPage() {
 
   const { cartItems, currentBook, completedBooks, currentBookShowing } =
     useCheckout();
+
+    
   return (
     <div className=" overflow-hidden">
       <header className="bg-white py-5 flex justify-center">
@@ -71,7 +73,7 @@ export default function CheckoutPage() {
             <div>
               <figure>
                 <Image
-                  src={currentBookShowing?.image}
+                  src={currentBookShowing?.image || ''}
                   width={250}
                   height={350}
                   alt={`${currentBookShowing?.title} image`}

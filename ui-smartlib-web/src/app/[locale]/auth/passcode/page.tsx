@@ -5,7 +5,7 @@ import { Link } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
-const SigninPasscode = () => {
+const SigninPasscode = ({searchParams}:{searchParams:Record<string,string>}) => {
   const t = useTranslations("AuthPasscodePage");
 
   return (
@@ -34,7 +34,10 @@ const SigninPasscode = () => {
             buttonVariants({ variant: "outline" }),
             "z-50 border-primary  py-5 px-5 m-auto text-primary font-medium rounded-3xl tracking-wide"
           )}
-          href={"/auth"}
+          href={{
+            pathname:"/auth",
+            query:searchParams
+          }}
         >
           {t("footerBtn")}
         </Link>

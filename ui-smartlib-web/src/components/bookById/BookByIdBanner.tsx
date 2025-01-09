@@ -1,48 +1,48 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 import Rating from "../Rating";
 import Image from "next/image";
 import { Book } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
-import dynamic from 'next/dynamic'
-import useSyncImagesIndexDb from "@/hooks/useSyncImagesIndexDb";
+import dynamic from "next/dynamic";
+import useSyncImagesIndexDb from "@/hooks/useImagesIndexDb";
 import ImageWithSkeleton from "../ImageWithSkeleton";
-const SelectLanguage = dynamic(() => import( "./SelectLanguage"), {
-  ssr:false
-})
- 
+import { useAppSelector } from "@/redux/hooks";
+const SelectLanguage = dynamic(() => import("./SelectLanguage"), {
+  ssr: false,
+});
+
 interface BookByIdBannerProps {
   book: Book;
 }
 export default function BookByIdBanner({ book }: BookByIdBannerProps) {
   const locale = useLocale();
   const t = useTranslations("bookById");
-  const [bookImage,setBookImage]=useState<string | null>(null)
-  const {getImageByBookId}=useSyncImagesIndexDb()
-  useEffect(()=>{
-    getImageByBookId(book.id)
-    .then((image)=>{
-      if(!image)return
-      setBookImage(image as string)
-    })
-  },[book])
-
+  const { images } = useSyncImagesIndexDb();
+  const selectedLanguage = useAppSelector((state) => state.cart.language);
 
   return (
     <div className="flex gap-5 p-3 rounded-md m-auto bg-white px-5 py-10">
       <div>
-       <ImageWithSkeleton className="rounded-xl object-cover" src={bookImage || ''} width={250} height={300} alt="image book"/>
+        <ImageWithSkeleton
+          className="rounded-xl object-cover"
+          src={images?.[book?.id] || book?.image}
+          width={250}
+          height={300}
+          alt="image book"
+        />
       </div>
       <div className="space-y-4 flex-1">
         <div className="flex gap-2 mb-5">
-          {book?.categories.map(category=>(
-             <p key={category.enTagValue} className="bg-primary py-1 px-2 rounded-sm text-white text-sm font-medium">
-             <span>{category?.[`${locale}TagValue`]}</span>
-           </p>
+          {book?.categories?.map((category) => (
+            <p
+              key={category?.enTagValue}
+              className="bg-primary py-1 px-2 rounded-sm text-white text-sm font-medium"
+            >
+              <span>{category?.[`${locale}TagValue`]}</span>
+            </p>
           ))}
-          <p className="bg-secondary py-1 px-2 rounded-sm  text-sm font-medium">
-            Semi-used
-          </p>
+      
         </div>
         <div className="space-y-1">
           <h2 className="text-4xl font-semibold">{book?.bookTitle}</h2>
@@ -55,6 +55,18 @@ export default function BookByIdBanner({ book }: BookByIdBannerProps) {
           <p className="text-secondary-foreground text-sm">{book?.rating}</p>
           <p className="text-secondary-foreground text-sm">
             ({book?.votes} votes)
+          </p>
+        </div>
+        <div className="flex gap-2 text-sm rounded-md border border-primary bg-[#FAF9F9] w-fit py-0.5 px-2">
+          <p className=" space-x-2 font-semibold">Available</p>
+          <p className="space-x-1 text-gray-700">
+            <span className="">New</span>
+            <span>({book?.condition?.[selectedLanguage!]?.new || 0})</span>
+          </p>
+          <p>|</p>
+          <p className="space-x-1 text-gray-700">
+            <span>Used</span>
+            <span>({book?.condition?.[selectedLanguage!]?.used || 0})</span>
           </p>
         </div>
         <div className="border-t border-secondary pt-3">

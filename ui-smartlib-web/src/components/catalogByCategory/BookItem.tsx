@@ -28,17 +28,17 @@ export default function BookItem({
     >
       <Link className="cursor-pointer" href={`/catalog/book/${book?.correlationId}`}>
         <ImageWithSkeleton
-          src={book.image}
-          alt={book.bookTitle}
+          src={book?.image || ''}
+          alt={book?.bookTitle}
           width={width || 180}
           height={height || 250}
           className="w-full  object-cover rounded-lg"
         />
         <div className="flex flex-col  space-y-1">
           <div className="flex text-end text-nowrap text-secondary-foreground items-center gap-3">
-            <Rating rating={parseInt(book.rating)} />
-            <p>{book.rating}</p>
-            <p>({book.votes} votes)</p>
+            <Rating rating={parseInt(book?.rating)} />
+            <p>{book?.rating}</p>
+            <p>({book?.votes} votes)</p>
           </div>
         </div>
       </Link>

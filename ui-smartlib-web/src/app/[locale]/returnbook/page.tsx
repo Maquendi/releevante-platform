@@ -1,9 +1,7 @@
 import { FetchUserBooksLoan } from "@/actions/cart-actions";
 import ReturnBookList from "@/components/returnbooks/ReturnBookList";
 import SimpleNavbar from "@/components/SimpleNavbar";
-import { Link } from "@/config/i18n/routing";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
 export default async function ReturnBook() {
