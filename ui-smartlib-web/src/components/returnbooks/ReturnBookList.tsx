@@ -6,13 +6,9 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { formatDateByRegion } from "@/lib/utils";
 import { Link, useRouter } from "@/config/i18n/routing";
-import { useQuery } from "@tanstack/react-query";
-import { FetchUserBooksLoan } from "@/actions/cart-actions";
 import EmptyRentedBooks from "./EmptyRentedBooks";
-import {
-  setCurrentReturnBook,
-} from "@/redux/features/returnbookSlice";
-import useImagesIndexDb from "@/hooks/useImagesIndexDb";
+import { setCurrentReturnBook } from "@/redux/features/returnbookSlice";
+import useGetReturnBooks from "@/hooks/useGetReturnBooks";
 
 const TIME_REGIONS = {
   en: "en-US",
@@ -60,25 +56,10 @@ export default function ReturnBookList() {
   const settings = useAppSelector((state) => state.settings);
   const t = useTranslations("returnBook");
   const locale = useLocale();
-  const { images } = useImagesIndexDb();
-  const { data: userReturnBooks, isPending } = useQuery({
-    queryKey: ["RETURN_BOOKS"],
-    queryFn: async()=>await FetchUserBooksLoan(),
-    select:(data)=>{
-      return data.map(item=>({
-        returnDate:item.returnDate,
-        books:item.books.map(book=>({
-          ...book,
-          image:images?.[book.id] || book.image
-        }))
-      }))
-    }
-  });
-  
+  const { userReturnBooks, isPending } = useGetReturnBooks();
 
   const dispath = useAppDispatch();
   const router = useRouter();
-
 
   return (
     <div className="space-y-5">

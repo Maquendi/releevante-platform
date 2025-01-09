@@ -6,7 +6,7 @@ import useSyncImagesIndexDb from "./useImagesIndexDb";
 
 export function useAddBookToCart() {
   const dispatch = useAppDispatch();
-  const {images}= useSyncImagesIndexDb()
+  const {getImageByBookId}= useSyncImagesIndexDb()
   const { items: cartItems, language: selectedLanguage } = useAppSelector(
     (state) => state.cart
   );
@@ -39,11 +39,12 @@ export function useAddBookToCart() {
 
     if (!book || !bookId) return;
 
+    const bookImage= await getImageByBookId({id:bookId,image:book.image})
     
     return {
       isbn: bookId!,
       title: book.bookTitle,
-      image: images?.[book?.id] || book?.image as string,
+      image: bookImage || book?.image as string,
       qty: 1,
       price: book.price,
       categories:book.categories,

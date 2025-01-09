@@ -15,7 +15,7 @@ export default function RemainingBooksByCategories({
     subCategoryId,
     categoryId
 }:RemainingBooksByCategoriesPros) {
-  const booksByCategory=useFilterBooksByCategory({categoryId})
+  const {booksByCategory}=useFilterBooksByCategory({categoryId})
 
   const remainingCategories = useMemo(() => {
     return booksByCategory?.filter(

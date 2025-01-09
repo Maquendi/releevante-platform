@@ -25,7 +25,7 @@ export default function CatalogList({ categoryId }: CatalogPageProps) {
   });
 
   
-  const booksByCategory = useFilterBooksByCategory({ categoryId });
+  const {booksByCategory,isPending} = useFilterBooksByCategory({ categoryId });
   const locale=useLocale()
   
   return (
@@ -78,12 +78,12 @@ export default function CatalogList({ categoryId }: CatalogPageProps) {
         </div>
       </header>
       <section className="space-y-6 px-6">
-        {!booksByCategory?.length && (
+        {!booksByCategory?.length && !isPending ?(
           <div className="space-y-5">
             <BookNotFound />
             <HelpFindBookBanner />
           </div>
-        )}
+        ):null}
         {booksByCategory?.map((item, index) => (
           <CatalogSliderItem key={index} {...item} />
         ))}{" "}

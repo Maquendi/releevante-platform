@@ -1,12 +1,11 @@
 'use client';
 import { Link, useRouter } from '@/config/i18n/routing';
 import { cn } from '@/lib/utils';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { buttonVariants } from '../ui/button';
 import Image from 'next/image';
 import MainSliderBooks from '../MainSliderBooks';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
-import useSyncImagesIndexDb from '@/hooks/useImagesIndexDb';
 
 export default function RestHomePage() {
   const refSliderContainer = useRef(null);
@@ -15,17 +14,6 @@ export default function RestHomePage() {
   const handleOutsideClick = () => {
     router.push('/home');
   };
-  const isBookSync=useRef(false)
-  const {syncBooks}=useSyncImagesIndexDb()
-
-  //test sin books in index db
-  useEffect(()=>{
-    if(isBookSync.current === true)return
-    syncBooks()
-    .then(()=>console.log('books synced successfuly client'))
-    .catch(()=>console.log('error sync books'))
-    .finally(()=>isBookSync.current=true)
-  },[])
 
   useOnClickOutside(refSliderContainer, handleOutsideClick, refButtonsContainer);
 

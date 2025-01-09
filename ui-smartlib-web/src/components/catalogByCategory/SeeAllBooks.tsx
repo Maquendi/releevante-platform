@@ -14,7 +14,7 @@ interface SeeAllBooksPros {
 
 function SeeAllBooks({ subCategoryId, categoryId }: SeeAllBooksPros) {
   const locale = useLocale();
-  const booksByCategory = useFilterBooksByCategory({ categoryId });
+  const {booksByCategory} = useFilterBooksByCategory({ categoryId });
   const { data: categories } = useQuery({
     queryKey: ["CATEGORIES"],
     queryFn: async () => await FetchAllBookCategories(),

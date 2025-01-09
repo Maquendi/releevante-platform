@@ -28,26 +28,11 @@ const initialState: CartState = {
   language: null,
 };
 
-const loadCartFromLocalStorage = (): CartState => {
-  if(typeof window !== 'undefined'){
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      return JSON.parse(savedCart) as CartState;
-    }
-  }
- 
-  return initialState;  
-};
 
-const saveCartToLocalStorage = (state: CartState) => {
-  if(typeof window !== 'undefined'){
-    localStorage.setItem("cart", JSON.stringify(state));
-  }
-};
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState:loadCartFromLocalStorage(),
+  initialState:initialState,
   reducers: {
     addItem: (state, { payload }: PayloadAction<CartItemState>) => {
       const isBookExist = state.items.find(
@@ -61,7 +46,6 @@ const cartSlice = createSlice({
         state.items.push(payload);
       }
       state.cartHistory.push(payload);
-      saveCartToLocalStorage(state); 
     },
     updateItemQuantity: (state, { payload }: PayloadAction<CartItemState>) => {
       const { qty, isbn } = payload;
@@ -73,7 +57,6 @@ const cartSlice = createSlice({
       bookInCart.qty += qty;
 
       state.items.push(bookInCart);
-      saveCartToLocalStorage(state); 
     },
     updateItem: (state, { payload }: PayloadAction<Partial<CartItemState>>) => {
       const { isbn, ...fieldsToUpdate } = payload;
@@ -86,20 +69,16 @@ const cartSlice = createSlice({
         }
         return item;
       });
-      saveCartToLocalStorage(state); 
     },
     removeItem: (state, { payload }: PayloadAction<Partial<CartItemState>>) => {
       const { isbn } = payload;
       state.items = state.items.filter((book) => book.isbn !== isbn);
-      saveCartToLocalStorage(state); 
     },
     clearCart: (state) => {
       state.items = [];
-      saveCartToLocalStorage(state); 
     },
     setLanguage(state, { payload }: PayloadAction<{ language: LanguageType }>) {
       state.language = payload.language;
-      saveCartToLocalStorage(state);
     },
   },
 });
