@@ -16,7 +16,11 @@ export type LoanItemStatusValues =
   | "REPORTED_DAMAGE"
   | "DAMAGED"
   | "REPORTED_SOLD"
+  | "DOOR_OPENING"
+  | "DOOR_OPENED"
   | "SOLD"
+  | "SOLD_FAILED"
+  | "BORROWED_FAILED"
   | "BORROWED";
 
 
