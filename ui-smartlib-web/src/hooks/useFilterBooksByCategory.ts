@@ -13,20 +13,22 @@ interface FilterBooksByCategoryProps {
 export default function useFilterBooksByCategory({
   categoryId,
 }: FilterBooksByCategoryProps) {
-  const { images } = useSyncImagesIndexDb();
+  const { getImageByBookId } = useSyncImagesIndexDb();
 
-  const { data: booksWithImages =[] } = useQuery({
+  const { data: booksByCategory =[],isPending } = useQuery({
     queryKey: ["BOOKS_WITH_IMAGES"],
     queryFn: async () => {
       const groupedBooks = await FetchAllBookByCategory()
 
-      return groupedBooks?.map((group: any) => ({
+      const bookPromises = groupedBooks?.map(async(group) => ({
         ...group,
-        books: group.books.map((book) => ({
+        books: await Promise.all(group.books.map(async (book) => ({
           ...book,
-          image: images?.[book.isbn] || book.image,
-        })),
-      })) || [];
+          image: await getImageByBookId({id:book?.isbn,image:book?.image}) || book?.image
+        })),)
+      })) 
+
+      return await Promise.all(bookPromises)
     },
     staleTime: 5 * 60 * 1000,
     select: (data) => {
@@ -43,5 +45,8 @@ export default function useFilterBooksByCategory({
     },
   });
 
-  return booksWithImages || [];
+  return {
+     booksByCategory,
+     isPending
+  }
 }

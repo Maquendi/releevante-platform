@@ -3,9 +3,10 @@ import {  BooksByCategory } from "@/book/domain/models";
 import React, { lazy, Suspense } from "react";
 import { useLocale } from "next-intl";
 import dynamic from 'next/dynamic'
+import { CatalogSliderSkeleton } from "../CatalogSlider";
  
 const CatalogSlider = dynamic(() => import("../CatalogSlider"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <CatalogSliderSkeleton/>,
 })
  
 

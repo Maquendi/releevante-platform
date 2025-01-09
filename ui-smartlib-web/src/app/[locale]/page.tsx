@@ -11,7 +11,7 @@ export default async function Home() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["ALL_BOOKS"],
-    queryFn: () => LoanLibraryInventory({ limit: 25 }),
+    queryFn: async () => await LoanLibraryInventory({ limit: 25 }),
   });
 
 

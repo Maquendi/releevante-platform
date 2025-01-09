@@ -7,12 +7,25 @@ import { Link } from "@/config/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import BookItem from "./catalogByCategory/BookItem";
 import { BookItems } from "@/book/domain/models";
+import { Skeleton } from "./ui/skeleton";
 
 type SliderProps = {
   books: BookItems[];
   slidesToShow?: number;
   subCategoryId?: string;
 };
+
+export function CatalogSliderSkeleton() {
+  return (
+    <div className="flex overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth mx-2 space-x-3 no-scrollbar">
+      <Skeleton className="w-[30%] h-[250px] rounded-md" />
+      <Skeleton className="w-[30%] h-[250px] rounded-md" />
+      <Skeleton className="w-[30%] h-[250px] rounded-md" />
+      <Skeleton className="w-[30%] h-[250px] rounded-md" />
+      <Skeleton className="w-[30%] h-[250px] rounded-md" />
+    </div>
+  );
+}
 
 const Slider: React.FC<SliderProps> = ({
   books,

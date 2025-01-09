@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Rating from "../Rating";
-import Image from "next/image";
 import { Book } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
@@ -18,15 +17,23 @@ interface BookByIdBannerProps {
 export default function BookByIdBanner({ book }: BookByIdBannerProps) {
   const locale = useLocale();
   const t = useTranslations("bookById");
-  const { images } = useSyncImagesIndexDb();
+  const { getImageByBookId } = useSyncImagesIndexDb();
   const selectedLanguage = useAppSelector((state) => state.cart.language);
+  const [image,setImage]=useState<string | null>(null)
 
+  useEffect(()=>{
+    if(!book?.id)return
+    getImageByBookId({id:book?.id,image:book.image})
+    .then(image=>setImage(image))
+  },[book])
+
+  
   return (
     <div className="flex gap-5 p-3 rounded-md m-auto bg-white px-5 py-10">
       <div>
         <ImageWithSkeleton
           className="rounded-xl object-cover"
-          src={images?.[book?.id] || book?.image}
+          src={image || book?.image}
           width={250}
           height={300}
           alt="image book"
