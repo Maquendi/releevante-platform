@@ -64,7 +64,7 @@ export class DefaultBookServiceImpl implements BookService {
     return await this.bookRepository.getFtagsBy(tagName);
   }
 
-  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
+  findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
     return this.bookRepository.findByVibeTags(tagsValues);
   }
 
@@ -106,12 +106,5 @@ export class DefaultBookServiceImpl implements BookService {
     return await this.bookRepository.loanLibraryInventory()
   }
 
-  getUnsyncBooksLocal(): Promise<BookImage[]> {
-    return this.bookRepository.getUnsyncBooksLocal()
-  }
-
-  syncBookImages(bookId: string): Promise<void> {
-    return this.bookRepository.syncBookImages(bookId)
-  }
 
 }

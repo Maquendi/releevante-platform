@@ -65,28 +65,13 @@ export async function FetchFtagsBy(tagName: FtagsEnum) {
 
 export async function FetchBookByFtagsVibes(tagNames: BookByFtagsVibes) {
   try {
-    return await bookServiceFacade.findBookByVibeTags(tagNames);
-  } catch (error) {
-    throw new Error("Error fetching books by category" + error);
-  }
-}
-
-export async function FetchUnsyncBooksLocal() {
-  try {
-    return await bookServiceFacade.getUnsyncBooksLocal();
+    return await bookServiceFacade.findBooksByVibeTags(tagNames);
   } catch (error) {
     throw new Error("Error fetching books by category" + error);
   }
 }
 
 
-export async function SyncBookImages(bookId:string) {
-  try {
-    return await bookServiceFacade.syncBookImages(bookId);
-  } catch (error) {
-    throw new Error("Error fetching books by category" + error);
-  }
-}
 
 
 

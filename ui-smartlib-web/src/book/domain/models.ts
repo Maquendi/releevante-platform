@@ -108,21 +108,22 @@ export interface BookLanguage {
   language: string;
 }
 
-interface BookConditionStatus{
-  new:number,
-  used:number
-}
-interface BookCondition{
-  spanish:BookConditionStatus;
-  french:BookConditionStatus;
-  english:BookConditionStatus;
+
+interface BookCopies{
+  spanish:number;
+  french:number;
+  english:number;
 }
 
 export interface Book {
   id: string;
   bookTitle: string;
-  condition:BookCondition
+  copies:BookCopies
   author: string;
+  language?:{
+    bookId:string,
+    name:string
+  }
   correlationId: string;
   editionTitle: string;
   image: string;

@@ -42,20 +42,14 @@ import { BookService, BookServiceFacade } from "./service.definitions";
     return this.bookService.findAvailableCopiesByIsbn(bookSearch);
   }
 
-  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
-    return this.bookService.findBookByVibeTags(tagsValues)
+  findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
+    return this.bookService.findBooksByVibeTags(tagsValues)
   }
 
   loanLibraryInventory(): Promise<BookItems[]> {
     return this.bookService.loanLibraryInventory()
   }
 
-  getUnsyncBooksLocal(): Promise<BookImage[]> {
-    return this.bookService.getUnsyncBooksLocal()
-  }
 
-  syncBookImages(bookId: string): Promise<void> {
-    return this.bookService.syncBookImages(bookId)
-  }
  
 }

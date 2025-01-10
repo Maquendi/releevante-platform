@@ -7,7 +7,7 @@ export interface BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]>;
   updateCopies(books: BookCopy[]): Promise<BookCopy[]>;
   getFtagsBy(tagName:FtagsEnum):Promise<FtagItem[]>
-  findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
+  findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>
 
   // ***********
   // findAllCategories(): Promise<BookCategory[]>;
@@ -16,8 +16,6 @@ export interface BookRepository {
   findById(isbn: string): Promise<Book>; // return with images
   findAllBooks(params:BooksPagination):Promise<Book[]>
   loanLibraryInventory(): Promise<BookItems[]>
-  syncBookImages(bookId:string): Promise<void>
-  getUnsyncBooksLocal(): Promise<BookImage[]>
 }
 
 

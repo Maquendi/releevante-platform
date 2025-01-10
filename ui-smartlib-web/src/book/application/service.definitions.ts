@@ -10,10 +10,8 @@ export interface BookService {
   findBookById(isbn:string):Promise<Book>
   findAllBooks(params:BooksPagination):Promise<Book[]>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
-  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
+  findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>
   loanLibraryInventory(): Promise<BookItems[]>
-  syncBookImages(bookId:string): Promise<void>
-  getUnsyncBooksLocal(): Promise<BookImage[]>
 }
 
 
@@ -25,8 +23,6 @@ export interface BookServiceFacade {
   findAllBooks(params:BooksPagination):Promise<Book[]>
   findBookById(isbn:string):Promise<Book>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
-  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book>
+  findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>
   loanLibraryInventory(): Promise<BookItems[]>
-  syncBookImages(bookId:string): Promise<void>
-  getUnsyncBooksLocal(): Promise<BookImage[]>
 }
