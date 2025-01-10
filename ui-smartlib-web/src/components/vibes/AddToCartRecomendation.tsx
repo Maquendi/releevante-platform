@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { useAddBookToCart } from "@/hooks/useAddBookToCart";
 import { Book } from "@/book/domain/models";
 import { DialogReadMoreBooksDialog } from "./ReadMoreBooksDialog";
+import { useMemo } from "react";
 
 interface AddToCartRecomendationProps {
   book: Book;
@@ -17,15 +18,18 @@ export default function AddToCartRecomendation({
 }: AddToCartRecomendationProps) {
   const t = useTranslations("recommendationsPage");
 
+  
   const {
     maxBookAllowed,
     booksInCartCount,
     isBookInCart,
     handleAddToCart,
     selectedLanguage,
-  } = useAddBookToCart();
+    hasEnoughCopies
+  } = useAddBookToCart(book);
 
   if (!book) return null;
+
 
   return (
     <div
@@ -47,7 +51,7 @@ export default function AddToCartRecomendation({
         <Button
           disabled={
             !selectedLanguage ||
-            booksInCartCount.purchaseItemsCount >= maxBookAllowed!
+            booksInCartCount.purchaseItemsCount >= maxBookAllowed! || !hasEnoughCopies
           }
           variant="outline"
           onClick={() => handleAddToCart("PURCHASE", book)}

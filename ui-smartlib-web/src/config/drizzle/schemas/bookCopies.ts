@@ -13,7 +13,6 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .notNull()
     .default(true),
   at_position: text("at_position").default("M10"),
-  condition:text('condition',{enum:['USED','NEW']}).notNull(),
   created_at: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)

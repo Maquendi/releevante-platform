@@ -15,8 +15,10 @@ export default function SelectLanguage({ booklanguages }: SelectLanguageProp) {
   const dispath = useAppDispatch();
   const selectedLanguage = useAppSelector((state) => state.cart.language);
 
+  if(!booklanguages)return
+
   const sortedBookLanguages = useMemo(() => {
-    return [...booklanguages].sort((a, b) => {
+    return [...booklanguages]?.sort((a, b) => {
       if (a.language === "English") return -1;
       if (b.language === "English") return 1;
       if (a.language === "Spanish") return -1;

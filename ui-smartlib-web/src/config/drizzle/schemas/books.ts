@@ -11,7 +11,7 @@ export const bookSchema = sqliteTable("books", {
   editionTitle: text("edition_title").notNull(),
   language: text("language").notNull(),
   author: text("author").notNull(),
-  isImageSyncLocal:integer('is_image_sync_local',{mode:'boolean'}).default(false),
+  bookCopyQty:integer('book_copy_qty',{mode:'number'}).notNull().default(0),
   descriptionEn: text("description_en").notNull(),
   descriptionFr: text("description_fr").notNull(),
   descriptionEs: text("description_es").notNull(),

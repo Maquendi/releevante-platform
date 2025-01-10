@@ -63,6 +63,11 @@
     "emptyCart": "You don’t have any book in your cart",
     "cart": "cart"
   },
+  "vibeBtns":{
+    "previous":"Previous",
+    "next":"Next",
+    "submit":"Submit"
+  },
   "readingVibePage": {
     "readingVibe1": "What’s your",
     "readingVibe2": "reading vibe",
@@ -95,7 +100,8 @@
     "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
     "editPreferences": "Edit preferences",
     "rent": "read in the hotel",
-    "buy": "buy"
+    "buy": "buy",
+    "otherRecomendations":"Other Recomendations"
   },
   "reviewMyCart":{
     "myCart":"my cart",

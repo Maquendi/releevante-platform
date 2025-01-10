@@ -62,6 +62,11 @@
     "emptyCart": "No tienes ningún libro en tu carrito",
     "cart": "carrito"
   },
+  "vibeBtns": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "submit": "Enviar"
+  },
   "readingVibePage": {
     "readingVibe1": "¿Cuál es tu",
     "readingVibe2": "estado de ánimo para leer",
@@ -94,7 +99,8 @@
     "basedOnResponsesSubtitle": "Basado en tus respuestas, te sugerimos lo siguiente",
     "editPreferences": "Editar preferencias",
     "rent": "leer en el hotel",
-    "buy": "comprar"
+    "buy": "comprar",
+    "otherRecomendations": "Otras recomendaciones"
   },
   "reviewMyCart": {
     "myCart": "mi carrito",
@@ -160,16 +166,15 @@
     "closeSessionTime3": "minutos"
   },
   "ratingPage": {
-  "title": "Déjanos saber tu nivel de satisfacción",
-  "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
-  "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?",
-  "commentTitle": "¿Te gustaría añadir una sugerencia o comentario?",
-  "commentPlaceHolder": "Escribe un comentario aquí",
-  "optional": "Opcional",
-  "submit": "Enviar",
-  "closeSessionTime1": "La sesión",
-  "closeSessionTime2": "se cerrará en",
-  "closeSessionTime3": "minutos"
-}
-
+    "title": "Déjanos saber tu nivel de satisfacción",
+    "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
+    "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?",
+    "commentTitle": "¿Te gustaría añadir una sugerencia o comentario?",
+    "commentPlaceHolder": "Escribe un comentario aquí",
+    "optional": "Opcional",
+    "submit": "Enviar",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
+  }
 }

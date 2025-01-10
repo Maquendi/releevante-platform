@@ -326,8 +326,10 @@ async function seed() {
     }
 
     const books: any = [];
+    const bookFtagsMap: Map<string, Array<string>> = new Map(); // Map to store tags by correlationId
     const languages = ["english", "spanish", "french"];
 
+    // Generate 20 unique books (each with 3 language versions)
     for (let i = 0; i < 20; i++) {
       const correlationId = uuidv4();
       const baseBookData = {
@@ -345,11 +347,23 @@ async function seed() {
         updatedAt: new Date().toISOString(),
       };
 
+      // Generate tags once per unique book (correlationId)
+      const categoryTag = fTagscategories[Math.floor(Math.random() * fTagscategories.length)].id;
+      const randomTags = new Set([
+        categoryTag,
+        ftags[Math.floor(Math.random() * ftags.length)].id,
+        ftags[Math.floor(Math.random() * ftags.length)].id,
+      ]);
+      bookFtagsMap.set(correlationId, Array.from(randomTags));
+
+      // Create book entries for each language
       for (const language of languages) {
+        const bookId = uuidv4();
         books.push({
-          id: uuidv4(),
+          id: bookId,
           correlationId,
           ...baseBookData,
+          bookCopyQty: Math.floor(Math.random() * 1),
           descriptionEn: `${language} description - ${faker.commerce.productDescription()}`,
           descriptionEs: `${language} description - ${faker.commerce.productDescription()}`,
           descriptionFr: `${language} description - ${faker.commerce.productDescription()}`,
@@ -358,40 +372,43 @@ async function seed() {
       }
     }
 
-    // const bookCategoriesData = books.map((book) => ({
-    //   bookIsbn: book.id,
-    //   categoryId: categories[Math.floor(Math.random() * categories.length)].id,
-    // }));
+    // Generate book copies and tags data
+    const bookFtagsData: Array<{ bookIsbn: string, ftagId: string }> = [];
+    const bookCopiesData: Array<any> = [];
+    const bookCopyCondition = ['USED', 'NEW'];
 
-    const bookFtagsCategoriesData = books.map((book) => ({
-      bookIsbn: book.id,
-      ftagId: fTagscategories[Math.floor(Math.random() * fTagscategories.length)].id,
-    }));
+    // Generate book copies and tags for each book
+    books.forEach((book) => {
+      // Add tags for this book based on its correlationId
+      const bookTags = bookFtagsMap.get(book.correlationId);
+      if (bookTags) {
+        bookTags.forEach((tagId) => {
+          bookFtagsData.push({
+            bookIsbn: book.id,
+            ftagId: tagId,
+          });
+        });
+      }
 
-    const bookFtagsData = books.map((book) => ({
-      bookIsbn: book.id,
-      ftagId: ftags[Math.floor(Math.random() * ftags.length)].id,
-    }));
+      // Generate copy data
+      bookCopiesData.push({
+        id: uuidv4(),
+        book_isbn: book.id,
+        is_available: faker.datatype.boolean(),
+        condition: bookCopyCondition[Math.floor(Math.random() * bookCopyCondition.length)],
+        at_position: faker.book.series(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    });
 
-    const bookCopyCondition=['USED','NEW']
-    const bookCopiesData = books.map((book) => ({
-      id: uuidv4(),
-      book_isbn: book.id,
-      is_available: faker.datatype.boolean(),
-      condition:bookCopyCondition[Math.floor(Math.random() * bookCopyCondition.length)],
-      at_position: faker.book.series(),
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    }));
-
-    const totalBookFtagsData=[...bookFtagsCategoriesData,...bookFtagsData]
     await db.transaction(async (tx) => {
       await Promise.all([
         tx.insert(ftagsSchema).values(ftags).onConflictDoNothing(),
         tx.insert(userSchema).values(users),
         tx.insert(bookSchema).values(books),
         tx.insert(bookCopieSchema).values(bookCopiesData),
-        tx.insert(bookFtagSchema).values(totalBookFtagsData),
+        tx.insert(bookFtagSchema).values(bookFtagsData),
       ]);
     });
 

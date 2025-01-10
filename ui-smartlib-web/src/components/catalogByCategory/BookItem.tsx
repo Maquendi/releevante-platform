@@ -36,9 +36,9 @@ export default function BookItem({
         />
         <div className="flex flex-col  space-y-1">
           <div className="flex text-end text-nowrap text-secondary-foreground items-center gap-3">
-            <Rating rating={parseInt(book?.rating)} />
-            <p>{book?.rating}</p>
-            <p>({book?.votes} votes)</p>
+            <Rating rating={parseInt(book?.rating) || 0} />
+            <p>{book?.rating || 0}</p>
+            <p>({book?.votes || 0} votes)</p>
           </div>
         </div>
       </Link>

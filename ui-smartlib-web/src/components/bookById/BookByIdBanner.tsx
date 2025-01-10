@@ -6,28 +6,28 @@ import { useLocale, useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import useSyncImagesIndexDb from "@/hooks/useImagesIndexDb";
 import ImageWithSkeleton from "../ImageWithSkeleton";
-import { useAppSelector } from "@/redux/hooks";
 const SelectLanguage = dynamic(() => import("./SelectLanguage"), {
   ssr: false,
 });
 
 interface BookByIdBannerProps {
-  book: Book;
+  book: Book | null;
 }
 export default function BookByIdBanner({ book }: BookByIdBannerProps) {
   const locale = useLocale();
   const t = useTranslations("bookById");
   const { getImageByBookId } = useSyncImagesIndexDb();
-  const selectedLanguage = useAppSelector((state) => state.cart.language);
   const [image,setImage]=useState<string | null>(null)
 
+  
   useEffect(()=>{
     if(!book?.id)return
     getImageByBookId({id:book?.id,image:book.image})
     .then(image=>setImage(image))
   },[book])
 
-  
+  if(!book)return
+
   return (
     <div className="flex gap-5 p-3 rounded-md m-auto bg-white px-5 py-10">
       <div>
@@ -61,19 +61,7 @@ export default function BookByIdBanner({ book }: BookByIdBannerProps) {
           <Rating rating={book?.rating || 0} />
           <p className="text-secondary-foreground text-sm">{book?.rating}</p>
           <p className="text-secondary-foreground text-sm">
-            ({book?.votes} votes)
-          </p>
-        </div>
-        <div className="flex gap-2 text-sm rounded-md border border-primary bg-[#FAF9F9] w-fit py-0.5 px-2">
-          <p className=" space-x-2 font-semibold">Available</p>
-          <p className="space-x-1 text-gray-700">
-            <span className="">New</span>
-            <span>({book?.condition?.[selectedLanguage!]?.new || 0})</span>
-          </p>
-          <p>|</p>
-          <p className="space-x-1 text-gray-700">
-            <span>Used</span>
-            <span>({book?.condition?.[selectedLanguage!]?.used || 0})</span>
+            ({book?.votes || 0} votes)
           </p>
         </div>
         <div className="border-t border-secondary pt-3">

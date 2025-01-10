@@ -20,16 +20,18 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
   });
 
   const t = useTranslations("bookById");
-
+  
   const { 
     maxBookAllowed, 
     booksInCartCount, 
     isBookInCart, 
     handleAddToCart, 
-    selectedLanguage 
-  } = useAddBookToCart();
+    selectedLanguage,
+    hasEnoughCopies
+  } = useAddBookToCart(book!);
 
   if (!book) return null;
+  
 
   return (
     <div
@@ -39,7 +41,7 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
       )}
     >
       <Button
-        disabled={!selectedLanguage || booksInCartCount.rentItemsCount >= maxBookAllowed!}
+        disabled={!selectedLanguage || booksInCartCount.rentItemsCount >= maxBookAllowed! || !hasEnoughCopies}
         onClick={async() => await handleAddToCart("RENT", book)}
         className="py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent"
       >
@@ -47,7 +49,7 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
       </Button>
 
       <Button
-        disabled={!selectedLanguage || booksInCartCount.purchaseItemsCount >= maxBookAllowed!}
+        disabled={!selectedLanguage || booksInCartCount.purchaseItemsCount >= maxBookAllowed! || !hasEnoughCopies}
         variant="outline"
         onClick={async() => await handleAddToCart("PURCHASE", book)}
         className="py-7 px-8 rounded-full font-medium bg-transparent border-black"

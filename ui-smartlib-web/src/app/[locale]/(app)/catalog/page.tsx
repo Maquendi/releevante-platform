@@ -2,13 +2,11 @@
 import {
   FetchAllBookByCategory,
   FetchAllBookCategories,
-  LoanLibraryInventory,
 } from "@/actions/book-actions";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-  useQuery,
 } from "@tanstack/react-query";
 
 const CatalogList = lazy(()=>import("@/components/catalog/CatalogPage"))
