@@ -6,13 +6,25 @@ import { defaultBookLoanRepositoryImpl } from "../infrastructure/book-loan-repos
 import { bookServiceFacade } from "@/book/application";
 import { SettingsFacade } from "./settings.facade";
 import { defaultSettingsRepository } from "../infrastructure/settings-repository.impl";
+import { DefaultBridgeIoApiClient } from "../infrastructure/brigde-io-client";
+import { CoreApiClientImpl } from "../infrastructure/backend-api-client";
+import { ServiceRatingFacade } from "./service.rating.facade";
+import { defaultServiceRepository } from "../infrastructure/service-repository.impl";
+import { ServiceRatingService } from "./service.rating-service-impl";
 
-const defaultCartService = new DefaultCartService(defaultCartRepository);
+const bridgeIoApiClient = new DefaultBridgeIoApiClient();
+const coreApiClient = new CoreApiClientImpl();
+
+const defaultCartService = new DefaultCartService(
+  defaultCartRepository
+);
 
 const bookLoanService = new BookLoanServiceImpl(
   defaultBookLoanRepositoryImpl,
   bookServiceFacade
 );
+
+const serviceRatingServic= new ServiceRatingService(defaultServiceRepository)
 
 export const cartServiceFacade = new CartServiceFacade(
   defaultCartService,
@@ -20,3 +32,4 @@ export const cartServiceFacade = new CartServiceFacade(
 );
 
 export const settingsFacade = new SettingsFacade(defaultSettingsRepository);
+export const serviceRatingFacade = new ServiceRatingFacade(serviceRatingServic)

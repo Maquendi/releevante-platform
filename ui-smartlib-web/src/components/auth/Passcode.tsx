@@ -7,6 +7,7 @@ import VirtualKeyboard from "../VirtualKeyboard";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/useAuth";
 
+
 export default function Passcode() {
   const [input, setInput] = useState<string>("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
@@ -70,7 +71,7 @@ export default function Passcode() {
       </div>
 
       <VirtualKeyboard
-        handleInputChangeFn={handleInputChange}
+        setInputText={setInput}
         open={isKeyboardVisible}
         setOpen={setIsKeyboardVisible}
         state={input}

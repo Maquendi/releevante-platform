@@ -14,7 +14,7 @@ interface SeeAllBooksPros {
 
 function SeeAllBooks({ subCategoryId, categoryId }: SeeAllBooksPros) {
   const locale = useLocale();
-  const booksByCategory = useFilterBooksByCategory({ categoryId });
+  const {booksByCategory} = useFilterBooksByCategory({ categoryId });
   const { data: categories } = useQuery({
     queryKey: ["CATEGORIES"],
     queryFn: async () => await FetchAllBookCategories(),
@@ -32,7 +32,7 @@ function SeeAllBooks({ subCategoryId, categoryId }: SeeAllBooksPros) {
 
   const currentCategory=useMemo(()=>{
     return categories?.filter(item=>item.id === categoryId)
-  },[categories])
+  },[categories,categoryId])
   return (
     <div className="min-h-[250px]">
       <h2 className="text-xl font-medium space-x-2 mb-5">

@@ -6,6 +6,8 @@ import {
   BookCategory,
   BookCompartment,
   BookCopy,
+  BookImage,
+  BookItems,
   BooksByCategory,
   BooksPagination,
   CategoryGraph,
@@ -43,7 +45,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         id: true,
         is_available: true,
         at_position: true,
-        isbn: true,
+        book_isbn: true,
       },
       where: and(
         eq(bookCopieSchema.book_isbn, isbn.value),
@@ -100,7 +102,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
   //   });
   // }
 
-  async loanLibraryInventory(): Promise<BooksByCategory[]> {
+  async loanLibraryInventory(): Promise<BookItems[]> {
     const results = await db
       .select({
         tags: jsonAgg({
@@ -113,50 +115,24 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         publisher: bookSchema.author,
-        imageUrl: bookSchema.image,
+        image: bookSchema.image,
         correlationId: bookSchema.correlationId,
-        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}), 0) as int)`,
-        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}), 0) as int)`,
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
       })
       .from(bookSchema)
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .leftJoin(bookRatingsSchema, eq(bookRatingsSchema.isbn, bookSchema.id))
       .groupBy(bookSchema.correlationId);
 
-    const groupedBooks: { [key: string]: any } = {};
-
-    results.forEach(({ tags, ...book }) => {
-      const subCategoryTags = tags?.filter(
+    const groupedItems = results.map(({ tags, ...rest }) => {
+      const subCategories = tags?.filter(
         (tag) => tag.tagName === "subcategory"
       );
-      const categoriesTags = tags?.filter((tag) => tag.tagName === "category");
-
-      subCategoryTags.forEach((subCat) => {
-        const subCategoryId = subCat.id || "";
-        if (!groupedBooks[subCategoryId]) {
-          groupedBooks[subCategoryId] = {
-            subCategory: subCat,
-            books: [],
-            bookIds: new Set(),
-          };
-        }
-
-        if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
-          groupedBooks[subCategoryId].books.push({
-            ...book,
-            categories: categoriesTags,
-          });
-          groupedBooks[subCategoryId].bookIds.add(book.isbn);
-        }
-      });
+      const categories = tags?.filter((tag) => tag.tagName === "category");
+      return { categories, subCategories, ...rest };
     });
-
-    const data = Object.values(groupedBooks).map(
-      ({ bookIds, ...rest }) => rest
-    );
-
-    return data as BooksByCategory[];
+    return groupedItems as BookItems[];
   }
 
   async loanLibraryInventoryOriginal(
@@ -325,7 +301,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         publisher: bookSchema.author,
-        imageUrl: bookImageSchema.url,
+        image: bookImageSchema.url,
         correlationId: bookSchema.correlationId,
         rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
         votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
@@ -388,6 +364,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         like(bookSchema.author, `%${query}%`),
         like(bookSchema.editionTitle, `%${query}%`)
       ),
+      limit: !query ? 20 : undefined,
       columns: {
         id: true,
         bookTitle: true,
@@ -398,15 +375,23 @@ class DefaultBookRepositoryImpl implements BookRepository {
       },
     });
 
-    return results as Book[];
+    const filteredBooks = results.reduce((acc, book) => {
+      if (!acc[book.correlationId]) {
+        acc[book.correlationId] = book;
+      }
+      return acc;
+    }, {});
+
+    return Object.values(filteredBooks);
   }
 
   async findById(correlationId: string): Promise<Book> {
-    const result: any = await db
+    const result = await db
       .select({
         id: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         editionTitle: bookSchema.editionTitle,
+        correlationId: bookSchema.correlationId,
         author: bookSchema.author,
         publisher: bookSchema.publisher,
         image: bookSchema.image,
@@ -424,44 +409,51 @@ class DefaultBookRepositoryImpl implements BookRepository {
         frDescription: bookSchema.descriptionFr,
         publicationDate: bookSchema.publicationDate,
         dimensions: bookSchema.dimensions,
-        language: jsonAgg({
+        bookCopyQty: bookSchema.bookCopyQty,
+        language: {
           bookId: bookSchema.id,
-          language: bookSchema.language,
-        }),
-        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
-        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
+          name: bookSchema.language,
+        },
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
       })
       .from(bookSchema)
-      .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .groupBy(bookSchema.correlationId)
-      .where(eq(bookSchema.correlationId, correlationId));
+      .where(eq(bookSchema.correlationId, correlationId))
+      .groupBy(bookSchema.id);
 
     const bookFound = result?.length ? result[0] : null;
 
-    const categories = bookFound?.ftags.reduce((acc, tag) => {
-      if (
-        tag.tagName === "category" &&
-        !acc.some((item) => item.id === tag.id)
-      ) {
-        acc.push(tag);
+    const categories = result?.reduce((acc: any, { ftags }) => {
+      ftags.forEach((tag) => {
+        if (
+          tag.tagName === "category" &&
+          !acc.some((item) => item.id === tag.id)
+        ) {
+          acc.push(tag);
+        }
+      });
+      return acc;
+    }, []);
+
+    const languages = result.reduce((acc: any, { id, language }) => {
+      if (!acc.some((item) => item.language === language)) {
+        acc.push({ bookId: id, language: language.name });
       }
       return acc;
     }, []);
 
-    const languages = bookFound?.language.reduce(
-      (acc: any[], { bookId, language }) => {
-        if (!acc.some((item) => item.language === language)) {
-          acc.push({ bookId, language });
-        }
-        return acc;
-      },
-      []
-    );
+    const copies = result.reduce((acc: any, { bookCopyQty, language }) => {
+      if (!acc[language.name]) {
+        acc[language.name] = bookCopyQty;
+      }
+      return acc;
+    }, {});
 
     const bookItem = {
       ...bookFound,
+      copies,
       languages,
       categories,
     };
@@ -469,17 +461,19 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return bookItem as Book;
   }
 
-  async findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
+  async findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
     const tagsIdsArr = Object.values(tagsValues);
     const result: any = await db
       .select({
         id: bookSchema.id,
+        correlationId: bookSchema.correlationId,
         bookTitle: bookSchema.bookTitle,
         editionTitle: bookSchema.editionTitle,
         author: bookSchema.author,
         publisher: bookSchema.author,
         image: bookSchema.image,
         price: bookSchema.price,
+        bookCopyQty: bookSchema.bookCopyQty,
         ftags: jsonAgg({
           id: ftagsSchema.id,
           tagName: ftagsSchema.tagName,
@@ -493,56 +487,57 @@ class DefaultBookRepositoryImpl implements BookRepository {
         frDescription: bookSchema.descriptionFr,
         publicationDate: bookSchema.publicationDate,
         dimensions: bookSchema.dimensions,
-        language: jsonAgg({
+        language: {
           bookId: bookSchema.id,
           language: bookSchema.language,
-        }),
+        },
         tagCount: sql`count(${bookFtagSchema.ftagId})`,
-        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
-        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
       })
       .from(bookSchema)
-      .leftJoin(bookRatingsSchema, eq(bookSchema.id, bookRatingsSchema.isbn))
       .leftJoin(bookFtagSchema, eq(bookSchema.id, bookFtagSchema.bookIsbn))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .groupBy(bookSchema.correlationId)
       .orderBy(sql`count(${bookFtagSchema.ftagId}) DESC`)
-      .limit(1)
+      .limit(50)
+      .groupBy(bookSchema.id, bookSchema.correlationId)
       .where(
-        or(
-          eq(ftagsSchema.tagName, "category"),
-          inArray(bookFtagSchema.ftagId, tagsIdsArr)
-        )
+        inArray(bookFtagSchema.ftagId, tagsIdsArr)
       );
 
-    const bookFound = result?.length ? result[0] : null;
-    const languages = bookFound?.language.reduce(
-      (acc: any[], { bookId, language }) => {
-        if (!acc.some((item) => item.language === language)) {
-          acc.push({ bookId, language });
-        }
-        return acc;
-      },
-      []
-    );
-
-    const categories = bookFound?.ftags.reduce((acc, tag) => {
-      if (
-        tag.tagName === "category" &&
-        !acc.some((item) => item.id === tag.id)
-      ) {
-        acc.push(tag);
+    const groupedBooks = result.reduce((acc, book) => {
+      if (!book || !book?.correlationId) return acc;
+      if (!acc[book.correlationId]) {
+        acc[book.correlationId] = {
+          ...book,
+          languages: [],
+          categories: [],
+          copies: {},
+        };
       }
+
+      if (!acc[book.correlationId].languages.some((lang) => lang.language === book.language.language)) {
+        acc[book.correlationId].languages.push(book.language);
+      }
+    
+      book.ftags.forEach((tag) => {
+        if (
+          tag.tagName === "category" &&
+          !acc[book.correlationId].categories.some((existingTag) => existingTag.id === tag.id)
+        ) {
+          acc[book.correlationId].categories.push(tag);
+        }
+      });
+
+      if(!acc[book.correlationId].copies[book.language.language]){
+        acc[book.correlationId].copies[book.language.language] =book.bookCopyQty
+      }
+
       return acc;
-    }, []);
+    }, {});
 
-    const bookItem = {
-      ...bookFound,
-      categories,
-      languages,
-    };
+    return Object.values(groupedBooks);
 
-    return bookItem as Book;
   }
 
   async findAllBooks(bookFiler: BooksPagination): Promise<Book[]> {

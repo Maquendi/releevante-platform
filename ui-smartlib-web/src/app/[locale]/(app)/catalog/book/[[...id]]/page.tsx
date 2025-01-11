@@ -8,6 +8,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import BookByIdBanner from "@/components/bookById/BookByIdBanner";
+
 const BestSellerSlider = dynamic(
   () => import("@/components/search/BestSellerSlider"),
   {

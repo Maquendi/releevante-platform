@@ -5,11 +5,13 @@ import {
   BookLoanItem,
   BookLoanItemStatus,
   BookLoanStatus,
+  LoanGroup,
   LoanStatusValues,
 } from "../domain/loan.model";
 import { BookLoanService } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
 import { LoanRepository } from "../domain/repositories";
+import { UserId } from "@/identity/domain/models";
 
 export class BookLoanServiceImpl implements BookLoanService {
   constructor(
@@ -35,10 +37,11 @@ export class BookLoanServiceImpl implements BookLoanService {
       bookCopySearch
     );
 
+
     const loanItems: BookLoanItem[] = bookCopies.map(
-      ({ isbn, id, at_position }) => ({
+      ({ book_isbn, id, at_position }) => ({
         id: uuidv4(),
-        isbn,
+        isbn:book_isbn,
         cpy: id,
         position: at_position,
       })
@@ -71,5 +74,9 @@ export class BookLoanServiceImpl implements BookLoanService {
     await this.bookLoanRepository.save(bookLoan);
 
     return bookLoan;
+  }
+
+  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
+    return this.bookLoanRepository.getUserLoanBooks(clientId)
   }
 }

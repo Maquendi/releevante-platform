@@ -7,18 +7,21 @@ import settingReducer from "./features/settingsSlice";
 import videReducer from "./features/vibeSlice";
 import socketMiddleware from "./middlewares/socketMiddleware";
 import checkoutReducer from "./features/checkoutSlice";
+import returnbooksReducer from "./features/returnbookSlice";
 
 export const store = configureStore({
   reducer: {
-    counterReducer,
+    counter: counterReducer,
     cart: cartReducer,
     settings: settingReducer,
     vide: videReducer,
-    checkoutReducer,
+    checkout: checkoutReducer,
+    returnbooks:returnbooksReducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([socketMiddleware]),
+    getDefaultMiddleware().concat([socketMiddleware, userApi.middleware]), 
 });
 
 setupListeners(store.dispatch);

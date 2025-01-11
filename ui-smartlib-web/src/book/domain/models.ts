@@ -18,6 +18,11 @@ export interface FtagItem {
   esTagValue: string;
 }
 
+export interface BookImage {
+  id: string;
+  image:string
+}
+
 export interface BookByFtagsVibes {
   readingvibe: string;
   moodVibe: string;
@@ -32,21 +37,13 @@ export interface BookCategory {
   esTagValue: string;
 }
 
-export interface BookImage {
-  id: string;
-  url: string;
-}
 
-export interface CategoryBookItem {
-  isbn: string;
-  bookTitle: string;
-  author: string;
-  imageUrl: string;
-  votes: number;
-  rating: number;
-  correlationId: string;
-  categories:FtagItem[]
-}
+// export interface BookItems {
+//   id: string;
+//   title: string;
+//   publisher: string;
+//   images: BookImage[];
+// }
 
 export interface CategoryTranslations {
   id?: string;
@@ -55,6 +52,20 @@ export interface CategoryTranslations {
   enCategoryName: string;
 }
 
+export interface BookItems {
+  categories:FtagItem[],
+  subCategories:FtagItem[]
+  isbn: string;
+  bookTitle: string;
+  publisher: string;
+  image: string;
+  votes: string;
+  rating: string;
+  correlationId: string;
+}
+
+
+
 export interface BooksByCategory {
   subCategory: {
     id: string;
@@ -62,14 +73,14 @@ export interface BooksByCategory {
     esName: string;
     frName: string;
   };
-  books: CategoryBookItem[];
+  books: BookItems[];
 }
 
 export interface BookCopy {
   id: string;
   is_available: boolean;
   at_position: string;
-  isbn: string;
+  book_isbn: string;
 }
 
 export interface BookCompartment {
@@ -80,12 +91,6 @@ export interface Isbn {
   value: string;
 }
 
-export interface BookItems {
-  id: string;
-  title: string;
-  publisher: string;
-  images: BookImage[];
-}
 
 export interface BooksPagination {
   limit?: number;
@@ -103,10 +108,22 @@ export interface BookLanguage {
   language: string;
 }
 
+
+interface BookCopies{
+  spanish:number;
+  french:number;
+  english:number;
+}
+
 export interface Book {
   id: string;
   bookTitle: string;
+  copies:BookCopies
   author: string;
+  language?:{
+    bookId:string,
+    name:string
+  }
   correlationId: string;
   editionTitle: string;
   image: string;
@@ -123,6 +140,7 @@ export interface Book {
   votes?: number;
   price?: number;
 }
+
 
 export interface CategoryBooks {
   categoryName: string;
@@ -176,3 +194,5 @@ export interface LibraryInventory {
   categories: CategoryGraph[];
   inventory: IBook[];
 }
+
+

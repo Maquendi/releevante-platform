@@ -1,6 +1,14 @@
 {
-  "home": {
+  "AuthPage": {
     "title": "Bienvenido a la Biblioteca Inteligente"
+  },
+  "HomePage": {
+    "showAllBooksTitle": "Muéstrame todos los libros",
+    "showAllBooksText": "¡Explora nuestra biblioteca completa de libros! Navega por una amplia colección de géneros, temas y autores para descubrir tu próxima gran lectura.",
+    "showAllBooksBtn": "Ver todos los libros",
+    "helpFindBookTitle": "Ayúdame a encontrar el libro perfecto",
+    "helpFindBookText": "¡Déjanos guiarte! Te recomendaremos el libro perfecto hecho a tu medida, solo responde unas preguntas rápidas.",
+    "helpFindBookBtn": "Sugiéreme libros"
   },
   "wristbandScanAuth": {
     "header": "¡Bienvenido a tu biblioteca personal!",
@@ -54,6 +62,11 @@
     "emptyCart": "No tienes ningún libro en tu carrito",
     "cart": "carrito"
   },
+  "vibeBtns": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "submit": "Enviar"
+  },
   "readingVibePage": {
     "readingVibe1": "¿Cuál es tu",
     "readingVibe2": "estado de ánimo para leer",
@@ -85,8 +98,9 @@
     "recommendationReadyTitle3": "está lista!",
     "basedOnResponsesSubtitle": "Basado en tus respuestas, te sugerimos lo siguiente",
     "editPreferences": "Editar preferencias",
-    "rent": "alquilar",
-    "buy": "comprar"
+    "rent": "leer en el hotel",
+    "buy": "comprar",
+    "otherRecomendations": "Otras recomendaciones"
   },
   "reviewMyCart": {
     "myCart": "mi carrito",
@@ -152,16 +166,15 @@
     "closeSessionTime3": "minutos"
   },
   "ratingPage": {
-  "title": "Déjanos saber tu nivel de satisfacción",
-  "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
-  "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?",
-  "commentTitle": "¿Te gustaría añadir una sugerencia o comentario?",
-  "commentPlaceHolder": "Escribe un comentario aquí",
-  "optional": "Opcional",
-  "submit": "Enviar",
-  "closeSessionTime1": "La sesión",
-  "closeSessionTime2": "se cerrará en",
-  "closeSessionTime3": "minutos"
-}
-
+    "title": "Déjanos saber tu nivel de satisfacción",
+    "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
+    "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?",
+    "commentTitle": "¿Te gustaría añadir una sugerencia o comentario?",
+    "commentPlaceHolder": "Escribe un comentario aquí",
+    "optional": "Opcional",
+    "submit": "Enviar",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
+  }
 }

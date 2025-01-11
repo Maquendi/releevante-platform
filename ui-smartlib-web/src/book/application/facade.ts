@@ -3,13 +3,15 @@ import {
   BookByFtagsVibes,
   BookCategory,
   BookCopy,
+  BookImage,
+  BookItems,
   BooksByCategory,
   BooksPagination,
   FtagItem,
   FtagsEnum,
   LibraryInventory,
 } from "../domain/models";
-import { BookCopySearch } from "./dto";
+import { BookCopySearch, BookRatingDto } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
 
  export class BookServiceFacadeImpl implements BookServiceFacade {
@@ -17,8 +19,8 @@ import { BookService, BookServiceFacade } from "./service.definitions";
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
   }
-  async findAllBookByCategory(categoryId: string): Promise<BooksByCategory[]> {
-    return await this.bookService.findAllBookByCategory(categoryId);
+  async findAllBookByCategory(): Promise<BooksByCategory[]> {
+    return await this.bookService.findAllBookByCategory();
   }
   async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {
     return await this.bookService.findAllBookBySearchCriteria(searchCriteria);
@@ -40,11 +42,14 @@ import { BookService, BookServiceFacade } from "./service.definitions";
     return this.bookService.findAvailableCopiesByIsbn(bookSearch);
   }
 
-  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
-    return this.bookService.findBookByVibeTags(tagsValues)
+  findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
+    return this.bookService.findBooksByVibeTags(tagsValues)
   }
 
-  loanLibraryInventory(): Promise<BooksByCategory[]> {
+  loanLibraryInventory(): Promise<BookItems[]> {
     return this.bookService.loanLibraryInventory()
   }
+
+
+ 
 }

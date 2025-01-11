@@ -20,16 +20,18 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
   });
 
   const t = useTranslations("bookById");
-
+  
   const { 
     maxBookAllowed, 
     booksInCartCount, 
     isBookInCart, 
     handleAddToCart, 
-    selectedLanguage 
-  } = useAddBookToCart();
+    selectedLanguage,
+    hasEnoughCopies
+  } = useAddBookToCart(book!);
 
   if (!book) return null;
+  
 
   return (
     <div
@@ -39,17 +41,17 @@ export default function AddBookToCartBanner({ productId }: AddToCartProps) {
       )}
     >
       <Button
-        disabled={!selectedLanguage || booksInCartCount.rentItemsCount >= maxBookAllowed!}
-        onClick={() => handleAddToCart("RENT", book)}
+        disabled={!selectedLanguage || booksInCartCount.rentItemsCount >= maxBookAllowed! || !hasEnoughCopies}
+        onClick={async() => await handleAddToCart("RENT", book)}
         className="py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent"
       >
         {t("rentBannerBtn")}
       </Button>
 
       <Button
-        disabled={!selectedLanguage || booksInCartCount.purchaseItemsCount >= maxBookAllowed!}
+        disabled={!selectedLanguage || booksInCartCount.purchaseItemsCount >= maxBookAllowed! || !hasEnoughCopies}
         variant="outline"
-        onClick={() => handleAddToCart("PURCHASE", book)}
+        onClick={async() => await handleAddToCart("PURCHASE", book)}
         className="py-7 px-8 rounded-full font-medium bg-transparent border-black"
       >
         <p className="flex items-center">

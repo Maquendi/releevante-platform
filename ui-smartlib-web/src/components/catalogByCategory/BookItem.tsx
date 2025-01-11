@@ -1,12 +1,12 @@
 import React from "react";
 import ImageWithSkeleton from "../ImageWithSkeleton";
 import Rating from "../Rating";
-import { CategoryBookItem } from "@/book/domain/models";
 import { cn } from "@/lib/utils";
 import { Link } from "@/config/i18n/routing";
+import { BookItems } from "@/book/domain/models";
 
 interface BookItemProps {
-  book: CategoryBookItem;
+  book: BookItems;
   width?: number;
   height?: number;
   className?: string;
@@ -28,17 +28,17 @@ export default function BookItem({
     >
       <Link className="cursor-pointer" href={`/catalog/book/${book?.correlationId}`}>
         <ImageWithSkeleton
-          src={book.imageUrl}
-          alt={book.bookTitle}
+          src={book?.image || ''}
+          alt={book?.bookTitle}
           width={width || 180}
           height={height || 250}
           className="w-full  object-cover rounded-lg"
         />
         <div className="flex flex-col  space-y-1">
           <div className="flex text-end text-nowrap text-secondary-foreground items-center gap-3">
-            <Rating rating={book.rating} />
-            <p>{book.rating}</p>
-            <p>({book.votes} votes)</p>
+            <Rating rating={parseInt(book?.rating) || 0} />
+            <p>{book?.rating || 0}</p>
+            <p>({book?.votes || 0} votes)</p>
           </div>
         </div>
       </Link>

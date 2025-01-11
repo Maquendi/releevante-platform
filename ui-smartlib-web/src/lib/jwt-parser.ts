@@ -1,24 +1,32 @@
 import jwt from "jsonwebtoken";
 import fs from "fs";
-
+import path from "path";
 export interface JwtPayload {
-  role: string;
-  permissions: string[];
-  expiresAt: Date;
+  sub: string;
+  iat: number;
 }
 
-const privatePemFilePath = process.env.PRIVATE_PEM_FILE_PATH || "";
-const pulicPemFilePath = process.env.PUBLIC_PEM_FILE_PATH || "";
+// const privatePemFilePath = process.env.PRIVATE_PEM_FILE_PATH || "";
+// const pulicPemF
+
+
+
+const privatePemFilePath = path.resolve('/Users/ismaelperez/Desktop/releevante-platform/private.pem');
+const publicPemFilePath = path.resolve('/Users/ismaelperez/Desktop/releevante-platform/public.pem');
+const publicKey = fs.readFileSync(publicPemFilePath, "utf8");
+
 const privateKey = fs.readFileSync(privatePemFilePath, "utf8");
-const publicKey = fs.readFileSync(pulicPemFilePath, "utf8");
 
-export function extractPayload(jwt: string): JwtPayload {
-  return {
-    role: jwt,
-    permissions: [],
-    expiresAt: new Date(),
-  };
+export function extractPayload(token: string): JwtPayload {
+  try {
+    const decoded = jwt.verify(token, publicKey, { algorithms: ["RS256"] });
+    return decoded as JwtPayload
+  } catch (err) {
+    throw new Error("Token inválido o no decodificable");
+  }
 }
+
+
 
 export function signToken<T extends object>(payload: T) {
   try {

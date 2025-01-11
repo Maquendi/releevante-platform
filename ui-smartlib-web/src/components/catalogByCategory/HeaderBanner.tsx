@@ -17,14 +17,14 @@ export default function HeaderBanner({
 }: HeaderBannerProp) {
   const locale = useLocale();
   const t = useTranslations("SeeAllPage");
-  const categoryBooks=useFilterBooksByCategory({categoryId})
+  const {booksByCategory}=useFilterBooksByCategory({categoryId})
 
-  const bookByCategory = useMemo(() => {
-    const data = categoryBooks?.filter(
+  const bookByCategoryFiltered = useMemo(() => {
+    const data = booksByCategory?.filter(
       (item) => item.subCategory.id === subCategoryId
     );
     return data?.length ? data[0] : null;
-  }, [categoryBooks, subCategoryId]);
+  }, [booksByCategory, subCategoryId]);
 
   const { data: categories } = useQuery({
     queryKey: ["CATEGORIES"],
@@ -44,7 +44,7 @@ export default function HeaderBanner({
         <div>
           <h1 className="text-left text-4xl mb-1 font-semibold space-x-2">
             <span>
-              {bookByCategory?.subCategory[`${locale}Name`]}
+              {bookByCategoryFiltered?.subCategory[`${locale}Name`]}
             </span>
             {categoryId && (
               <>

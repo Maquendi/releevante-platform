@@ -44,7 +44,6 @@ export class UserServiceFacadeImpl implements UserServiceFacade {
     try {
       return this.defaultUserService.authenticate(credential);
     } catch (error) {
-      console.log('err auth server',error)
       const response = await this.userServiceApiClient.authenticate(credential);
       await this.defaultUserService.register(response?.user);
       return response;

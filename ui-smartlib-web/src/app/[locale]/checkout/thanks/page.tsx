@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function ThanksPage() {
   const t = useTranslations("thanksPage");
+  
   return (
     <div className=" min-h-screen grid grid-rows-[auto_1fr_auto] text-center">
       <nav className="flex justify-between px-5 py-3">

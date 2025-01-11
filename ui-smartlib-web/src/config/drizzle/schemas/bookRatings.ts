@@ -10,6 +10,7 @@ export const bookRatingsSchema = sqliteTable("book_ratings", {
   isbn: text("isbn").notNull().references(()=>bookSchema.id),
   clientId: text("client_id").notNull().references(()=>userSchema.id),
   rating: integer("rating").notNull(),
+  comment:text('comment'),
   createdAt: text("created_at")
   .notNull()
   .default(sql`(current_timestamp)`)

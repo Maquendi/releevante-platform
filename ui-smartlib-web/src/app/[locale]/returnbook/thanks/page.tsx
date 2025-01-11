@@ -2,11 +2,13 @@
 
 import SelectLanguage from "@/components/SelectLanguage";
 import { Link } from "@/config/i18n/routing";
+import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function ThanksDepositPage() {
   const t = useTranslations("returnThanksPage");
+  const currentReturnBook=useAppSelector(state=>state.returnbooks.currentReturnBook)
 
   return (
     <div className=" min-h-screen grid grid-rows-[auto_1fr_auto] text-center">
@@ -34,13 +36,13 @@ export default function ThanksDepositPage() {
           <span>{t("thanksForReturn1")}</span>
           <br />
           <span className="text-primary text-nowrap">
-            The Richest Man in Babylon
+            {currentReturnBook?.bookTitle}
           </span>
           <span>{t("thanksForReturn2")}!</span>
         </h2>
         <p></p>
         <Link
-          href="/home"
+          href="/returnbook"
           className="rounded-full z-[999] m-auto px-5 py-3 text-sm font-medium bg-primary text-white w-fit"
         >
           {t("returnBookBtn")}

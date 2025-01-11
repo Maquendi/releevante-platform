@@ -2,6 +2,7 @@
 
 import { Link, usePathname } from "@/config/i18n/routing";
 import { useAppSelector } from "@/redux/hooks";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 interface NextPrevVibesBtnsProps {
@@ -15,7 +16,7 @@ export default function NextPrevVibesBtns({
 }: NextPrevVibesBtnsProps) {
   const selectedStates = useAppSelector((state) => state.vide);
   const path = usePathname();
-
+  const t = useTranslations("vibeBtns")
   const nextPageAndQuery = useMemo(() => {
     if (path.endsWith("flavorofstory")) {
       const lowerCaseStates = Object.fromEntries(
@@ -38,7 +39,7 @@ export default function NextPrevVibesBtns({
           className="px-6 py-3.5 rounded-full border border-primary text-primary font-medium text-sm"
           href={prevPage}
         >
-          Previous
+         { t('previous')}
         </Link>
       )}
 
@@ -46,7 +47,7 @@ export default function NextPrevVibesBtns({
         className="px-6 py-3.5 rounded-full border border-primary text-primary font-medium text-sm"
         href={nextPageAndQuery}
       >
-        Next
+        {path.endsWith("flavorofstory") ?   t('submit') : t('next')} 
       </Link>
     </div>
   );

@@ -12,10 +12,10 @@ export const loanItemSchema = sqliteTable("loan_items", {
   bookCopyId: text("book_copy_id")
     .notNull()
     .references(() => bookCopieSchema.id),
-  created_at: text("created_at")
+  createdAt: text("created_at")
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString()),
-  updated_at: text("updated_at")
+  updatedAt: text("updated_at")
     .default(sql`(current_timestamp)`)
     .$defaultFn(() => new Date().toISOString())
     .$onUpdateFn(() => new Date().toISOString()),

@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 export default function BookNotFound() {
-  const t = useTranslations("homePage");
+  // const t = useTranslations("homePage");
 
   return (
     <div className="grid place-content-center gap-1">
@@ -16,7 +16,7 @@ export default function BookNotFound() {
           alt="book not found image"
         />
       </figure>
-      <p>{t("notFound")}</p>
+      {/* <p>{t("notFound")}</p> */}
     </div>
   );
 }

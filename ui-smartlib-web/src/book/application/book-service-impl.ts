@@ -8,10 +8,12 @@ import {
   FtagsEnum,
   BookByFtagsVibes,
   LibraryInventory,
+  BookItems,
+  BookImage,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
-import { BookCopySearch, SearchCriteria } from "./dto";
+import { BookCopySearch, BookRatingDto, SearchCriteria } from "./dto";
 import { BookService } from "./service.definitions";
 
 export class DefaultBookServiceImpl implements BookService {
@@ -44,10 +46,7 @@ export class DefaultBookServiceImpl implements BookService {
     return await this.bookRepository.findAllBy(searchCriteria);
   }
 
-  async findAllBookByCategory(categoryId: string): Promise<BooksByCategory[]> {
-    this.bookRepository.loanLibraryInventory(categoryId);
-    return await this.bookRepository.findAllByCategory(categoryId);
-  }
+
 
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookRepository.getFtagsBy('category');
@@ -65,11 +64,47 @@ export class DefaultBookServiceImpl implements BookService {
     return await this.bookRepository.getFtagsBy(tagName);
   }
 
-  findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {
+  findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
     return this.bookRepository.findByVibeTags(tagsValues);
   }
 
-  async loanLibraryInventory(): Promise<BooksByCategory[]> {
-    return this.bookRepository.loanLibraryInventory()
+  async findAllBookByCategory(): Promise<BooksByCategory[]> {
+    const results = await this.bookRepository.loanLibraryInventory()
+
+     const groupedBooks: { [key: string]: any } = {};
+    
+        results.forEach(({ categories,subCategories, ...book }) => {
+      
+          subCategories.forEach((subCat) => {
+            const subCategoryId = subCat.id || "";
+            if (!groupedBooks[subCategoryId]) {
+              groupedBooks[subCategoryId] = {
+                subCategory: subCat,
+                books: [],
+                bookIds: new Set(),
+              };
+            }
+    
+            if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
+              groupedBooks[subCategoryId].books.push({
+                ...book,
+                categories,
+              });
+              groupedBooks[subCategoryId].bookIds.add(book.isbn);
+            }
+          });
+        });
+    
+        const data = Object.values(groupedBooks).map(
+          ({ bookIds, ...rest }) => rest
+        );
+    
+        return data as BooksByCategory[];
   }
+
+  async loanLibraryInventory(): Promise<BookItems[]> {
+    return await this.bookRepository.loanLibraryInventory()
+  }
+
+
 }

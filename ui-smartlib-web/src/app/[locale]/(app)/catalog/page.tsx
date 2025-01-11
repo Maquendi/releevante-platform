@@ -1,12 +1,12 @@
+
 import {
+  FetchAllBookByCategory,
   FetchAllBookCategories,
-  LoanLibraryInventory,
 } from "@/actions/book-actions";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-  useQuery,
 } from "@tanstack/react-query";
 
 const CatalogList = lazy(()=>import("@/components/catalog/CatalogPage"))
@@ -16,7 +16,7 @@ export default async function CatalogPage({ searchParams }) {
   const queryClient = new QueryClient();
   await queryClient.ensureQueryData({
     queryKey: ["BOOKS_BY_CATEGORIES"],
-    queryFn: async() => await LoanLibraryInventory(),
+    queryFn: async() => await FetchAllBookByCategory(),
   });
   await queryClient.ensureQueryData({
     queryKey: ["CATEGORIES"],

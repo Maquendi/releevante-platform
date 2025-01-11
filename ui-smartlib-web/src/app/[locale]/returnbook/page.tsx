@@ -1,10 +1,16 @@
+import { FetchUserBooksLoan } from "@/actions/cart-actions";
 import ReturnBookList from "@/components/returnbooks/ReturnBookList";
 import SimpleNavbar from "@/components/SimpleNavbar";
-import { Link } from "@/config/i18n/routing";
-import {  useTranslations } from "next-intl";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { getTranslations } from "next-intl/server";
 
-export default function ReturnBook() {
-  const t = useTranslations("returnBook");
+export default async function ReturnBook() {
+  const t = await getTranslations("returnBook");
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["RETURN_BOOKS"],
+    queryFn: async () => await FetchUserBooksLoan(),
+  });
   return (
     <div className="space-y-12 pb-3">
       <SimpleNavbar href="/catalog" intName="returnBook" intValue="back" />
@@ -15,7 +21,9 @@ export default function ReturnBook() {
         </div>
       </header>
       <section className="px-5">
-        <ReturnBookList />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <ReturnBookList  />
+        </HydrationBoundary>
       </section>
     </div>
   );

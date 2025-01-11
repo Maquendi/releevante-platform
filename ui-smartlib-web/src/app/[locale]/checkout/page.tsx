@@ -1,60 +1,71 @@
 "use client";
-
-import { checkout } from "@/actions/cart-actions";
-import { redirect } from "@/config/i18n/routing";
-import { useAppSelector } from "@/redux/hooks";
+import { useCheckout } from "@/hooks/useCheckout";
+import { cn } from "@/lib/utils";
+import { CircleCheck, RefreshCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 
 export default function CheckoutPage() {
-  const cartItems = useAppSelector((state) => state.cart.items);
-  const currentItemStatus = useAppSelector(
-    (state) => state.checkoutReducer.itemStatus
-  );
-  const [currentIndex, setCurrentIndex] = useState(0);
   const t = useTranslations("checkout");
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    // if (!cartItems?.length) redirect("/home");
-    //mutation every time current index changes, to open book door.
+  const { cartItems, currentBook, completedBooks, currentBookShowing } =
+    useCheckout();
 
-    console.log(currentItemStatus);
-    checkout(cartItems).then((res) => {
-      const copies = res.loanItems;
-      dispatch({ type: "socket/emit", event: "checkout", payload: copies });
-    });
-  }, [cartItems]);
-
-  const currentBook = useMemo(() => {
-    return cartItems[currentIndex];
-  }, [currentIndex, cartItems]);
-
+    
   return (
-    <div>
+    <div className=" overflow-hidden">
       <header className="bg-white py-5 flex justify-center">
         <p className="text-base font-medium ml-[190px]">
           {t("readInstructions")}
         </p>
       </header>
-      <div className="grid grid-cols-[auto_1fr]">
-        <aside className="bg-white space-y-6 w-[200px] pt-5 px-3">
+      <div className="grid grid-cols-[auto_1fr] h-full">
+        <aside className="bg-white space-y-7 w-[200px] pt-5 h-full ">
           <div>
-            <h3 className="text-2xl font-semibold">{t("yourBooks")}</h3>
+            <h3 className="text-2xl pl-3 font-semibold">{t("yourBooks")}</h3>
           </div>
-          <div className="space-y-4">
-            {cartItems.map((item, index) => (
-              <article key={item.isbn}>
-                <p className="font-medium">
-                  {index + 1}. {item.title}
-                </p>
-              </article>
-            ))}
+          <div className="">
+            {cartItems.map((item, index) => {
+              const isBookWorking = item.isbn === currentBook.isbn;
+              const isBookCompleated = completedBooks
+                .map((item) => item.isbn)
+                .includes(item.isbn);
+              return (
+                <article
+                  key={item.isbn}
+                  className={cn(
+                    "py-4 px-3 flex justify-between items-center",
+                    isBookWorking && "border-r-[5px]  border-primary bg-accent"
+                  )}
+                >
+                  <div>
+                    <p
+                      className={cn(
+                        "font-medium",
+                        !isBookCompleated && "text-gray-500",
+                        isBookWorking && "text-primary"
+                      )}
+                    >
+                      {index + 1}. {item.title}
+                    </p>
+                  </div>
+                  <div>
+                    {isBookCompleated && (
+                      <CircleCheck className="fill-black  text-white" />
+                    )}
+                    {isBookWorking && !isBookCompleated && (
+                      <RefreshCcw
+                        size={20}
+                        className="animate-spin  text-black"
+                      />
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </aside>
-        <section className="grid grid-rows-[1fr_auto place-content-center gap-10 mt-10  text-center">
+        <section className="grid grid-rows-[1fr_auto place-content-center gap-12 mt-10  text-center">
           <div className="space-y-5">
             <div>
               <h2 className="text-3xl font-medium">{t("pickYourBook")}</h2>
@@ -62,10 +73,10 @@ export default function CheckoutPage() {
             <div>
               <figure>
                 <Image
-                  src={currentBook?.image}
+                  src={currentBookShowing?.image || ''}
                   width={250}
                   height={350}
-                  alt={`${currentBook?.title} image`}
+                  alt={`${currentBookShowing?.title} image`}
                   className="m-auto object-cover rounded-md w-[210px] h-[270px]"
                 />
               </figure>
