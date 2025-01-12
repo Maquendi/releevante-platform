@@ -81,6 +81,7 @@ export interface BookCopy {
   is_available: boolean;
   at_position: string;
   book_isbn: string;
+  usage_count: number
 }
 
 export interface BookCompartment {

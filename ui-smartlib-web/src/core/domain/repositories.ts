@@ -1,6 +1,6 @@
 import { UserId } from "@/identity/domain/models";
 import { Cart, CartId } from "./cart.model";
-import { BookLoan, BookLoanItemStatus, BookLoanStatus, LoanGroup } from "./loan.model";
+import { BookTransactionItemStatus, BookTransactions, BookTransactionStatus, LoanGroup } from "./loan.model";
 import { Rating } from "./service-rating.model";
 import { LibrarySettings } from "./settings.model";
 
@@ -15,9 +15,9 @@ export interface CartRepository {
 }
 
 export interface LoanRepository {
-  save(loan: BookLoan): Promise<void>;
-  addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
-  addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus>
+  save(transactions: BookTransactions): Promise<void>;
+  addLoanItemStatus(status: BookTransactionItemStatus): Promise<BookTransactionItemStatus>;
+  addLoanStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>
  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]>}
 
 export interface SettingsRepository {

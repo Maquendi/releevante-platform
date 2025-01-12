@@ -1,9 +1,10 @@
 import { UserId } from "@/identity/domain/models";
 import {
-  BookLoan,
-  BookLoanItem,
-  BookLoanItemStatus,
-  BookLoanStatus,
+  BookTransaction,
+  BookTransactionItem,
+  BookTransactionItemStatus,
+  BookTransactions,
+  BookTransactionStatus,
   LoanGroup,
 } from "../domain/loan.model";
 import { CartDto, LoanItemStatusDto, LoanStatusDto } from "./dto";
@@ -24,9 +25,9 @@ export class CartServiceFacade {
    * @param cartDto cart dto,
    * @returns
    */
-  async checkout(dto: CartDto): Promise<BookLoan> {
+  async checkout(dto: CartDto): Promise<BookTransactions> {
     const cart = await this.cartService.checkout(dto);
-    console.log('cart checkout dto',dto)
+    console.log("cart checkout dto", dto);
     try {
       return await this.bookLoanService.checkout(cart);
     } catch (error) {
@@ -36,8 +37,10 @@ export class CartServiceFacade {
     }
   }
 
-  async newLoanItemStatus(dto: LoanItemStatusDto): Promise<BookLoanItemStatus> {
-    const status: BookLoanItemStatus = {
+  async newLoanItemStatus(
+    dto: LoanItemStatusDto
+  ): Promise<BookTransactionItemStatus> {
+    const status: BookTransactionItemStatus = {
       id: uuidv4(),
       createdAt: new Date().toISOString(),
       itemId: dto.itemId,
@@ -46,17 +49,17 @@ export class CartServiceFacade {
     return await this.bookLoanService.addLoanItemStatus(status);
   }
 
-  async newLoanStatus(dto: LoanStatusDto): Promise<BookLoanStatus> {
-    const status: BookLoanStatus = {
+  async newLoanStatus(dto: LoanStatusDto): Promise<BookTransactionStatus> {
+    const status: BookTransactionStatus = {
       id: uuidv4(),
-      createdAt: new Date(),
-      loanId: dto.loanId,
+      createdAt: new Date().toISOString(),
+      transactionId: dto.loanId,
       status: dto.status,
     };
     return await this.bookLoanService.addLoanStatus(status);
   }
 
   getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
-    return this.bookLoanService.getUserLoanBooks(clientId)
+    return this.bookLoanService.getUserLoanBooks(clientId);
   }
 }

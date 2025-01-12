@@ -36,10 +36,16 @@ import { BookService, BookServiceFacade } from "./service.definitions";
     return await this.bookService.getFtagsByType(tagName)
   }
 
-  async findAvailableCopiesByIsbn(
+  async findAvailableCopiesByIsbnForPurchase(
     bookSearch: BookCopySearch[]
   ): Promise<BookCopy[]> {
-    return this.bookService.findAvailableCopiesByIsbn(bookSearch);
+    return this.bookService.findAvailableCopiesByIsbnForPurchase(bookSearch);
+  }
+
+  async findAvailableCopiesByIsbnForRent(
+    bookSearch: BookCopySearch[]
+  ): Promise<BookCopy[]> {
+    return this.bookService.findAvailableCopiesByIsbnForRent(bookSearch);
   }
 
   findBookByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book> {

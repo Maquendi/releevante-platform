@@ -1,6 +1,6 @@
 'use server'
 import { cartServiceFacade } from "@/core/application";
-import { LoanItemStatusDto } from "@/core/application/dto";
+import { LoanItemStatusDto, LoanStatusDto } from "@/core/application/dto";
 import { ReturnBook } from "@/redux/features/returnbookSlice";
 
 export const returnSingleBook = async (loanItem: ReturnBook): Promise<any> => {
@@ -27,6 +27,17 @@ export const onNewItemStatus = async (status: LoanItemStatusDto): Promise<any> =
     
   } catch (error) {
     console.log("error return book" + error);
+    throw new Error("error return book" + error);
+  }
+};
+
+export const onNewTransactionStatus = async (status: LoanStatusDto): Promise<any> => {
+
+  try {
+   
+     return await cartServiceFacade.newLoanStatus(status)
+    
+  } catch (error) {
     throw new Error("error return book" + error);
   }
 };
