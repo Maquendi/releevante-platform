@@ -409,7 +409,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         frDescription: bookSchema.descriptionFr,
         publicationDate: bookSchema.publicationDate,
         dimensions: bookSchema.dimensions,
-        bookCopyQty: bookSchema.bookCopyQty,
+        bookCopyQty: bookSchema.qty,
         language: {
           bookId: bookSchema.id,
           name: bookSchema.language,
@@ -473,7 +473,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         publisher: bookSchema.author,
         image: bookSchema.image,
         price: bookSchema.price,
-        bookCopyQty: bookSchema.bookCopyQty,
+        bookCopyQty: bookSchema.qty,
         ftags: jsonAgg({
           id: ftagsSchema.id,
           tagName: ftagsSchema.tagName,

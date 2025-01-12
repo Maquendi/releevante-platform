@@ -14,22 +14,21 @@ export function useCheckout() {
   );
   const dispatch = useDispatch();
   const router = useRouter();
-  const hasClearedData = useRef(false); 
-  const hasCheckedOut = useRef(false); 
+  const hasClearedData = useRef(false);
+  const hasCheckedOut = useRef(false);
 
   const { mutate: addCartItemsMutation } = useMutation({
     mutationFn: checkout,
     onSuccess(data) {
-      const copies = data.loanItems;
-      dispatch({ type: "socket/checkout", event: "checkout", payload: copies });
+      dispatch({ type: "socket/checkout", event: "checkout", payload: data });
     },
   });
 
   useEffect(() => {
     if (!cartItems || cartItems?.length === 0) return;
-    if(hasCheckedOut.current)return
+    if (hasCheckedOut.current) return;
     addCartItemsMutation(cartItems);
-    hasCheckedOut.current=true
+    hasCheckedOut.current = true;
   }, [cartItems, addCartItemsMutation]);
 
   const currentBookShowing = useMemo(() => {
@@ -39,10 +38,10 @@ export function useCheckout() {
   }, [currentBook, cartItems]);
 
   const clearAllData = () => {
-    if (hasClearedData.current) return; 
+    if (hasClearedData.current) return;
     dispatch(clearCart());
     dispatch(clearCheckout());
-    hasClearedData.current = true; 
+    hasClearedData.current = true;
   };
 
   useEffect(() => {
@@ -50,7 +49,7 @@ export function useCheckout() {
       (item) => item.status === "checkout_successful"
     );
     if (isAllBookProcessed && completedBooks.length === cartItems.length) {
-      clearAllData(); 
+      clearAllData();
       router.push("/checkout/thanks");
     }
   }, [cartItems, completedBooks, router]);
