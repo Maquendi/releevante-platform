@@ -55,7 +55,8 @@ export interface CategoryTranslations {
 export interface BookItems {
   categories:FtagItem[],
   subCategories:FtagItem[]
-  isbn: string;
+  tags:FtagItem[]
+  id: string;
   bookTitle: string;
   publisher: string;
   image: string;
@@ -135,7 +136,9 @@ export interface Book {
   printLength: number;
   dimensions: string;
   languages: BookLanguage[];
-  categories:BookCategory[]
+  categories:FtagItem[]
+  subCategories:FtagItem[]
+  tags:FtagItem[]
   rating?: number;
   votes?: number;
   price?: number;

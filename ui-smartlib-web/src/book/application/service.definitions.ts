@@ -11,7 +11,7 @@ export interface BookService {
   findAllBooks(params:BooksPagination):Promise<Book[]>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
   findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>
-  loanLibraryInventory(): Promise<BookItems[]>
+  loanLibraryInventory(): Promise<Book[]>
 }
 
 
@@ -24,5 +24,5 @@ export interface BookServiceFacade {
   findBookById(isbn:string):Promise<Book>
   getFtagsByType(tagName:FtagsEnum):Promise<FtagItem[]>
   findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>
-  loanLibraryInventory(): Promise<BookItems[]>
+  loanLibraryInventory(): Promise<Book[]>
 }

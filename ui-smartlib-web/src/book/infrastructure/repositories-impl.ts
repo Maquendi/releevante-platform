@@ -102,37 +102,86 @@ class DefaultBookRepositoryImpl implements BookRepository {
   //   });
   // }
 
-  async loanLibraryInventory(): Promise<BookItems[]> {
+  async loanLibraryInventory(): Promise<Book[]> {
     const results = await db
       .select({
         tags: jsonAgg({
           id: ftagsSchema.id,
-          esName: ftagsSchema.esTagValue,
-          enName: ftagsSchema.enTagValue,
-          frName: ftagsSchema.frTagValue,
+          esTagValue: ftagsSchema.esTagValue,
+          enTagValue: ftagsSchema.enTagValue,
+          frTagValue: ftagsSchema.frTagValue,
           tagName: ftagsSchema.tagName,
         }),
-        isbn: bookSchema.id,
+        id: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         publisher: bookSchema.author,
         image: bookSchema.image,
         correlationId: bookSchema.correlationId,
         rating: bookSchema.rating,
         votes: bookSchema.votes,
+        language: {
+          bookId: bookSchema.id,
+          language: bookSchema.language,
+        },
+        bookCopyQty: bookSchema.bookCopyQty,
       })
       .from(bookSchema)
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
       .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .groupBy(bookSchema.correlationId);
+      .groupBy(bookSchema.id);
 
-    const groupedItems = results.map(({ tags, ...rest }) => {
-      const subCategories = tags?.filter(
-        (tag) => tag.tagName === "subcategory"
-      );
-      const categories = tags?.filter((tag) => tag.tagName === "category");
-      return { categories, subCategories, ...rest };
-    });
-    return groupedItems as BookItems[];
+    // const groupedItems = results.map(({ tags, ...rest }) => {
+    //   const subCategories = tags?.filter(
+    //     (tag) => tag.tagName === "subcategory"
+    //   );
+    //   const categories = tags?.filter((tag) => tag.tagName === "category");
+    //   return { categories, subCategories, ...rest };
+    // });
+    // return groupedItems as BookItems[];
+
+    const groupedBooks = results.reduce((acc, book) => {
+      if (!book || !book?.correlationId) return acc;
+      if (!acc[book.correlationId]) {
+        acc[book.correlationId] = {
+          ...book,
+          languages: [],
+          categories: [],
+          subCategories: [],
+          copies: {},
+        };
+      }
+
+      if (!acc[book.correlationId].languages.some((lang) => lang.language === book.language.language)) {
+        acc[book.correlationId].languages.push(book.language);
+      }
+
+    
+      book.tags.forEach((tag) => {
+        if (
+          tag.tagName === "category" &&
+          !acc[book.correlationId].categories.some((existingTag) => existingTag.id === tag.id)
+        ) {
+          acc[book.correlationId].categories.push(tag);
+        }
+      });
+
+      book.tags.forEach((tag) => {
+        if (
+          tag.tagName === "subcategory" &&
+          !acc[book.correlationId].subCategories.some((existingTag) => existingTag.id === tag.id)
+        ) {
+          acc[book.correlationId].subCategories.push(tag);
+        }
+      });
+
+      if(!acc[book.correlationId].copies[book.language.language]){
+        acc[book.correlationId].copies[book.language.language] =book.bookCopyQty
+      }
+
+      return acc;
+    }, {});
+
+    return Object.values(groupedBooks);
   }
 
   async loanLibraryInventoryOriginal(
@@ -399,8 +448,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
         ftags: jsonAgg({
           id: ftagsSchema.id,
           tagName: ftagsSchema.tagName,
-          enTagValue: ftagsSchema.enTagValue,
           esTagValue: ftagsSchema.esTagValue,
+          enTagValue: ftagsSchema.enTagValue,
           frTagValue: ftagsSchema.frTagValue,
         }),
         printLength: bookSchema.printLength,

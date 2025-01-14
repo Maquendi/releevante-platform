@@ -1,11 +1,12 @@
 "use server";
 
 import { bookServiceFacade } from "@/book/application";
-import { BookRatingDto } from "@/book/application/dto";
-import { BookByFtagsVibes, BooksPagination, FtagsEnum } from "@/book/domain/models";
-import { extractPayload } from "@/lib/jwt-parser";
-import { cookies } from "next/headers";
-
+import {
+  BookByFtagsVibes,
+  BooksPagination,
+  FtagsEnum,
+} from "@/book/domain/models";
+import { unstable_cache } from "next/cache";
 
 export async function FetchAllBookCategories() {
   try {
@@ -47,13 +48,17 @@ export async function FetchAllBookByCategory() {
   }
 }
 
-export async function LoanLibraryInventory(pagination:BooksPagination) {
-  try {
-    return await bookServiceFacade.loanLibraryInventory();
-  } catch (error) {
-    throw new Error("Error to load library inventory" + error);
+export const LoanLibraryInventory = unstable_cache(
+  async function (pagination: BooksPagination) {
+    try {
+      return await bookServiceFacade.loanLibraryInventory();
+    } catch (error) {
+      throw new Error("Error to load library inventory" + error);
+    }
+  },['library_inventory'],{
+    revalidate:900
   }
-}
+);
 
 export async function FetchFtagsBy(tagName: FtagsEnum) {
   try {
@@ -70,8 +75,3 @@ export async function FetchBookByFtagsVibes(tagNames: BookByFtagsVibes) {
     throw new Error("Error fetching books by category" + error);
   }
 }
-
-
-
-
-

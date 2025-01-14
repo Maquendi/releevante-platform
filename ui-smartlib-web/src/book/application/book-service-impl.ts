@@ -71,11 +71,12 @@ export class DefaultBookServiceImpl implements BookService {
   async findAllBookByCategory(): Promise<BooksByCategory[]> {
     const results = await this.bookRepository.loanLibraryInventory()
 
+
      const groupedBooks: { [key: string]: any } = {};
     
         results.forEach(({ categories,subCategories, ...book }) => {
       
-          subCategories.forEach((subCat) => {
+          subCategories?.forEach((subCat) => {
             const subCategoryId = subCat.id || "";
             if (!groupedBooks[subCategoryId]) {
               groupedBooks[subCategoryId] = {
@@ -85,12 +86,12 @@ export class DefaultBookServiceImpl implements BookService {
               };
             }
     
-            if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
+            if (!groupedBooks[subCategoryId].bookIds.has(book.id)) {
               groupedBooks[subCategoryId].books.push({
                 ...book,
                 categories,
               });
-              groupedBooks[subCategoryId].bookIds.add(book.isbn);
+              groupedBooks[subCategoryId].bookIds.add(book.id);
             }
           });
         });
@@ -99,10 +100,12 @@ export class DefaultBookServiceImpl implements BookService {
           ({ bookIds, ...rest }) => rest
         );
     
+
         return data as BooksByCategory[];
+
   }
 
-  async loanLibraryInventory(): Promise<BookItems[]> {
+  async loanLibraryInventory(): Promise<Book[]> {
     return await this.bookRepository.loanLibraryInventory()
   }
 
