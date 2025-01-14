@@ -1,9 +1,10 @@
 "use client";
-import { FetchAllBookByCategory, FetchAllBookCategories } from "@/actions/book-actions";
+import { FetchAllBookCategories } from "@/actions/book-actions";
 import useFilterBooksByCategory from "@/hooks/useFilterBooksByCategory";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
 interface HeaderBannerProp {
@@ -18,6 +19,12 @@ export default function HeaderBanner({
   const locale = useLocale();
   const t = useTranslations("SeeAllPage");
   const {booksByCategory}=useFilterBooksByCategory({categoryId})
+  const searchParams=useSearchParams()
+
+  const isRecomendatonBooks=useMemo(()=>{
+    const hasParams = [...searchParams!.keys()].length > 0;
+    return hasParams !== searchParams?.has('subCategoryId') ? true: false
+  },[searchParams])
 
   const bookByCategoryFiltered = useMemo(() => {
     const data = booksByCategory?.filter(
@@ -44,7 +51,7 @@ export default function HeaderBanner({
         <div>
           <h1 className="text-left text-4xl mb-1 font-semibold space-x-2">
             <span>
-              {bookByCategoryFiltered?.subCategory[`${locale}Name`]}
+              { isRecomendatonBooks ? t('allRecomendationsTitle'): bookByCategoryFiltered?.subCategory[`${locale}TagValue`]}
             </span>
             {categoryId && (
               <>

@@ -17,6 +17,6 @@ export default function BestSellerSlider() {
   
   return (
     <div className="border border-t border-b rounded-2xl border-gray-200">
-    {bestSeller && (<CatalogSliderItem {...bestSeller!} />)}
+    {bestSeller && (<CatalogSliderItem searchParams={{subCategoryId:bestSeller?.subCategory?.id}} {...bestSeller!} />)}
 </div>  )
 }

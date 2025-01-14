@@ -77,8 +77,8 @@ const SearchFilter = () => {
       )}
 
       <VirtualKeyboard
-        handleInputChangeFn={handleQueryTerm}
         open={showKeyboard}
+        setInputText={setQueryTerm}
         state={queryTerm}
         setOpen={(value)=> console.log(value)}
       />

@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useAddBookToCart } from "@/hooks/useAddBookToCart";
-import { Book } from "@/book/domain/models";
+import { Book, BookItems } from "@/book/domain/models";
 import { DialogReadMoreBooksDialog } from "./ReadMoreBooksDialog";
 import { useMemo } from "react";
 
@@ -34,7 +34,7 @@ export default function AddToCartRecomendation({
   return (
     <div
       className={cn(
-        "py-4 px-3 flex items-center justify-between gap-4 fixed bottom-0 left-0 right-0 bg-white transition-transform ease-in-out duration-300",
+        "py-4 px-3 !z-[999] flex items-center justify-between gap-4 fixed bottom-0 left-0 right-0 bg-white transition-transform ease-in-out duration-300",
         isBookInCart(book.languages) && "translate-y-full"
       )}
     >

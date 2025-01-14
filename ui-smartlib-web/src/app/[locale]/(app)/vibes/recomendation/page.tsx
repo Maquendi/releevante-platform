@@ -1,22 +1,17 @@
-import { FetchBookByFtagsVibes } from "@/actions/book-actions";
+'use client'
 import BookByIdBanner from "@/components/bookById/BookByIdBanner";
 import CatalogSlider from "@/components/CatalogSlider";
 import AddToCartRecomendation from "@/components/vibes/AddToCartRecomendation";
 import VibesStateIndicator from "@/components/vibes/VibesStateIndicator";
-import { QueryClient } from "@tanstack/react-query";
-import { getTranslations } from "next-intl/server";
+import useGetRecomendationBooks from "@/hooks/useGetRecomendationBooks";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-export default async function page({ searchParams }) {
-  const queryClient = new QueryClient();
-  const data = await queryClient.fetchQuery({
-    queryKey: ["BOOK_RECOMENDATION", searchParams.toString()],
-    queryFn: () => FetchBookByFtagsVibes(searchParams),
-  });
-  const t = await getTranslations("recommendationsPage");
+export default  function RecomendationPage({ searchParams }) {
 
-  const currentBook = data?.length ? data[0] : null;
-  const recomendationBooks = data.slice(1, -1);
+  const t =  useTranslations("recommendationsPage");
+  const {recomendedBook,remainingRecommendedBooks}=useGetRecomendationBooks({searchParams})
+  
   return (
     <div className="space-y-5">
       <header className="px-7 bg-white flex items-center pt-3 justify-between  border-b border-gray-200 pb-10">
@@ -46,22 +41,22 @@ export default async function page({ searchParams }) {
         <VibesStateIndicator />
       </div>
       <div>
-        <BookByIdBanner book={currentBook!} />
+        <BookByIdBanner book={recomendedBook!} />
       </div>
       <div className="relative bg-[#FFFFFF] space-y-6 pt-6 pb-7 px-2  rounded-xl mb-10">
         <div className=" h-[44px] flex items-center ">
           <h4 className="text-xl font-medium  space-x-2 pl-2">
-            <span>Recomendations</span>
+            <span>{t("otherRecomendations")}</span>
             <span className="font-light text-secondary-foreground">
-              ({recomendationBooks?.length || 0})
+              ({remainingRecommendedBooks?.length || 0})
             </span>
           </h4>
         </div>
         <div>
-          <CatalogSlider subCategoryId={""} books={recomendationBooks as any} />
+          <CatalogSlider  params={searchParams} books={remainingRecommendedBooks as any} />
         </div>
       </div>
-      <AddToCartRecomendation book={currentBook!} />
+      <AddToCartRecomendation book={recomendedBook!} />
      </section>
      </div>
   );

@@ -85,7 +85,7 @@ export default function CatalogList({ categoryId }: CatalogPageProps) {
           </div>
         ):null}
         {booksByCategory?.map((item, index) => (
-          <CatalogSliderItem key={index} {...item} />
+          <CatalogSliderItem key={index}  searchParams={{subCategoryId:item?.subCategory?.id,categoryId}} {...item} />
         ))}{" "}
       </section>
     </div>

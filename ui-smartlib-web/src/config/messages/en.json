@@ -30,13 +30,17 @@
     "subTitle": "Explore and rent for free our rich collection of books",
     "selectCategory": "Select a category",
     "seeAll": "See All",
-    "notFound": "We couldn’t find any action book. Please search another category or find another book that we recommend you below.",
+    "notFound1": "We couldn’t find any",
+    "notFound2":" Please search another category or find another book that we recommend you below.",
     "findRightBook": "Find the right book for you",
     "helpMessage": "Didn’t find a book yet? We are here to help you. Let’s find the perfect book for rent for free.",
-    "startNow": "Start now"
+    "startNow": "Start now",
+    "books":"books"
   },
   "SeeAllPage": {
-    "subTitleBanner": "Excellent choice, select up to 4 books to rent for free"
+    "subTitleBanner": "Excellent choice, select up to 4 books to rent for free",
+    "allRecomendationsTitle":"All your recomendations",
+    "books":"books"
   },
   "SearchBookPage": {
     "bookNotFound": "Book not found",

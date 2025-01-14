@@ -1,6 +1,6 @@
 'use client'
-import {  BooksByCategory } from "@/book/domain/models";
-import React, { lazy, Suspense } from "react";
+import {  Book, BooksByCategory } from "@/book/domain/models";
+import React from "react";
 import { useLocale } from "next-intl";
 import dynamic from 'next/dynamic'
 import { CatalogSliderSkeleton } from "../CatalogSlider";
@@ -9,11 +9,15 @@ const CatalogSlider = dynamic(() => import("../CatalogSlider"), {
   loading: () => <CatalogSliderSkeleton/>,
 })
  
+interface CatalogSliderItemProps extends BooksByCategory{
+  searchParams?:Record<string,string>
+}
 
 export default  function CatalogSliderItem({
   subCategory,
   books,
-}: BooksByCategory) {
+  searchParams
+}: CatalogSliderItemProps) {
   const locale=useLocale()
 
   return (
@@ -23,14 +27,14 @@ export default  function CatalogSliderItem({
     >
       <div className=" h-[44px] flex items-center ">
         <h4 className="text-xl font-medium  space-x-2 pl-2">
-          <span>{subCategory?.[`${locale}Name`]}</span>
+          <span>{subCategory?.[`${locale}TagValue`]}</span>
           <span className="font-light text-secondary-foreground">
             ({books?.length})
           </span>
         </h4>
       </div>
       <div>
-        <CatalogSlider subCategoryId={subCategory?.id} books={books} />
+        <CatalogSlider params={searchParams} books={books} />
       </div>
     </div>
   );

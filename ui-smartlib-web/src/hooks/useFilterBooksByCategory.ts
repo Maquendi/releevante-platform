@@ -24,7 +24,7 @@ export default function useFilterBooksByCategory({
         ...group,
         books: await Promise.all(group.books.map(async (book) => ({
           ...book,
-          image: await getImageByBookId({id:book?.isbn,image:book?.image}) || book?.image
+          image: await getImageByBookId({id:book?.id,image:book?.image}) || book?.image
         })),)
       })) 
 

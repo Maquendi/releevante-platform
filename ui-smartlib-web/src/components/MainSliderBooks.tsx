@@ -36,7 +36,7 @@ export default function MainSliderBooks() {
 
   const getNextSlide = (index) => (index === activeSlide + 1 ? true : false);
 
-  const {books}=useGetAllBooks({limit:25})
+  const {books}=useGetAllBooks()
 
   return (
     <div>

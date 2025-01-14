@@ -10,16 +10,7 @@ import {
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-const flavorOfStoryIcons: Record<string, string> = {
-  "Sci-fi: To the stars and beyond": "🌌",
-  "Fantasy: Dragon, magi, etc": "🏰",
-  "Mystery/Thriller: Who did it? Need answers": "🕵️‍♀️",
-  "Romance: Sparks flying!": "❤️",
-  "Drama: Deep emotions, please": "🎭",
-  "Historical fiction: Step back in time": "📜",
-  "Non-fiction: Real stories, real facts, money": "💰",
-  "Surprise me": "🤔",
-};
+
 
 export default async function MoodVidePage() {
   const t = await getTranslations("flavorOfStoryPage");
@@ -67,7 +58,6 @@ export default async function MoodVidePage() {
 
             <div className="max-w-[754px] m-auto">
               <VibeItemsList
-                icons={flavorOfStoryIcons}
                 items={flavorOfStoryVibeTags}
                 vibeType="favorStoryVibe"
               />
