@@ -5,12 +5,12 @@ import useFilterBooksByCategory from '@/hooks/useFilterBooksByCategory';
 
 export default function BestSellerSlider() {
   
-   const {booksByCategory} =useFilterBooksByCategory({})
+   const {booksByCategory}:any =useFilterBooksByCategory({})
   
     const bestSeller = useMemo(() => {
       return booksByCategory?.find(
         (item) =>
-          item.subCategory?.enName?.toLocaleLowerCase() === "best sellers"
+          item.subCategory?.enTagValue?.toLocaleLowerCase() === "best sellers"
       );
     }, [booksByCategory]);
 
