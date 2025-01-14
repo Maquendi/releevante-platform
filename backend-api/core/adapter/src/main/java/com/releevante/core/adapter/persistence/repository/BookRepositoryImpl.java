@@ -5,11 +5,13 @@ import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjectio
 import com.releevante.core.adapter.persistence.records.*;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.BookRepository;
+import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
 import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +29,7 @@ public class BookRepositoryImpl implements BookRepository {
   final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
   final BookTagHibernateDao bookTagHibernateDao;
   final TagHibernateDao tagHibernateDao;
+  final SettingsRepository settingsRepository;
   final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
   final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
 
@@ -35,12 +38,14 @@ public class BookRepositoryImpl implements BookRepository {
       BookImageHibernateDao bookImageHibernateDao,
       LibraryInventoryHibernateDao libraryInventoryHibernateDao,
       BookTagHibernateDao bookTagHibernateDao,
-      TagHibernateDao tagHibernateDao) {
+      TagHibernateDao tagHibernateDao,
+      SettingsRepository settingsRepository) {
     this.bookHibernateDao = bookHibernateDao;
     this.bookImageHibernateDao = bookImageHibernateDao;
     this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
     this.bookTagHibernateDao = bookTagHibernateDao;
     this.tagHibernateDao = tagHibernateDao;
+    this.settingsRepository = settingsRepository;
   }
 
   @Transactional
@@ -57,12 +62,12 @@ public class BookRepositoryImpl implements BookRepository {
   @Override
   public Flux<Book> find(Slid slid, int page, int size, boolean synced) {
     return find(
-        libraryInventoryHibernateDao.findAllCopies(slid.value(), synced, page * size, size), size);
+        libraryInventoryHibernateDao.findAllCopies(slid.value(), synced, page * size, size), slid);
   }
 
   @Override
   public Flux<Book> find(Slid slid, int page, int size) {
-    return find(libraryInventoryHibernateDao.findAllCopies(slid.value(), page * size, size), size);
+    return find(libraryInventoryHibernateDao.findAllCopies(slid.value(), page * size, size), slid);
   }
 
   @Override
@@ -97,55 +102,79 @@ public class BookRepositoryImpl implements BookRepository {
         .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.from(tag))));
   }
 
-  private Flux<Book> find(Flux<BookCopyProjection> bookPublisher, int size) {
-    return bookPublisher
-        .groupBy(BookCopyProjection::getIsbn)
-        .flatMap(
-            flux ->
-                flux.collectList()
+  private Flux<Book> find(Flux<BookCopyProjection> bookPublisher, Slid slid) {
+    return this.settingsRepository
+        .findCurrentBy(slid)
+        .switchIfEmpty(Mono.error(new RuntimeException("library settings required")))
+        .flatMapMany(
+            librarySetting ->
+                bookPublisher
+                    .groupBy(BookCopyProjection::getIsbn)
                     .flatMap(
-                        copies ->
-                            Mono.just(copies.getFirst())
-                                .map(
-                                    first ->
-                                        Book.builder()
-                                            .isbn(Isbn.of(first.getIsbn()))
-                                            .correlationId(first.getCorrelationId())
-                                            .language(first.getLang())
-                                            .qty(copies.size())
-                                            .rating(first.getRating())
-                                            .votes(first.getVotes())
-                                            .author(first.getAuthor())
-                                            .description(first.getDescription())
-                                            .descriptionFr(first.getDescriptionFr())
-                                            .descriptionSp(first.getDescriptionEs())
-                                            .createdAt(first.getCreatedAt())
-                                            .updatedAt(first.getUpdatedAt())
-                                            .bindingType(
-                                                Optional.ofNullable(first.getBindingType()))
-                                            .publicIsbn(Optional.ofNullable(first.getPublicIsbn()))
-                                            .publisher(first.getPublisher())
-                                            .printLength(first.getPrintLength())
-                                            .dimensions(first.getDimensions())
-                                            .publishDate(first.getPublishDate())
-                                            .price(first.getPrice())
-                                            .title(first.getTitle())
-                                            .copies(
-                                                copies.stream()
-                                                    .map(
-                                                        copy ->
-                                                            BookCpy.builder()
-                                                                .isbn(first.getIsbn())
-                                                                .createdAt(first.getCreatedAt())
-                                                                .updatedAt(first.getUpdatedAt())
-                                                                .id(copy.getCpy())
-                                                                .isSync(copy.isSync())
-                                                                .status(
-                                                                    BookCopyStatus.valueOf(
-                                                                        copy.getStatus()))
-                                                                .build())
-                                                    .collect(Collectors.toList()))
-                                            .build())));
+                        flux ->
+                            flux.collectList()
+                                .flatMap(
+                                    projections ->
+                                        buildBook(
+                                            projections.getFirst(), projections, librarySetting))));
+  }
+
+  private Mono<Book> buildBook(
+      BookCopyProjection projection,
+      List<BookCopyProjection> bookCopyProjections,
+      LibrarySetting librarySetting) {
+
+    return Mono.fromCallable(
+        () -> {
+          var copiesAvailable = 0;
+          var copiesAvailableForSale = 0;
+          List<BookCpy> copies = new ArrayList<>(bookCopyProjections.size());
+
+          for (BookCopyProjection copy : bookCopyProjections) {
+            if (BookCopyStatus.AVAILABLE.name().equals(copy.getStatus())) {
+              copiesAvailable++;
+            }
+            if (copy.getUsageCount() >= librarySetting.bookUsageCountBeforeEnablingSale()) {
+              copiesAvailableForSale++;
+            }
+            copies.add(
+                BookCpy.builder()
+                    .isbn(projection.getIsbn())
+                    .createdAt(projection.getCreatedAt())
+                    .updatedAt(projection.getUpdatedAt())
+                    .id(copy.getCpy())
+                    .isSync(copy.isSync())
+                    .status(BookCopyStatus.valueOf(copy.getStatus()))
+                    .usageCount(copy.getUsageCount())
+                    .build());
+          }
+
+          return Book.builder()
+              .isbn(Isbn.of(projection.getIsbn()))
+              .correlationId(projection.getCorrelationId())
+              .translationId(projection.getTranslationId())
+              .language(projection.getLang())
+              .qty(copiesAvailable)
+              .qtyForSale(copiesAvailableForSale)
+              .rating(projection.getRating())
+              .votes(projection.getVotes())
+              .author(projection.getAuthor())
+              .description(projection.getDescription())
+              .descriptionFr(projection.getDescriptionFr())
+              .descriptionSp(projection.getDescriptionEs())
+              .createdAt(projection.getCreatedAt())
+              .updatedAt(projection.getUpdatedAt())
+              .bindingType(Optional.ofNullable(projection.getBindingType()))
+              .publicIsbn(Optional.ofNullable(projection.getPublicIsbn()))
+              .publisher(projection.getPublisher())
+              .printLength(projection.getPrintLength())
+              .dimensions(projection.getDimensions())
+              .publishDate(projection.getPublishDate())
+              .price(projection.getPrice())
+              .title(projection.getTitle())
+              .copies(copies)
+              .build();
+        });
   }
 
   private Function<TagRecord, BookTagRecord> toBookTag(Book book) {

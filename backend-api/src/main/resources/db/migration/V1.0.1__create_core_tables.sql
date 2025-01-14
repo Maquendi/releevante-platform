@@ -11,8 +11,10 @@ CREATE TABLE core.clients (
 CREATE TABLE core.books (
   isbn varchar(36) NOT NULL,
   correlation_id varchar(36) NOT NULL,
+  translation_id varchar(36) NOT NULL,
   title varchar(250) NULL,
   qty numeric NOT NULL,
+  qty_for_sale numeric NOT NULL DEFAULT 0,
   price numeric NOT NULL,
   author varchar(120) NOT NULL,
   description varchar(1080) NOT NULL,
@@ -99,6 +101,7 @@ CREATE TABLE core.library_inventories (
 	slid varchar(36) NOT NULL,
 	is_sync BOOLEAN NOT NULL DEFAULT false,
 	status varchar(30) NOT NULL,
+	usage_count numeric NOT NULL DEFAULT 0,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_copy_pk PRIMARY KEY (cpy),

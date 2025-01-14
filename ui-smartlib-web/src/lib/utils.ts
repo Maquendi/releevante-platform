@@ -40,3 +40,11 @@ export default function simpleStringToHash(value: string): string {
     return char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash;
   }, 0) as any;
 }
+
+
+export const arrayGroupinBy = function (xs: any[], key: string) {
+  return xs.reduce(function (rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};

@@ -2,10 +2,17 @@
 
 import { bookServiceFacade } from "@/book/application";
 import { BookRatingDto } from "@/book/application/dto";
-import { BookByFtagsVibes, BooksPagination, FtagsEnum } from "@/book/domain/models";
+import {
+  BookByFtagsVibes,
+  BooksPagination,
+  FtagsEnum,
+  IBook,
+  IBookDetail,
+  LibraryInventory,
+  SubCategoryGraph,
+} from "@/book/domain/models";
 import { extractPayload } from "@/lib/jwt-parser";
 import { cookies } from "next/headers";
-
 
 export async function FetchAllBookCategories() {
   try {
@@ -47,7 +54,7 @@ export async function FetchAllBookByCategory() {
   }
 }
 
-export async function LoanLibraryInventory(pagination:BooksPagination) {
+export async function LoanLibraryInventory(pagination: BooksPagination) {
   try {
     return await bookServiceFacade.loanLibraryInventory();
   } catch (error) {
@@ -71,7 +78,27 @@ export async function FetchBookByFtagsVibes(tagNames: BookByFtagsVibes) {
   }
 }
 
+export async function loadLibraryInventory(): Promise<LibraryInventory> {
+  try {
+    return await bookServiceFacade.loadLibraryInventory();
+  } catch (error) {
+    throw new Error("Error fetching all books categories" + error);
+  }
+}
 
+export async function loadBookDetail(translationId: string): Promise<IBookDetail[]>  {
+  try {
+    return await bookServiceFacade.findByTranslationId(translationId);
+  } catch (error) {
+    throw new Error("Error fetching book by id" + error);
+  }
+}
 
-
+export async function loadBooksBySubcategory(enValue: string): Promise<SubCategoryGraph>  {
+  try {
+    return await bookServiceFacade.loadBooksBySubcategory(enValue);
+  } catch (error) {
+    throw new Error("Error fetching book by id" + error);
+  }
+}
 

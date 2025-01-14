@@ -71,7 +71,7 @@ export default async function HomePage() {
             <div className="flex">
               <Link
                 className="bg-primary text-center w-full flex-grow-1 mt-2 px-6 py-4 rounded-full font-medium text-sm text-white"
-                href="/catalog"
+                href="/explore"
               >
                 {tHome("showAllBooksBtn")}
               </Link>

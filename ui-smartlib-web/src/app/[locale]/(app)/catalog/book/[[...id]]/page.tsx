@@ -87,7 +87,7 @@ export default async function Page({ params }) {
             <BestSellerSlider />
         </HydrationBoundary>
       </div>
-      <AddBookToCartBanner productId={bookId} />
+      {/* <AddBookToCartBanner productId={bookId} /> */}
     </section>
   );
 }

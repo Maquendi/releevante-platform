@@ -5,6 +5,8 @@ import com.releevante.core.adapter.persistence.records.LibrarySettingsRecord;
 import com.releevante.core.domain.LibrarySetting;
 import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.types.Slid;
+import java.util.List;
+import java.util.function.Predicate;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -42,6 +44,16 @@ public class SettingsRepositoryImpl implements SettingsRepository {
   @Override
   public Flux<LibrarySetting> findBy(Slid slid) {
     return settingsHibernateDao.findBy(slid.value()).map(LibrarySettingsRecord::toDomain);
+  }
+
+  @Override
+  public Mono<LibrarySetting> findCurrentBy(Slid slid) {
+    return settingsHibernateDao
+        .findBy(slid.value())
+        .collectList()
+        .filter(Predicate.not(List::isEmpty))
+        .map(settings -> settings.get(0))
+        .map(LibrarySettingsRecord::toDomain);
   }
 
   @Override

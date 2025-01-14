@@ -11,6 +11,9 @@ import {
   LibraryInventory,
   BookItems,
   BookImage,
+  IBook,
+  IBookDetail,
+  SubCategoryGraph,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
@@ -153,4 +156,17 @@ export class DefaultBookServiceImpl implements BookService {
     return await this.bookRepository.loanLibraryInventory();
   }
 
+  async loadLibraryInventory(
+    searchCategoryId?: string
+  ): Promise<LibraryInventory> {
+    return await this.bookRepository.loadLibraryInventory(searchCategoryId);
+  }
+
+  async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
+    return this.bookRepository.findByTranslationId(translationId);
+  }
+
+    loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph> {
+      return this.bookRepository.loadBooksBySubcategory(subcategoryEnValue)
+    }
 }

@@ -21,11 +21,15 @@ public abstract class AbstractBook {
 
   abstract String correlationId();
 
+  abstract String translationId();
+
   abstract String title();
 
   abstract BigDecimal price();
 
   abstract int qty();
+
+  abstract int qtyForSale();
 
   abstract String description();
 

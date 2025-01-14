@@ -16,5 +16,7 @@ public interface SettingsRepository {
 
   Flux<LibrarySetting> findBy(Slid slid);
 
+  Mono<LibrarySetting> findCurrentBy(Slid slid);
+
   Mono<Integer> setSynchronized(Slid slid);
 }

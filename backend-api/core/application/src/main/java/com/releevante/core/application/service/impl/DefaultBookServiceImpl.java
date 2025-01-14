@@ -136,6 +136,7 @@ public class DefaultBookServiceImpl implements BookService {
                     .status(BookCopyStatus.AVAILABLE)
                     .slid(library.id().value())
                     .updatedAt(createdAt)
+                    .usageCount(0)
                     .createdAt(createdAt)
                     .build());
   }
