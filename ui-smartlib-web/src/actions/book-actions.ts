@@ -5,6 +5,9 @@ import {
   BookByFtagsVibes,
   BooksPagination,
   FtagsEnum,
+  IBookDetail,
+  LibraryInventory,
+  SubCategoryGraph,
 } from "@/book/domain/models";
 import { unstable_cache } from "next/cache";
 
@@ -55,8 +58,10 @@ export const LoanLibraryInventory = unstable_cache(
     } catch (error) {
       throw new Error("Error to load library inventory" + error);
     }
-  },['library_inventory'],{
-    revalidate:900
+  },
+  ["library_inventory"],
+  {
+    revalidate: 900,
   }
 );
 
@@ -74,4 +79,22 @@ export async function FetchBookByFtagsVibes(tagNames: BookByFtagsVibes) {
   } catch (error) {
     throw new Error("Error fetching books by category" + error);
   }
+}
+
+export async function loadLibraryInventory(
+  categoryId?: string
+): Promise<LibraryInventory> {
+  return await bookServiceFacade.loadLibraryInventory(categoryId);
+}
+
+export async function loadBookDetail(
+  translationId: string
+): Promise<IBookDetail[]> {
+  return await bookServiceFacade.findByTranslationId(translationId);
+}
+
+export async function loadBooksBySubcategory(
+  enValue: string
+): Promise<SubCategoryGraph> {
+  return await bookServiceFacade.loadBooksBySubcategory(enValue);
 }

@@ -32,6 +32,9 @@ export default function useGetAllBooks() {
       setAllBooksWithImages(booksWithImages)
       setIsPending(false)
      })()
+
+     console.log(`useEffect`)
+
   },[books])
 
 

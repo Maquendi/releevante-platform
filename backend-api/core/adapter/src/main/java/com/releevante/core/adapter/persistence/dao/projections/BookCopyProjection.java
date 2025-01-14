@@ -21,10 +21,12 @@ public class BookCopyProjection {
   private String author;
   private String lang;
   private String correlationId;
+  private String translationId;
   private String description;
   private String descriptionFr;
   private String descriptionEs;
   private String status;
+  private int usageCount;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
   private boolean isSync;

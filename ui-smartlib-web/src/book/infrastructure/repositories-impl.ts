@@ -14,8 +14,10 @@ import {
   FtagItem,
   FtagsEnum,
   IBook,
+  IBookDetail,
   Isbn,
   LibraryInventory,
+  PartialBook,
   SubCategoryGraph,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
@@ -33,6 +35,7 @@ import { db } from "@/config/drizzle/db";
 import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
 import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
 import { jsonAgg } from "@/lib/db/helpers";
+import { arrayGroupinBy } from "@/lib/utils";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -123,7 +126,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
           bookId: bookSchema.id,
           language: bookSchema.language,
         },
-        bookCopyQty: bookSchema.bookCopyQty,
+        bookCopyQty: bookSchema.qty,
       })
       .from(bookSchema)
       .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
@@ -184,7 +187,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return Object.values(groupedBooks);
   }
 
-  async loanLibraryInventoryOriginal(
+  async loadLibraryInventory(
     searchCategoryId?: string
   ): Promise<LibraryInventory> {
     const whereClause = searchCategoryId
@@ -205,6 +208,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
         isbn: bookSchema.id,
         bookTitle: bookSchema.bookTitle,
         correlationId: bookSchema.correlationId,
+        translationId: bookSchema.translationId,
         editionTitle: bookSchema.editionTitle,
         language: bookSchema.language,
         author: bookSchema.author,
@@ -218,7 +222,12 @@ class DefaultBookRepositoryImpl implements BookRepository {
         publicIsbn: bookSchema.publicIsbn,
         publisher: bookSchema.publisher,
         bindingType: bookSchema.bindingType,
+        qty: bookSchema.qty,
+        qtyForSale: bookSchema.qty_for_sale,
         image: bookSchema.image,
+        imageId: bookSchema.imageId,
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
         tagId: ftagsSchema.id,
         tagName: ftagsSchema.tagName,
         enValue: ftagsSchema.enTagValue,
@@ -233,16 +242,16 @@ class DefaultBookRepositoryImpl implements BookRepository {
 
     const groupedByCategoryValue = {};
     const groupedByIsbn = {};
-    const books = {};
+    //const books = {};
 
     data.forEach((item) => {
       let key = item.enValue as string;
 
-      if (!searchCategoryId) {
-        if (!books[item.isbn]) {
-          books[item.isbn] = this.buildBook(item);
-        }
-      }
+      // if (!searchCategoryId) {
+      //   if (!books[item.isbn]) {
+      //     books[item.isbn] = this.buildBook(item);
+      //   }
+      // }
 
       if (item.tagName == "category") {
         const category = groupedByCategoryValue[key];
@@ -274,17 +283,38 @@ class DefaultBookRepositoryImpl implements BookRepository {
       const subCategories = {};
       booksList.forEach((book: any) => {
         findSubcategories(book.isbn).forEach((sub: any) => {
-          const { enValue, frValue, esValue, tagId, isbn } = sub;
+          const {
+            enValue,
+            frValue,
+            esValue,
+            tagId,
+            isbn,
+            translationId,
+            image,
+            imageId,
+            rating,
+            votes,
+            bookTitle,
+          } = sub;
           const subCategory = subCategories[enValue];
+          const partialBook = {
+            isbn,
+            title: bookTitle,
+            translationId,
+            image,
+            imageId,
+            rating,
+            votes,
+          };
           if (subCategory) {
-            subCategory.books.push({ isbn });
+            subCategory.books.push(partialBook);
           } else {
             subCategories[enValue] = {
               id: tagId,
               en: enValue,
               fr: frValue,
               es: esValue,
-              books: [{ isbn }],
+              books: [partialBook],
             };
           }
         });
@@ -301,9 +331,14 @@ class DefaultBookRepositoryImpl implements BookRepository {
     }
 
     const bookInventory = {
-      inventory: Object.values(books) as IBook[],
+      //inventory: Object.values(books) as IBook[],
       categories,
     };
+
+    // console.log(
+    //   "****************************************************************************************************************\n"
+    // );
+    // console.log(JSON.stringify(bookInventory));
     return bookInventory;
   }
 
@@ -326,9 +361,40 @@ class DefaultBookRepositoryImpl implements BookRepository {
       publisher: book.publisher,
       bindingType: book.bindingType,
       image: book.image,
+      imageId: book.imageId,
+      translationId: book.translationId,
       qty: book.qty || 0,
+      qtyForSale: book.qtyForSale || 0,
       rating: book.rating || 0,
       votes: book.votes || 0,
+    };
+  }
+  private buildBookDetail(book: any): IBookDetail {
+    return {
+      isbn: book.isbn,
+      bookTitle: book.bookTitle,
+      correlationId: book.correlationId,
+      editionTitle: book.editionTitle,
+      language: book.language,
+      author: book.author,
+      en: book.descriptionEn,
+      fr: book.descriptionFr,
+      es: book.descriptionEs,
+      printLength: book.printLength,
+      publicationDate: book.publicationDate,
+      dimensions: book.dimensions,
+      price: book.price,
+      publicIsbn: book.publicIsbn,
+      publisher: book.publisher,
+      bindingType: book.bindingType,
+      image: book.image,
+      imageId: book.imageId,
+      translationId: book.translationId,
+      qty: book.qty || 0,
+      qtyForSale: book.qtyForSale || 0,
+      rating: book.rating || 0,
+      votes: book.votes || 0,
+      categories: [],
     };
   }
 
@@ -434,6 +500,141 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return Object.values(filteredBooks);
   }
 
+  async loadBooksBySubcategory(
+    subcategoryEnValue: string
+  ): Promise<SubCategoryGraph> {
+    const results = await db
+      .select({
+        isbn: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        correlationId: bookSchema.correlationId,
+        translationId: bookSchema.translationId,
+        title: bookSchema.editionTitle,
+        language: bookSchema.language,
+        author: bookSchema.author,
+        descriptionEn: bookSchema.descriptionEn,
+        descriptionFr: bookSchema.descriptionFr,
+        descriptionEs: bookSchema.descriptionEs,
+        printLength: bookSchema.printLength,
+        publicationDate: bookSchema.publicationDate,
+        dimensions: bookSchema.dimensions,
+        price: bookSchema.price,
+        publicIsbn: bookSchema.publicIsbn,
+        qty: bookSchema.qty,
+        qtyForSale: bookSchema.qty_for_sale,
+        image: bookSchema.image,
+        imageId: bookSchema.imageId,
+        publisher: bookSchema.publisher,
+        bindingType: bookSchema.bindingType,
+        tagId: ftagsSchema.id,
+        tagName: ftagsSchema.tagName,
+        en: ftagsSchema.enTagValue,
+        fr: ftagsSchema.frTagValue,
+        es: ftagsSchema.esTagValue,
+      })
+      .from(bookSchema)
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
+      .where(
+        and(
+          eq(ftagsSchema.tagName, "subcategory"),
+          eq(ftagsSchema.enTagValue, subcategoryEnValue)
+        )
+      );
+
+    const resultGroup = arrayGroupinBy(results, "isbn");
+
+    const partialBooks: PartialBook[] = Object.keys(resultGroup)
+      .map((isbn) => {
+        return resultGroup[isbn].map(
+          ({ isbn, title, translationId, image, imageId, rating, votes }) => ({
+            isbn,
+            title,
+            translationId,
+            image,
+            imageId,
+            rating,
+            votes,
+          })
+        );
+      })
+      .flat();
+
+    const sample = results[0];
+
+    const subCategoryGraph: SubCategoryGraph = {
+      en: sample.en || "",
+      fr: sample.fr || "",
+      es: sample.es || "",
+      id: sample.tagId || "",
+      books: partialBooks,
+    };
+
+    console.log(
+      "*********************************************************************************************************************"
+    );
+    console.log(JSON.stringify(subCategoryGraph));
+
+    return subCategoryGraph;
+  }
+
+  async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
+    const results = await db
+      .select({
+        isbn: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        correlationId: bookSchema.correlationId,
+        translationId: bookSchema.translationId,
+        editionTitle: bookSchema.editionTitle,
+        language: bookSchema.language,
+        author: bookSchema.author,
+        descriptionEn: bookSchema.descriptionEn,
+        descriptionFr: bookSchema.descriptionFr,
+        descriptionEs: bookSchema.descriptionEs,
+        printLength: bookSchema.printLength,
+        publicationDate: bookSchema.publicationDate,
+        dimensions: bookSchema.dimensions,
+        price: bookSchema.price,
+        publicIsbn: bookSchema.publicIsbn,
+        qty: bookSchema.qty,
+        qtyForSale: bookSchema.qty_for_sale,
+        image: bookSchema.image,
+        imageId: bookSchema.imageId,
+        publisher: bookSchema.publisher,
+        bindingType: bookSchema.bindingType,
+        tagId: ftagsSchema.id,
+        tagName: ftagsSchema.tagName,
+        en: ftagsSchema.enTagValue,
+        fr: ftagsSchema.frTagValue,
+        es: ftagsSchema.esTagValue,
+      })
+      .from(bookSchema)
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
+      .where(
+        and(
+          eq(bookSchema.translationId, translationId),
+          eq(ftagsSchema.tagName, "category")
+        )
+      )
+      .orderBy(bookSchema.id);
+
+    const resultGroup = arrayGroupinBy(results, "isbn");
+
+    return Object.keys(resultGroup).map((isbn) => {
+      const categories = resultGroup[isbn].map(({ en, fr, es, tagId }) => ({
+        en,
+        fr,
+        es,
+        id: tagId,
+      }));
+
+      const bookDetail = this.buildBookDetail(resultGroup[isbn][0]);
+      bookDetail.categories = categories;
+      return bookDetail;
+    });
+  }
+
   async findById(correlationId: string): Promise<Book> {
     const result = await db
       .select({
@@ -458,7 +659,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
         frDescription: bookSchema.descriptionFr,
         publicationDate: bookSchema.publicationDate,
         dimensions: bookSchema.dimensions,
-        bookCopyQty: bookSchema.bookCopyQty,
+        bookCopyQty: bookSchema.qty,
+        qtyForSale: bookSchema.qty_for_sale,
         language: {
           bookId: bookSchema.id,
           name: bookSchema.language,
@@ -522,7 +724,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
         publisher: bookSchema.author,
         image: bookSchema.image,
         price: bookSchema.price,
-        bookCopyQty: bookSchema.bookCopyQty,
+        bookCopyQty: bookSchema.qty,
+        qtyForSale: bookSchema.qty_for_sale,
         ftags: jsonAgg({
           id: ftagsSchema.id,
           tagName: ftagsSchema.tagName,
@@ -550,9 +753,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .orderBy(sql`count(${bookFtagSchema.ftagId}) DESC`)
       .limit(50)
       .groupBy(bookSchema.id, bookSchema.correlationId)
-      .where(
-        inArray(bookFtagSchema.ftagId, tagsIdsArr)
-      );
+      .where(inArray(bookFtagSchema.ftagId, tagsIdsArr));
 
     const groupedBooks = result.reduce((acc, book) => {
       if (!book || !book?.correlationId) return acc;
@@ -565,28 +766,34 @@ class DefaultBookRepositoryImpl implements BookRepository {
         };
       }
 
-      if (!acc[book.correlationId].languages.some((lang) => lang.language === book.language.language)) {
+      if (
+        !acc[book.correlationId].languages.some(
+          (lang) => lang.language === book.language.language
+        )
+      ) {
         acc[book.correlationId].languages.push(book.language);
       }
-    
+
       book.ftags.forEach((tag) => {
         if (
           tag.tagName === "category" &&
-          !acc[book.correlationId].categories.some((existingTag) => existingTag.id === tag.id)
+          !acc[book.correlationId].categories.some(
+            (existingTag) => existingTag.id === tag.id
+          )
         ) {
           acc[book.correlationId].categories.push(tag);
         }
       });
 
-      if(!acc[book.correlationId].copies[book.language.language]){
-        acc[book.correlationId].copies[book.language.language] =book.bookCopyQty
+      if (!acc[book.correlationId].copies[book.language.language]) {
+        acc[book.correlationId].copies[book.language.language] =
+          book.bookCopyQty;
       }
 
       return acc;
     }, {});
 
     return Object.values(groupedBooks);
-
   }
 
   async findAllBooks(bookFiler: BooksPagination): Promise<Book[]> {

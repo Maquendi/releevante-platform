@@ -3,16 +3,22 @@ import {
   BookByFtagsVibes,
   BookCategory,
   BookCopy,
+  BookItems,
   BooksByCategory,
   BooksPagination,
   FtagItem,
   FtagsEnum,
+  IBook,
+  IBookDetail,
+  LibraryInventory,
+  SubCategoryGraph,
 } from "../domain/models";
-import { BookCopySearch, BookRatingDto } from "./dto";
+import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
 
- export class BookServiceFacadeImpl implements BookServiceFacade {
+export class BookServiceFacadeImpl implements BookServiceFacade {
   constructor(private bookService: BookService) {}
+
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
   }
@@ -29,24 +35,40 @@ import { BookService, BookServiceFacade } from "./service.definitions";
     return await this.bookService.findBookById(isbn);
   }
 
-  async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
-    return await this.bookService.getFtagsByType(tagName)
+  async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
+    console.log("loading book details")
+    return await this.bookService.findByTranslationId(translationId);
   }
 
-  async findAvailableCopiesByIsbn(
+  async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
+    return await this.bookService.getFtagsByType(tagName);
+  }
+
+  async findAvailableCopiesByIsbnForPurchase(
     bookSearch: BookCopySearch[]
   ): Promise<BookCopy[]> {
-    return this.bookService.findAvailableCopiesByIsbn(bookSearch);
+    return this.bookService.findAvailableCopiesByIsbnForPurchase(bookSearch);
+  }
+
+  async findAvailableCopiesByIsbnForRent(
+    bookSearch: BookCopySearch[]
+  ): Promise<BookCopy[]> {
+    return this.bookService.findAvailableCopiesByIsbnForRent(bookSearch);
   }
 
   findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
-    return this.bookService.findBooksByVibeTags(tagsValues)
+    return this.bookService.findBooksByVibeTags(tagsValues);
   }
 
   loanLibraryInventory(): Promise<Book[]> {
-    return this.bookService.loanLibraryInventory()
+    return this.bookService.loanLibraryInventory();
   }
 
+  loadLibraryInventory(categoryId?:string): Promise<LibraryInventory> {
+    return this.bookService.loadLibraryInventory(categoryId);
+  }
 
- 
+  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph> {
+    return this.bookService.loadBooksBySubcategory(subcategoryEnValue)
+  }
 }

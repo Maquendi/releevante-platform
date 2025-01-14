@@ -26,6 +26,8 @@ public abstract class AbstractBookCopy {
 
   abstract String correlationId();
 
+  abstract int usageCount();
+
   abstract String description();
 
   abstract String descriptionFr();

@@ -1,8 +1,11 @@
 // src/middleware/socketMiddleware.js
 import { io, Socket } from "socket.io-client";
-import { CurrentBook, setCurrentCopy } from "../features/checkoutSlice";
-import { clearInterval } from "timers";
-import { setCurrentReturnBook, updateCurrentReturnBookStatus } from "../features/returnbookSlice";
+import { setCurrentCopy } from "../features/checkoutSlice";
+import { updateCurrentReturnBookStatus } from "../features/returnbookSlice";
+import {
+  onNewItemStatus,
+  onNewTransactionStatus,
+} from "@/actions/returnbook-actions";
 
 const SOCKET_URL = "http://localhost:7777";
 
@@ -31,12 +34,44 @@ const socketMiddleware = (store) => {
           });
 
           // Example: Listen for server events
-          socket.on("checkout_status", (data) => {
-            // store.dispatch(
-            //   updateItemStatus({
-            //     itemStatus: data,
-            //   })
-            // );
+          socket.on("item_checkout_success", (data) => {
+            const { itemId, isbn } = data;
+
+            store.dispatch(
+              setCurrentCopy({
+                isbn,
+                status: "checkout_successful",
+              })
+            );
+
+            onNewItemStatus({
+              itemId,
+              status: "CHECKOUT_SUCCESS",
+            });
+          });
+
+          socket.on("item_checkout_started", (data) => {
+            const { itemId, isbn } = data;
+
+            store.dispatch(
+              setCurrentCopy({
+                isbn,
+                status: 'checkout_started',
+              })
+            );
+
+            onNewItemStatus({
+              itemId,
+              status: "CHECKOUT_STARTED",
+            });
+          });
+
+          socket.on("checkout_success", (data) => {
+            const { transactionId } = data;
+            onNewTransactionStatus({
+              loanId: transactionId,
+              status: "CURRENT",
+            });
           });
 
           socket.on("health_report", (msg) => {
@@ -55,57 +90,33 @@ const socketMiddleware = (store) => {
 
       case "socket/returnbook":
         if (socket) {
-       
           const returnBook = action.payload;
-          
-          (async()=>{
+
+          (async () => {
             store.dispatch(
               updateCurrentReturnBookStatus({
-                status: 'return_started'
+                status: "return_started",
               })
             );
-  
+
             await new Promise((resolve) => setTimeout(resolve, 5000));
-  
+
             store.dispatch(
               updateCurrentReturnBookStatus({
-                status: 'return_successful',
+                status: "return_successful",
               })
             );
-          })()
-        
+          })();
         }
         break;
 
-        case "socket/checkout":
-          if (socket) {
-         
-            const copies = action.payload;
+      case "socket/checkout":
+        if (socket) {
+          const data = action.payload;
+          socket.emit("checkout", data);
+        }
+        break;
 
-            (async () => {
-              for (const copy of copies) {
-                const { isbn } = copy;
-  
-                store.dispatch(
-                  setCurrentCopy({
-                    isbn,
-                    status: "checkout_started",
-                  })
-                );
-  
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-  
-                store.dispatch(
-                  setCurrentCopy({
-                    isbn,
-                    status: "checkout_successful",
-                  })
-                );
-              }
-            })();
-          }
-          break;
-        
       default:
         break;
     }

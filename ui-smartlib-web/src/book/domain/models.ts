@@ -20,7 +20,7 @@ export interface FtagItem {
 
 export interface BookImage {
   id: string;
-  image:string
+  image: string;
 }
 
 export interface BookByFtagsVibes {
@@ -36,7 +36,6 @@ export interface BookCategory {
   frTagValue: string;
   esTagValue: string;
 }
-
 
 // export interface BookItems {
 //   id: string;
@@ -65,8 +64,6 @@ export interface BookItems {
   correlationId: string;
 }
 
-
-
 export interface BooksByCategory {
   subCategory: {
     id: string;
@@ -82,6 +79,7 @@ export interface BookCopy {
   is_available: boolean;
   at_position: string;
   book_isbn: string;
+  usageCount: number;
 }
 
 export interface BookCompartment {
@@ -91,7 +89,6 @@ export interface BookCompartment {
 export interface Isbn {
   value: string;
 }
-
 
 export interface BooksPagination {
   limit?: number;
@@ -109,22 +106,21 @@ export interface BookLanguage {
   language: string;
 }
 
-
-interface BookCopies{
-  spanish:number;
-  french:number;
-  english:number;
+interface BookCopies {
+  spanish: number;
+  french: number;
+  english: number;
 }
 
 export interface Book {
   id: string;
   bookTitle: string;
-  copies:BookCopies
+  copies: BookCopies;
   author: string;
-  language?:{
-    bookId:string,
-    name:string
-  }
+  language?: {
+    bookId: string;
+    name: string;
+  };
   correlationId: string;
   editionTitle: string;
   image: string;
@@ -144,7 +140,6 @@ export interface Book {
   price?: number;
 }
 
-
 export interface CategoryBooks {
   categoryName: string;
   books: Book[];
@@ -155,6 +150,7 @@ export interface IBook {
   bookTitle: string;
   author: string;
   correlationId: string;
+  translationId: string;
   editionTitle: string;
   publisher: string;
   en: string;
@@ -169,12 +165,47 @@ export interface IBook {
   price: number;
   bindingType: string;
   image: string;
+  imageId: string;
   publicIsbn?: string;
   qty: number;
+  qtyForSale: number;
+}
+
+export interface IBookDetail {
+  isbn: string;
+  bookTitle: string;
+  author: string;
+  correlationId: string;
+  translationId: string;
+  editionTitle: string;
+  publisher: string;
+  en: string;
+  es: string;
+  fr: string;
+  publicationDate: string;
+  printLength: number;
+  dimensions: string;
+  language: string;
+  rating: number;
+  votes: number;
+  price: number;
+  bindingType: string;
+  image: string;
+  imageId: string;
+  publicIsbn?: string;
+  qty: number;
+  qtyForSale: number;
+  categories: { en: string; fr: string; es: string; id: string }[];
 }
 
 export interface PartialBook {
   isbn: string;
+  title: string;
+  translationId: string;
+  image: string;
+  imageId: string;
+  rating: number;
+  votes: number;
 }
 
 export interface SubCategoryGraph {
@@ -195,7 +226,5 @@ export interface CategoryGraph {
 
 export interface LibraryInventory {
   categories: CategoryGraph[];
-  inventory: IBook[];
+  //inventory: IBook[];
 }
-
-
