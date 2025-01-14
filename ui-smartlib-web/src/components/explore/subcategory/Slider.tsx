@@ -54,8 +54,8 @@ const SubCategorySlider: React.FC<SliderProps> = ({
           >
             <ChevronRight />
           </button>
-          <Link
-            href={`/catalog/${
+          <Link 
+            href={`/explore/${
               searchParams?.get("categoryId") || "n"
             }/?subCategoryId=${subCategoryId}`}
             className="border grid place-content-center cursor-pointer border-[#827F7F] py-2 px-4 rounded-full text-xs font-medium"

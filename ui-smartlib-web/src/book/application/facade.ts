@@ -36,6 +36,7 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
   }
 
   async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
+    console.log("loading book details")
     return await this.bookService.findByTranslationId(translationId);
   }
 
@@ -63,8 +64,8 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
     return this.bookService.loanLibraryInventory();
   }
 
-  loadLibraryInventory(): Promise<LibraryInventory> {
-    return this.bookService.loadLibraryInventory();
+  loadLibraryInventory(categoryId?:string): Promise<LibraryInventory> {
+    return this.bookService.loadLibraryInventory(categoryId);
   }
 
   loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph> {

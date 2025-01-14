@@ -5,63 +5,75 @@ import { arrayGroupinBy, cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import React from "react";
 import BookNotFound from "../BookNotFound";
 import HelpFindBookBanner from "../HelpFindBookBanner";
 import SubCategoryComponent from "./subcategory/SubCategoryComponent";
-import { PartialBook, SubCategoryGraph } from "@/book/domain/models";
+import {
+  CategoryGraph,
+  LibraryInventory,
+  PartialBook,
+  SubCategoryGraph,
+} from "@/book/domain/models";
 
 interface CatalogPageProps {
   categoryId: string;
 }
 
+const loadData = async (categoryId: string) => {
+  return filterInventory(categoryId, await loadLibraryInventory(categoryId));
+};
+
+const filterInventory = async (
+  categoryId: string,
+  libraryInventory?: LibraryInventory
+) => {
+  const categories = libraryInventory?.categories;
+   console.log(libraryInventory);
+  if (!categoryId) {
+    const subCategoriesDuplicated = libraryInventory?.categories.flatMap(
+      (category) => category.subCategories
+    );
+    const subCategoriesGrouped = arrayGroupinBy(subCategoriesDuplicated!, "id");
+    const subCategories = Object.keys(subCategoriesGrouped).map((key) => {
+      const subCategories: SubCategoryGraph[] = subCategoriesGrouped[key];
+      const first = subCategories[0];
+      const myMap = new Map<string, PartialBook>();
+      subCategories
+        .flatMap((item) => item.books)
+        .forEach((item) => {
+          myMap.set(item.isbn, item);
+        });
+      first.books = Array.from(myMap.values());
+      return first;
+    });
+    return {
+      categories,
+      subCategories,
+    };
+  } else {
+    const subCategories =
+      libraryInventory?.categories.find((category) => category.id == categoryId)
+        ?.subCategories || [];
+
+    return {
+      categories,
+      subCategories,
+    };
+  }
+};
+
 export default function ExploreComponent({ categoryId }: CatalogPageProps) {
   const t = useTranslations("catalogPage");
-  
-  const { data: inventory, isPending } = useQuery({
-    queryKey: ["CATEGORY_GRAPH", categoryId],
-    queryFn: async () =>
-      await loadLibraryInventory().then((libraryInventory) => {
-        const categories = libraryInventory.categories;
-        console.log(libraryInventory)
-        if (!categoryId) {
-          const subCategoriesDuplicated = libraryInventory.categories.flatMap(
-            (category) => category.subCategories
-          );
+  const { data: libraryInventory, isPending } = useQuery({
+    queryKey: ["CATEGORY_GRAPH"],
+    queryFn: async () => await loadLibraryInventory(categoryId),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
-          const subCategoriesGrouped = arrayGroupinBy(subCategoriesDuplicated, 'id')
-          
-          const subCategories = Object.keys(subCategoriesGrouped).map(key => {
-            const subCategories: SubCategoryGraph[] = subCategoriesGrouped[key];
-            const first = subCategories[0];            
-            const myMap = new Map<string, PartialBook>()
-            subCategories.flatMap(item => item.books).forEach(item =>{
-              myMap.set(item.isbn, item);
-            });
-            first.books = Array.from(myMap.values())
-            return first;
-          })
-
-          console.log(subCategoriesGrouped)
-
-          console.log(subCategories)
-
-          return {
-            categories,
-            subCategories,
-          };
-        } else {
-          const subCategories =
-            libraryInventory.categories.find(
-              (category) => category.id == categoryId
-            )?.subCategories || [];
-
-          return {
-            categories,
-            subCategories,
-          };
-        }
-      }),
+  const { data: inventory } = useQuery({
+    queryKey: ["INVENTORY_BY_CATEGORY", categoryId],
+    queryFn: async () => await filterInventory(categoryId, libraryInventory),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });

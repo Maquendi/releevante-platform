@@ -16,8 +16,8 @@ export default async function ExplorePage({ searchParams }) {
 
   const queryClient = new QueryClient();
   await queryClient.ensureQueryData({
-    queryKey: ["CATEGORY_GRAPH", categoryId],
-    queryFn: async () => await loadLibraryInventory(),
+    queryKey: ["CATEGORY_GRAPH"],
+    queryFn: () => loadLibraryInventory(categoryId),
   });
  
 
