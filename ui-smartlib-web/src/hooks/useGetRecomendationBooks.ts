@@ -6,7 +6,12 @@ import useGetAllBooks from "./useGetAllBooks";
 
 
 export default function useGetRecomendationBooks({searchParams}:{searchParams:Record<string,string>}) {
-  const {books}=useGetAllBooks()
+
+  console.log("SearchParams -****************************************************");
+
+  console.log(searchParams);
+  
+  const {books} = useGetAllBooks();
 
   const filteredBooks=useMemo(()=>{
     const tagsAgg = Object.values(searchParams)

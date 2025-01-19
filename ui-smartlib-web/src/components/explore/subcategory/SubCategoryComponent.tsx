@@ -9,11 +9,16 @@ const SubCategorySlider = dynamic(() => import("./Slider"), {
   loading: () => <CatalogSliderSkeleton />,
 });
 
-export default function SubCategoryComponent({
-  books,
-  ...rest
-}: SubCategoryGraph) {
+export interface SubcategoryComponentProps {
+  categoryId: string,
+  subCategory: SubCategoryGraph;
+}
+
+export default function SubCategoryComponent({ categoryId, subCategory }: SubcategoryComponentProps) {
   const locale = useLocale();
+
+  const { books, ...rest } = subCategory
+
   return (
     <div
       key={rest?.id}
@@ -27,7 +32,7 @@ export default function SubCategoryComponent({
           </span>
         </h4>
       </div>
-      <SubCategorySlider books={books} subCategoryId={rest.id} />
+      <SubCategorySlider categoryId={categoryId} subCategory={subCategory} />
     </div>
   );
 }

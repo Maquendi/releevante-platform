@@ -11,20 +11,18 @@ const ExploreComponent = lazy(
 import { lazy, Suspense } from "react";
 
 export default async function ExplorePage({ searchParams }) {
-
-  const categoryId = searchParams?.categoryId;
+  //const categoryId = searchParams?.categoryId;
 
   const queryClient = new QueryClient();
   await queryClient.ensureQueryData({
-    queryKey: ["CATEGORY_GRAPH"],
-    queryFn: () => loadLibraryInventory(categoryId),
+    queryKey: ["CATEGORY_GRAPH", "All"],
+    queryFn: async () => await loadLibraryInventory(),
   });
- 
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense>
-        <ExploreComponent categoryId={categoryId} />
+        <ExploreComponent />
       </Suspense>
     </HydrationBoundary>
   );

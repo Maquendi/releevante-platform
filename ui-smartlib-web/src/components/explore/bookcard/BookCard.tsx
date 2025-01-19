@@ -26,7 +26,7 @@ export default function BookCard({
       )}
       style={{ width: width ? `${width}px` : "30%" }}
     >
-      <Link className="cursor-pointer" href={`/explore/book/${book?.isbn}?lang=${book.translationId}`}>
+      <Link className="cursor-pointer" href={`/explore/book/${book?.isbn}?translationId=${book.translationId}`}>
         <ImageWithSkeleton
           src={book?.image || ""}
           alt={book?.title}

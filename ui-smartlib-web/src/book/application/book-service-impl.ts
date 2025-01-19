@@ -13,6 +13,10 @@ import {
   BookImage,
   IBookDetail,
   SubCategoryGraph,
+  Paging,
+  PartialBook,
+  BookRecomendationParams,
+  BookRecomendations,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
 
@@ -169,5 +173,15 @@ export class DefaultBookServiceImpl implements BookService {
 
   isValidForSale(copy: BookCopy, setting: LibrarySettings): boolean {
     return copy.usageCount >= setting.bookUsageCountBeforeEnablingSale;
+  }
+
+  loadPartialBooksPaginated(paging: Paging): Promise<PartialBook[]> {
+    return this.bookRepository.loadPartialBooksPaginated(paging);
+  }
+
+  bookRecomendationsByTags(
+    params: BookRecomendationParams
+  ): Promise<BookRecomendations> {
+    return this.bookRepository.bookRecomendationsByTags(params);
   }
 }

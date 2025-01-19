@@ -235,6 +235,7 @@ const insertBook = async (books: Book[]) => {
         updated_at: book.updatedAt,
       }).changes;
     } catch (error: any) {
+      console.log(error)
       dbChanges += update_stmt.run(
         book.title,
         book.correlationId,

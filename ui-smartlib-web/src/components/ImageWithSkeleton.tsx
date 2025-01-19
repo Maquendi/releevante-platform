@@ -20,7 +20,7 @@ const ImageWithSkeleton = ({ src, width, height, alt, className }: ImageWithSkel
     <div suppressHydrationWarning className="relative !bg-gray-200 rounded-md" style={{minWidth:`${width}px`,minHeight:`${height}px`}}>
       {isLoading && <Skeleton className="absolute inset-0 bg-gray-100 w-full h-full" />}
       <Image
-        src={src || "/images/reeleante.svg"}
+        src={src || "/images/releevante.svg"}
         fill
         alt={alt}
         sizes="w-full h-full"

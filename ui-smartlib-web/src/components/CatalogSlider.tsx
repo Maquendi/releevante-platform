@@ -4,12 +4,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
 import BookItem from "./catalogByCategory/BookItem";
-import { BookItems } from "@/book/domain/models";
+import {  PartialBook } from "@/book/domain/models";
 import { Skeleton } from "./ui/skeleton";
 import { useRouter } from "@/config/i18n/routing";
 
 type SliderProps = {
-  books: BookItems[];
+  books: PartialBook[];
   slidesToShow?: number;
   params?: Record<string, string>;
 };
@@ -51,7 +51,7 @@ const Slider: React.FC<SliderProps> = ({
 
   const navigateWithParams = () => {
     const queryString = new URLSearchParams(params).toString();
-    const categoryId = params?.categoryId || "n"; 
+    const categoryId = params?.categoryId || "n";
     const url = `/catalog/${categoryId}?${queryString}`;
     router.push(url);
   };
@@ -85,8 +85,8 @@ const Slider: React.FC<SliderProps> = ({
         ref={ref}
         className="flex overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth mx-2 space-x-3 no-scrollbar"
       >
-        {books?.map((book) => (
-          <BookItem key={book?.id} book={book} />
+        {books?.map((book, index) => (
+          <BookItem key={index} book={book} />
         ))}
       </div>
     </div>

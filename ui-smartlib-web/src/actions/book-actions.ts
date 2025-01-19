@@ -3,10 +3,14 @@
 import { bookServiceFacade } from "@/book/application";
 import {
   BookByFtagsVibes,
+  BookRecomendationParams,
+  BookRecomendations,
   BooksPagination,
   FtagsEnum,
   IBookDetail,
   LibraryInventory,
+  Paging,
+  PartialBook,
   SubCategoryGraph,
 } from "@/book/domain/models";
 import { unstable_cache } from "next/cache";
@@ -97,4 +101,16 @@ export async function loadBooksBySubcategory(
   enValue: string
 ): Promise<SubCategoryGraph> {
   return await bookServiceFacade.loadBooksBySubcategory(enValue);
+}
+
+export async function loadPartialBooksPaginated(
+  paging?: Paging
+): Promise<PartialBook[]> {
+  return await bookServiceFacade.loadPartialBooksPaginated(paging);
+}
+
+export async function bookRecomendationsByTags(
+  params: BookRecomendationParams
+): Promise<BookRecomendations> {
+  return await bookServiceFacade.bookRecomendationsByTags(params);
 }

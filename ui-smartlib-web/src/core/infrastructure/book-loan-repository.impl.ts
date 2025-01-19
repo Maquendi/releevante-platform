@@ -44,7 +44,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
               id: bookTransaction.id,
               clientId: bookTransaction.clientId.value,
               transactionType: bookTransaction.transactionType,
-              returnsAt: bookTransaction?.returnsAt?.toISOString()
+              returnsAt: bookTransaction?.returnsAt
             };
 
             return await tx

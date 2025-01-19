@@ -54,8 +54,8 @@ export interface BookTransaction {
   transactionType: "RENT" | "PURCHASE";
   items: BookTransactionItem[];
   status: BookTransactionStatus[];
-  createdAt: Date;
-  returnsAt?: Date;
+  createdAt: string;
+  returnsAt?: string;
 }
 
 interface BookLoanQuery {

@@ -3,11 +3,10 @@ import { SearchCriteria } from "../application/dto";
 import {
   Book,
   BookByFtagsVibes,
-  BookCategory,
   BookCompartment,
   BookCopy,
-  BookImage,
-  BookItems,
+  BookRecomendationParams,
+  BookRecomendations,
   BooksByCategory,
   BooksPagination,
   CategoryGraph,
@@ -17,11 +16,12 @@ import {
   IBookDetail,
   Isbn,
   LibraryInventory,
+  Paging,
   PartialBook,
   SubCategoryGraph,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, eq, inArray, like, or, sql } from "drizzle-orm";
+import { and, eq, inArray, like, or, sql, desc } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,
@@ -154,15 +154,20 @@ class DefaultBookRepositoryImpl implements BookRepository {
         };
       }
 
-      if (!acc[book.correlationId].languages.some((lang) => lang.language === book.language.language)) {
+      if (
+        !acc[book.correlationId].languages.some(
+          (lang) => lang.language === book.language.language
+        )
+      ) {
         acc[book.correlationId].languages.push(book.language);
       }
 
-    
       book.tags.forEach((tag) => {
         if (
           tag.tagName === "category" &&
-          !acc[book.correlationId].categories.some((existingTag) => existingTag.id === tag.id)
+          !acc[book.correlationId].categories.some(
+            (existingTag) => existingTag.id === tag.id
+          )
         ) {
           acc[book.correlationId].categories.push(tag);
         }
@@ -171,20 +176,50 @@ class DefaultBookRepositoryImpl implements BookRepository {
       book.tags.forEach((tag) => {
         if (
           tag.tagName === "subcategory" &&
-          !acc[book.correlationId].subCategories.some((existingTag) => existingTag.id === tag.id)
+          !acc[book.correlationId].subCategories.some(
+            (existingTag) => existingTag.id === tag.id
+          )
         ) {
           acc[book.correlationId].subCategories.push(tag);
         }
       });
 
-      if(!acc[book.correlationId].copies[book.language.language]){
-        acc[book.correlationId].copies[book.language.language] =book.bookCopyQty
+      if (!acc[book.correlationId].copies[book.language.language]) {
+        acc[book.correlationId].copies[book.language.language] =
+          book.bookCopyQty;
       }
 
       return acc;
     }, {});
 
     return Object.values(groupedBooks);
+  }
+
+  async loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]> {
+    const pageSize = paging?.size || 200;
+    const currentPage = paging?.page || 0;
+
+    const data = (await db
+      .select({
+        isbn: bookSchema.id,
+        translationId: bookSchema.translationId,
+        image: bookSchema.image,
+        imageId: bookSchema.imageId,
+        rating: bookSchema.rating,
+        votes: bookSchema.votes,
+        title: bookSchema.bookTitle,
+      })
+      .from(bookSchema)
+      .orderBy(desc(bookSchema.rating))
+      .limit(pageSize)
+      .offset((currentPage - 1) * pageSize)) as any;
+
+    console.log(
+      "PARTIAL BOOKS LOADED ..................... ..................... ....................." +
+        data?.length
+    );
+
+    return data as PartialBook[];
   }
 
   async loadLibraryInventory(
@@ -335,10 +370,11 @@ class DefaultBookRepositoryImpl implements BookRepository {
       categories,
     };
 
-    // console.log(
-    //   "****************************************************************************************************************\n"
-    // );
-    // console.log(JSON.stringify(bookInventory));
+    console.log(
+      "**************************************************************" +
+        searchCategoryId
+    );
+    console.log(JSON.stringify(bookInventory));
     return bookInventory;
   }
 
@@ -814,6 +850,70 @@ class DefaultBookRepositoryImpl implements BookRepository {
     });
 
     return results;
+  }
+
+  async bookRecomendationsByTags(
+    params: BookRecomendationParams
+  ): Promise<BookRecomendations> {
+    const data = await db
+      .select({
+        isbn: bookSchema.id,
+        translationId: bookSchema.translationId,
+        image: bookSchema.image,
+        imageId: bookSchema.imageId,
+        rating: bookSchema.rating || 0,
+        votes: bookSchema.votes || 0,
+        title: bookSchema.bookTitle,
+        author: bookSchema.author,
+      })
+      .from(bookSchema)
+      .innerJoin(
+        bookFtagSchema,
+        and(
+          eq(bookFtagSchema.bookIsbn, bookSchema.id),
+          or(
+            eq(bookFtagSchema.ftagId, params.usersCurrentMood),
+            eq(bookFtagSchema.ftagId, params.usersReadingPurpose),
+            eq(bookFtagSchema.ftagId, params.usersFavFlavorOfStory)
+          )
+        )
+      );
+
+    let mostQualified = [];
+
+    const grouped = arrayGroupinBy(data, "isbn");
+    const rest: any[] = [];
+
+    Object.keys(grouped).map((isbn) => {
+      const currentGroup = grouped[isbn];
+      rest.push(currentGroup[0]);
+      if (mostQualified.length < currentGroup?.length) {
+        mostQualified = currentGroup || [];
+      }
+    });
+
+    const first: PartialBook = mostQualified[0];
+    const results = [first];
+
+    const others: PartialBook[] = [];
+    rest.forEach((other: PartialBook) => {
+      if (other?.translationId === first.translationId) {
+        if (other.isbn !== first.isbn) {
+          results.push(other);
+        }
+      } else {
+        others.push(other);
+      }
+    });
+
+    const response = {
+      first: results,
+      others: others,
+    };
+
+    console.log(response);
+
+    return response;
   }
 }
 

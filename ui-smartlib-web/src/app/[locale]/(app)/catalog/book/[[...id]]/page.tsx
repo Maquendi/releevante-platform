@@ -37,7 +37,7 @@ export default async function Page({ params }) {
 
   return (
     <section className="relative px-7 mt-7 space-y-10">
-       <BookByIdBanner book={book}/>
+       {/* <BookByIdBanner book={book}/> */}
       <div className="border-b border-secondary-foreground py-4">
         <h3 className="text-xl font-semibold mb-2">{t("bookSummary")}</h3>
         <p className=" font-light">{book?.[`${locate}Description`] || ""}</p>

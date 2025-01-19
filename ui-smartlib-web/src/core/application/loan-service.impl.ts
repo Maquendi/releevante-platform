@@ -62,26 +62,24 @@ export class BookLoanServiceImpl implements BookLoanService {
 
     const transactions: BookTransactions = {};
 
-    const today = new Date();
+    const currentDate = new Date().toISOString();
 
     if (loanItems.length) {
-      const returnsAt = today;
-      returnsAt.setDate(returnsAt.getDate() + 5);
       const loanId = uuidv4();
       const loanStatus: BookTransactionStatus = {
         id: uuidv4(),
         transactionId: loanId,
         status: "CHECKING_OUT",
-        createdAt: today.toISOString(),
+        createdAt: currentDate,
       };
 
       const bookLoan: BookTransaction = {
         id: loanId,
         clientId: cart.userId,
         items: loanItems,
-        createdAt: today,
+        createdAt: currentDate,
         transactionType: "RENT",
-        returnsAt: returnsAt,
+        returnsAt: currentDate,
         status: [loanStatus],
       };
 
@@ -89,23 +87,20 @@ export class BookLoanServiceImpl implements BookLoanService {
     }
 
     if (purchasedItems.length) {
-      const returnsAt = today;
-      returnsAt.setDate(returnsAt.getDate() + 5);
       const purchaseId = uuidv4();
       const purchaseStatus: BookTransactionStatus = {
         id: uuidv4(),
         transactionId: purchaseId,
         status: "CHECKING_OUT",
-        createdAt: today.toISOString(),
+        createdAt: currentDate,
       };
 
       const bookPurchase: BookTransaction = {
         id: purchaseId,
         clientId: cart.userId,
         items: purchasedItems,
-        createdAt: today,
+        createdAt: currentDate,
         transactionType: "PURCHASE",
-        returnsAt: returnsAt,
         status: [purchaseStatus],
       };
 

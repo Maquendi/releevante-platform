@@ -15,7 +15,7 @@ export default function Page({ params, searchParams }) {
     <div className=" space-y-5 mb-5">
       <HeaderBanner categoryId={categoryId} subCategoryId={subCategoryId} />
       <section className="px-5 mt-5 space-y-6">
-        <SeeAllBooks categoryId={categoryId} subCategoryId={subCategoryId} />
+        {/* <SeeAllBooks categoryId={categoryId} subCategoryId={subCategoryId} /> */}
         <HelpFindBookBanner />
         <Suspense>
           <RemainingBooksByCategories

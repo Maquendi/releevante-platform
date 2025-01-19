@@ -6,6 +6,8 @@ import {
   BookCopy,
   BookImage,
   BookItems,
+  BookRecomendationParams,
+  BookRecomendations,
   BooksByCategory,
   BooksPagination,
   CategoryGraph,
@@ -15,6 +17,8 @@ import {
   IBookDetail,
   Isbn,
   LibraryInventory,
+  Paging,
+  PartialBook,
   SubCategoryGraph,
 } from "./models";
 
@@ -36,6 +40,8 @@ export interface BookRepository {
   findByTranslationId(translationId: string): Promise<IBookDetail[]>;
   findAllBooks(params: BooksPagination): Promise<Book[]>;
   loadLibraryInventory(searchCategoryId?: string): Promise<LibraryInventory>;
+  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>
+  bookRecomendationsByTags(params: BookRecomendationParams): Promise<BookRecomendations>
 }
 
 // 1. seach all available categories.

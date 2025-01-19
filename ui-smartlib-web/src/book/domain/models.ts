@@ -52,9 +52,9 @@ export interface CategoryTranslations {
 }
 
 export interface BookItems {
-  categories:FtagItem[],
-  subCategories:FtagItem[]
-  tags:FtagItem[]
+  categories: FtagItem[];
+  subCategories: FtagItem[];
+  tags: FtagItem[];
   id: string;
   bookTitle: string;
   publisher: string;
@@ -112,6 +112,17 @@ interface BookCopies {
   english: number;
 }
 
+export interface BookRecomendationParams {
+  usersFavFlavorOfStory: string;
+  usersCurrentMood: string;
+  usersReadingPurpose: string;
+}
+
+export interface BookRecomendations {
+  first: PartialBook[];
+  others: PartialBook[];
+}
+
 export interface Book {
   id: string;
   bookTitle: string;
@@ -132,9 +143,9 @@ export interface Book {
   printLength: number;
   dimensions: string;
   languages: BookLanguage[];
-  categories:FtagItem[]
-  subCategories:FtagItem[]
-  tags:FtagItem[]
+  categories: FtagItem[];
+  subCategories: FtagItem[];
+  tags: FtagItem[];
   rating?: number;
   votes?: number;
   price?: number;
@@ -201,11 +212,24 @@ export interface IBookDetail {
 export interface PartialBook {
   isbn: string;
   title: string;
+  author: string;
   translationId: string;
   image: string;
   imageId: string;
   rating: number;
   votes: number;
+}
+
+export interface PartialBookV1 {
+  isbn: string;
+  translationId: string;
+  imageUrl: string;
+  imageId: string;
+}
+
+export interface Paging {
+  page: number;
+  size: number;
 }
 
 export interface SubCategoryGraph {

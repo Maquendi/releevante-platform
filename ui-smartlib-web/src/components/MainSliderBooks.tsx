@@ -7,6 +7,8 @@ import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import { useRouter } from "@/config/i18n/routing";
 import useGetAllBooks from "@/hooks/useGetAllBooks";
+import { useQuery } from "@tanstack/react-query";
+import { loadPartialBooksPaginated } from "@/actions/book-actions";
 
 export default function MainSliderBooks() {
   const [oldSlide, setOldSlide] = useState(0);
@@ -36,7 +38,11 @@ export default function MainSliderBooks() {
 
   const getNextSlide = (index) => (index === activeSlide + 1 ? true : false);
 
-  const {books}=useGetAllBooks()
+  const { data: books = [] } = useQuery({
+    queryKey: ["MAIN_SLIDER_BOOKS"],
+    queryFn: async () => await loadPartialBooksPaginated(),
+    staleTime: 5 * 60 * 1000,
+  });
 
   return (
     <div>
@@ -44,7 +50,11 @@ export default function MainSliderBooks() {
         {books?.map((book, index) => (
           <article key={index}>
             <div
-              onClick={() => router.push(`/catalog/book/${book.correlationId}`)}
+              onClick={() =>
+                router.push(
+                  `/explore/book/${book?.isbn}?translationId=${book?.translationId}`
+                )
+              }
               className={`relative duration-500 mx-2 rounded-lg z-10  ${
                 activeSlide === index
                   ? "shadow-xl h-[300px]  translate-y-[20%] "
@@ -59,8 +69,8 @@ export default function MainSliderBooks() {
                 className="rounded-xl object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 fill
-                src={book?.image as any}
-                alt={`image-for-${book.bookTitle}`}
+                src={book?.image}
+                alt={`image-for-${book.title}`}
               ></Image>
             </div>
           </article>

@@ -5,24 +5,28 @@ import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
 import { useSearchParams } from "next/navigation";
-import { PartialBook } from "@/book/domain/models";
+import {
+  CategoryGraph,
+  PartialBook,
+  SubCategoryGraph,
+} from "@/book/domain/models";
 import BookCard from "../bookcard/BookCard";
 
 type SliderProps = {
-  books: PartialBook[];
+  categoryId: string;
+  subCategory: SubCategoryGraph;
   slidesToShow?: number;
-  subCategoryId?: string;
 };
 
-
 const SubCategorySlider: React.FC<SliderProps> = ({
-  books,
-  subCategoryId,
+  categoryId,
+  subCategory,
   slidesToShow = 3,
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const t = useTranslations("catalogPage");
   const searchParams = useSearchParams();
+  const { books, id: subCategoryId } = subCategory;
 
   const nextSlide = () => {
     if (ref.current) {
@@ -54,9 +58,9 @@ const SubCategorySlider: React.FC<SliderProps> = ({
           >
             <ChevronRight />
           </button>
-          <Link 
+          <Link
             href={`/explore/${
-              searchParams?.get("categoryId") || "n"
+              categoryId || "n"
             }/?subCategoryId=${subCategoryId}`}
             className="border grid place-content-center cursor-pointer border-[#827F7F] py-2 px-4 rounded-full text-xs font-medium"
           >

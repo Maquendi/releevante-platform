@@ -4,6 +4,8 @@ import {
   BookCategory,
   BookCopy,
   BookItems,
+  BookRecomendationParams,
+  BookRecomendations,
   BooksByCategory,
   BooksPagination,
   FtagItem,
@@ -11,6 +13,8 @@ import {
   IBook,
   IBookDetail,
   LibraryInventory,
+  Paging,
+  PartialBook,
   SubCategoryGraph,
 } from "../domain/models";
 import { BookCopySearch } from "./dto";
@@ -36,7 +40,7 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
   }
 
   async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
-    console.log("loading book details")
+    console.log("loading book details");
     return await this.bookService.findByTranslationId(translationId);
   }
 
@@ -64,11 +68,23 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
     return this.bookService.loanLibraryInventory();
   }
 
-  loadLibraryInventory(categoryId?:string): Promise<LibraryInventory> {
+  loadLibraryInventory(categoryId?: string): Promise<LibraryInventory> {
     return this.bookService.loadLibraryInventory(categoryId);
   }
 
-  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph> {
-    return this.bookService.loadBooksBySubcategory(subcategoryEnValue)
+  loadBooksBySubcategory(
+    subcategoryEnValue: string
+  ): Promise<SubCategoryGraph> {
+    return this.bookService.loadBooksBySubcategory(subcategoryEnValue);
+  }
+
+  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]> {
+    return this.bookService.loadPartialBooksPaginated(paging);
+  }
+
+  bookRecomendationsByTags(
+    params: BookRecomendationParams
+  ): Promise<BookRecomendations> {
+    return this.bookService.bookRecomendationsByTags(params);
   }
 }

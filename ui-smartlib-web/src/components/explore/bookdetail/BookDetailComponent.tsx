@@ -15,6 +15,8 @@ import { CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IBookDetail } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
+import BookByIdBanner from "@/components/bookById/BookByIdBanner";
+import useGetBooksByTranslationId from "@/hooks/useGetBooksByTranslationId";
 
 const BestSellerSlider = dynamic(
   () => import("@/components/search/BestSellerSlider"),
@@ -34,7 +36,7 @@ const AddBookToCartBanner = dynamic(
 
 export default function BookDetailComponent({ isbn, translationId }) {
   const queryClient = new QueryClient();
-  const { data: books } = useQuery({
+  const { data: books = [] } = useQuery({
     queryKey: ["BOOK_BY_TRANSLATION_ID", translationId],
     queryFn: async () => await loadBookDetail(translationId),
   });
@@ -50,10 +52,16 @@ export default function BookDetailComponent({ isbn, translationId }) {
 
   useEffect(() => {
     setBook(getSelectedBook(isbn));
-  }, books);
+  }, [books]);
 
   return (
     <section className="relative px-7 mt-7 space-y-10">
+      {/* <BookByIdBanner
+        selectedBook={book}
+        relatedBooks={books}
+        setSelectedBook={(value) => setBook(getSelectedBook(value))}
+      /> */}
+
       <div className="flex gap-5 p-3 rounded-md m-auto bg-white px-5 py-10">
         <div>
           <ImageWithSkeleton
@@ -90,6 +98,7 @@ export default function BookDetailComponent({ isbn, translationId }) {
           </div>
           <div className="border-t border-secondary pt-3">
             <h4 className="font-medium mb-1">{t("selectLanguage")}</h4>
+
             <div className="flex gap-4 items-center">
               {books?.map(({ isbn, language }) => (
                 <button

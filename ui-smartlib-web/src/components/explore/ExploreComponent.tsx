@@ -1,84 +1,40 @@
 "use client";
-import { loadLibraryInventory } from "@/actions/book-actions";
 import { Link } from "@/config/i18n/routing";
-import { arrayGroupinBy, cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import BookNotFound from "../BookNotFound";
 import HelpFindBookBanner from "../HelpFindBookBanner";
 import SubCategoryComponent from "./subcategory/SubCategoryComponent";
-import {
-  CategoryGraph,
-  LibraryInventory,
-  PartialBook,
-  SubCategoryGraph,
-} from "@/book/domain/models";
+import useLibraryInventory, {
+  filterLibraryInventory,
+} from "@/hooks/useLibraryInventory";
+import { useEffect, useState } from "react";
+import { CategoryGraph } from "@/book/domain/models";
 
 interface CatalogPageProps {
   categoryId: string;
 }
 
-const loadData = async (categoryId: string) => {
-  return filterInventory(categoryId, await loadLibraryInventory(categoryId));
-};
-
-const filterInventory = async (
-  categoryId: string,
-  libraryInventory?: LibraryInventory
-) => {
-  const categories = libraryInventory?.categories;
-   console.log(libraryInventory);
-  if (!categoryId) {
-    const subCategoriesDuplicated = libraryInventory?.categories.flatMap(
-      (category) => category.subCategories
-    );
-    const subCategoriesGrouped = arrayGroupinBy(subCategoriesDuplicated!, "id");
-    const subCategories = Object.keys(subCategoriesGrouped).map((key) => {
-      const subCategories: SubCategoryGraph[] = subCategoriesGrouped[key];
-      const first = subCategories[0];
-      const myMap = new Map<string, PartialBook>();
-      subCategories
-        .flatMap((item) => item.books)
-        .forEach((item) => {
-          myMap.set(item.isbn, item);
-        });
-      first.books = Array.from(myMap.values());
-      return first;
-    });
-    return {
-      categories,
-      subCategories,
-    };
-  } else {
-    const subCategories =
-      libraryInventory?.categories.find((category) => category.id == categoryId)
-        ?.subCategories || [];
-
-    return {
-      categories,
-      subCategories,
-    };
-  }
-};
-
-export default function ExploreComponent({ categoryId }: CatalogPageProps) {
+export default function ExploreComponent() {
   const t = useTranslations("catalogPage");
-  const { data: libraryInventory, isPending } = useQuery({
-    queryKey: ["CATEGORY_GRAPH"],
-    queryFn: async () => await loadLibraryInventory(categoryId),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
-  const { data: inventory } = useQuery({
-    queryKey: ["INVENTORY_BY_CATEGORY", categoryId],
-    queryFn: async () => await filterInventory(categoryId, libraryInventory),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
   const locale = useLocale();
+  const { isPending, libraryInventory } = useLibraryInventory();
+  const [categories, setCategories] = useState<CategoryGraph[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryGraph>();
+  const [categoryAll, setCategoryAll] = useState<CategoryGraph>();
+
+  useEffect(() => {
+    setCategories(libraryInventory?.categories || []);
+    const categoyAll = filterLibraryInventory(libraryInventory);
+
+    setCategoryAll(categoyAll);
+    setSelectedCategory(categoryAll);
+  }, [categories]);
+
+  const onSelected = (selectedCategory: CategoryGraph) => {
+    setSelectedCategory(selectedCategory);
+  };
 
   return (
     <div className="space-y-4 pb-5">
@@ -102,42 +58,45 @@ export default function ExploreComponent({ categoryId }: CatalogPageProps) {
             {t("selectCategory")}
           </h3>
           <div className="flex gap-2 items-center text-sm font-medium overflow-x-scroll no-scrollbar snap-x snap-mandatory select-none whitespace-nowrap">
-            <Link
+            <button
               className={cn(
                 "flex-none border px-6 py-3 border-gray-500 rounded-full snap-start",
-                !categoryId &&
+                !selectedCategory?.id &&
                   "bg-primary border-4 border-accent-foreground text-white"
               )}
-              href={`/explore`}
-              scroll={false}
+              onClick={() => onSelected(categoryAll!)}
             >
               All
-            </Link>
-            {inventory?.categories?.map((category) => (
-              <Link
+            </button>
+            {categories.map((category) => (
+              <button
+                onClick={() => onSelected(category)}
                 className={cn(
                   "flex-none border px-6 py-3 border-gray-500 rounded-full snap-start",
-                  categoryId === category?.id &&
+                  selectedCategory?.id === category?.id &&
                     "bg-primary border-4 border-accent-foreground text-white"
                 )}
-                href={`/explore?categoryId=${category?.id}`}
                 key={category?.id}
               >
                 {category?.[`${locale}`] || ""}
-              </Link>
+              </button>
             ))}
           </div>
         </div>
       </header>
       <section className="space-y-6 px-6">
-        {!inventory?.subCategories?.length && !isPending ? (
+        {!selectedCategory?.subCategories?.length && !isPending ? (
           <div className="space-y-5">
             <BookNotFound />
             <HelpFindBookBanner />
           </div>
         ) : null}
-        {inventory?.subCategories?.map((item, index) => (
-          <SubCategoryComponent key={index} {...item} />
+        {selectedCategory?.subCategories?.map((item, index) => (
+          <SubCategoryComponent
+            key={index}
+            categoryId={selectedCategory?.id}
+            subCategory={item}
+          />
         ))}{" "}
       </section>
     </div>

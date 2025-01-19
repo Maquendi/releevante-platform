@@ -1,4 +1,4 @@
-import { Book, BookByFtagsVibes, BookCategory, BookCopy, BookImage, BookItems, BooksByCategory, BooksPagination, FtagItem, FtagsEnum, IBook, IBookDetail, LibraryInventory, SubCategoryGraph } from "../domain/models";
+import { Book, BookByFtagsVibes, BookCategory, BookCopy, BookImage, BookItems, BookRecomendationParams, BookRecomendations, BooksByCategory, BooksPagination, FtagItem, FtagsEnum, IBook, IBookDetail, LibraryInventory, Paging, PartialBook, SubCategoryGraph } from "../domain/models";
 import { BookCopySearch, BookRatingDto } from "./dto";
 
 export interface BookService {
@@ -16,6 +16,8 @@ export interface BookService {
   loanLibraryInventory(): Promise<Book[]>
   loadLibraryInventory(searchCategoryId?: string): Promise<LibraryInventory>
   loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph>;
+  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>
+  bookRecomendationsByTags(params: BookRecomendationParams): Promise<BookRecomendations>
 }
 
 
@@ -31,5 +33,7 @@ export interface BookServiceFacade {
   findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>
   loanLibraryInventory(): Promise<Book[]>
   loadLibraryInventory(searchCategoryId?: string): Promise<LibraryInventory>
-  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph>;
+  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph>
+  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>
+  bookRecomendationsByTags(params: BookRecomendationParams): Promise<BookRecomendations>
 }

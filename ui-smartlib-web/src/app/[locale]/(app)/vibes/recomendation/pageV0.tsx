@@ -1,45 +1,16 @@
 "use client";
-import { loadBookDetail } from "@/actions/book-actions";
-import { IBookDetail } from "@/book/domain/models";
 import BookByIdBanner from "@/components/bookById/BookByIdBanner";
-import BookByIdBannerV2 from "@/components/bookById/BookByIdBannerV2";
-import CatalogSlider, {
-  CatalogSliderSkeleton,
-} from "@/components/CatalogSlider";
+import CatalogSlider from "@/components/CatalogSlider";
 import AddToCartRecomendation from "@/components/vibes/AddToCartRecomendation";
 import VibesStateIndicator from "@/components/vibes/VibesStateIndicator";
-
-import useGetRecomendationBooksV2 from "@/hooks/useGetRecomendationBooksV2";
+import useGetRecomendationBooks from "@/hooks/useGetRecomendationBooks";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 export default function RecomendationPage({ searchParams }) {
   const t = useTranslations("recommendationsPage");
-  const recomendations = useGetRecomendationBooksV2({
-    searchParams,
-  });
-
-  //const books = UseGetBooksByTranslationId(tranlationId);
-
-  const [selectedBook, setSelectedBook] = useState<IBookDetail>();
-
-  const [recomended, setRecomended] = useState<IBookDetail[]>([]);
-
-  useEffect(() => {
-    const translationId =
-      recomendations?.first.length && recomendations?.first[0]?.translationId;
-    if (translationId) {
-      loadBookDetail(translationId).then((books) => {
-        setSelectedBook(books[0]);
-        setRecomended(books);
-      });
-    }
-  }, [recomendations]);
-
-  const setSelectedBookByIsbn = (isbn: string) => {
-    setSelectedBook(recomended.find((item) => item.isbn === isbn));
-  };
+  const { recomendedBook, remainingRecommendedBooks } =
+    useGetRecomendationBooks({ searchParams });
 
   return (
     <div className="space-y-5">
@@ -70,29 +41,25 @@ export default function RecomendationPage({ searchParams }) {
           <VibesStateIndicator />
         </div>
         <div>
-          <BookByIdBannerV2
-            selectedBook={selectedBook}
-            relatedBooks={recomended}
-            setSelectedBook={(isbn) => setSelectedBookByIsbn(isbn)}
-          />
+          <BookByIdBanner book={recomendedBook!} />
         </div>
         <div className="relative bg-[#FFFFFF] space-y-6 pt-6 pb-7 px-2  rounded-xl mb-10">
           <div className=" h-[44px] flex items-center ">
             <h4 className="text-xl font-medium  space-x-2 pl-2">
               <span>{t("otherRecomendations")}</span>
               <span className="font-light text-secondary-foreground">
-                ({recomendations?.others?.length || 0})
+                ({remainingRecommendedBooks?.length || 0})
               </span>
             </h4>
           </div>
           <div>
             <CatalogSlider
               params={searchParams}
-              books={recomendations?.others || []}
+              books={remainingRecommendedBooks as any}
             />
           </div>
         </div>
-        <AddToCartRecomendation book={selectedBook!} />
+        {/* <AddToCartRecomendation book={recomendedBook!} /> */}
       </section>
     </div>
   );
