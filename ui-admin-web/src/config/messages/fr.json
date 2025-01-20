@@ -1,0 +1,189 @@
+{
+  "AuthPage": {
+    "title": "Bienvenue à la Bibliothèque Intelligente"
+  },
+  "HomePage": {
+    "showAllBooksTitle": "Montrez-moi tous les livres",
+    "showAllBooksText": "Explorez notre bibliothèque complète de livres ! Parcourez une vaste collection de genres, de thèmes et d'auteurs pour découvrir votre prochaine grande lecture.",
+    "showAllBooksBtn": "Parcourir tous les livres",
+    "helpFindBookTitle": "Aidez-moi à trouver le bon livre",
+    "helpFindBookText": "Laissez-nous vous guider ! Nous vous recommanderons le livre parfait adapté à vos besoins, il vous suffit de répondre à quelques questions rapides.",
+    "helpFindBookBtn": "Suggérez-moi des livres",
+    "title1": "Explorer",
+    "title2": "et",
+    "title3": "emprunter",
+    "title4": "des livres gratuitement dans notre riche collection de livres"
+  },
+
+  "wristbandScanAuth": {
+    "header": "Bienvenue dans votre bibliothèque personnelle !",
+    "title": "Commencez à scanner votre bracelet",
+    "subTitle": "Placez votre bracelet sur le scanner pour accéder à notre collection de livres à louer ou à acheter.",
+    "footerText": "Vous avez des problèmes pour scanner votre bracelet ?",
+    "footerBtn": "Entrez votre code manuellement"
+  },
+  "AuthPasscodePage": {
+    "header": "Bienvenue dans votre bibliothèque personnelle!",
+    "title": "Commençons à scanner votre bracelet",
+    "subTitle": "Présentez votre bracelet au scanner du kiosque pour accéder à notre collection de livres en location ou achat.",
+    "footerText": "Vous avez des difficultés à scanner votre bracelet?",
+    "footerBtn": "Scanner le bracelet"
+  },
+  "catalogPage": {
+    "title": "Bon après-midi !",
+    "subTitle": "Explorez et louez gratuitement notre vaste collection de livres",
+    "selectCategory": "Sélectionnez une catégorie",
+    "seeAll": "Voir tout",
+    "notFound1": "Nous n'avons trouvé aucun",
+    "notFound2": "Veuillez rechercher une autre catégorie ou trouver un autre livre que nous vous recommandons ci-dessous.",
+    "findRightBook": "Trouvez le livre qui vous convient",
+    "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à louer gratuitement.",
+    "startNow": "Commencez maintenant",
+    "books": "livres"
+  },
+  "SeeAllPage": {
+    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à louer gratuitement",
+    "allRecomendationsTitle": "Toutes vos recommandations",
+    "books": "livres"
+  },
+  "SearchBookPage": {
+    "bookNotFound": "Livre introuvable",
+    "tryTheseBooks": "Essayez ces livres à la place"
+  },
+  "bookById": {
+    "selectLanguage": "Sélectionnez une langue",
+    "bookSummary": "Résumé du livre",
+    "bookDetail": "Détail du livre",
+    "printLength": "Nombre de pages",
+    "publicationDate": "Date de publication",
+    "dimensions": "Dimensions",
+    "language": "Langue",
+    "publisher": "Éditeur",
+    "rentBannerBtn": "Louer gratuitement",
+    "buyBannerBtn": "Acheter le livre"
+  },
+  "cart": {
+    "rent": "louer",
+    "purchase": "acheter",
+    "to": "à",
+    "of": "sur",
+    "checkout": "passer à la caisse",
+    "emptyCart": "Vous n'avez aucun livre dans votre panier",
+    "cart": "panier"
+  },
+  "vibeBtns": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "submit": "Soumettre"
+  },
+  "readingVibePage": {
+    "readingVibe1": "Quel est votre",
+    "readingVibe2": "état d'esprit de lecture",
+    "reasonForReading": "Commençons par comprendre votre raison de prendre un livre aujourd'hui",
+    "selectPurpose1": "Sélectionnez l'",
+    "selectPurpose2": "objectif",
+    "selectPurpose3": "de votre état d'esprit actuel"
+  },
+  "moodPage": {
+    "currentMoodTitle1": "Quel",
+    "currentMoodTitle2": " état d'esprit ",
+    "currentMoodTitle3": " avez-vous?",
+    "aboutMoodSubTitle": "Il s'agit de savoir comment vous voulez que votre prochain livre vous fasse ressentir",
+    "selectFeeling1": "Sélectionnez le",
+    "selectFeeling2": "sentiment",
+    "selectFeeling3": "qui reflète votre état d'esprit actuel"
+  },
+  "flavorOfStoryPage": {
+    "favoriteFlavorTitle1": "Quel est votre",
+    "favoriteFlavorTitle2": "type d'histoire préféré",
+    "narrowDownSubTitle": "Il est temps de restreindre les options aux genres que vous aimez le plus",
+    "selectGenres1": "Sélectionnez les",
+    "selectGenres2": "genres",
+    "selectGenres3": "qui vous attirent"
+  },
+  "recommendationsPage": {
+    "recommendationReadyTitle1": "Your recommendation",
+    "recommendationReadyTitle2": "recommendation",
+    "recommendationReadyTitle3": "is ready!",
+    "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
+    "editPreferences": "Modifier les préférences",
+    "rent": "lire à l'hôtel",
+    "buy": "acheter",
+    "otherRecomendations": "Autres recommandations"
+  },
+  "reviewMyCart": {
+    "myCart": "mon panier",
+    "moveToBuy": "Déplacer à l'achat",
+    "moveToRent": "Déplacer à la location",
+    "rentAnotherBook": "Louer un autre livre",
+    "confirmWithdrawal": "Confirmer le retrait",
+    "purchaseMsg": "Le livre sera payé lors de votre départ de l'hôtel"
+  },
+  "checkout": {
+    "readInstructions": "Lisez les instructions ci-dessous",
+    "yourBooks": "Vos livres",
+    "pickYourBook": "Choisissez votre livre",
+    "openingDoor1": "Ouverture de la",
+    "openingDoor2": "porte",
+    "firstStepTitle": "Première étape",
+    "firstStepContent1": "Allez à la",
+    "firstStepContent2": "porte",
+    "firstStepContent3": "après avoir choisi le livre, la porte se fermera automatiquement.",
+    "nextStepTitle": "Étape suivante",
+    "nextStepContent": "Veuillez choisir à nouveau votre prochain livre.",
+    "closeDoorTime1": "La porte",
+    "closeDoorTime2": "se fermera dans",
+    "closeDoorTime3": "minutes"
+  },
+  "thanksPage": {
+    "title": "Bonne lecture !",
+    "content": "Merci d'utiliser notre service. Veuillez vous rappeler de retourner les livres avant votre départ de l'hôtel",
+    "closeSessionTime1": "La session",
+    "closeSessionTime2": "se fermera dans",
+    "closeSessionTime3": "minutes"
+  },
+  "returnBook": {
+    "yourRentedBooks": "Vos livres loués",
+    "bookToReturn": "Quel livre voulez-vous retourner aujourd'hui ?",
+    "book": "livres",
+    "rentAnotherBook": "Louer un autre livre",
+    "back": "retour",
+    "return": "retourner",
+    "returnDate": "date de retour",
+    "noRentedBooks": "Vous n'avez pas encore de livre loué. Découvrez la meilleure option dans votre bibliothèque personnelle maintenant.",
+    "rentBook": "Louer un livre"
+  },
+  "depositPage": {
+    "depositBookTitle1": "Déposez ce livre sur",
+    "depositBookTitle2": "la porte",
+    "firstStepTitle": "Première étape",
+    "firstStepContent1": "Allez à la",
+    "firstStepContent2": "porte",
+    "firstStepContent3": "après avoir inséré le livre, la porte se fermera automatiquement. Veuillez vous assurer d'insérer correctement le livre.",
+    "nextStepTitle": "Étape suivante",
+    "nextStepContent": "Veuillez revenir pour rendre votre prochain livre.",
+    "closeDoorTime1": "La porte",
+    "closeDoorTime2": "se fermera dans",
+    "closeDoorTime3": "minutes"
+  },
+  "returnThanksPage": {
+    "thanksForReturn1": "Merci pour le retour",
+    "thanksForReturn2": "du livre",
+    "returnBookBtn": "D'accord, retournez un autre livre",
+    "closeSessionTime1": "La session",
+    "closeSessionTime2": "se fermera dans",
+    "closeSessionTime3": "minutes"
+  },
+  "ratingPage": {
+    "title": "Faites-nous savoir votre niveau de satisfaction",
+    "subTitle": "Veuillez nous évaluer pour améliorer nos produits. Nous sommes ravis de vous écouter et d'améliorer notre service.",
+    "feelUsingApp": "Comment vous sentez-vous en utilisant notre application ?",
+    "commentTitle": "Souhaitez-vous ajouter une suggestion ou un commentaire ?",
+    "commentPlaceHolder": "Écrivez un commentaire ici",
+    "optional": "Optionnel",
+    "submit": "Soumettre",
+    "closeSessionTime1": "La session",
+    "closeSessionTime2": "se fermera dans",
+    "closeSessionTime3": "minutes"
+  }
+}
