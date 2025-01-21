@@ -1,0 +1,191 @@
+{
+    "AuthPage": {
+      "title": "Welcome to the Smart Library",
+      "subTitle": "Hold your wristband to the kiosk scanner to access our book collection for rent or purchase."
+    },
+    "HomePage":{
+      "showAllBooksTitle":"Show me all the books",
+      "showAllBooksText":"Explore our entire library of books! Browse through a vast collection of genres, themes, and authors to discover your next great read",
+      "showAllBooksBtn":"Browse all the books",
+      "helpFindBookTitle":"Help me find the right book",
+      "helpFindBookText":" Let us guide you! We’ll recommend the perfect book tailored just for you, just answer a few quick questions",
+      "helpFindBookBtn":"Suggest me a books",
+      "title1":"Explore",
+      "title2":"and",
+      "title3":"rent",
+      "title4":"books for free in our rich collection of books"
+    },
+    "wristbandScanAuth": {
+      "header": "Welcome to your personal library!",
+      "title": "Let’s start scanning your wristband",
+      "subTitle": "Hold your wristband to the kiosk scanner to access our book collection for rent or purchase.",
+      "footerText": "Having problem scanning your wristband?",
+      "footerBtn": "Enter your pin manually"
+    },
+    "AuthPasscodePage": {
+      "header": "Welcome to your personal library!",
+      "title": "Enter your code",
+      "subTitle": "Enter the code from your wristband on the kiosk. This will grant you access to browse and choose books to rent or purchase..",
+      "footerText": "Having problem enter your code?",
+      "footerBtn": "Scan wristband"
+    },
+    "catalogPage": {
+      "title": "Good afternoon!",
+      "subTitle": "Explore and rent for free our rich collection of books",
+      "selectCategory": "Select a category",
+      "seeAll": "See All",
+      "notFound1": "We couldn’t find any",
+      "notFound2":" Please search another category or find another book that we recommend you below.",
+      "findRightBook": "Find the right book for you",
+      "helpMessage": "Didn’t find a book yet? We are here to help you. Let’s find the perfect book for rent for free.",
+      "startNow": "Start now",
+      "books":"books"
+    },
+    "SeeAllPage": {
+      "subTitleBanner": "Excellent choice, select up to 4 books to rent for free",
+      "allRecomendationsTitle":"All your recomendations",
+      "books":"books"
+    },
+    "SearchBookPage": {
+      "bookNotFound": "Book not found",
+      "tryTheseBooks": "Try these books instead"
+    },
+    "bookById": {
+      "selectLanguage": "Select a language",
+      "bookSummary": "Book Summary",
+      "bookDetail": "Book Detail",
+      "printLength": "Print Length",
+      "publicationDate": "Publication Date",
+      "dimensions": "Dimensions",
+      "language": "Language",
+      "publisher": "Publisher",
+      "rentBannerBtn": "Rent for free",
+      "buyBannerBtn": "Buy book"
+    },
+    "cart": {
+      "rent": "rent",
+      "purchase": "purchase",
+      "to": "to",
+      "of": "of",
+      "checkout": "checkout",
+      "emptyCart": "You don’t have any book in your cart",
+      "cart": "cart"
+    },
+    "vibeBtns":{
+      "previous":"Previous",
+      "next":"Next",
+      "submit":"Submit"
+    },
+    "readingVibePage": {
+      "readingVibe1": "What’s your",
+      "readingVibe2": "reading vibe",
+      "reasonForReading": "Let’s start by understanding your reason for picking up a book today",
+      "selectPurpose1": "Select the",
+      "selectPurpose2": "purpose",
+      "selectPurpose3": " of your current reading vibe"
+    },
+    "moodPage": {
+      "currentMoodTitle1": "What",
+      "currentMoodTitle2": " mood ",
+      "currentMoodTitle3": " are you in?",
+      "aboutMoodSubTitle": "This is all about how you want your next book to make you feel",
+      "selectFeeling1": "Select the",
+      "selectFeeling2": "feeling",
+      "selectFeeling3": "of your current state of mind"
+    },
+    "flavorOfStoryPage": {
+      "favoriteFlavorTitle1": "What’s your favorite",
+      "favoriteFlavorTitle2": "flavor of story",
+      "narrowDownSubTitle": "Time to narrow things down to the genres you love most",
+      "selectGenres1": "Select the",
+      "selectGenres2": "genres",
+      "selectGenres3": "that appeal to you"
+    },
+    "recommendationsPage": {
+      "recommendationReadyTitle1": "Your recommendation",
+      "recommendationReadyTitle2": "recommendation",
+      "recommendationReadyTitle3": "is ready!",
+      "basedOnResponsesSubtitle": "Based on your responses we suggest you the following",
+      "editPreferences": "Edit preferences",
+      "rent": "read in the hotel",
+      "buy": "buy",
+      "otherRecomendations":"Other Recomendations"
+    },
+    "reviewMyCart":{
+      "myCart":"my cart",
+      "moveToBuy":"Move to buy",
+      "moveToRent":"Move to rent",
+      "rentAnotherBook":"Rent another book",
+      "confirmWithdrawal":"confirm withdrawal",
+      "purchaseMsg":"The book will be pay when you do the check out at the hotel"
+    },
+    "checkout":{
+      "readInstructions":"Read the instructions below",
+      "yourBooks":"Your books",
+      "pickYourBook":"Pick your book",
+      "openingDoor1":"Opening the",
+      "openingDoor2":"door",
+      "firstStepTitle":"First step",
+      "firstStepContent1":"Go to the",
+      "firstStepContent2":"door",
+      "firstStepContent3":"after pick the book the door will close automatically.",
+      "nextStepTitle":"Next step",
+      "nextStepContent":"Please, again to pick your next book.",
+      "closeDoorTime1":"The door",
+      "closeDoorTime2":"will close in",
+      "closeDoorTime3":"minutes"
+    },
+    "thanksPage":{
+      "title":"Happy reading!",
+      "content":"Thanks for using our service. Please, remember to return the books before your checkout at the hotel",
+      "closeSessionTime1":"The session",
+      "closeSessionTime2":"will close in",
+      "closeSessionTime3":"minutes"
+    },
+    "returnBook":{
+      "yourRentedBooks":"Your rented books",
+      "bookToReturn":"Which book do you want to return today?",
+      "book":"books",
+      "rentAnotherBook":"Rent another book",
+      "back": "back",
+      "return": "return",
+      "returnDate": "return date",
+      "noRentedBooks":"You don’t have any book rented yet. Find out the best option in your personal library now.",
+      "rentBook":"Rent a book"
+    },
+    "depositPage":{
+      "depositBookTitle1":"Deposit this book on",
+      "depositBookTitle2":"door",
+      "firstStepTitle":"First step",
+      "firstStepContent1":"Go to the",
+      "firstStepContent2":"door",
+      "firstStepContent3":"after enter the book the door will close automatically. Please ensure to insert the book correctly.",
+      "nextStepTitle":"Next step",
+      "nextStepContent":"Please, come again to return your next book.",
+      "closeDoorTime1":"The door",
+      "closeDoorTime2":"will close in",
+      "closeDoorTime3":"minutes"
+    },
+    "returnThanksPage":{
+      "thanksForReturn1":"Thanks for return",
+      "thanksForReturn2":"book",
+      "returnBookBtn":"Ok, return another book",
+      "closeSessionTime1":"The session",
+      "closeSessionTime2":"will close in",
+      "closeSessionTime3":"minutes"
+    },
+    "ratingPage":{
+      "title":"Let us know your level of satisfaction",
+      "subTitle":"Please, rate us to improve our products. We are super happy to hear you and improve our service.",
+      "feelUsingApp":"How do you feel using our app?",
+      "commentTitle":"Would you like to add a suggestion or comment?",
+      "commentPlaceHolder":"Write a comment here",
+      "optional":"Optional",
+      "submit":"Submit",
+      "closeSessionTime1":"The session",
+      "closeSessionTime2":"will close in",
+      "closeSessionTime3":"minutes"
+    }
+    
+  }
+  

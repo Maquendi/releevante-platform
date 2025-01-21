@@ -12,7 +12,6 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Locales } from "@/config/i18n/request";
 
 export default function SelectLanguage() {
   const NAVBAR_ITEMS = [
@@ -26,19 +25,13 @@ export default function SelectLanguage() {
   const searchParams = useSearchParams();
   const locale = useLocale();
 
+
   return (
     <>
-      {!path.endsWith("catalog") &&
-      !path.includes("auth") &&
-      !path.endsWith("readingvibe") &&
-      !path.endsWith("flavorofstory") &&
-      !path.endsWith("mood") &&
-      !path.includes("home") &&
-      !path.endsWith("/thanks") && 
-      !path.endsWith("/rating")? (
+      {!path.endsWith("/") ? (
         <div>
           <button
-            className="flex cursor-pointer gap-5 justify-between  items-center pl-3 pr-7 z-50"
+            className="flex cursor-pointer gap-5 justify-between  items-center custom:pl-3 custom:pr-7 z-50"
             onClick={()=>router.back()}
           >
             <Image
@@ -58,12 +51,12 @@ export default function SelectLanguage() {
           onOpenChange={setOpen}
           onValueChange={(localeVal) => {
             const currentPath = `${path}?${searchParams!.toString()!}`;
-            router.replace(currentPath, { locale: localeVal as Locales });
+            router.replace(currentPath, { locale: localeVal as any });
           }}
         >
           <SelectTrigger
             className={cn(
-              "w-[150px] py-6 rounded-3xl",
+              "w-[90px] custom:w-[150px] py-6 rounded-3xl",
               open && "bg-primary border-4 border-accent-foreground text-white"
             )}
           >
@@ -78,7 +71,7 @@ export default function SelectLanguage() {
                     src={item.iconSrc}
                     alt={`${item.label} flag`}
                   />
-                  <p>{item.label}</p>
+                  <p className="hidden custom:block">{item.label}</p>
                 </div>
               </SelectItem>
             ))}

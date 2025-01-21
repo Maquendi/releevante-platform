@@ -1,0 +1,189 @@
+{
+  "AuthPage": {
+    "title": "Bienvenido a la Biblioteca Inteligente"
+  },
+  "HomePage": {
+    "showAllBooksTitle": "Muéstrame todos los libros",
+    "showAllBooksText": "¡Explora nuestra biblioteca completa de libros! Navega por una amplia colección de géneros, temas y autores para descubrir tu próxima gran lectura.",
+    "showAllBooksBtn": "Explorar todos los libros",
+    "helpFindBookTitle": "Ayúdame a encontrar el libro adecuado",
+    "helpFindBookText": "¡Déjanos guiarte! Te recomendaremos el libro perfecto adaptado a tus necesidades, solo responde a algunas preguntas rápidas.",
+    "helpFindBookBtn": "Sugiéreme libros",
+    "title1": "Explorar",
+    "title2": "y",
+    "title3": "alquilar",
+    "title4": "libros gratis en nuestra rica colección de libros"
+  },
+
+  "wristbandScanAuth": {
+    "header": "¡Bienvenido a tu biblioteca personal!",
+    "title": "Comienza a escanear tu brazalete",
+    "subTitle": "Sostén tu brazalete en el escáner para acceder a nuestra colección de libros en alquiler o compra.",
+    "footerText": "¿Tienes problemas para escanear tu brazalete?",
+    "footerBtn": "Introduce tu PIN manualmente"
+  },
+  "AuthPasscodePage": {
+    "header": "¡Bienvenido a tu biblioteca personal!",
+    "title": "Empecemos a escanear tu pulsera",
+    "subTitle": "Sostén tu pulsera frente al escáner del kiosco para acceder a nuestra colección de libros para alquilar o comprar.",
+    "footerText": "¿Tienes problemas para escanear tu pulsera?",
+    "footerBtn": "Escanear pulsera"
+  },
+  "catalogPage": {
+    "title": "¡Buenas tardes!",
+    "subTitle": "Explora y alquila gratis nuestra amplia colección de libros",
+    "selectCategory": "Selecciona una categoría",
+    "seeAll": "Ver todo",
+    "notFound1": "No pudimos encontrar ningún",
+    "notFound2": "Por favor, busca en otra categoría o encuentra otro libro que te recomendamos a continuación.",
+    "findRightBook": "Encuentra el libro adecuado para ti",
+    "helpMessage": "¿Aún no encuentras un libro? Estamos aquí para ayudarte. Vamos a encontrar el libro perfecto para alquilar gratis.",
+    "startNow": "Comienza ahora",
+    "books": "libros"
+  },
+  "SeeAllPage": {
+    "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis",
+    "allRecomendationsTitle": "Todas tus recomendaciones",
+    "books": "libros"
+  },
+  "SearchBookPage": {
+    "bookNotFound": "Libro no encontrado",
+    "tryTheseBooks": "Prueba con estos libros en su lugar"
+  },
+  "bookById": {
+    "selectLanguage": "Selecciona un idioma",
+    "bookSummary": "Resumen del libro",
+    "bookDetail": "Detalle del libro",
+    "printLength": "Número de páginas",
+    "publicationDate": "Fecha de publicación",
+    "dimensions": "Dimensiones",
+    "language": "Idioma",
+    "publisher": "Editorial",
+    "rentBannerBtn": "Alquilar gratis",
+    "buyBannerBtn": "Comprar libro"
+  },
+  "cart": {
+    "rent": "alquilar",
+    "purchase": "comprar",
+    "to": "para",
+    "of": "de",
+    "checkout": "finalizar compra",
+    "emptyCart": "No tienes ningún libro en tu carrito",
+    "cart": "carrito"
+  },
+  "vibeBtns": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "submit": "Enviar"
+  },
+  "readingVibePage": {
+    "readingVibe1": "¿Cuál es tu",
+    "readingVibe2": "estado de ánimo para leer",
+    "reasonForReading": "Comencemos entendiendo tu razón para tomar un libro hoy",
+    "selectPurpose1": "Selecciona el",
+    "selectPurpose2": "propósito",
+    "selectPurpose3": "de tu estado de ánimo actual"
+  },
+  "moodPage": {
+    "currentMoodTitle1": "¿Qué",
+    "currentMoodTitle2": " estado de ánimo ",
+    "currentMoodTitle3": " tienes?",
+    "aboutMoodSubTitle": "Esto se trata de cómo quieres que tu próximo libro te haga sentir",
+    "selectFeeling1": "Selecciona el",
+    "selectFeeling2": "sentimiento",
+    "selectFeeling3": "de tu estado actual"
+  },
+  "flavorOfStoryPage": {
+    "favoriteFlavorTitle1": "¿Cuál es tu",
+    "favoriteFlavorTitle2": "tipo de historia favorita",
+    "narrowDownSubTitle": "Es hora de reducir las opciones a los géneros que más te gustan",
+    "selectGenres1": "Selecciona los",
+    "selectGenres2": "géneros",
+    "selectGenres3": "que te atraen"
+  },
+  "recommendationsPage": {
+    "recommendationReadyTitle1": "Tu recomendación",
+    "recommendationReadyTitle2": "recomendación",
+    "recommendationReadyTitle3": "está lista!",
+    "basedOnResponsesSubtitle": "Basado en tus respuestas, te sugerimos lo siguiente",
+    "editPreferences": "Editar preferencias",
+    "rent": "leer en el hotel",
+    "buy": "comprar",
+    "otherRecomendations": "Otras recomendaciones"
+  },
+  "reviewMyCart": {
+    "myCart": "mi carrito",
+    "moveToBuy": "Mover a compra",
+    "moveToRent": "Mover a renta",
+    "rentAnotherBook": "Rentar otro libro",
+    "confirmWithdrawal": "Confirmar retiro",
+    "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel"
+  },
+  "checkout": {
+    "readInstructions": "Lea las instrucciones a continuación",
+    "yourBooks": "Tus libros",
+    "pickYourBook": "Elige tu libro",
+    "openingDoor1": "Abriendo la",
+    "openingDoor2": "puerta",
+    "firstStepTitle": "Primer paso",
+    "firstStepContent1": "Ve a la",
+    "firstStepContent2": "puerta",
+    "firstStepContent3": "después de elegir el libro, la puerta se cerrará automáticamente.",
+    "nextStepTitle": "Siguiente paso",
+    "nextStepContent": "Por favor, elige tu próximo libro de nuevo.",
+    "closeDoorTime1": "La puerta",
+    "closeDoorTime2": "se cerrará en",
+    "closeDoorTime3": "minutos"
+  },
+  "thanksPage": {
+    "title": "¡Feliz lectura!",
+    "content": "Gracias por usar nuestro servicio. Por favor, recuerde devolver los libros antes de su salida del hotel",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
+  },
+  "returnBook": {
+    "yourRentedBooks": "Tus libros alquilados",
+    "bookToReturn": "¿Qué libro quieres devolver hoy?",
+    "book": "libros",
+    "rentAnotherBook": "Alquilar otro libro",
+    "back": "volver",
+    "return": "devolver",
+    "returnDate": "fecha de devolución",
+    "noRentedBooks": "Aún no tienes ningún libro alquilado. Descubre la mejor opción en tu biblioteca personal ahora.",
+    "rentBook": "Alquilar un libro"
+  },
+  "depositPage": {
+    "depositBookTitle1": "Deposita este libro en",
+    "depositBookTitle2": "la puerta",
+    "firstStepTitle": "Primer paso",
+    "firstStepContent1": "Dirígete a la",
+    "firstStepContent2": "puerta",
+    "firstStepContent3": "después de introducir el libro, la puerta se cerrará automáticamente. Por favor, asegúrate de insertar el libro correctamente.",
+    "nextStepTitle": "Siguiente paso",
+    "nextStepContent": "Por favor, regresa para devolver tu próximo libro.",
+    "closeDoorTime1": "La puerta",
+    "closeDoorTime2": "se cerrará en",
+    "closeDoorTime3": "minutos"
+  },
+  "returnThanksPage": {
+    "thanksForReturn1": "Gracias por devolver",
+    "thanksForReturn2": "el libro",
+    "returnBookBtn": "Ok, devolver otro libro",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
+  },
+  "ratingPage": {
+    "title": "Déjanos saber tu nivel de satisfacción",
+    "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
+    "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?",
+    "commentTitle": "¿Te gustaría añadir una sugerencia o comentario?",
+    "commentPlaceHolder": "Escribe un comentario aquí",
+    "optional": "Opcional",
+    "submit": "Enviar",
+    "closeSessionTime1": "La sesión",
+    "closeSessionTime2": "se cerrará en",
+    "closeSessionTime3": "minutos"
+  }
+}
