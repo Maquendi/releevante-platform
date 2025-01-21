@@ -25,6 +25,7 @@ export default function useGetAllBooks({ limit }: GetBooksProps) {
   });
 
   useEffect(()=>{
+    
      (async()=>{
       const bookPromises = books?.map(async (book) => ({
         ...book,
@@ -33,12 +34,15 @@ export default function useGetAllBooks({ limit }: GetBooksProps) {
       const booksWithImages= await Promise.all(bookPromises)
       setAllBooksWithImages(booksWithImages)
      })()
+
+     console.log(`useEffect`)
+
   },[books])
 
   console.log('book images',allBooksWithImages)
 
   return {
-    books:allBooksWithImages,
+    books:books,
     isLoading,
     error,
   };

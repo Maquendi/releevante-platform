@@ -7,8 +7,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
-
 export const createHashFromString = async (string) => {
   const utf8 = new TextEncoder().encode(string);
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
@@ -35,4 +33,10 @@ export function formatDateByRegion(date: Date, region: RegionType = "en-US") {
     date
   );
   return formattedDate;
+}
+
+export default function simpleStringToHash(value: string): string {
+  return value.split("").reduce((hash, char) => {
+    return char.charCodeAt(0) + (hash << 6) + (hash << 16) - hash;
+  }, 0) as any;
 }

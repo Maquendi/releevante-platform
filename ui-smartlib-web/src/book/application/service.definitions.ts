@@ -5,7 +5,8 @@ export interface BookService {
   findAllBookCategory(): Promise<BookCategory[]>;
   findAllBookByCategory(): Promise<BooksByCategory[]>;
   findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]>;
-  findAvailableCopiesByIsbn(search: BookCopySearch[]): Promise<BookCopy[]>;
+  findAvailableCopiesByIsbnForPurchase(search: BookCopySearch[]): Promise<BookCopy[]>;
+  findAvailableCopiesByIsbnForRent(search: BookCopySearch[]): Promise<BookCopy[]>;
   markUnavailable(books: BookCopy[]): Promise<BookCopy[]>;
   findBookById(isbn:string):Promise<Book>
   findAllBooks(params:BooksPagination):Promise<Book[]>
@@ -16,7 +17,8 @@ export interface BookService {
 
 
 export interface BookServiceFacade {
-  findAvailableCopiesByIsbn(search: BookCopySearch[]): Promise<BookCopy[]>;
+  findAvailableCopiesByIsbnForPurchase(search: BookCopySearch[]): Promise<BookCopy[]>;
+  findAvailableCopiesByIsbnForRent(search: BookCopySearch[]): Promise<BookCopy[]>;
   findAllBookCategory(): Promise<BookCategory[]>;
   findAllBookByCategory(): Promise<BooksByCategory[]>;
   findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]>;

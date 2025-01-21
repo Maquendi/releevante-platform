@@ -2,10 +2,11 @@ import { BookCompartment } from "@/book/domain/models";
 import { Cart } from "../domain/cart.model";
 import { CartDto } from "./dto";
 import {
-  BookLoan,
-  BookLoanItem,
-  BookLoanItemStatus,
-  BookLoanStatus,
+  BookTransaction,
+  BookTransactionItem,
+  BookTransactionItemStatus,
+  BookTransactions,
+  BookTransactionStatus,
   LoanGroup,
 } from "../domain/loan.model";
 import { Rating } from "../domain/service-rating.model";
@@ -29,14 +30,14 @@ export interface BridgeIoApiClient {
 }
 
 export interface BookLoanService {
-  checkout(cart: Cart): Promise<BookLoan>;
-  addLoanItemStatus(status: BookLoanItemStatus): Promise<BookLoanItemStatus>;
-  addLoanStatus(status: BookLoanStatus): Promise<BookLoanStatus>;
-  getUserLoanBooks(clientId:UserId):Promise<LoanGroup[]>
+  checkout(cart: Cart): Promise<BookTransactions>;
+  addLoanItemStatus(
+    status: BookTransactionItemStatus
+  ): Promise<BookTransactionItemStatus>;
+  addLoanStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
+  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]>;
 }
 
 export interface ServiceRatingService {
-  saveServiceReview(bookReview: Rating): Promise<Rating[]>
+  saveServiceReview(bookReview: Rating): Promise<Rating[]>;
 }
-
-

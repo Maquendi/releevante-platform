@@ -13,6 +13,7 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .notNull()
     .default(true),
   at_position: text("at_position").default("M10"),
+  usageCount: integer("usage_count", { mode: "number" }).notNull().default(0),
   created_at: text("created_at")
     .notNull()
     .default(sql`(current_timestamp)`)

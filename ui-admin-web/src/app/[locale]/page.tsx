@@ -1,3 +1,4 @@
+
 import MainSliderBooks from "@/components/MainSlider";
 import Navbar from "@/components/Navbar";
 import SelectLanguage from "@/components/SelectLanguage";
@@ -118,4 +119,5 @@ export default async function HomePage() {
       </div>
     </>
   );
+
 }
