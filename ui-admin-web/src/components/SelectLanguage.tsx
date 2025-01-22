@@ -28,7 +28,7 @@ export default function SelectLanguage() {
 
   return (
     <>
-      {!path.endsWith("/") ? (
+      {!path.endsWith("/") && !path.endsWith("/catalog")? (
         <div>
           <button
             className="flex cursor-pointer gap-5 justify-between  items-center custom:pl-3 custom:pr-7 z-50"
@@ -56,7 +56,7 @@ export default function SelectLanguage() {
         >
           <SelectTrigger
             className={cn(
-              "w-[90px] custom:w-[150px] py-6 rounded-3xl",
+              "w-[70px] custom:w-[125px] py-5 pl-1 pr-2 rounded-3xl",
               open && "bg-primary border-4 border-accent-foreground text-white"
             )}
           >
