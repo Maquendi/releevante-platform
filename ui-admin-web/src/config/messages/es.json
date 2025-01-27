@@ -43,8 +43,9 @@
   },
   "SeeAllPage": {
     "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis",
-    "allRecomendationsTitle": "Todas tus recomendaciones",
-    "books": "libros"
+    "books": "libros",
+    "in": "en",
+    "recommendBookBtn": "Recomiéndame un libro"
   },
   "SearchBookPage": {
     "bookNotFound": "Libro no encontrado",

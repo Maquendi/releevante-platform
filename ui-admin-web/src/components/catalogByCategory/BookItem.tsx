@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import ImageWithSkeleton from "../ImageWithSkeleton";
 import Rating from "../Rating";
@@ -23,7 +24,7 @@ export default function BookItem({
   return (
     <div
       className={cn(
-        "flex-shrink-0 space-y-4 text-center snap-start ml-3 md:ml-0 ",
+        "flex-shrink-0 space-y-4 text-center snap-start md:ml-0 ",
         className
       )}
       style={{ width: width ? `${width}px` : isMobile ? '100%':'30%'}}

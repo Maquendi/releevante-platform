@@ -18,7 +18,6 @@ export default async function CatalogPage({
   searchParams: Record<string, string>;
 }) {
   const t = await getTranslations("catalogPage");
-
   const booksByCategory = await FetchBookByCategory(searchParams?.categoryId);
   const allCategories = await FetchAllBookCategories();
 

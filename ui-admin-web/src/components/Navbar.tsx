@@ -48,7 +48,7 @@ export default function Navbar({ onlyMobile }: NavbarProps) {
           sizes="160px"
         />
       </figure>
-      <Link href={"/home"}>
+      <Link href={"/"}>
         <Image
           width={40}
           height={40}

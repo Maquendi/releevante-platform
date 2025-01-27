@@ -4,7 +4,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/config/i18n/routing";
 import { notFound } from "next/navigation";
-import '../globals.css'
+import "../globals.css";
+import { AppReduxProvider } from "@/redux/provider";
+
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],
   subsets: ["latin"],
@@ -30,13 +32,15 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={roboto.className}>
-        <NextIntlClientProvider
-          messages={messages}
-          locale={locale}
-          timeZone="America/Santo_Domingo"
-        >
-          {children}
-        </NextIntlClientProvider>
+        <AppReduxProvider>
+          <NextIntlClientProvider
+            messages={messages}
+            locale={locale}
+            timeZone="America/Santo_Domingo"
+          >
+            {children}
+          </NextIntlClientProvider>
+        </AppReduxProvider>
       </body>
     </html>
   );

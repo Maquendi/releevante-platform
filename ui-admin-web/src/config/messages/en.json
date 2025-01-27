@@ -43,8 +43,9 @@
     },
     "SeeAllPage": {
       "subTitleBanner": "Excellent choice, select up to 4 books to rent for free",
-      "allRecomendationsTitle":"All your recomendations",
-      "books":"books"
+      "books":"books",
+      "in":"in",
+      "recommendBookBtn":"Recommend me a book"
     },
     "SearchBookPage": {
       "bookNotFound": "Book not found",

@@ -49,3 +49,7 @@ export async function FetchAllBookCategories():Promise<any[]> {
 
   return  Object.values(allCategories) as any[]
 }
+
+export async function FetchBookById(bookId:string):Promise<any>{
+  return mockBooks.json.find(item=>item.correlationId === bookId)
+}
