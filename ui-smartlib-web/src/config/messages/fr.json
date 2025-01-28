@@ -25,17 +25,22 @@
     "footerBtn": "Scanner le bracelet"
   },
   "catalogPage": {
-    "title": "Bon après-midi!",
-    "subTitle": "Explorez et louez gratuitement notre riche collection de livres",
+    "title": "Bon après-midi !",
+    "subTitle": "Explorez et empruntez gratuitement notre riche collection de livres",
     "selectCategory": "Sélectionnez une catégorie",
     "seeAll": "Voir tout",
-    "notFound": "Nous n'avons trouvé aucun livre d'action. Veuillez rechercher une autre catégorie ou trouver un autre livre que nous vous recommandons ci-dessous.",
+    "notFound1": "Nous n'avons trouvé aucun",
+    "book": "livre",
+    "notFound2": "Veuillez rechercher une autre catégorie ou trouver un autre livre que nous vous recommandons ci-dessous.",
     "findRightBook": "Trouvez le livre qui vous convient",
-    "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à louer gratuitement.",
+    "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à emprunter gratuitement.",
     "startNow": "Commencez maintenant"
   },
   "SeeAllPage": {
-    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à louer gratuitement"
+    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à emprunter gratuitement",
+    "books": "livres",
+    "in": "dans",
+    "recommendBookBtn": "Recommandez-moi un livre"
   },
   "SearchBookPage": {
     "bookNotFound": "Livre introuvable",

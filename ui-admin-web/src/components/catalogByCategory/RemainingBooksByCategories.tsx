@@ -1,32 +1,27 @@
-"use client";
-
-import { useMemo } from "react";
+import MaxWithWrapper from "../MaxWithWrapper";
 import CatalogSliderItem from "./CatalogSliderItem";
-import useFilterBooksByCategory from "@/hooks/useFilterBooksByCategory";
-
+import { FetchBookByCategory } from "@/actions/book-actions";
 
 interface RemainingBooksByCategoriesPros {
-    subCategoryId: string;
-    categoryId:string;
+  subCategoryId: string;
 }
 
+export default async function RemainingBooksByCategories({
+  subCategoryId,
+}: RemainingBooksByCategoriesPros) {
+  const booksByCategory = await FetchBookByCategory();
 
-export default function RemainingBooksByCategories({
-    subCategoryId,
-    categoryId
-}:RemainingBooksByCategoriesPros) {
-  const {booksByCategory}=useFilterBooksByCategory({categoryId})
+  const remainingCategories =
+    booksByCategory?.filter((item) => item.subCategory.id !== subCategoryId) ||
+    [];
 
-  const remainingCategories = useMemo(() => {
-    return booksByCategory?.filter(
-      (item) => item.subCategory.id !== subCategoryId
-    ) || []
-  }, [booksByCategory, subCategoryId]);
-
-
-  return <div className="space-y-5">
-    {remainingCategories.map(item=>(
-        <CatalogSliderItem key={item?.subCategory.id} {...item}/>
-    ))}
-  </div>;
+  return (
+   <MaxWithWrapper>
+     <div className="space-y-5">
+      {remainingCategories.map((item) => (
+        <CatalogSliderItem key={item?.subCategory.id} {...item} />
+      ))}
+    </div>
+   </MaxWithWrapper>
+  );
 }

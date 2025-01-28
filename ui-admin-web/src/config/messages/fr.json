@@ -42,9 +42,10 @@
     "books": "livres"
   },
   "SeeAllPage": {
-    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à louer gratuitement",
-    "allRecomendationsTitle": "Toutes vos recommandations",
-    "books": "livres"
+    "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à emprunter gratuitement",
+    "books": "livres",
+    "in": "dans",
+    "recommendBookBtn": "Recommandez-moi un livre"
   },
   "SearchBookPage": {
     "bookNotFound": "Livre introuvable",
