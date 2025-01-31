@@ -1,12 +1,12 @@
-import {
-  FetchAllBookCategories,
-  FetchBookByCategory,
-} from "@/actions/book-actions";
+'use client'
 import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import BreadCrumbsPages, { Breadcrumb } from "../BreadCrumbsPages";
 import { Button } from "../ui/button";
 import MaxWithWrapper from "../MaxWithWrapper";
+import useLibraryInventory from "@/hooks/useLibraryInventory";
+import { useLocale, useTranslations } from "next-intl";
+import { Locales } from "@/types/globals";
 
 const breadcrumb: Breadcrumb[] = [
   {
@@ -25,21 +25,17 @@ interface HeaderBannerProp {
   categoryId: string;
 }
 
-export default async function HeaderBanner({
+export default  function HeaderBanner({
   categoryId,
   subCategoryId,
 }: HeaderBannerProp) {
-  const locale = await getLocale();
-  const t = await getTranslations("SeeAllPage");
+  const locale = useLocale();
+  const t = useTranslations("SeeAllPage");
 
-  const categories = await FetchAllBookCategories();
-  const booksByCategory = await FetchBookByCategory();
+ const {filterBySubCategory}=useLibraryInventory()
+  const {selected} = filterBySubCategory(categoryId,subCategoryId)  
 
-  const [bookByCategoryFiltered] = booksByCategory?.filter(
-    (item) => item.subCategory.id === subCategoryId
-  );
-
-  const currentCategory = categories?.find((item) => item.id === categoryId);
+  
 
   return (
     <header className="text-center   py-12 bg-background  bg-white  rounded-b-3xl">
@@ -53,13 +49,13 @@ export default async function HeaderBanner({
             <div>
               <h1 className="text-center md:text-left text-2xl md:text-3xl mb-1 font-semibold space-x-2">
                 <span>
-                  {bookByCategoryFiltered?.subCategory[`${locale}TagValue`]}
+                  {selected?.subCategory?.[`${locale}` as Locales]}
                 </span>
-                {categoryId && (
+                {selected?.category?.en?.toLowerCase() !== 'all' && (
                   <>
                     <span>{t("in")}</span>
                     <span className="text-primary">
-                      {currentCategory?.[`${locale}TagValue`]}
+                      {selected?.category?.[`${locale}` as Locales]}
                     </span>
                   </>
                 )}
