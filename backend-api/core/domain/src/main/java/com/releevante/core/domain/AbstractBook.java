@@ -31,11 +31,7 @@ public abstract class AbstractBook {
 
   abstract int qtyForSale();
 
-  abstract String description();
-
-  abstract String descriptionFr();
-
-  abstract String descriptionSp();
+  abstract BookDescription description();
 
   abstract String author();
 
@@ -84,6 +80,12 @@ public abstract class AbstractBook {
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<BookCpy> copies() {
+    return Collections.emptyList();
+  }
+
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
+  @Value.Default
+  List<CategoryTag> categories() {
     return Collections.emptyList();
   }
 }

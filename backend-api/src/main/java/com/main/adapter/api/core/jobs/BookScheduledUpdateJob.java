@@ -31,28 +31,29 @@ public class BookScheduledUpdateJob {
         .getByAllUnSynchronized()
         .collectList()
         .flatMapMany(
-            ratings -> Flux.fromStream(
-                    ratings.stream().collect(groupingBy(BookRating::isbn)).entrySet().stream())
-                .flatMap(
-                    entry -> {
-                      var isbn = entry.getKey();
-                      return bookRepository
-                          .findByIsbn(isbn)
-                          .map(
-                              book -> {
-                                var currentRating = book.rating();
-                                var voteCounts = entry.getValue().size();
-                                var voteCountSum = book.votes() + voteCounts;
-                                var ratingSum =
-                                    entry.getValue().stream()
-                                        .map(BookRating::rating)
-                                        .reduce(Integer::sum)
-                                        .map(intValue -> (float) intValue)
-                                        .orElse(0f);
-                                var newRating = ((ratingSum / voteCounts) + currentRating) / 2;
-                                return book.withRating(newRating).withVotes(voteCountSum);
-                              });
-                    }))
+            ratings ->
+                Flux.fromStream(
+                        ratings.stream().collect(groupingBy(BookRating::isbn)).entrySet().stream())
+                    .flatMap(
+                        entry -> {
+                          var isbn = entry.getKey();
+                          return bookRepository
+                              .findByIsbn(isbn)
+                              .map(
+                                  book -> {
+                                    var currentRating = book.rating();
+                                    var voteCounts = entry.getValue().size();
+                                    var voteCountSum = book.votes() + voteCounts;
+                                    var ratingSum =
+                                        entry.getValue().stream()
+                                            .map(BookRating::rating)
+                                            .reduce(Integer::sum)
+                                            .map(intValue -> (float) intValue)
+                                            .orElse(0f);
+                                    var newRating = ((ratingSum / voteCounts) + currentRating) / 2;
+                                    return book.withRating(newRating).withVotes(voteCountSum);
+                                  });
+                        }))
         .collectList()
         .then();
   }

@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.Book;
+import com.releevante.core.domain.BookDescription;
 import com.releevante.core.domain.Isbn;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -53,9 +54,9 @@ public class BookRecord extends PersistableEntity {
     record.setTitle(book.title());
     record.setPrice(book.price());
     record.setQty(book.qty());
-    record.setDescription(book.description());
-    record.setDescriptionFr(book.descriptionFr());
-    record.setDescriptionEs(book.descriptionSp());
+    record.setDescription(book.description().en());
+    record.setDescriptionFr(book.description().fr());
+    record.setDescriptionEs(book.description().es());
     record.setCreatedAt(book.createdAt());
     record.setUpdatedAt(book.updatedAt());
     record.setAuthor(book.author());
@@ -81,9 +82,8 @@ public class BookRecord extends PersistableEntity {
         .updatedAt(updatedAt)
         .createdAt(createdAt)
         .author(author)
-        .description(description)
-        .descriptionFr(descriptionFr)
-        .descriptionSp(descriptionEs)
+        .description(
+            BookDescription.builder().en(description).fr(descriptionFr).es(descriptionEs).build())
         .correlationId(correlationId)
         .dimensions(dimensions)
         .printLength(printLength)

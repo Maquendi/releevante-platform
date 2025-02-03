@@ -60,11 +60,21 @@ public interface BookHibernateDao extends ReactiveCrudRepository<BookRecord, Str
           + "\t\tcore.book_image bi\n"
           + "\twhere\n"
           + "\t\tbi.isbn = b.isbn\n"
-          + "\tlimit 1) as image\n"
+          + "\tlimit 1) as image,\n"
+          + "\tt.value_en as category_en,\n"
+          + "\tt.value_fr as category_fr,\n"
+          + "\tt.value_sp as category_sp\n"
           + "from\n"
           + "\tcore.books b\n"
+          + "join core.book_tags bt \n"
+          + "\ton\n"
+          + "\tbt.isbn = b.isbn\n"
+          + "join core.tags t \n"
+          + "\ton\n"
+          + "\tt.id = bt.tag_id\n"
           + "where\n"
-          + "\tb.translation_id=:translationId")
+          + "\tb.translation_id=:translationId\n"
+          + "\tand t.name = 'category'")
   Flux<BookProjection> findAllBy(@Param("translationId") String translationId);
 
   @Query(

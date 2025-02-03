@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.dao.projections;
 
 import com.releevante.core.domain.Book;
+import com.releevante.core.domain.BookDescription;
 import com.releevante.core.domain.Isbn;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,6 +40,9 @@ public class BookProjection {
   private ZonedDateTime updatedAt;
   private ZonedDateTime createdAt;
   private String image;
+  private String categoryEn;
+  private String categoryFr;
+  private String categorySp;
 
   public Book toDomain() {
     return Book.builder()
@@ -46,9 +50,8 @@ public class BookProjection {
         .updatedAt(updatedAt)
         .createdAt(createdAt)
         .author(author)
-        .description(description)
-        .descriptionFr(descriptionFr)
-        .descriptionSp(descriptionEs)
+        .description(
+            BookDescription.builder().en(description).fr(descriptionFr).es(descriptionEs).build())
         .correlationId(correlationId)
         .dimensions(dimensions)
         .printLength(printLength)

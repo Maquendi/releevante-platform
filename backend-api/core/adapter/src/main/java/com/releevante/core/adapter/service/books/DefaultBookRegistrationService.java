@@ -5,10 +5,7 @@ import com.releevante.core.adapter.service.google.GoogleSpreadSheetService;
 import com.releevante.core.adapter.service.google.LibraryInventoryGSheetUtils;
 import com.releevante.core.application.dto.LibraryInventoryDto;
 import com.releevante.core.application.service.BookRegistrationService;
-import com.releevante.core.domain.Book;
-import com.releevante.core.domain.BookImage;
-import com.releevante.core.domain.Isbn;
-import com.releevante.core.domain.Tag;
+import com.releevante.core.domain.*;
 import com.releevante.core.domain.tags.TagTypes;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.UuidGenerator;
@@ -283,9 +280,12 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
           return Book.builder()
               .isbn(Isbn.of(bookId))
               .title(title)
-              .description(descriptionEnglish)
-              .descriptionFr(descriptionFrench)
-              .descriptionSp(descriptionSpanish)
+              .description(
+                  BookDescription.builder()
+                      .en(descriptionEnglish)
+                      .fr(descriptionFrench)
+                      .es(descriptionSpanish)
+                      .build())
               .price(price)
               .author(author)
               .qty(qty)

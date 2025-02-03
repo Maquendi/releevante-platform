@@ -1,5 +1,7 @@
 package com.releevante.core.adapter.persistence.repository;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.releevante.core.adapter.persistence.dao.*;
 import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
 import com.releevante.core.adapter.persistence.dao.projections.BookProjection;
@@ -162,9 +164,12 @@ public class BookRepositoryImpl implements BookRepository {
               .rating(projection.getRating())
               .votes(projection.getVotes())
               .author(projection.getAuthor())
-              .description(projection.getDescription())
-              .descriptionFr(projection.getDescriptionFr())
-              .descriptionSp(projection.getDescriptionEs())
+              .description(
+                  BookDescription.builder()
+                      .en(projection.getDescription())
+                      .fr(projection.getDescriptionFr())
+                      .es(projection.getDescriptionEs())
+                      .build())
               .createdAt(projection.getCreatedAt())
               .updatedAt(projection.getUpdatedAt())
               .bindingType(Optional.ofNullable(projection.getBindingType()))
@@ -204,16 +209,38 @@ public class BookRepositoryImpl implements BookRepository {
   public Flux<Book> findAllBy(String isbn, String translationId) {
     return bookHibernateDao
         .findAllBy(translationId)
+        .collectList()
+        .flatMapMany(
+            bookProjections ->
+                Flux.fromStream(
+                        bookProjections.stream()
+                            .collect(groupingBy(BookProjection::getIsbn))
+                            .values()
+                            .stream())
+                    .map(
+                        projections -> {
+                          var bookUnit = projections.get(0).toDomain();
+                          var categories =
+                              projections.stream()
+                                  .map(
+                                      item ->
+                                          CategoryTag.builder()
+                                              .en(item.getCategoryEn())
+                                              .fr(item.getCategoryFr())
+                                              .es(item.getCategorySp())
+                                              .build())
+                                  .toList();
+                          return bookUnit.withCategories(categories);
+                        }))
         .sort(
-            (i1, i2) -> {
-              if (i1.getIsbn().equals(i2.getIsbn())) {
+            (b1, b2) -> {
+              if (b1.isbn().equals(b2.isbn())) {
                 return 0;
-              } else if (i1.getIsbn().equals(isbn)) {
+              } else if (b1.isbn().value().equals(isbn)) {
                 return -1;
               }
               return 1;
-            })
-        .map(BookProjection::toDomain);
+            });
   }
 
   @Override
