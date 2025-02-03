@@ -14,11 +14,11 @@ import org.immutables.value.Value;
 public abstract class AbstractUser {
   abstract String id();
 
-  abstract String nfcHash();
-
   abstract String fullName();
 
-  abstract String type();
+  abstract String email();
+
+  abstract String phone();
 
   abstract AccountId accountId();
 

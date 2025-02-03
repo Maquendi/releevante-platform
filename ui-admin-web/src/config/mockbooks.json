@@ -1,0 +1,3958 @@
+{
+  "json": [
+    {
+      "tags": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "94e18c60-4d60-4b25-81d1-bccf8036e8de",
+          "esTagValue": "enséñame algo nuevo",
+          "enTagValue": "teach me something new",
+          "frTagValue": "apprenez-moi quelque chose de nouveau",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "ecbb1452-2267-4c3c-b1df-c5128a7f5b0d",
+          "esTagValue": "creciendo en $$",
+          "enTagValue": "growing in $$",
+          "frTagValue": "croissant en $$",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "0068083a-9f57-45aa-993d-c34975413334",
+      "bookTitle": "Practical Soft Tuna",
+      "publisher": "Jessy",
+      "image": "https://picsum.photos/seed/gs9aA/1471/1501",
+      "correlationId": "147ff6f3-f42a-4eb2-95f3-6ef40485a7c9",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "0068083a-9f57-45aa-993d-c34975413334",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "0068083a-9f57-45aa-993d-c34975413334",
+          "language": "french"
+        },
+        {
+          "bookId": "26a5b577-6568-40f9-9ae7-055b8dfa663e",
+          "language": "spanish"
+        },
+        {
+          "bookId": "ed3e335f-a228-4d60-8564-266ca5f4cc5d",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "04a3b78e-dcd6-4521-8b25-d9357c5fef1e",
+      "bookTitle": "Luxurious Bronze Tuna",
+      "publisher": "Carlos",
+      "image": "https://picsum.photos/seed/KPWV7IFWv/2140/333",
+      "correlationId": "52182e05-0996-4110-bdca-5b93d8245c73",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "04a3b78e-dcd6-4521-8b25-d9357c5fef1e",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "04a3b78e-dcd6-4521-8b25-d9357c5fef1e",
+          "language": "english"
+        },
+        {
+          "bookId": "0d3872cf-3ad5-4ded-a8db-dd479e73a57a",
+          "language": "french"
+        },
+        {
+          "bookId": "7589c99c-2e71-4519-ab6d-24ddae5cf63d",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "cb1c5eeb-fb7f-4564-8c69-d2cf8d153f49",
+          "esTagValue": "me encanta un buen misterio o algo emocionante",
+          "enTagValue": "i love a good mystery or some thrilling",
+          "frTagValue": "j'adore un bon mystère ou quelque chose de palpitant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "07195983-4505-4d77-a684-65291014ac3f",
+      "bookTitle": "Awesome Metal Sausages",
+      "publisher": "Mariane",
+      "image": "https://picsum.photos/seed/UzqHiO9/3849/1882",
+      "correlationId": "4143027d-194a-4e6e-a13a-2e835f02ebc6",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "07195983-4505-4d77-a684-65291014ac3f",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "07195983-4505-4d77-a684-65291014ac3f",
+          "language": "english"
+        },
+        {
+          "bookId": "201b1cc5-6c01-4851-8714-4dae6c27bc8e",
+          "language": "french"
+        },
+        {
+          "bookId": "d751a49e-9108-4c22-9861-b969df159c3c",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "17f1d708-e16f-4bb9-9c3d-205d61604177",
+          "esTagValue": "ficción histórica: retrocede en el tiempo",
+          "enTagValue": "historical fiction: step back in time",
+          "frTagValue": "fiction historique : remontez le temps",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "6f0206e5-5b98-4355-b9c8-68f6b1538eb9",
+          "esTagValue": "escalofriante y espeluznante",
+          "enTagValue": "spine-tingling and eerie",
+          "frTagValue": "frissonnant et étrange",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "08a3d149-f0ab-40a6-9c7d-ca6ddb67a457",
+      "bookTitle": "Refined Wooden Chair",
+      "publisher": "Hyman",
+      "image": "https://picsum.photos/seed/H3IwX/331/2720",
+      "correlationId": "0f1277cc-ab18-46bf-8490-5ee87a9782fc",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "08a3d149-f0ab-40a6-9c7d-ca6ddb67a457",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "08a3d149-f0ab-40a6-9c7d-ca6ddb67a457",
+          "language": "french"
+        },
+        {
+          "bookId": "740a20cf-bd42-403f-8b56-924c21b27a7f",
+          "language": "spanish"
+        },
+        {
+          "bookId": "97523615-90dd-44d2-afe1-537b15daf615",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "6f0206e5-5b98-4355-b9c8-68f6b1538eb9",
+          "esTagValue": "escalofriante y espeluznante",
+          "enTagValue": "spine-tingling and eerie",
+          "frTagValue": "frissonnant et étrange",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "9e66a062-dbe2-456e-94f2-ef65ef28e60d",
+          "esTagValue": "aventurero y atrevido",
+          "enTagValue": "adventurous and daring",
+          "frTagValue": "aventureux et audacieux",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "08e88832-3f2f-4d76-8828-1203aab1d344",
+      "bookTitle": "Awesome Bronze Chair",
+      "publisher": "Kristoffer",
+      "image": "https://picsum.photos/seed/copobW3/495/1472",
+      "correlationId": "25d9cd5a-821b-4fde-861d-99a701b2e6d4",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "08e88832-3f2f-4d76-8828-1203aab1d344",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "08e88832-3f2f-4d76-8828-1203aab1d344",
+          "language": "english"
+        },
+        {
+          "bookId": "1f212ec5-6a20-4fb1-9ab5-b6aa2dc30d9b",
+          "language": "spanish"
+        },
+        {
+          "bookId": "efa3469e-e3a8-4da3-99e1-020b4648fd13",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "d62d84f0-1060-46d9-b37c-df8477a693a1",
+          "esTagValue": "misterio/suspenso: ¿quién lo hizo? necesito respuestas",
+          "enTagValue": "mystery/thriller: who did it? need answers",
+          "frTagValue": "mystère/thriller : qui l'a fait ? besoin de réponses",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "0e10ef1a-ffbf-4fd5-9cae-41dc8ffc1f26",
+      "bookTitle": "Handcrafted Rubber Fish",
+      "publisher": "Donavon",
+      "image": "https://picsum.photos/seed/vHwCzwPPO/717/2801",
+      "correlationId": "8d349d45-dc57-414e-9316-e11c6a947cf2",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "0e10ef1a-ffbf-4fd5-9cae-41dc8ffc1f26",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "0e10ef1a-ffbf-4fd5-9cae-41dc8ffc1f26",
+          "language": "french"
+        },
+        {
+          "bookId": "d3b619e3-324f-42f9-9e91-1549846e50af",
+          "language": "english"
+        },
+        {
+          "bookId": "e5399615-b2e5-43ff-83b7-b526355923f1",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "6f16h7e5-dg8h-9g6h-g7hb-2h4hdh0h218e",
+          "esTagValue": "De moda",
+          "enTagValue": "Trendy",
+          "frTagValue": "À la mode",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "0e8593fd-de5b-4c75-a81f-bb229a268a72",
+      "bookTitle": "Intelligent Rubber Hat",
+      "publisher": "Gladys",
+      "image": "https://picsum.photos/seed/wLtps/171/3476",
+      "correlationId": "d7737c59-595b-4107-b465-6f3458480b29",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "0e8593fd-de5b-4c75-a81f-bb229a268a72",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "0e8593fd-de5b-4c75-a81f-bb229a268a72",
+          "language": "spanish"
+        },
+        {
+          "bookId": "7e8991b4-f03b-4170-8058-dbba0e60a892",
+          "language": "french"
+        },
+        {
+          "bookId": "d26fb515-d690-46dd-b406-cab3c078ca5b",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "6f16h7e5-dg8h-9g6h-g7hb-2h4hdh0h218e",
+          "esTagValue": "De moda",
+          "enTagValue": "Trendy",
+          "frTagValue": "À la mode",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "spanish": 0, "french": 0, "english": 5 }
+    },
+    {
+      "tags": [
+        {
+          "id": "05a4c73f-c18d-4939-a77b-4b9ac3cc7986",
+          "esTagValue": "alegre y divertido",
+          "enTagValue": "lighthearted and fun",
+          "frTagValue": "ludique et amusant",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "15a41357-0d6b-4297-b2f1-717b68449ab7",
+          "esTagValue": "drama: emociones profundas, por favor",
+          "enTagValue": "drama: deep emotions, please",
+          "frTagValue": "drame : des émotions profondes, s'il vous plaît",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "id": "0ed6f477-801e-4bc0-8c9d-2f4cc318120a",
+      "bookTitle": "Incredible Bronze Cheese",
+      "publisher": "Katarina",
+      "image": "https://picsum.photos/seed/PFGAC2AE/45/396",
+      "correlationId": "771d7b81-7ec1-4ea7-88a6-202b18f75a2c",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "0ed6f477-801e-4bc0-8c9d-2f4cc318120a",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "0ed6f477-801e-4bc0-8c9d-2f4cc318120a",
+          "language": "french"
+        },
+        {
+          "bookId": "252dc032-0529-43b0-adcb-2ce4b348d993",
+          "language": "english"
+        },
+        {
+          "bookId": "544a2e9b-667a-4243-a591-b32e437aef5c",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "6f0206e5-5b98-4355-b9c8-68f6b1538eb9",
+          "esTagValue": "escalofriante y espeluznante",
+          "enTagValue": "spine-tingling and eerie",
+          "frTagValue": "frissonnant et étrange",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "0f828626-c9f8-416f-82a6-954437f1c6af",
+      "bookTitle": "Generic Soft Fish",
+      "publisher": "Zakary",
+      "image": "https://picsum.photos/seed/qYSbI8/384/3644",
+      "correlationId": "1ede9518-3058-477e-ab14-01c979d30d90",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "0f828626-c9f8-416f-82a6-954437f1c6af",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "0f828626-c9f8-416f-82a6-954437f1c6af",
+          "language": "english"
+        },
+        {
+          "bookId": "b14dd9b5-27a1-45e3-bc3b-5db86dc85098",
+          "language": "spanish"
+        },
+        {
+          "bookId": "bec44904-7a15-4499-a8f1-43001367e867",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "4be3aafd-d3dc-4c46-9122-9d5e0f70cbbc",
+          "esTagValue": "acogedor y nostálgico",
+          "enTagValue": "cozy and nostalgic",
+          "frTagValue": "confortable et nostalgique",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "12120a03-2594-4864-9733-82c13837d1db",
+      "bookTitle": "Oriental Concrete Sausages",
+      "publisher": "Laisha",
+      "image": "https://picsum.photos/seed/L5pXz2/2389/2987",
+      "correlationId": "802200d5-ffac-4dbb-a5d2-981830a7c6cf",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "12120a03-2594-4864-9733-82c13837d1db",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "12120a03-2594-4864-9733-82c13837d1db",
+          "language": "english"
+        },
+        {
+          "bookId": "c13b9797-ac74-4fc8-ac68-ddaea7ad0c01",
+          "language": "spanish"
+        },
+        {
+          "bookId": "d2fbe32c-47e2-4d93-b32f-69eb02e4a612",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
+          "esTagValue": "Popular",
+          "enTagValue": "Popular",
+          "frTagValue": "Populaire",
+          "tagName": "subcategory"
+        }
+      ],
+      "id": "12287900-2c87-4184-b7e3-f0c58f4a9ef0",
+      "bookTitle": "Luxurious Granite Chicken",
+      "publisher": "Lennie",
+      "image": "https://loremflickr.com/2660/3405?lock=6428055750432000",
+      "correlationId": "c4c5c589-b77d-4f7f-b2aa-8088df382ac4",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "12287900-2c87-4184-b7e3-f0c58f4a9ef0",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "12287900-2c87-4184-b7e3-f0c58f4a9ef0",
+          "language": "spanish"
+        },
+        {
+          "bookId": "9d44e555-b834-4443-9989-2087374dcf6b",
+          "language": "english"
+        },
+        {
+          "bookId": "da3848f2-f271-4b54-9e1d-241ced6258ec",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
+          "esTagValue": "Popular",
+          "enTagValue": "Popular",
+          "frTagValue": "Populaire",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "id": "14f49b85-a551-4b68-b243-39ae2cbc33d5",
+      "bookTitle": "Bespoke Cotton Bike",
+      "publisher": "Baron",
+      "image": "https://loremflickr.com/2098/583?lock=310665928079514",
+      "correlationId": "9b13bc3a-4722-4787-91e4-58fa9f854ba1",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "14f49b85-a551-4b68-b243-39ae2cbc33d5",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "14f49b85-a551-4b68-b243-39ae2cbc33d5",
+          "language": "english"
+        },
+        {
+          "bookId": "71720116-d741-4ddf-958a-3d0a8d0a513e",
+          "language": "french"
+        },
+        {
+          "bookId": "8cdb3746-144e-4a9e-9a39-d78429bb152d",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "ecbb1452-2267-4c3c-b1df-c5128a7f5b0d",
+          "esTagValue": "creciendo en $$",
+          "enTagValue": "growing in $$",
+          "frTagValue": "croissant en $$",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "165228e6-8510-4d8a-989a-ade9de6a2e08",
+      "bookTitle": "Unbranded Frozen Shoes",
+      "publisher": "Gaston",
+      "image": "https://loremflickr.com/2758/970?lock=3644475882474349",
+      "correlationId": "d6d58548-2580-4f5b-b54a-edeec25648f8",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "165228e6-8510-4d8a-989a-ade9de6a2e08",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "165228e6-8510-4d8a-989a-ade9de6a2e08",
+          "language": "french"
+        },
+        {
+          "bookId": "3ddd9d5d-9c9c-4bd6-8438-b3d1fe92ca46",
+          "language": "english"
+        },
+        {
+          "bookId": "ed31577d-17a5-439c-90e7-3a2741521241",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "fbbd3d38-906f-4b80-9a85-cc295a3fbc76",
+          "esTagValue": "ciencia ficción: a las estrellas y más allá",
+          "enTagValue": "sci-fi: to the stars and beyond",
+          "frTagValue": "science-fiction : vers les étoiles et au-delà",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "16c27bd0-7e5a-476c-8b35-d411ef600104",
+      "bookTitle": "Recycled Wooden Chips",
+      "publisher": "Joshua",
+      "image": "https://loremflickr.com/2945/3367?lock=4909473481522305",
+      "correlationId": "b896c603-6b97-42d2-a072-d0a61ef142b6",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "16c27bd0-7e5a-476c-8b35-d411ef600104",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "16c27bd0-7e5a-476c-8b35-d411ef600104",
+          "language": "spanish"
+        },
+        {
+          "bookId": "84bbce6a-6422-4721-88d7-4c035332a692",
+          "language": "french"
+        },
+        {
+          "bookId": "90aadbfc-de90-426c-924a-1401ef4172cf",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "8a3d5f3a-bf8f-44c5-b84d-b1a2e69e7451",
+          "esTagValue": "no ficción: historias reales, hechos reales, dinero",
+          "enTagValue": "non-fiction: real stories, real facts, money",
+          "frTagValue": "non-fiction : histoires vraies, faits réels, argent",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "184db3da-293e-4465-aab6-25a12186172b",
+      "bookTitle": "Incredible Frozen Car",
+      "publisher": "Hilda",
+      "image": "https://loremflickr.com/3324/1094?lock=1554185070268725",
+      "correlationId": "a5ec207e-7376-45a8-a3de-3481c5c124d9",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "184db3da-293e-4465-aab6-25a12186172b",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "184db3da-293e-4465-aab6-25a12186172b",
+          "language": "spanish"
+        },
+        {
+          "bookId": "59b4f550-d38d-4a85-919f-5537dbef528d",
+          "language": "french"
+        },
+        {
+          "bookId": "788c6f63-c321-482a-a7f7-e0460b910537",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "6f16h7e5-dg8h-9g6h-g7hb-2h4hdh0h218e",
+          "esTagValue": "De moda",
+          "enTagValue": "Trendy",
+          "frTagValue": "À la mode",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "9e66a062-dbe2-456e-94f2-ef65ef28e60d",
+          "esTagValue": "aventurero y atrevido",
+          "enTagValue": "adventurous and daring",
+          "frTagValue": "aventureux et audacieux",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "18f5cbf8-a561-48fa-a708-227e1664d8c4",
+      "bookTitle": "Fantastic Fresh Chair",
+      "publisher": "Marcel",
+      "image": "https://picsum.photos/seed/TV3VW/2021/1825",
+      "correlationId": "053f2529-e24e-4379-b7f6-f4b7df201e2b",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "18f5cbf8-a561-48fa-a708-227e1664d8c4",
+        "language": "french"
+      },
+      "bookCopyQty": 5,
+      "languages": [
+        {
+          "bookId": "18f5cbf8-a561-48fa-a708-227e1664d8c4",
+          "language": "french"
+        },
+        {
+          "bookId": "dd9cff48-1aa1-4eb7-9700-e54a97bcf95c",
+          "language": "english"
+        },
+        {
+          "bookId": "ee0b3887-d07b-4864-9489-68b99898df63",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "6f16h7e5-dg8h-9g6h-g7hb-2h4hdh0h218e",
+          "esTagValue": "De moda",
+          "enTagValue": "Trendy",
+          "frTagValue": "À la mode",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 5, "english": 2, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "cb1c5eeb-fb7f-4564-8c69-d2cf8d153f49",
+          "esTagValue": "me encanta un buen misterio o algo emocionante",
+          "enTagValue": "i love a good mystery or some thrilling",
+          "frTagValue": "j'adore un bon mystère ou quelque chose de palpitant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "1e957ce8-c85a-46b4-b470-c90819a8c6e7",
+      "bookTitle": "Oriental Cotton Cheese",
+      "publisher": "Robin",
+      "image": "https://picsum.photos/seed/oWUt7L5/1816/720",
+      "correlationId": "bbfcc0d5-965f-4c4c-b9dc-b99c4e0dda5e",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "1e957ce8-c85a-46b4-b470-c90819a8c6e7",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "1e957ce8-c85a-46b4-b470-c90819a8c6e7",
+          "language": "english"
+        },
+        {
+          "bookId": "3e2f121c-3a2a-47ca-8282-78240e77bcd2",
+          "language": "spanish"
+        },
+        {
+          "bookId": "95c4174d-39bb-49a6-996e-197c34866703",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "c84d8303-6d04-4f99-9f7d-4e5374c8b198",
+          "esTagValue": "romance: ¡chispas volando!",
+          "enTagValue": "romance: sparks flying!",
+          "frTagValue": "romance : des étincelles qui volent !",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "1ebf5bcb-a09a-411c-ae85-e00ac7e07aeb",
+      "bookTitle": "Electronic Rubber Salad",
+      "publisher": "Carol",
+      "image": "https://loremflickr.com/539/882?lock=4152188691470021",
+      "correlationId": "04407b22-cecd-46e5-a76d-a49bdf313d9a",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "1ebf5bcb-a09a-411c-ae85-e00ac7e07aeb",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "1ebf5bcb-a09a-411c-ae85-e00ac7e07aeb",
+          "language": "french"
+        },
+        {
+          "bookId": "95844b8d-a568-41e1-b126-212d32f55801",
+          "language": "spanish"
+        },
+        {
+          "bookId": "f9810285-94ec-4b8f-8e71-c0be27e6799d",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "ecbb1452-2267-4c3c-b1df-c5128a7f5b0d",
+          "esTagValue": "creciendo en $$",
+          "enTagValue": "growing in $$",
+          "frTagValue": "croissant en $$",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "1ef9a1f8-4d3c-4a8a-b1e9-7314b1ef8b7e",
+      "bookTitle": "Luxurious Plastic Table",
+      "publisher": "Roberta",
+      "image": "https://picsum.photos/seed/EqaiCZ1usI/445/503",
+      "correlationId": "7af5a810-b325-4779-89a9-5bdadd71ad16",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "1ef9a1f8-4d3c-4a8a-b1e9-7314b1ef8b7e",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "1ef9a1f8-4d3c-4a8a-b1e9-7314b1ef8b7e",
+          "language": "english"
+        },
+        {
+          "bookId": "1f21b171-120d-4264-ab3e-8ebc380b372f",
+          "language": "spanish"
+        },
+        {
+          "bookId": "8ab16092-59b2-4c74-9184-b322c43ad2f9",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "9e66a062-dbe2-456e-94f2-ef65ef28e60d",
+          "esTagValue": "aventurero y atrevido",
+          "enTagValue": "adventurous and daring",
+          "frTagValue": "aventureux et audacieux",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "2102019c-1ce1-43d6-869f-64e141a27c03",
+      "bookTitle": "Intelligent Soft Hat",
+      "publisher": "Bella",
+      "image": "https://loremflickr.com/1955/3651?lock=4820794527267387",
+      "correlationId": "497368b9-1cd2-40db-b7cd-fe2d200bbbee",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "2102019c-1ce1-43d6-869f-64e141a27c03",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "2102019c-1ce1-43d6-869f-64e141a27c03",
+          "language": "spanish"
+        },
+        {
+          "bookId": "33b1d7cc-e53f-4e81-875c-3dc0e44e81cc",
+          "language": "english"
+        },
+        {
+          "bookId": "f7adcbbb-3d22-42d5-92e7-079e11e87e95",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "94e18c60-4d60-4b25-81d1-bccf8036e8de",
+          "esTagValue": "enséñame algo nuevo",
+          "enTagValue": "teach me something new",
+          "frTagValue": "apprenez-moi quelque chose de nouveau",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "2581e59b-3eab-4dda-b4e6-d8f3743172d8",
+      "bookTitle": "Sleek Rubber Chair",
+      "publisher": "Alexandrea",
+      "image": "https://picsum.photos/seed/J36R5x/1024/3321",
+      "correlationId": "e0369f5f-b4d8-4303-b93d-a139ae03e56b",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "2581e59b-3eab-4dda-b4e6-d8f3743172d8",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "2581e59b-3eab-4dda-b4e6-d8f3743172d8",
+          "language": "french"
+        },
+        {
+          "bookId": "dc5dbb25-79f3-4fe6-86c2-62d61cb2f802",
+          "language": "spanish"
+        },
+        {
+          "bookId": "f519ad18-038d-4023-a97f-a5bbe2a58432",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "b1f8ddea-d1a6-4f57-8ec9-9e6c4d8e1e25",
+          "esTagValue": "quiero entretenerme",
+          "enTagValue": "i want to be entertained",
+          "frTagValue": "je veux être diverti",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "29869d73-bb21-44e0-a66a-0f0bf7e8971d",
+      "bookTitle": "Sleek Fresh Keyboard",
+      "publisher": "Madelynn",
+      "image": "https://picsum.photos/seed/iZZq5/3420/3877",
+      "correlationId": "941ac4de-2da5-4954-9ae9-712ced5b6080",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "29869d73-bb21-44e0-a66a-0f0bf7e8971d",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "29869d73-bb21-44e0-a66a-0f0bf7e8971d",
+          "language": "english"
+        },
+        {
+          "bookId": "5b0e429a-3440-4024-9eec-7633165b5f00",
+          "language": "french"
+        },
+        {
+          "bookId": "89224a1c-957a-4e79-aad5-2c24d17b1a48",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "17f1d708-e16f-4bb9-9c3d-205d61604177",
+          "esTagValue": "ficción histórica: retrocede en el tiempo",
+          "enTagValue": "historical fiction: step back in time",
+          "frTagValue": "fiction historique : remontez le temps",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "d4b1fcd8-ece3-44b8-8eaf-914d2d4a8bc3",
+          "esTagValue": "algo relajante",
+          "enTagValue": "something relaxing",
+          "frTagValue": "quelque chose de relaxant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "29faed00-16e0-4dfa-af25-21b470c3c339",
+      "bookTitle": "Luxurious Fresh Table",
+      "publisher": "Madelyn",
+      "image": "https://picsum.photos/seed/3UvMcg/759/1340",
+      "correlationId": "73d8036c-1749-41e1-9ac0-67d59c570a95",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "29faed00-16e0-4dfa-af25-21b470c3c339",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "29faed00-16e0-4dfa-af25-21b470c3c339",
+          "language": "french"
+        },
+        {
+          "bookId": "50919c25-7a06-4268-97c2-1d13398351a1",
+          "language": "spanish"
+        },
+        {
+          "bookId": "b6b89656-f6b1-4aac-ad6a-0cf0320e400d",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "94e18c60-4d60-4b25-81d1-bccf8036e8de",
+          "esTagValue": "enséñame algo nuevo",
+          "enTagValue": "teach me something new",
+          "frTagValue": "apprenez-moi quelque chose de nouveau",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "fbbd3d38-906f-4b80-9a85-cc295a3fbc76",
+          "esTagValue": "ciencia ficción: a las estrellas y más allá",
+          "enTagValue": "sci-fi: to the stars and beyond",
+          "frTagValue": "science-fiction : vers les étoiles et au-delà",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "2b7ab447-d374-497e-bf53-d0de449fb54f",
+      "bookTitle": "Luxurious Soft Table",
+      "publisher": "Cary",
+      "image": "https://loremflickr.com/900/34?lock=5137554357867023",
+      "correlationId": "3f752768-3ced-4dbd-a251-d74dbd7a1535",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "2b7ab447-d374-497e-bf53-d0de449fb54f",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "2b7ab447-d374-497e-bf53-d0de449fb54f",
+          "language": "french"
+        },
+        {
+          "bookId": "949ec9a3-b1d1-453e-85f9-a69dcb6a4cc3",
+          "language": "english"
+        },
+        {
+          "bookId": "e6a5f83b-3a4d-49d6-bd84-4b596f5343dd",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "8a3d5f3a-bf8f-44c5-b84d-b1a2e69e7451",
+          "esTagValue": "no ficción: historias reales, hechos reales, dinero",
+          "enTagValue": "non-fiction: real stories, real facts, money",
+          "frTagValue": "non-fiction : histoires vraies, faits réels, argent",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "cb1c5eeb-fb7f-4564-8c69-d2cf8d153f49",
+          "esTagValue": "me encanta un buen misterio o algo emocionante",
+          "enTagValue": "i love a good mystery or some thrilling",
+          "frTagValue": "j'adore un bon mystère ou quelque chose de palpitant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "2ce3b547-e98d-4b38-8aa8-3eeaa752a626",
+      "bookTitle": "Sleek Granite Car",
+      "publisher": "Miles",
+      "image": "https://loremflickr.com/835/179?lock=3590129342181803",
+      "correlationId": "60a0f238-10fd-4776-bf02-4d74b86161a1",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "2ce3b547-e98d-4b38-8aa8-3eeaa752a626",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "2ce3b547-e98d-4b38-8aa8-3eeaa752a626",
+          "language": "french"
+        },
+        {
+          "bookId": "7d11055a-080b-4d58-bb92-efaf27ae50a0",
+          "language": "spanish"
+        },
+        {
+          "bookId": "84e5b592-7419-4907-a8d0-e84d35fcd0c4",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "b1f8ddea-d1a6-4f57-8ec9-9e6c4d8e1e25",
+          "esTagValue": "quiero entretenerme",
+          "enTagValue": "i want to be entertained",
+          "frTagValue": "je veux être diverti",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "2d3c5bf6-f980-482f-914c-f09062d5fa14",
+      "bookTitle": "Recycled Granite Car",
+      "publisher": "Corine",
+      "image": "https://picsum.photos/seed/7Qgdy3/1079/1508",
+      "correlationId": "887ce82d-515c-498e-a615-e0bbfa498fce",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "2d3c5bf6-f980-482f-914c-f09062d5fa14",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "2d3c5bf6-f980-482f-914c-f09062d5fa14",
+          "language": "french"
+        },
+        {
+          "bookId": "2ffa5317-cc5a-411c-bdb6-8ba98c79b7a4",
+          "language": "english"
+        },
+        {
+          "bookId": "811a266b-4137-42e2-b895-e0b1bfa4ae9b",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "68178b72-d284-4370-9f88-c17b5f5a4f8c",
+          "esTagValue": "mágico y encantador",
+          "enTagValue": "magical and enchanting",
+          "frTagValue": "magique et enchanteur",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "b3e8d6f7-4314-4a0a-bdf3-2022c39143eb",
+          "esTagValue": "romántico y digno de desmayo",
+          "enTagValue": "romantic and swoon-worthy",
+          "frTagValue": "romantique et à tomber",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "2e274c37-8497-460b-b22e-4756b120ac8a",
+      "bookTitle": "Fantastic Fresh Bacon",
+      "publisher": "Giovanna",
+      "image": "https://picsum.photos/seed/Aks599Hq2/899/2161",
+      "correlationId": "597ff1e2-9848-48a5-ae36-d235ac7fb636",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "2e274c37-8497-460b-b22e-4756b120ac8a",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "2e274c37-8497-460b-b22e-4756b120ac8a",
+          "language": "english"
+        },
+        {
+          "bookId": "3e4d437f-edd7-466b-95c9-7025b1634846",
+          "language": "french"
+        },
+        {
+          "bookId": "42765f53-1b2a-457d-897c-435380b8f7eb",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "9e2e350e-dca6-40b9-93be-bfc06051bc75",
+          "esTagValue": "sorpréndeme",
+          "enTagValue": "surprise me",
+          "frTagValue": "surprenez-moi",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "316bdc08-91bd-406c-b954-0878f1ef1a95",
+      "bookTitle": "Intelligent Concrete Mouse",
+      "publisher": "Michaela",
+      "image": "https://loremflickr.com/439/299?lock=8351397750928846",
+      "correlationId": "53b8d9d0-4520-4df6-a40c-fa6247a92eb1",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "316bdc08-91bd-406c-b954-0878f1ef1a95",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "316bdc08-91bd-406c-b954-0878f1ef1a95",
+          "language": "french"
+        },
+        {
+          "bookId": "519dc363-8d47-4b3c-bacd-8850e8bd5c40",
+          "language": "english"
+        },
+        {
+          "bookId": "bb634c45-f896-43fe-861d-ddbeecf716a4",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "b1f8ddea-d1a6-4f57-8ec9-9e6c4d8e1e25",
+          "esTagValue": "quiero entretenerme",
+          "enTagValue": "i want to be entertained",
+          "frTagValue": "je veux être diverti",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "d62d84f0-1060-46d9-b37c-df8477a693a1",
+          "esTagValue": "misterio/suspenso: ¿quién lo hizo? necesito respuestas",
+          "enTagValue": "mystery/thriller: who did it? need answers",
+          "frTagValue": "mystère/thriller : qui l'a fait ? besoin de réponses",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "3de61fb0-c245-4d43-8283-d69eede56d02",
+      "bookTitle": "Oriental Frozen Chips",
+      "publisher": "Anjali",
+      "image": "https://loremflickr.com/81/3482?lock=7447044340155139",
+      "correlationId": "e4ff56f4-495d-4714-9348-6a770c1beed8",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "3de61fb0-c245-4d43-8283-d69eede56d02",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "3de61fb0-c245-4d43-8283-d69eede56d02",
+          "language": "french"
+        },
+        {
+          "bookId": "64d03544-12ec-4a87-933a-c8e72310879a",
+          "language": "english"
+        },
+        {
+          "bookId": "c95abe4a-07a8-4640-9aa1-0a1c3f40ae0f",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "3df13b9f-1fb6-4daf-8fd4-c9a9246c529b",
+      "bookTitle": "Recycled Wooden Chips",
+      "publisher": "Raphael",
+      "image": "https://picsum.photos/seed/X4ixDiD/1342/3071",
+      "correlationId": "1a54874d-e31a-45d3-a88c-437aea787adf",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "3df13b9f-1fb6-4daf-8fd4-c9a9246c529b",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "3df13b9f-1fb6-4daf-8fd4-c9a9246c529b",
+          "language": "english"
+        },
+        {
+          "bookId": "8f6b8a3b-13bb-4b84-abbe-3c7d0aaf726c",
+          "language": "spanish"
+        },
+        {
+          "bookId": "ef793244-2f78-496c-8d7c-d76fd11050a6",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
+          "esTagValue": "Popular",
+          "enTagValue": "Popular",
+          "frTagValue": "Populaire",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "d62d84f0-1060-46d9-b37c-df8477a693a1",
+          "esTagValue": "misterio/suspenso: ¿quién lo hizo? necesito respuestas",
+          "enTagValue": "mystery/thriller: who did it? need answers",
+          "frTagValue": "mystère/thriller : qui l'a fait ? besoin de réponses",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "3e5b15b8-7e26-4baf-b104-ce74ac913d04",
+      "bookTitle": "Recycled Steel Pants",
+      "publisher": "Destany",
+      "image": "https://picsum.photos/seed/7t77cQ/1064/2275",
+      "correlationId": "55ef219d-4b6a-427f-bfe8-433b6ab636df",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "3e5b15b8-7e26-4baf-b104-ce74ac913d04",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "3e5b15b8-7e26-4baf-b104-ce74ac913d04",
+          "language": "french"
+        },
+        {
+          "bookId": "4f6a9d18-299d-4d39-8f53-4dd45d5395bf",
+          "language": "english"
+        },
+        {
+          "bookId": "e1f3f04a-7e3e-431d-9328-c7498fae224d",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
+          "esTagValue": "Popular",
+          "enTagValue": "Popular",
+          "frTagValue": "Populaire",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "68178b72-d284-4370-9f88-c17b5f5a4f8c",
+          "esTagValue": "mágico y encantador",
+          "enTagValue": "magical and enchanting",
+          "frTagValue": "magique et enchanteur",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "9e2e350e-dca6-40b9-93be-bfc06051bc75",
+          "esTagValue": "sorpréndeme",
+          "enTagValue": "surprise me",
+          "frTagValue": "surprenez-moi",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "40611774-e5ab-47e8-9b22-d5c09c09bdab",
+      "bookTitle": "Gorgeous Cotton Chicken",
+      "publisher": "Taylor",
+      "image": "https://loremflickr.com/1437/1319?lock=785646430081076",
+      "correlationId": "bcc66e48-aba8-4581-b12e-7118fd89ad95",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "40611774-e5ab-47e8-9b22-d5c09c09bdab",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "40611774-e5ab-47e8-9b22-d5c09c09bdab",
+          "language": "spanish"
+        },
+        {
+          "bookId": "a8cc27eb-e5f1-4e3e-beab-b290092ad1c3",
+          "language": "english"
+        },
+        {
+          "bookId": "cf517d3f-33ca-4cbc-a7b1-4e09210e3d2b",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "6f0206e5-5b98-4355-b9c8-68f6b1538eb9",
+          "esTagValue": "escalofriante y espeluznante",
+          "enTagValue": "spine-tingling and eerie",
+          "frTagValue": "frissonnant et étrange",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "id": "442fa3e5-11ee-4031-8c57-1a6e8637f215",
+      "bookTitle": "Gorgeous Concrete Gloves",
+      "publisher": "Broderick",
+      "image": "https://loremflickr.com/3788/870?lock=4901508191527454",
+      "correlationId": "0647b0d1-44fa-4032-8647-f1290812a03a",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "442fa3e5-11ee-4031-8c57-1a6e8637f215",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "442fa3e5-11ee-4031-8c57-1a6e8637f215",
+          "language": "english"
+        },
+        {
+          "bookId": "94c020ca-1e95-44e8-8c98-bbc215b5f529",
+          "language": "french"
+        },
+        {
+          "bookId": "db8630ab-85bd-4a16-8930-7e1dbfd58799",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "bcb7c42b-8cf1-4b26-9515-cf2f94e7f2d4",
+          "esTagValue": "reflexivo e inspirador",
+          "enTagValue": "thoughtful and inspiring",
+          "frTagValue": "réfléchi et inspirant",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "443e7a94-71a4-4272-ba3d-7060911983c9",
+      "bookTitle": "Ergonomic Metal Ball",
+      "publisher": "Aylin",
+      "image": "https://loremflickr.com/3523/3889?lock=6835777393550913",
+      "correlationId": "892c0628-d9e6-4e0d-a98d-0ec12674abfe",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "443e7a94-71a4-4272-ba3d-7060911983c9",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "443e7a94-71a4-4272-ba3d-7060911983c9",
+          "language": "english"
+        },
+        {
+          "bookId": "519a9ef2-13fb-4155-824b-df660d313531",
+          "language": "french"
+        },
+        {
+          "bookId": "d89f6ca3-c7b5-45dd-8f93-28c7e92f19d8",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "d62d84f0-1060-46d9-b37c-df8477a693a1",
+          "esTagValue": "misterio/suspenso: ¿quién lo hizo? necesito respuestas",
+          "enTagValue": "mystery/thriller: who did it? need answers",
+          "frTagValue": "mystère/thriller : qui l'a fait ? besoin de réponses",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "fbbd3d38-906f-4b80-9a85-cc295a3fbc76",
+          "esTagValue": "ciencia ficción: a las estrellas y más allá",
+          "enTagValue": "sci-fi: to the stars and beyond",
+          "frTagValue": "science-fiction : vers les étoiles et au-delà",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "446e8d99-7e97-4fd8-821e-f44bc1f2c9b0",
+      "bookTitle": "Luxurious Granite Pizza",
+      "publisher": "Keith",
+      "image": "https://picsum.photos/seed/IPmAK/2108/1285",
+      "correlationId": "230c0cb9-4332-4e85-bd29-66b30e72ca83",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "446e8d99-7e97-4fd8-821e-f44bc1f2c9b0",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "446e8d99-7e97-4fd8-821e-f44bc1f2c9b0",
+          "language": "english"
+        },
+        {
+          "bookId": "75b53acc-1452-4b0b-8fa9-cb2d44213e0f",
+          "language": "french"
+        },
+        {
+          "bookId": "f1ae5268-51be-438b-a7fb-00627997f791",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "62cf9486-e7b0-4b4b-bce6-8e6c013d70b4",
+          "esTagValue": "fantasía: dragón, magia, etc",
+          "enTagValue": "fantasy: dragon, magic, etc",
+          "frTagValue": "fantastique : dragon, magie, etc",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "bcb7c42b-8cf1-4b26-9515-cf2f94e7f2d4",
+          "esTagValue": "reflexivo e inspirador",
+          "enTagValue": "thoughtful and inspiring",
+          "frTagValue": "réfléchi et inspirant",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "44fd5be7-da65-4282-958f-222fcb390413",
+      "bookTitle": "Rustic Granite Sausages",
+      "publisher": "Theodore",
+      "image": "https://picsum.photos/seed/wUDEVtH/825/1070",
+      "correlationId": "940875b9-3b4e-47e0-8668-828991d00b13",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "44fd5be7-da65-4282-958f-222fcb390413",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "44fd5be7-da65-4282-958f-222fcb390413",
+          "language": "spanish"
+        },
+        {
+          "bookId": "53bdda5e-4aca-4f51-a7f8-bcfcbe3c3a4e",
+          "language": "english"
+        },
+        {
+          "bookId": "54eaa9d5-96df-4441-a94d-e8c2e1f8431f",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "id": "4a38da76-b28e-4655-931d-0f60a123d911",
+      "bookTitle": "Small Steel Cheese",
+      "publisher": "Leora",
+      "image": "https://picsum.photos/seed/mnCGz0/2204/2241",
+      "correlationId": "39b032f4-a033-4ba8-92a1-3337732fcd32",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "4a38da76-b28e-4655-931d-0f60a123d911",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "4a38da76-b28e-4655-931d-0f60a123d911",
+          "language": "english"
+        },
+        {
+          "bookId": "d151f73a-79e3-43bf-89f9-5b3789645404",
+          "language": "spanish"
+        },
+        {
+          "bookId": "f0988c07-e078-4225-85b9-4244df907514",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "68178b72-d284-4370-9f88-c17b5f5a4f8c",
+          "esTagValue": "mágico y encantador",
+          "enTagValue": "magical and enchanting",
+          "frTagValue": "magique et enchanteur",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "d62d84f0-1060-46d9-b37c-df8477a693a1",
+          "esTagValue": "misterio/suspenso: ¿quién lo hizo? necesito respuestas",
+          "enTagValue": "mystery/thriller: who did it? need answers",
+          "frTagValue": "mystère/thriller : qui l'a fait ? besoin de réponses",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "4dd728d9-4f2d-4aad-94fc-1b029e384537",
+      "bookTitle": "Sleek Metal Pizza",
+      "publisher": "Bryon",
+      "image": "https://loremflickr.com/3227/587?lock=7043907523549745",
+      "correlationId": "05fc982c-c10d-41f3-b049-ef8bdb0ee51c",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "4dd728d9-4f2d-4aad-94fc-1b029e384537",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "4dd728d9-4f2d-4aad-94fc-1b029e384537",
+          "language": "french"
+        },
+        {
+          "bookId": "74c90859-19a2-4452-a198-42d20dd90cad",
+          "language": "english"
+        },
+        {
+          "bookId": "e2f11851-1bd9-4648-866b-dae5539e6a0d",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "15a41357-0d6b-4297-b2f1-717b68449ab7",
+          "esTagValue": "drama: emociones profundas, por favor",
+          "enTagValue": "drama: deep emotions, please",
+          "frTagValue": "drame : des émotions profondes, s'il vous plaît",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "id": "5450e93a-a3b7-4bcf-9fda-694133e797b8",
+      "bookTitle": "Generic Cotton Chair",
+      "publisher": "Madison",
+      "image": "https://loremflickr.com/3550/1759?lock=1522999192199427",
+      "correlationId": "f642187a-4f05-4e7f-b4c6-f8ba2eadb252",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "5450e93a-a3b7-4bcf-9fda-694133e797b8",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "5450e93a-a3b7-4bcf-9fda-694133e797b8",
+          "language": "french"
+        },
+        {
+          "bookId": "c7f56a18-c5fc-4174-8a39-080cd050c501",
+          "language": "spanish"
+        },
+        {
+          "bookId": "eff10707-3fb0-4689-b40c-08736cefbaa0",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "bcb7c42b-8cf1-4b26-9515-cf2f94e7f2d4",
+          "esTagValue": "reflexivo e inspirador",
+          "enTagValue": "thoughtful and inspiring",
+          "frTagValue": "réfléchi et inspirant",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "557f3596-c41b-42ac-9804-089503fd79f6",
+      "bookTitle": "Gorgeous Frozen Table",
+      "publisher": "Ignacio",
+      "image": "https://picsum.photos/seed/1X1Oj/3715/386",
+      "correlationId": "86ac08ae-a31f-4bd9-8e9b-a6f480fa2ca9",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "557f3596-c41b-42ac-9804-089503fd79f6",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "557f3596-c41b-42ac-9804-089503fd79f6",
+          "language": "spanish"
+        },
+        {
+          "bookId": "829cab14-a228-42f0-a41b-9a8242862faa",
+          "language": "english"
+        },
+        {
+          "bookId": "e02dfeb5-0346-4186-93a6-8d3b86960cee",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "c84d8303-6d04-4f99-9f7d-4e5374c8b198",
+          "esTagValue": "romance: ¡chispas volando!",
+          "enTagValue": "romance: sparks flying!",
+          "frTagValue": "romance : des étincelles qui volent !",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "d4b1fcd8-ece3-44b8-8eaf-914d2d4a8bc3",
+          "esTagValue": "algo relajante",
+          "enTagValue": "something relaxing",
+          "frTagValue": "quelque chose de relaxant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "58f573cc-2f97-4acb-b72d-b64500644e5a",
+      "bookTitle": "Practical Rubber Car",
+      "publisher": "Cristobal",
+      "image": "https://picsum.photos/seed/4J0Pol7Ly/3250/2009",
+      "correlationId": "378c0aaf-802f-4b40-a3bc-1aa57a30db88",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "58f573cc-2f97-4acb-b72d-b64500644e5a",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "58f573cc-2f97-4acb-b72d-b64500644e5a",
+          "language": "french"
+        },
+        {
+          "bookId": "bfe7c81f-3363-459f-b3aa-507e72649495",
+          "language": "english"
+        },
+        {
+          "bookId": "e026db05-dc54-4911-a564-0543fd3a1794",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "4be3aafd-d3dc-4c46-9122-9d5e0f70cbbc",
+          "esTagValue": "acogedor y nostálgico",
+          "enTagValue": "cozy and nostalgic",
+          "frTagValue": "confortable et nostalgique",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "d4b1fcd8-ece3-44b8-8eaf-914d2d4a8bc3",
+          "esTagValue": "algo relajante",
+          "enTagValue": "something relaxing",
+          "frTagValue": "quelque chose de relaxant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "5c392456-628f-47ed-b391-6795e9a265bb",
+      "bookTitle": "Recycled Fresh Car",
+      "publisher": "Shawn",
+      "image": "https://picsum.photos/seed/Zr5KpyBdb/462/635",
+      "correlationId": "e1097aee-0fb2-4dfe-90fa-254cc0690b4b",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "5c392456-628f-47ed-b391-6795e9a265bb",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "5c392456-628f-47ed-b391-6795e9a265bb",
+          "language": "spanish"
+        },
+        {
+          "bookId": "f7d357e2-d784-4e0a-88de-ace52b18a4e8",
+          "language": "english"
+        },
+        {
+          "bookId": "f803e3ca-894e-4e06-822e-20ce936b2917",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "d62d84f0-1060-46d9-b37c-df8477a693a1",
+          "esTagValue": "misterio/suspenso: ¿quién lo hizo? necesito respuestas",
+          "enTagValue": "mystery/thriller: who did it? need answers",
+          "frTagValue": "mystère/thriller : qui l'a fait ? besoin de réponses",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "5ccd0230-7d87-403f-94ca-0cc37374b041",
+      "bookTitle": "Fantastic Soft Soap",
+      "publisher": "Liliana",
+      "image": "https://picsum.photos/seed/f2rm8oz/1582/2814",
+      "correlationId": "997c09ad-80e9-4b4a-bb93-f4186a1c5a54",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "5ccd0230-7d87-403f-94ca-0cc37374b041",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "5ccd0230-7d87-403f-94ca-0cc37374b041",
+          "language": "english"
+        },
+        {
+          "bookId": "e323ebb5-c314-4acd-9d0b-a9f911459595",
+          "language": "french"
+        },
+        {
+          "bookId": "e4e0e672-5783-48dc-ba60-4363927c4b9f",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "french": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "a8f63c0d-09bb-4ad6-8767-96f99ef88801",
+          "esTagValue": "lleno de suspenso y giros",
+          "enTagValue": "suspenseful and full of twists",
+          "frTagValue": "plein de suspense et de rebondissements",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "5db93fb3-1429-44c9-8749-34c24d6af7aa",
+      "bookTitle": "Gorgeous Rubber Fish",
+      "publisher": "Kip",
+      "image": "https://loremflickr.com/3312/117?lock=6282286132008894",
+      "correlationId": "b3fa1c6e-a20a-490b-a925-863be6a4b08f",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "5db93fb3-1429-44c9-8749-34c24d6af7aa",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "5db93fb3-1429-44c9-8749-34c24d6af7aa",
+          "language": "english"
+        },
+        {
+          "bookId": "a7922061-4a67-428c-8ed9-0f6d781c41ef",
+          "language": "spanish"
+        },
+        {
+          "bookId": "db363297-0aac-4d99-a2f3-bc13ba7b48b4",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "15a41357-0d6b-4297-b2f1-717b68449ab7",
+          "esTagValue": "drama: emociones profundas, por favor",
+          "enTagValue": "drama: deep emotions, please",
+          "frTagValue": "drame : des émotions profondes, s'il vous plaît",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "id": "68d8dd7c-f1d1-4cc0-b606-e7c822299e28",
+      "bookTitle": "Gorgeous Metal Shoes",
+      "publisher": "Rhoda",
+      "image": "https://loremflickr.com/1478/185?lock=3684795157254735",
+      "correlationId": "4d958630-e3f8-4f22-be08-b3fdf238a4b9",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "68d8dd7c-f1d1-4cc0-b606-e7c822299e28",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "68d8dd7c-f1d1-4cc0-b606-e7c822299e28",
+          "language": "french"
+        },
+        {
+          "bookId": "a0d1622b-a06d-4eb5-9954-18571a6c9a85",
+          "language": "english"
+        },
+        {
+          "bookId": "a903dec5-9283-4da8-9269-59720934af4a",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "id": "7194a34c-a287-4f81-8225-94cd3a7f8a13",
+      "bookTitle": "Modern Fresh Sausages",
+      "publisher": "Abelardo",
+      "image": "https://picsum.photos/seed/YRexBQ/3136/783",
+      "correlationId": "bb2333ce-6a31-478e-b7dc-4450a8353268",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "7194a34c-a287-4f81-8225-94cd3a7f8a13",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "7194a34c-a287-4f81-8225-94cd3a7f8a13",
+          "language": "spanish"
+        },
+        {
+          "bookId": "77c6a150-68e2-4727-8fc8-7f25f40bc08a",
+          "language": "english"
+        },
+        {
+          "bookId": "d5bea912-89b7-41e5-987b-2304e1ee0f45",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "cb1c5eeb-fb7f-4564-8c69-d2cf8d153f49",
+          "esTagValue": "me encanta un buen misterio o algo emocionante",
+          "enTagValue": "i love a good mystery or some thrilling",
+          "frTagValue": "j'adore un bon mystère ou quelque chose de palpitant",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "72fbf6b6-8efb-4ff1-9f49-39a619328d5b",
+      "bookTitle": "Awesome Wooden Chips",
+      "publisher": "Eulah",
+      "image": "https://picsum.photos/seed/ntDflvSC/2811/962",
+      "correlationId": "a1f9ae6b-460a-460f-b9b5-2c17be59366a",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "72fbf6b6-8efb-4ff1-9f49-39a619328d5b",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "72fbf6b6-8efb-4ff1-9f49-39a619328d5b",
+          "language": "spanish"
+        },
+        {
+          "bookId": "75582d1c-2c9d-499c-9a2d-40fbec2a0e36",
+          "language": "french"
+        },
+        {
+          "bookId": "86862376-733e-4942-98ea-3e43d262bca3",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "b1f8ddea-d1a6-4f57-8ec9-9e6c4d8e1e25",
+          "esTagValue": "quiero entretenerme",
+          "enTagValue": "i want to be entertained",
+          "frTagValue": "je veux être diverti",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "7319df3f-8ec3-4823-9a61-9a3fc05b8f5a",
+      "bookTitle": "Generic Wooden Pizza",
+      "publisher": "Braden",
+      "image": "https://loremflickr.com/593/1057?lock=2785759700159577",
+      "correlationId": "0e34f5aa-8195-4de0-9db0-09e9d661a8f2",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "7319df3f-8ec3-4823-9a61-9a3fc05b8f5a",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "7319df3f-8ec3-4823-9a61-9a3fc05b8f5a",
+          "language": "french"
+        },
+        {
+          "bookId": "7e2596c9-6fc2-4040-8557-dc76ce843b82",
+          "language": "english"
+        },
+        {
+          "bookId": "c6622308-e01a-40bd-807e-42f8792c9d46",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "id": "73d6d015-cd84-4fbc-9d25-56196c7d3565",
+      "bookTitle": "Oriental Granite Fish",
+      "publisher": "Aimee",
+      "image": "https://picsum.photos/seed/yAs1s/1470/3776",
+      "correlationId": "276f3ed3-ea78-403c-8a66-b0253e34e280",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "73d6d015-cd84-4fbc-9d25-56196c7d3565",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "73d6d015-cd84-4fbc-9d25-56196c7d3565",
+          "language": "spanish"
+        },
+        {
+          "bookId": "b8b49a9e-76e6-4661-afc7-3348d0530a27",
+          "language": "french"
+        },
+        {
+          "bookId": "cfd22617-ea45-4977-bdaf-3eda32a728f8",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "3c83e4b2-af5e-6d3f-d4f8-fe1eae7f985c",
+          "esTagValue": "Aventura",
+          "enTagValue": "Adventure",
+          "frTagValue": "Aventure",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "id": "7512509b-68e5-42a0-b33d-4ce696bfa825",
+      "bookTitle": "Sleek Plastic Mouse",
+      "publisher": "Santino",
+      "image": "https://loremflickr.com/3879/498?lock=2202363601331243",
+      "correlationId": "b5a57105-5b02-4252-9ae1-d777cfa5c682",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "7512509b-68e5-42a0-b33d-4ce696bfa825",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "7512509b-68e5-42a0-b33d-4ce696bfa825",
+          "language": "spanish"
+        },
+        {
+          "bookId": "7f036553-f45d-4523-8029-ea1776fb3186",
+          "language": "french"
+        },
+        {
+          "bookId": "dde7ed58-9f34-4719-bbc3-498aea1cd44c",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "15a41357-0d6b-4297-b2f1-717b68449ab7",
+          "esTagValue": "drama: emociones profundas, por favor",
+          "enTagValue": "drama: deep emotions, please",
+          "frTagValue": "drame : des émotions profondes, s'il vous plaît",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        },
+        {
+          "id": "fbbd3d38-906f-4b80-9a85-cc295a3fbc76",
+          "esTagValue": "ciencia ficción: a las estrellas y más allá",
+          "enTagValue": "sci-fi: to the stars and beyond",
+          "frTagValue": "science-fiction : vers les étoiles et au-delà",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "79cc468a-408f-4e38-8ed6-28c5eac25251",
+      "bookTitle": "Gorgeous Metal Keyboard",
+      "publisher": "Kole",
+      "image": "https://loremflickr.com/1111/129?lock=2108464858266457",
+      "correlationId": "26884c3f-03c2-4de5-9192-7d8b5a0b6103",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "79cc468a-408f-4e38-8ed6-28c5eac25251",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "79cc468a-408f-4e38-8ed6-28c5eac25251",
+          "language": "spanish"
+        },
+        {
+          "bookId": "9285d958-20bd-47b4-acb1-a8c69ee5c112",
+          "language": "french"
+        },
+        {
+          "bookId": "e5341384-4ee3-46ad-a08c-403e89bd2a9b",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4be3aafd-d3dc-4c46-9122-9d5e0f70cbbc",
+          "esTagValue": "acogedor y nostálgico",
+          "enTagValue": "cozy and nostalgic",
+          "frTagValue": "confortable et nostalgique",
+          "tagName": "mood_vibe"
+        },
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "id": "7eea235a-2b9f-4834-9ccd-3eb6292ac217",
+      "bookTitle": "Fantastic Plastic Cheese",
+      "publisher": "Burdette",
+      "image": "https://loremflickr.com/3763/3219?lock=3266463345389538",
+      "correlationId": "08803eec-4561-44c0-8636-9bb4e45e054c",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "7eea235a-2b9f-4834-9ccd-3eb6292ac217",
+        "language": "english"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "7eea235a-2b9f-4834-9ccd-3eb6292ac217",
+          "language": "english"
+        },
+        {
+          "bookId": "8e510a4b-67a2-4d65-99e7-146a30693093",
+          "language": "spanish"
+        },
+        {
+          "bookId": "c2e6d388-4842-46f8-96fb-9a37247940af",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "5e466399-87be-4447-b808-834bba6941ee",
+          "esTagValue": "Crecimiento",
+          "enTagValue": "Growth",
+          "frTagValue": "Croissance",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "5e05g6d4-cf7g-8f5g-f6ga-1g3gcg9g107d",
+          "esTagValue": "Más vendidos",
+          "enTagValue": "Best sellers",
+          "frTagValue": "Meilleures ventes",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "english": 0, "spanish": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "9e2e350e-dca6-40b9-93be-bfc06051bc75",
+          "esTagValue": "sorpréndeme",
+          "enTagValue": "surprise me",
+          "frTagValue": "surprenez-moi",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "82c8a01d-8935-4e39-9312-7ff98059b2b4",
+      "bookTitle": "Handcrafted Frozen Bike",
+      "publisher": "Jaylin",
+      "image": "https://picsum.photos/seed/zSfPDzq4Ll/2056/1917",
+      "correlationId": "c792e2a1-db53-4779-a8b3-3047aa16fe9f",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "82c8a01d-8935-4e39-9312-7ff98059b2b4",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "82c8a01d-8935-4e39-9312-7ff98059b2b4",
+          "language": "spanish"
+        },
+        {
+          "bookId": "c3f484fb-9f40-4b21-9512-0536c82d50ed",
+          "language": "english"
+        },
+        {
+          "bookId": "ec5d29ee-46cd-43c0-80b6-36621bfc030a",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "b3e8d6f7-4314-4a0a-bdf3-2022c39143eb",
+          "esTagValue": "romántico y digno de desmayo",
+          "enTagValue": "romantic and swoon-worthy",
+          "frTagValue": "romantique et à tomber",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "8543110e-e051-4d74-9c77-20348a822132",
+      "bookTitle": "Unbranded Cotton Car",
+      "publisher": "Flo",
+      "image": "https://loremflickr.com/3414/1904?lock=364341846516174",
+      "correlationId": "b0afdab1-c44f-4aee-aed6-0e43df7e928b",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "8543110e-e051-4d74-9c77-20348a822132",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "8543110e-e051-4d74-9c77-20348a822132",
+          "language": "spanish"
+        },
+        {
+          "bookId": "a5ca6157-0ad3-49d0-9cc8-c9e1fc721c41",
+          "language": "french"
+        },
+        {
+          "bookId": "f752e1f6-9e97-4c05-b65a-a0469eb1446a",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "8h38j9g7-fi0j-1i8j-i9jd-4j6jfj2j43ag",
+          "esTagValue": "Más usado",
+          "enTagValue": "Most used",
+          "frTagValue": "Le plus utilisé",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "15a41357-0d6b-4297-b2f1-717b68449ab7",
+          "esTagValue": "drama: emociones profundas, por favor",
+          "enTagValue": "drama: deep emotions, please",
+          "frTagValue": "drame : des émotions profondes, s'il vous plaît",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "68178b72-d284-4370-9f88-c17b5f5a4f8c",
+          "esTagValue": "mágico y encantador",
+          "enTagValue": "magical and enchanting",
+          "frTagValue": "magique et enchanteur",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "8ae207f8-9655-43c0-b295-b3e1ef298e4b",
+      "bookTitle": "Ergonomic Metal Cheese",
+      "publisher": "Wilmer",
+      "image": "https://loremflickr.com/871/2481?lock=1571838997732496",
+      "correlationId": "b269b07d-b25d-4171-b00a-68ea95df99a3",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "8ae207f8-9655-43c0-b295-b3e1ef298e4b",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "8ae207f8-9655-43c0-b295-b3e1ef298e4b",
+          "language": "french"
+        },
+        {
+          "bookId": "dc57a6cd-b25c-42eb-877a-6cbc10d913fb",
+          "language": "spanish"
+        },
+        {
+          "bookId": "e227ec50-9baf-4a91-ae54-5b4f79e1a923",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
+          "esTagValue": "Popular",
+          "enTagValue": "Popular",
+          "frTagValue": "Populaire",
+          "tagName": "subcategory"
+        },
+        {
+          "id": "bcb7c42b-8cf1-4b26-9515-cf2f94e7f2d4",
+          "esTagValue": "reflexivo e inspirador",
+          "enTagValue": "thoughtful and inspiring",
+          "frTagValue": "réfléchi et inspirant",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "8bab8036-9452-4711-b82b-02b57a2cc8a6",
+      "bookTitle": "Practical Frozen Soap",
+      "publisher": "Elvera",
+      "image": "https://loremflickr.com/1897/1211?lock=1250896007039263",
+      "correlationId": "140840b9-a801-4654-bc0d-95938f93df91",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "8bab8036-9452-4711-b82b-02b57a2cc8a6",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "8bab8036-9452-4711-b82b-02b57a2cc8a6",
+          "language": "spanish"
+        },
+        {
+          "bookId": "d3c076e2-d3c1-4794-9a22-4866904ae330",
+          "language": "french"
+        },
+        {
+          "bookId": "e515af99-33fc-45b2-8e4f-2981778d5135",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [
+        {
+          "id": "7g27i8f6-eh9i-0h7i-h8ic-3i5iei1i329f",
+          "esTagValue": "Popular",
+          "enTagValue": "Popular",
+          "frTagValue": "Populaire",
+          "tagName": "subcategory"
+        }
+      ],
+      "copies": { "spanish": 0, "french": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        },
+        {
+          "id": "8438bf6e-320b-4319-8f04-c0e7fa3d46fc",
+          "esTagValue": "llévame a una aventura",
+          "enTagValue": "take me on an adventure",
+          "frTagValue": "emmenez-moi à l'aventure",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "9e2e350e-dca6-40b9-93be-bfc06051bc75",
+          "esTagValue": "sorpréndeme",
+          "enTagValue": "surprise me",
+          "frTagValue": "surprenez-moi",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "91175978-d9d3-4f56-a774-b78f2bb85057",
+      "bookTitle": "Modern Metal Mouse",
+      "publisher": "Domenica",
+      "image": "https://loremflickr.com/2262/3758?lock=7121830178354388",
+      "correlationId": "3fc18706-2077-4712-88ae-5fb29fe043e2",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "91175978-d9d3-4f56-a774-b78f2bb85057",
+        "language": "spanish"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "91175978-d9d3-4f56-a774-b78f2bb85057",
+          "language": "spanish"
+        },
+        {
+          "bookId": "965bf5db-7857-406c-9bf8-4db2c4d8c449",
+          "language": "english"
+        },
+        {
+          "bookId": "cca64be3-851d-4b0f-8dee-b379d649fd57",
+          "language": "french"
+        }
+      ],
+      "categories": [
+        {
+          "id": "2a72d3a2-9e4d-5c2f-c3f7-ed0d9e6f874b",
+          "esTagValue": "Romance",
+          "enTagValue": "Romance",
+          "frTagValue": "Romantique",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "spanish": 0, "english": 0, "french": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        },
+        {
+          "id": "8a3d5f3a-bf8f-44c5-b84d-b1a2e69e7451",
+          "esTagValue": "no ficción: historias reales, hechos reales, dinero",
+          "enTagValue": "non-fiction: real stories, real facts, money",
+          "frTagValue": "non-fiction : histoires vraies, faits réels, argent",
+          "tagName": "flavor_story_vibe"
+        },
+        {
+          "id": "ecbb1452-2267-4c3c-b1df-c5128a7f5b0d",
+          "esTagValue": "creciendo en $$",
+          "enTagValue": "growing in $$",
+          "frTagValue": "croissant en $$",
+          "tagName": "mood_vibe"
+        }
+      ],
+      "id": "9ccd3e02-079f-49a2-8f3f-d57dcc9a02af",
+      "bookTitle": "Incredible Steel Chair",
+      "publisher": "Fermin",
+      "image": "https://loremflickr.com/70/3488?lock=4578373370436289",
+      "correlationId": "8286605b-c930-4036-81a7-364aff0e4481",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "9ccd3e02-079f-49a2-8f3f-d57dcc9a02af",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "9ccd3e02-079f-49a2-8f3f-d57dcc9a02af",
+          "language": "french"
+        },
+        {
+          "bookId": "a5c109ee-d93b-4c33-a111-ffc701cfe0b2",
+          "language": "spanish"
+        },
+        {
+          "bookId": "db143db4-7f05-4360-b0d0-e3a1e0ad0e01",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "1b50d2a2-8c3d-4b1e-b3e6-dc9c9d5f763a",
+          "esTagValue": "Misterio",
+          "enTagValue": "Mystery",
+          "frTagValue": "Mystère",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        },
+        {
+          "id": "b1f8ddea-d1a6-4f57-8ec9-9e6c4d8e1e25",
+          "esTagValue": "quiero entretenerme",
+          "enTagValue": "i want to be entertained",
+          "frTagValue": "je veux être diverti",
+          "tagName": "reading_vibe"
+        }
+      ],
+      "id": "c869029f-ca27-4c7e-b2e2-2366656d3c93",
+      "bookTitle": "Refined Rubber Keyboard",
+      "publisher": "Oswald",
+      "image": "https://picsum.photos/seed/KKrqd/3970/832",
+      "correlationId": "d49c2b57-fbe4-44db-aeb7-b9d07fd5aeea",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "c869029f-ca27-4c7e-b2e2-2366656d3c93",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "c869029f-ca27-4c7e-b2e2-2366656d3c93",
+          "language": "french"
+        },
+        {
+          "bookId": "dd48fb3b-d424-419b-8def-8505362cb21e",
+          "language": "spanish"
+        },
+        {
+          "bookId": "f34cb6a7-bde2-40c8-ac69-4640077f83e4",
+          "language": "english"
+        }
+      ],
+      "categories": [
+        {
+          "id": "03cc5e3e-c6e9-474e-8780-84094ed2deee",
+          "esTagValue": "Fantasía",
+          "enTagValue": "Fantasy",
+          "frTagValue": "Fantaisie",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "spanish": 0, "english": 0 }
+    },
+    {
+      "tags": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        },
+        {
+          "id": "93c82c5f-e376-4721-a3be-7a36b6c63d55",
+          "esTagValue": "estoy aquí por las emociones - romance, lágrimas, todo eso",
+          "enTagValue": "i’m here for feels - romance, tears, all of it",
+          "frTagValue": "je suis ici pour les émotions - romance, larmes, tout ça",
+          "tagName": "reading_vibe"
+        },
+        {
+          "id": "9e2e350e-dca6-40b9-93be-bfc06051bc75",
+          "esTagValue": "sorpréndeme",
+          "enTagValue": "surprise me",
+          "frTagValue": "surprenez-moi",
+          "tagName": "flavor_story_vibe"
+        }
+      ],
+      "id": "d8ca34fd-e57c-4256-af76-d36d8e37283a",
+      "bookTitle": "Tasty Wooden Computer",
+      "publisher": "Afton",
+      "image": "https://loremflickr.com/1207/3404?lock=756632982670262",
+      "correlationId": "defab494-be73-41cc-a1b9-54b014296941",
+      "rating": null,
+      "votes": null,
+      "language": {
+        "bookId": "d8ca34fd-e57c-4256-af76-d36d8e37283a",
+        "language": "french"
+      },
+      "bookCopyQty": 0,
+      "languages": [
+        {
+          "bookId": "d8ca34fd-e57c-4256-af76-d36d8e37283a",
+          "language": "french"
+        },
+        {
+          "bookId": "eb8ea391-0f64-403a-a641-645d3663d8c1",
+          "language": "english"
+        },
+        {
+          "bookId": "ede34b80-650e-4bd3-af15-f6985f6d7c0f",
+          "language": "spanish"
+        }
+      ],
+      "categories": [
+        {
+          "id": "4d94f5c3-bf6f-7e4f-e5f9-0f2fbf8fa96d",
+          "esTagValue": "Suspenso",
+          "enTagValue": "Thriller",
+          "frTagValue": "Thriller",
+          "tagName": "category"
+        }
+      ],
+      "subCategories": [],
+      "copies": { "french": 0, "english": 0, "spanish": 0 }
+    }
+  ]
+}

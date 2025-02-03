@@ -1,33 +1,78 @@
 spring:
   application:
     name: releevante-api
-  datasource:
-    url: jdbc:postgresql://localhost:5432/relevantedb
-    username: coex
-    password: Summer01
-    initialization-mode: always
-    initialize: true
-    continue-on-error: true
-  sql:
-    init:
-      mode: never #always
-      data-locations: classpath:identity_initial_data_insert.sql
-
-
-
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        ddl-auto: none
-        show-sql: true
+  security:
+    user:
+      name: user
+      password: pass
   webflux:
     base-path: /api
+  r2dbc:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_SECRET}
+#    initialization-mode: always
+#    initialize: true
+#    continue-on-error: true
+#    pool:
+#      enabled: true
+#      max-size: 20
+#      validation-query: SELECT 1
+#      initial-size: 5
+#      max-idle-time: 30m
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
 security:
   rsa:
     key-path:
-      public: C:\\Users\\LEGION\Documents\\rsa\\public.pem
-      private: C:\\Users\\LEGION\\Documents\\rsa\\private.pem
+      public: ${PUBLIC_KEY_PATH}
+      private: ${PRIVATE_KEY_PATH}
+  basic:
+    enabled: false
+  api:
+    keys: >
+     2cd60035-059b-463e-b816-52dc08402cd9,
+     ff95f7e9-7acf-423a-8e4c-1b93bbb5c605
+
+springdoc:
+  version: 3.0.1
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs
+    custom-url: /webjars/swagger-ui
+#
+#logging:
+#  level: DEBUG
+server:
+  port: 8080
+
+logging:
+  level:
+    io:
+      r2dbc:
+        postgresql:
+          QUERY: DEBUG
+          PARAM: DEBUG
+    org:
+      springframework: INFO
+
+google:
+  credentials:
+    path: /releevante-google-sheets-client-secret.json
+
+
+
+
+
+
+
+
+
+
 
 
 

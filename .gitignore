@@ -3,3 +3,7 @@
 /releevante-docs
 /client
 /check.io
+
+/docker/.env
+private.pem
+public.pem

@@ -1,0 +1,18 @@
+
+plugins {
+    id 'java'
+}
+
+group = 'com.releevante.core.domain'
+version = 'core.0.0.1'
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
+    implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
+    compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+    annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+}

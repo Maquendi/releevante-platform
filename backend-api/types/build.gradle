@@ -4,6 +4,9 @@ dependencies {
 	implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 	implementation 'dev.samstevens.totp:totp-spring-boot-starter:1.7.1'
 	implementation 'commons-net:commons-net:3.9.0'
+
+	compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+	annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
 }
 group = 'com.releevante.types'
 

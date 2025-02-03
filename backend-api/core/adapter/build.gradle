@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.releevante.core.adapter'
+version = 'core.0.0.1'
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc:3.3.5'
+    implementation 'org.postgresql:r2dbc-postgresql:1.0.7.RELEASE'
+    implementation 'org.postgresql:postgresql:42.7.4'
+
+
+    implementation 'com.google.api-client:google-api-client:2.7.0'
+    implementation 'com.google.apis:google-api-services-sheets:v4-rev20241008-2.0.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.30.0'
+
+
+    implementation project(path: ':core:domain')
+    implementation project(path: ':core:application')
+
+    compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+    annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+}

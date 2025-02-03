@@ -2,17 +2,24 @@ plugins {
 	id 'java'
 }
 
-group = 'com.releevante.application'
-version = '0.0.1-SNAPSHOT'
+group = 'com.releevante.identity.application'
+version = 'identity.0.0.1'
 
 repositories {
 	mavenCentral()
 }
 
+bootJar {
+	enabled = false
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+
 dependencies {
 	implementation project(path: ':identity-management:domain')
-	testImplementation platform('org.junit:junit-bom:5.9.1')
-	testImplementation 'org.junit.jupiter:junit-jupiter'
+	implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
+	implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
+	compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+	annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
 }
 
 test {

@@ -4,6 +4,7 @@ package com.releevante.identity.domain.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.identity.domain.service.PasswordEncoder;
+import com.releevante.types.AUTHORITIES;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.exceptions.ConfigurationException;
 import com.releevante.types.exceptions.ForbiddenException;
@@ -20,8 +21,6 @@ import org.immutables.value.Value;
 @JsonSerialize(as = LoginAccount.class)
 @ImmutableExt
 public abstract class AbstractLoginAccount {
-  static final String SUPER_ADMIN_AUTHORITY = "super-admin";
-
   abstract AccountId accountId();
 
   abstract UserName userName();
@@ -65,7 +64,7 @@ public abstract class AbstractLoginAccount {
   public LoginAccount checkHasAnyAuthority(String... authorities) {
     checkIsActive();
     var privileges = new ArrayList<>(Arrays.asList(authorities));
-    privileges.add(SUPER_ADMIN_AUTHORITY);
+    privileges.add(AUTHORITIES.SUPER_ADMIN.getAuthority());
     if (privileges.stream().noneMatch(this::hasAuthority)) {
       throw new ForbiddenException();
     }

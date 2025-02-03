@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.releevante.core.application'
+version = 'core.0.0.1'
+
+bootJar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(path: ':core:domain')
+
+    compileOnly "org.immutables:value:${rootProject.immutablesVersion}"
+    annotationProcessor "org.immutables:value:${rootProject.immutablesVersion}"
+
+    implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
+    implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
