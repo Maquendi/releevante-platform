@@ -1,131 +1,80 @@
 "use client";
 import { loadLibraryInventory } from "@/actions/book-actions";
-import {
-  LibraryInventory,
-  SubCategoryGraph,
-  PartialBook,
-  CategoryGraph,
-} from "@/book/domain/models";
-import { arrayGroupinBy } from "@/lib/utils";
+import { SubCategory, Category } from "@/book/domain/models";
 import { useQuery } from "@tanstack/react-query";
-
-export function filterLibraryInventory(
-  libraryInventory?: LibraryInventory,
-  categoryId?: string
-): CategoryGraph {
-  const categories = libraryInventory?.categories;
-  console.log(libraryInventory);
-  if (!categoryId) {
-    const subCategoriesDuplicated = libraryInventory?.categories.flatMap(
-      (category) => category.subCategories
-    );
-    const subCategoriesGrouped = arrayGroupinBy(subCategoriesDuplicated!, "id");
-    const subCategories = Object.keys(subCategoriesGrouped).map((key) => {
-      const subCategories: SubCategoryGraph[] = subCategoriesGrouped[key];
-      const first = subCategories[0];
-      const myMap = new Map<string, PartialBook>();
-      subCategories
-        .flatMap((item) => item.books)
-        .forEach((item) => {
-          myMap.set(item.isbn, item);
-        });
-      first.books = Array.from(myMap.values());
-      return first;
-    });
-    return {
-      en: "All",
-      fr: "Tout",
-      es: "Todo",
-      id: undefined!,
-      subCategories,
-    };
-  } else {
-    const category = libraryInventory?.categories.find(
-      (category) => category.id == categoryId
-    );
-
-    return category!;
-  }
-}
 
 export default function useLibraryInventory() {
   const { data: libraryInventory, isPending } = useQuery({
-    queryKey: ["CATEGORY_GRAPH", "All"],
+    queryKey: ["BOOK_INVENTORY", "All"],
     queryFn: async () => await loadLibraryInventory(),
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 
-  const useFilterLibraryInventoryByCategory = (
-    categoryId?: string
-  ): CategoryGraph => {
-    const { data: inventoryFilteredByCategory } = useQuery({
-      queryKey: ["INVENTORY_BY_CATEGORY", categoryId],
-      queryFn: async () =>
-        filterLibraryInventory(libraryInventory, categoryId!),
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    });
-
-    return inventoryFilteredByCategory!;
-  };
-
-  const useFilterLibraryInventoryBySubCategory = (
-    categoryId: string,
-    subCategoryId: string
-  ): CategoryGraph => {
-    const inventoryFilteredByCategory =
-      useFilterLibraryInventoryByCategory(categoryId);
-    const subCategory =
-      inventoryFilteredByCategory?.subCategories.find(
-        (item) => item.id == subCategoryId
-      ) || ([] as any);
-    return {
-      ...inventoryFilteredByCategory,
-      subCategories: [subCategory],
-    };
-  };
-
-  const shardCategoryGraph = (
-    categoryId: string,
-    subCategoryId: string
-  ): { selected: CategoryGraph; remaining: CategoryGraph } => {
-    const selectedCategory = Object.assign(
-      {},
-      useFilterLibraryInventoryByCategory(categoryId)
+  const subCategoryFrom = ({ id, bookRelations }): SubCategory => {
+    const subCategory: any = { ...libraryInventory!.subCategoryMap[id] };
+    subCategory.books = bookRelations.map(
+      (isbn) => libraryInventory!.books[isbn]
     );
+    return subCategory;
+  };
 
-    const remaining: SubCategoryGraph[] = [];
-    let selectedSubCategory: SubCategoryGraph[] = [];
-    selectedCategory?.subCategories?.forEach((subCategory) => {
-      if (subCategory?.id == subCategoryId) {
-        selectedSubCategory = [subCategory];
-      } else {
-        remaining.push(subCategory);
+  const filterBySubCategory = (
+    categoryId: string,
+    subCategoryId: string
+  ): { selected: Category; remaining: Category } => {
+    let selected: Category = undefined!;
+    let remaining: Category = undefined!;
+
+    libraryInventory?.categories.forEach((category) => {
+      const { subCategoryRelations, ...rest } = category;
+
+      if (category.id === categoryId) {
+        selected = { ...rest, subCategories: [] };
+        const subCategoryRel = category.subCategoryRelations.find(
+          (sub) => sub.id === subCategoryId
+        );
+        const subCategory: SubCategory = {
+          ...libraryInventory?.subCategoryMap[subCategoryRel?.id!],
+          books: [],
+        };
+        const books =
+          subCategoryRel?.bookRelations.map(
+            (isbn) => libraryInventory!.books[isbn]
+          ) || [];
+        subCategory.books = books;
+
+        selected.subCategories = [subCategory];
+
+        remaining = { ...rest, subCategories: [] };
+
+        category.subCategoryRelations
+          .filter((sub) => sub.id !== subCategoryId)
+          .forEach((subCategoryRel) => {
+            const subCategory: SubCategory = {
+              ...libraryInventory!.subCategoryMap[subCategoryRel!.id],
+              books: [],
+            };
+            const books =
+              subCategoryRel?.bookRelations.map(
+                (isbn) => libraryInventory!.books[isbn]
+              ) || [];
+            subCategory.books = books;
+            remaining.subCategories.push(subCategory);
+          });
       }
     });
 
-    const remainingCategory = {
-      ...selectedCategory,
-    };
-
-    if (selectedCategory) {
-      selectedCategory.subCategories = selectedSubCategory;
-
-      remainingCategory.subCategories = remaining;
-    }
-
     return {
-      selected: selectedCategory,
-      remaining: remainingCategory,
+      selected,
+      remaining,
     };
   };
 
   return {
     isPending,
-    shardCategoryGraph,
-    useFilterLibraryInventoryByCategory,
-    useFilterLibraryInventoryBySubCategory,
+    subCategoryFrom,
     libraryInventory,
+    filterBySubCategory,
   };
 }

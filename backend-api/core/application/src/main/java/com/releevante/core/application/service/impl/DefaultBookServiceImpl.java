@@ -1,9 +1,9 @@
 package com.releevante.core.application.service.impl;
 
-import com.releevante.core.application.dto.BookDto;
-import com.releevante.core.application.dto.LibraryInventoryDto;
-import com.releevante.core.application.dto.SyncStatus;
-import com.releevante.core.application.dto.TagCreateDto;
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.groupingBy;
+
+import com.releevante.core.application.dto.*;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.*;
@@ -17,9 +17,8 @@ import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import com.releevante.types.exceptions.InvalidInputException;
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Predicate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -105,6 +104,11 @@ public class DefaultBookServiceImpl implements BookService {
   }
 
   @Override
+  public Flux<PartialBook> getBooksByOrg(String orgId) {
+    return bookRepository.findAllBy(orgId);
+  }
+
+  @Override
   public Flux<Tag> getTags(TagTypes name) {
     return bookTagRepository.get(name);
   }
@@ -112,6 +116,60 @@ public class DefaultBookServiceImpl implements BookService {
   @Override
   public Mono<Book> saveBook(BookDto book) {
     return null;
+  }
+
+  @Override
+  public Mono<BookCategories> getBookCategories(String orgId) {
+    return bookTagRepository.getBookCategories(orgId);
+  }
+
+  @Override
+  public Flux<Book> getBooksBy(String isbn, String translationId) {
+    return this.bookRepository.findAllBy(isbn, translationId);
+  }
+
+  @Override
+  public Flux<Book> getByTagIdList(List<String> tagIdList) {
+    return bookRepository.getByTagIdList(tagIdList);
+  }
+
+  @Override
+  public Mono<BookRecommendationDto> getBookRecommendation(List<String> userPreferences) {
+
+    return getByTagIdList(userPreferences)
+        .collectList()
+        .filter(Predicate.not(List::isEmpty))
+        .flatMap(
+            (res) -> {
+              var booksOrdered =
+                  res.stream().collect(groupingBy(Book::isbn)).entrySet().stream()
+                      .sorted(comparingInt(entry -> entry.getValue().size()))
+                      .map(Map.Entry::getValue)
+                      .flatMap(Collection::stream)
+                      .toList();
+
+              var recommendedBook = booksOrdered.get(booksOrdered.size() - 1);
+              var otherRecommendedBooks = booksOrdered.stream().map(PartialBook::from).toList();
+
+              var bookRecommendationBuilder =
+                  BookRecommendationDto.builder().others(otherRecommendedBooks);
+
+              return this.getBooksBy(
+                      recommendedBook.isbn().value(), recommendedBook.translationId())
+                  .collectList()
+                  .map(bookRecommendationBuilder::recommended)
+                  .map(BookRecommendationDto.Builder::build);
+            });
+  }
+
+  @Override
+  public Flux<Book> getByIsbnList(List<String> isbnList) {
+    return bookRepository.getByIsbnList(isbnList);
+  }
+
+  @Override
+  public Flux<Book> getByTagValues(List<String> tagValues) {
+    return bookRepository.getByTagValues(tagValues);
   }
 
   Flux<LibraryInventory> buildInventory(

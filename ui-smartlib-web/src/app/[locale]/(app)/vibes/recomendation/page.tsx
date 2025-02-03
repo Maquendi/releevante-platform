@@ -1,11 +1,8 @@
 "use client";
 import { loadBookDetail } from "@/actions/book-actions";
 import { IBookDetail } from "@/book/domain/models";
-import BookByIdBanner from "@/components/bookById/BookByIdBanner";
 import BookByIdBannerV2 from "@/components/bookById/BookByIdBannerV2";
-import CatalogSlider, {
-  CatalogSliderSkeleton,
-} from "@/components/CatalogSlider";
+import SubCategorySlider from "@/components/explore/subcategory/SubCategorySlider";
 import AddToCartRecomendation from "@/components/vibes/AddToCartRecomendation";
 import VibesStateIndicator from "@/components/vibes/VibesStateIndicator";
 
@@ -16,29 +13,21 @@ import { useEffect, useState } from "react";
 
 export default function RecomendationPage({ searchParams }) {
   const t = useTranslations("recommendationsPage");
-  const recomendations = useGetRecomendationBooksV2({
+  const { recomendations } = useGetRecomendationBooksV2({
     searchParams,
   });
 
-  //const books = UseGetBooksByTranslationId(tranlationId);
-
   const [selectedBook, setSelectedBook] = useState<IBookDetail>();
 
-  const [recomended, setRecomended] = useState<IBookDetail[]>([]);
+  const [recomendedCopies, setRecomendedCopies] = useState<IBookDetail[]>([]);
 
   useEffect(() => {
-    const translationId =
-      recomendations?.first.length && recomendations?.first[0]?.translationId;
-    if (translationId) {
-      loadBookDetail(translationId).then((books) => {
-        setSelectedBook(books[0]);
-        setRecomended(books);
-      });
-    }
+    setSelectedBook(recomendations?.recommended);
+    setRecomendedCopies(recomendations?.translations!);
   }, [recomendations]);
 
   const setSelectedBookByIsbn = (isbn: string) => {
-    setSelectedBook(recomended.find((item) => item.isbn === isbn));
+    setSelectedBook(recomendedCopies.find((item) => item.isbn === isbn));
   };
 
   return (
@@ -72,7 +61,7 @@ export default function RecomendationPage({ searchParams }) {
         <div>
           <BookByIdBannerV2
             selectedBook={selectedBook}
-            relatedBooks={recomended}
+            relatedBooks={recomendedCopies}
             setSelectedBook={(isbn) => setSelectedBookByIsbn(isbn)}
           />
         </div>
@@ -85,10 +74,14 @@ export default function RecomendationPage({ searchParams }) {
               </span>
             </h4>
           </div>
+
           <div>
-            <CatalogSlider
-              params={searchParams}
-              books={recomendations?.others || []}
+            <SubCategorySlider
+              categoryId="recommendations"
+              subCategory={{
+                id: "recommendations",
+                books: recomendations?.others || [],
+              }}
             />
           </div>
         </div>

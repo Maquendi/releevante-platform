@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import { useRouter } from "@/config/i18n/routing";
-import useGetAllBooks from "@/hooks/useGetAllBooks";
 import { useQuery } from "@tanstack/react-query";
 import { loadPartialBooksPaginated } from "@/actions/book-actions";
 

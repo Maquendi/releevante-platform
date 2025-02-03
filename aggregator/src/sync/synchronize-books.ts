@@ -44,7 +44,7 @@ export const synchronizeBooks = async (token: string) => {
       }
     } catch (error) {
       syncComplete = true;
-      console.log(error);
+     // console.log(error);
     }
   }
 

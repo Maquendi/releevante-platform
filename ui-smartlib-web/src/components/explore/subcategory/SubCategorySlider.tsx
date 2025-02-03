@@ -4,17 +4,19 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
-import { useSearchParams } from "next/navigation";
-import {
-  CategoryGraph,
-  PartialBook,
-  SubCategoryGraph,
-} from "@/book/domain/models";
+import { PartialBook } from "@/book/domain/models";
 import BookCard from "../bookcard/BookCard";
+import { useRouter } from "@/config/i18n/routing";
+
+import { useDispatch } from "react-redux";
+import { setBookRecommendation } from "@/redux/features/pageTransitionSlice";
 
 type SliderProps = {
   categoryId: string;
-  subCategory: SubCategoryGraph;
+  subCategory: {
+    id: string;
+    books: PartialBook[];
+  };
   slidesToShow?: number;
 };
 
@@ -25,8 +27,9 @@ const SubCategorySlider: React.FC<SliderProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const t = useTranslations("catalogPage");
-  const searchParams = useSearchParams();
   const { books, id: subCategoryId } = subCategory;
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const nextSlide = () => {
     if (ref.current) {
@@ -40,6 +43,27 @@ const SubCategorySlider: React.FC<SliderProps> = ({
       const slideWidth = ref.current.clientWidth / slidesToShow;
       ref.current.scrollLeft -= slideWidth;
     }
+  };
+
+  const navSeeAll = () => {
+    dispatch(
+      setBookRecommendation({
+        id: "recommendations",
+        en: "Recommendations",
+        fr: "Recommandations",
+        es: "Recomendaciones",
+        subCategories: [
+          {
+            id: "recommendations",
+            en: "Recommendations",
+            fr: "Recommandations",
+            es: "Recomendaciones",
+            books: books,
+          },
+        ],
+      })
+    );
+    router.push(`/explore/${categoryId}?subCategoryId=${subCategoryId}`);
   };
 
   return (
@@ -58,14 +82,12 @@ const SubCategorySlider: React.FC<SliderProps> = ({
           >
             <ChevronRight />
           </button>
-          <Link
-            href={`/explore/${
-              categoryId || "n"
-            }/?subCategoryId=${subCategoryId}`}
+          <button
+            onClick={navSeeAll}
             className="border grid place-content-center cursor-pointer border-[#827F7F] py-2 px-4 rounded-full text-xs font-medium"
           >
             {t("seeAll")}
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -73,8 +95,8 @@ const SubCategorySlider: React.FC<SliderProps> = ({
         ref={ref}
         className="flex overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth mx-2 space-x-3 no-scrollbar"
       >
-        {books?.map((book) => (
-          <BookCard key={book.isbn} book={book} />
+        {books!.map((book, index) => (
+          <BookCard key={index} book={book} />
         ))}
       </div>
     </div>

@@ -22,7 +22,7 @@ const ImageWithSkeleton = ({ src, width, height, alt, className }: ImageWithSkel
       <Image
         src={src || "/images/releevante.svg"}
         fill
-        alt={alt}
+        alt={alt || 'image'}
         sizes="w-full h-full"
         className={cn('transition-opacity',className,isLoading && "w-full h-full rounded-md object-contain object-top opacity-0 bg-gray-100")}
         onLoad={() => setIsLoading(false)}

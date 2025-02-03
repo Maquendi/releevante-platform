@@ -61,6 +61,8 @@ public abstract class AbstractBook {
 
   abstract Integer votes();
 
+  abstract Optional<String> image();
+
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default
   List<Tag> tags() {

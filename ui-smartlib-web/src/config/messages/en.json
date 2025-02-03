@@ -147,7 +147,8 @@
     "return": "return",
     "returnDate": "return date",
     "noRentedBooks":"You don’t have any book rented yet. Find out the best option in your personal library now.",
-    "rentBook":"Rent a book"
+    "rentBook":"Rent a book",
+    "of": "of"
   },
   "depositPage":{
     "depositBookTitle1":"Deposit this book on",

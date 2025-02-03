@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 import json
 
 class NewStatus(BaseModel):
-    itemId: str
+    id: str
     isbn: str
     status: str
 
@@ -44,7 +44,7 @@ async def process(data):
         items   = data['items']
 
         for item in items:
-            res = {"itemId": item['id'], "isbn": item['isbn']}
+            res = {"id": item['id'], "isbn": item['isbn']}
             print(res)
             await sio.emit('item_checkout_started', res)
             await sleep(5)
@@ -72,6 +72,17 @@ async def on_message(sid, data):
          pass
 
 
+@sio.on("checkin")
+async def on_message(sid, data):
+    print(f"checkin event from {sid}: {data}")
+    try:
+            res = {"id": data['itemId'], "isbn": data['isbn']}
+            print(res)
+            await sio.emit('item_checkin_started', res)
+            await sleep(5)
+            await sio.emit('item_checkin_success', res)
+    except:
+         pass
 
 
 

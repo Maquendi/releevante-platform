@@ -146,7 +146,8 @@
     "return": "retourner",
     "returnDate": "date de retour",
     "noRentedBooks": "Vous n'avez pas encore de livre loué. Découvrez la meilleure option dans votre bibliothèque personnelle maintenant.",
-    "rentBook": "Louer un livre"
+    "rentBook": "Louer un livre",
+    "of":"sur"
   },
   "depositPage": {
     "depositBookTitle1": "Déposez ce livre sur",

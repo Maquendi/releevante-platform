@@ -1,26 +1,15 @@
 "use client";
-import {
-  FetchAllBookByCategory,
-  FetchAllBookCategories,
-} from "@/actions/book-actions";
-import {
-  CategoryGraph,
-  PartialBook,
-  SubCategoryGraph,
-} from "@/book/domain/models";
-import BookItem from "@/components/catalogByCategory/BookItem";
-import CatalogSliderItem from "@/components/catalogByCategory/CatalogSliderItem";
+
 import SeeAllBooks from "@/components/catalogByCategory/SeeAllBooks";
 import HelpFindBookBanner from "@/components/HelpFindBookBanner";
-import useFilterBooksByCategory from "@/hooks/useFilterBooksByCategory";
-import useLibraryInventory from "@/hooks/useLibraryInventory";
-import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import useLibraryInventory from "@/hooks/useLibraryInventory";
 import SubCategoryComponent from "../subcategory/SubCategoryComponent";
-import { it } from "node:test";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { Category } from "@/book/domain/models";
 interface HeaderBannerProp {
   subCategoryId: string;
   categoryId: string;
@@ -32,10 +21,35 @@ export default function SeeAllBookComponent({
 }: HeaderBannerProp) {
   const locale = useLocale();
   const t = useTranslations("SeeAllPage");
+  const { filterBySubCategory } = useLibraryInventory();
 
-  const { shardCategoryGraph } = useLibraryInventory();
+  const recommendation = useSelector(
+    (state: RootState) => state.pageTransition.bookRecommendation
+  );
 
-  const { selected, remaining } = shardCategoryGraph(categoryId, subCategoryId);
+  const [category, setCategory] = useState<Category>();
+
+  const { selected, remaining } = filterBySubCategory(
+    categoryId,
+    subCategoryId
+  );
+
+  useEffect(() => {
+    console.log("selected here *******************");
+    console.log(selected);
+
+    if (!selected && recommendation) {
+      setCategory({
+        ...recommendation,
+      });
+    } else {
+      setCategory(selected);
+    }
+
+    return ()=> {
+      console.log("should do cleanup here ***********************************")
+    }
+  }, []);
 
   return (
     <div className=" space-y-5 mb-5">
@@ -44,15 +58,13 @@ export default function SeeAllBookComponent({
           <div>
             <h1 className="text-left text-4xl mb-1 font-semibold space-x-2">
               <span>
-                {selected?.subCategories?.length &&
-                  selected?.subCategories[0][`${locale}`]}
+                {category?.subCategories?.length &&
+                  category?.subCategories[0][`${locale}`]}
               </span>
-              {categoryId && (
+              {category && (
                 <>
                   <span>in</span>
-                  <span className="text-primary">
-                    {selected?.[`${locale}`]}
-                  </span>
+                  <span className="text-primary">{category[`${locale}`]}</span>
                 </>
               )}
             </h1>
@@ -68,7 +80,7 @@ export default function SeeAllBookComponent({
         </div>
       </header>
       <section className="px-5 mt-5 space-y-6">
-        <SeeAllBooks category={selected} />
+        <SeeAllBooks category={category!} />
         <HelpFindBookBanner />
         <Suspense>
           <div className="space-y-5">
@@ -76,7 +88,7 @@ export default function SeeAllBookComponent({
               <SubCategoryComponent
                 key={index}
                 subCategory={item}
-                categoryId={selected?.id}
+                categoryId={category?.id!}
               />
             ))}
           </div>

@@ -119,7 +119,8 @@ export interface BookRecomendationParams {
 }
 
 export interface BookRecomendations {
-  first: PartialBook[];
+  recommended: IBookDetail;
+  translations: IBookDetail[];
   others: PartialBook[];
 }
 
@@ -154,32 +155,6 @@ export interface Book {
 export interface CategoryBooks {
   categoryName: string;
   books: Book[];
-}
-
-export interface IBook {
-  isbn: string;
-  bookTitle: string;
-  author: string;
-  correlationId: string;
-  translationId: string;
-  editionTitle: string;
-  publisher: string;
-  en: string;
-  es: string;
-  fr: string;
-  publicationDate: string;
-  printLength: number;
-  dimensions: string;
-  language: string;
-  rating: number;
-  votes: number;
-  price: number;
-  bindingType: string;
-  image: string;
-  imageId: string;
-  publicIsbn?: string;
-  qty: number;
-  qtyForSale: number;
 }
 
 export interface IBookDetail {
@@ -220,19 +195,12 @@ export interface PartialBook {
   votes: number;
 }
 
-export interface PartialBookV1 {
-  isbn: string;
-  translationId: string;
-  imageUrl: string;
-  imageId: string;
-}
-
 export interface Paging {
   page: number;
   size: number;
 }
 
-export interface SubCategoryGraph {
+export interface SubCategory {
   id: string;
   en: string;
   fr: string;
@@ -240,15 +208,40 @@ export interface SubCategoryGraph {
   books: PartialBook[];
 }
 
-export interface CategoryGraph {
+export interface Category {
   id: string;
   en: string;
   fr: string;
   es: string;
-  subCategories: SubCategoryGraph[];
+  subCategories: SubCategory[];
+}
+
+export interface CategoryV2 {
+  id: string;
+  en: string;
+  fr: string;
+  es: string;
+  subCategoryRelations: [
+    {
+      id: string;
+      bookRelations: string[];
+    }
+  ];
 }
 
 export interface LibraryInventory {
-  categories: CategoryGraph[];
-  //inventory: IBook[];
+  categories: CategoryV2[];
+
+  subCategoryMap: {
+    [subCategoryId: string]: {
+      id: string;
+      en: string;
+      fr: string;
+      es: string;
+    };
+  };
+
+  books: {
+    [isbn: string]: PartialBook;
+  };
 }

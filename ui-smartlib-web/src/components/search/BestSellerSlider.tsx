@@ -1,15 +1,12 @@
 "use client";
-import React, { useMemo } from "react";
-import CatalogSliderItem from "../catalogByCategory/CatalogSliderItem";
-import useFilterBooksByCategory from "@/hooks/useFilterBooksByCategory";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { loadBooksBySubcategory, loadLibraryInventory } from "@/actions/book-actions";
+import { loadBooksBySubcategory } from "@/actions/book-actions";
 import dynamic from "next/dynamic";
 import { CatalogSliderSkeleton } from "../CatalogSlider";
-import SubCategoryComponent from "../explore/subcategory/SubCategoryComponent";
 
-const SubCategorySlider = dynamic(
-  () => import("../explore/subcategory/Slider"),
+const SubCategoryComponent = dynamic(
+  () => import("../explore/subcategory/SubCategoryComponent"),
   {
     loading: () => <CatalogSliderSkeleton />,
   }
@@ -25,7 +22,9 @@ export default function BestSellerSlider() {
 
   return (
     <div className="border border-t border-b rounded-2xl border-gray-200">
-      {/* {bestSeller && <SubCategoryComponent {...bestSeller!} />} */}
+      {bestSeller && (
+        <SubCategoryComponent categoryId="All" subCategory={bestSeller} />
+      )}
     </div>
   );
 }

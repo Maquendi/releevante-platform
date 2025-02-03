@@ -1,7 +1,9 @@
 "use client";
 
-
-import { bookRecomendationsByTags } from "@/actions/book-actions";
+import {
+  bookRecomendationsByTags,
+  loadBookDetail,
+} from "@/actions/book-actions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useGetRecomendationBooks({
@@ -21,5 +23,17 @@ export default function useGetRecomendationBooks({
     },
   });
 
-  return recomendations
+  const bookByTranslationId = (translationId) => {
+    const { data: booksDetail } = useQuery({
+      queryKey: ["BOOK_BY_TRANSLATION_ID", translationId],
+      queryFn: async () => await loadBookDetail(translationId),
+    });
+
+    return booksDetail!;
+  };
+
+  return {
+    recomendations,
+    bookByTranslationId,
+  };
 }

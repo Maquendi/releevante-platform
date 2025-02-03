@@ -3,19 +3,15 @@ import {
   BookByFtagsVibes,
   BookCategory,
   BookCopy,
-  BookItems,
   BookRecomendationParams,
   BookRecomendations,
-  BooksByCategory,
-  BooksPagination,
   FtagItem,
   FtagsEnum,
-  IBook,
   IBookDetail,
   LibraryInventory,
   Paging,
   PartialBook,
-  SubCategoryGraph,
+  SubCategory,
 } from "../domain/models";
 import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
@@ -23,24 +19,13 @@ import { BookService, BookServiceFacade } from "./service.definitions";
 export class BookServiceFacadeImpl implements BookServiceFacade {
   constructor(private bookService: BookService) {}
 
+
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
   }
-  async findAllBookByCategory(): Promise<BooksByCategory[]> {
-    return await this.bookService.findAllBookByCategory();
-  }
-  async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {
-    return await this.bookService.findAllBookBySearchCriteria(searchCriteria);
-  }
-  async findAllBooks(params: BooksPagination): Promise<Book[]> {
-    return await this.bookService.findAllBooks(params);
-  }
-  async findBookById(isbn: string): Promise<Book> {
-    return await this.bookService.findBookById(isbn);
-  }
 
   async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
-    console.log("loading book details");
+    console.log("loading book details: " + translationId);
     return await this.bookService.findByTranslationId(translationId);
   }
 
@@ -64,18 +49,12 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
     return this.bookService.findBooksByVibeTags(tagsValues);
   }
 
-  loanLibraryInventory(): Promise<Book[]> {
-    return this.bookService.loanLibraryInventory();
-  }
-
-  loadLibraryInventory(categoryId?: string): Promise<LibraryInventory> {
-    return this.bookService.loadLibraryInventory(categoryId);
-  }
-
-  loadBooksBySubcategory(
-    subcategoryEnValue: string
-  ): Promise<SubCategoryGraph> {
+  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory> {
     return this.bookService.loadBooksBySubcategory(subcategoryEnValue);
+  }
+
+  loadLibraryInventory(): Promise<LibraryInventory> {
+    return this.bookService.loadLibraryInventory();
   }
 
   loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]> {

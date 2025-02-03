@@ -1,11 +1,14 @@
 // src/middleware/socketMiddleware.js
 import { io, Socket } from "socket.io-client";
 import { setCurrentCopy } from "../features/checkoutSlice";
-import { updateCurrentReturnBookStatus } from "../features/returnbookSlice";
+import {
+  CheckinItem,
+  updateCurrentBookStatus,
+} from "../features/returnbookSlice";
 import {
   onNewItemStatus,
   onNewTransactionStatus,
-} from "@/actions/returnbook-actions";
+} from "@/actions/book-transactions-actions";
 
 const SOCKET_URL = "http://localhost:7777";
 
@@ -35,7 +38,7 @@ const socketMiddleware = (store) => {
 
           // Example: Listen for server events
           socket.on("item_checkout_success", (data) => {
-            const { itemId, isbn } = data;
+            const { id, isbn } = data;
 
             store.dispatch(
               setCurrentCopy({
@@ -45,24 +48,52 @@ const socketMiddleware = (store) => {
             );
 
             onNewItemStatus({
-              itemId,
+              itemId: id,
               status: "CHECKOUT_SUCCESS",
             });
           });
 
           socket.on("item_checkout_started", (data) => {
-            const { itemId, isbn } = data;
+            const { id, isbn } = data;
 
             store.dispatch(
               setCurrentCopy({
                 isbn,
-                status: 'checkout_started',
+                status: "checkout_started",
               })
             );
 
             onNewItemStatus({
-              itemId,
+              itemId: id,
               status: "CHECKOUT_STARTED",
+            });
+          });
+
+          socket.on("item_checkin_started", (data) => {
+            const { id } = data;
+            store.dispatch(
+              updateCurrentBookStatus({
+                status: "CHECKIN_STARTED",
+              })
+            );
+
+            onNewItemStatus({
+              itemId: id,
+              status: "CHECKIN_STARTED",
+            });
+          });
+
+          socket.on("item_checkin_success", (data) => {
+            const { id } = data;
+            store.dispatch(
+              updateCurrentBookStatus({
+                status: "CHECKIN_SUCCESS",
+              })
+            );
+
+            onNewItemStatus({
+              itemId: id,
+              status: "CHECKIN_SUCCESS",
             });
           });
 
@@ -83,30 +114,16 @@ const socketMiddleware = (store) => {
       case "socket/disconnect":
         if (socket) {
           socket.disconnect();
-          //socket = undefined;
           console.log("Socket disconnected manually");
         }
         break;
 
-      case "socket/returnbook":
+      case "socket/checkin":
         if (socket) {
-          const returnBook = action.payload;
-
-          (async () => {
-            store.dispatch(
-              updateCurrentReturnBookStatus({
-                status: "return_started",
-              })
-            );
-
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-
-            store.dispatch(
-              updateCurrentReturnBookStatus({
-                status: "return_successful",
-              })
-            );
-          })();
+          const data: CheckinItem = action.payload;
+          console.log("received payload ");
+          console.log(data);
+          socket.emit("checkin", data);
         }
         break;
 

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addItem } from "@/redux/features/cartSlice";
-import { Book, BookLanguage, IBookDetail } from "@/book/domain/models";
+import { IBookDetail } from "@/book/domain/models";
 import useSyncImagesIndexDb from "./useImagesIndexDb";
 
 export function useAddBookToCart(selectedBook: IBookDetail) {
@@ -15,9 +15,7 @@ export function useAddBookToCart(selectedBook: IBookDetail) {
   }, [selectedBook]);
 
   const canBeSold = useMemo(() => {
-    return (
-      selectedBook?.qtyForSale > 0
-    );
+    return selectedBook?.qtyForSale > 0;
   }, [selectedBook]);
 
   const maxBookAllowed = useMemo(() => {
@@ -57,6 +55,7 @@ export function useAddBookToCart(selectedBook: IBookDetail) {
         esTagValue: category.es,
       })),
       author: book.author,
+      qtyForSale: book.qtyForSale,
     };
   };
 

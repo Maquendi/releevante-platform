@@ -1,23 +1,26 @@
 "use client";
-import { SubCategoryGraph } from "@/book/domain/models";
+import { SubCategory } from "@/book/domain/models";
 import React from "react";
 import { useLocale } from "next-intl";
 import dynamic from "next/dynamic";
 import { CatalogSliderSkeleton } from "../../CatalogSlider";
 
-const SubCategorySlider = dynamic(() => import("./Slider"), {
+const SubCategorySlider = dynamic(() => import("./SubCategorySlider"), {
   loading: () => <CatalogSliderSkeleton />,
 });
 
 export interface SubcategoryComponentProps {
-  categoryId: string,
-  subCategory: SubCategoryGraph;
+  categoryId: string;
+  subCategory: SubCategory;
 }
 
-export default function SubCategoryComponent({ categoryId, subCategory }: SubcategoryComponentProps) {
+export default function SubCategoryComponent({
+  categoryId,
+  subCategory,
+}: SubcategoryComponentProps) {
   const locale = useLocale();
 
-  const { books, ...rest } = subCategory
+  const { books, ...rest } = subCategory;
 
   return (
     <div

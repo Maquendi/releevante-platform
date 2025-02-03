@@ -3,11 +3,9 @@ import { Cart } from "../domain/cart.model";
 import { CartDto } from "./dto";
 import {
   BookTransaction,
-  BookTransactionItem,
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
-  LoanGroup,
 } from "../domain/loan.model";
 import { Rating } from "../domain/service-rating.model";
 import { UserId } from "@/identity/domain/models";
@@ -35,7 +33,7 @@ export interface BookLoanService {
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus>;
   addLoanStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
-  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]>;
+  getUserLoans(clientId: UserId): Promise<BookTransaction[]>;
 }
 
 export interface ServiceRatingService {

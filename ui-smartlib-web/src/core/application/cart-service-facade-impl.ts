@@ -1,11 +1,7 @@
-import { UserId } from "@/identity/domain/models";
 import {
-  BookTransaction,
-  BookTransactionItem,
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
-  LoanGroup,
 } from "../domain/loan.model";
 import { CartDto, LoanItemStatusDto, LoanStatusDto } from "./dto";
 import { CartService, BookLoanService } from "./service.definition";
@@ -57,9 +53,5 @@ export class CartServiceFacade {
       status: dto.status,
     };
     return await this.bookLoanService.addLoanStatus(status);
-  }
-
-  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
-    return this.bookLoanService.getUserLoanBooks(clientId);
   }
 }

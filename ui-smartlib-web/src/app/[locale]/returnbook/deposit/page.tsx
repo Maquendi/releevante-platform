@@ -1,44 +1,61 @@
 "use client";
-import { returnSingleBook } from "@/actions/returnbook-actions";
+import {
+  onNewItemStatus,
+  returnSingleBook,
+} from "@/actions/book-transactions-actions";
 import { useRouter } from "@/config/i18n/routing";
-import useImagesIndexDb from "@/hooks/useImagesIndexDb";
-import { useReturnBook } from "@/hooks/useReturnBook";
 import { useAppSelector } from "@/redux/hooks";
-import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { RefreshCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 export default function DepositPage() {
   const t = useTranslations("depositPage");
-  const { currentReturnBook, completedBooks } = useAppSelector(
+  const { currentItemForCheckin } = useAppSelector(
     (state) => state.returnbooks
   );
   const dispatch = useDispatch();
-  const router= useRouter()
-  const queryClient = useQueryClient()
-  
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const hasCheckedIn = useRef(false);
+
   const { mutate: returnBookMutation } = useMutation({
-    mutationFn: returnSingleBook,
+    mutationFn: onNewItemStatus,
     onSuccess(loanItem) {
-      queryClient.invalidateQueries({queryKey:['RETURN_BOOKS'],exact:true,refetchType:'all'})
-      dispatch({ type: "socket/returnbook", event: "checkout", payload: loanItem });
+      queryClient.invalidateQueries({
+        queryKey: ["RETURN_BOOKS"],
+        exact: true,
+        refetchType: "all",
+      });
+      dispatch({
+        type: "socket/checkin",
+        event: "checkin",
+        payload: currentItemForCheckin,
+      });
     },
   });
 
-  useEffect(()=>{
-    if(!currentReturnBook.itemId)return
-    returnBookMutation(currentReturnBook)
-  },[])
+  useEffect(() => {
+    console.log("USE EFFECT 1: " + currentItemForCheckin.id);
+    if (!currentItemForCheckin.id) return;
+    if (hasCheckedIn.current) return;
+    returnBookMutation({
+      itemId: currentItemForCheckin.id,
+      status: currentItemForCheckin.status,
+    });
+    hasCheckedIn.current = true;
+  }, []);
 
-  useEffect(()=>{
-    if(currentReturnBook.status === 'return_successful'){
-      router.push('/returnbook/thanks')
+  useEffect(() => {
+    console.log("USE EFFECT 2: " + currentItemForCheckin.id);
+
+    if (currentItemForCheckin.status === "CHECKIN_SUCCESS") {
+      router.push("/returnbook/thanks");
     }
-  },[currentReturnBook])
-
+  }, [currentItemForCheckin]);
 
   return (
     <div>
@@ -48,7 +65,7 @@ export default function DepositPage() {
             src="/images/releevante.svg"
             width={250}
             height={350}
-            alt={`${currentReturnBook?.bookTitle} image`}
+            alt={`${currentItemForCheckin?.title} image`}
             className="m-auto object-cover rounded-md w-[110px] h-auto"
           />{" "}
         </div>
@@ -66,9 +83,9 @@ export default function DepositPage() {
           <div>
             <figure className="relative  w-[230px] h-[270px] m-auto">
               <Image
-                src={currentReturnBook?.image}
+                src={currentItemForCheckin?.image}
                 fill
-                alt={`${currentReturnBook?.bookTitle} image`}
+                alt={`${currentItemForCheckin?.title} image`}
                 className=" m-auto object-cover rounded-md"
               />
               <div className="absolute -top-3 left-[50%] -translate-x-[50%] bg-white border border-primary p-1.5 rounded-full">

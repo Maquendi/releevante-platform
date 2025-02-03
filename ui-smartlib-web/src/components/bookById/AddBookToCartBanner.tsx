@@ -1,7 +1,5 @@
 "use client";
 
-import { FetchBookById } from "@/actions/book-actions";
-import { useQuery } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";

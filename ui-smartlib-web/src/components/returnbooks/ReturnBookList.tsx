@@ -7,8 +7,8 @@ import Image from "next/image";
 import { formatDateByRegion } from "@/lib/utils";
 import { Link, useRouter } from "@/config/i18n/routing";
 import EmptyRentedBooks from "./EmptyRentedBooks";
-import { setCurrentReturnBook } from "@/redux/features/returnbookSlice";
-import useGetReturnBooks from "@/hooks/useGetReturnBooks";
+import { setCurrentBookForCheckin } from "@/redux/features/returnbookSlice";
+import useGetUserTransactions from "@/hooks/useGetReturnBooks";
 
 const TIME_REGIONS = {
   en: "en-US",
@@ -56,18 +56,18 @@ export default function ReturnBookList() {
   const settings = useAppSelector((state) => state.settings);
   const t = useTranslations("returnBook");
   const locale = useLocale();
-  const { userReturnBooks, isPending } = useGetReturnBooks();
+  const { bookTransactions, isPending } = useGetUserTransactions();
 
   const dispath = useAppDispatch();
   const router = useRouter();
 
   return (
     <div className="space-y-5">
-      {userReturnBooks?.length === 0 && !isPending ? (
+      {bookTransactions?.length === 0 && !isPending ? (
         <EmptyRentedBooks />
       ) : null}
-      {userReturnBooks?.map(({ returnDate, books }) => (
-        <div key={returnDate} className="bg-white pt-5  rounded-md space-y-5">
+      {bookTransactions?.map(({ id, returnsAt, items: books }) => (
+        <div key={returnsAt} className="bg-white pt-5  rounded-md space-y-5">
           <header className="flex justify-between px-4">
             <div className="flex gap-1 items-center text-xl font-medium">
               <p>{t("book")}</p>
@@ -85,10 +85,10 @@ export default function ReturnBookList() {
             <div className="text-sm font-medium text-gray-500">
               <p className="first-letter:uppercase">
                 <span>{t("returnDate")}</span>:{" "}
-                {returnDate && (
+                {returnsAt && (
                   <span>
                     {formatDateByRegion(
-                      new Date(returnDate),
+                      new Date(returnsAt),
                       TIME_REGIONS?.[locale] || "en-US"
                     )}
                   </span>
@@ -104,12 +104,13 @@ export default function ReturnBookList() {
                   item={item}
                   onButtonClick={() => {
                     dispath(
-                      setCurrentReturnBook({
-                        itemId: item.loanItemId,
-                        bookId: item.id,
-                        image: item.image as any,
-                        bookTitle: item.bookTitle,
-                        status: "return_pending",
+                      setCurrentBookForCheckin({
+                        transactionId: id,
+                        id: item.id,
+                        isbn: item.isbn,
+                        image: item.image!,
+                        title: item.title!,
+                        status: "CHECKIN_PENDING",
                       })
                     );
                     router.push("/returnbook/deposit");
@@ -119,7 +120,7 @@ export default function ReturnBookList() {
           </div>
           <div className="flex relative   justify-center py-4 border-t border-gray-200 ">
             <Link
-              href={"/catalog"}
+              href={"/explore"}
               className="m-auto border rounded-full font-medium tracking-wider text-sm py-4 px-7 border-primary text-primary bg-transparent"
             >
               {books?.length > 0 ? t("rentAnotherBook") : t("rentBook")}

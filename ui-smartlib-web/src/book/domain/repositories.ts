@@ -1,25 +1,18 @@
 import {
   Book,
   BookByFtagsVibes,
-  BookCategory,
   BookCompartment,
   BookCopy,
-  BookImage,
-  BookItems,
   BookRecomendationParams,
   BookRecomendations,
-  BooksByCategory,
-  BooksPagination,
-  CategoryGraph,
   FtagItem,
   FtagsEnum,
-  IBook,
   IBookDetail,
   Isbn,
   LibraryInventory,
   Paging,
   PartialBook,
-  SubCategoryGraph,
+  SubCategory,
 } from "./models";
 
 export interface BookRepository {
@@ -29,24 +22,11 @@ export interface BookRepository {
   updateCopies(books: BookCopy[]): Promise<BookCopy[]>;
   getFtagsBy(tagName: FtagsEnum): Promise<FtagItem[]>;
   findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>;
-  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategoryGraph>;
-  // ***********
-  // findAllCategories(): Promise<BookCategory[]>;
-  findAllByCategory(categoryId: string): Promise<BooksByCategory[]>; // return with images
-  findAllBy(query: string): Promise<Book[]>; // just return book id and name,
-  findById(isbn: string): Promise<Book>; // return with images
-  findAllBooks(params:BooksPagination):Promise<Book[]>
-  loanLibraryInventory(): Promise<Book[]>
+  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory>;
+  loadLibraryInventory(): Promise<LibraryInventory>;
   findByTranslationId(translationId: string): Promise<IBookDetail[]>;
-  findAllBooks(params: BooksPagination): Promise<Book[]>;
-  loadLibraryInventory(searchCategoryId?: string): Promise<LibraryInventory>;
-  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>
-  bookRecomendationsByTags(params: BookRecomendationParams): Promise<BookRecomendations>
+  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>;
+  bookRecomendationsByTags(
+    params: BookRecomendationParams
+  ): Promise<BookRecomendations>;
 }
-
-// 1. seach all available categories.
-// 2. having selected one category, load all books belonging to the selected category.
-// 3. fetch all books paginated.
-// 4. fetch books by {author, titulo, etc.}  / must only query book table.
-// 5. fetch book by id: load editions, images
-// 6. eliminate book_edition, add edition info to book table.

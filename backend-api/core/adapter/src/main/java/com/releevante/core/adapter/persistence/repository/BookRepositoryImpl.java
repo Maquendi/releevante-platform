@@ -2,6 +2,8 @@ package com.releevante.core.adapter.persistence.repository;
 
 import com.releevante.core.adapter.persistence.dao.*;
 import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
+import com.releevante.core.adapter.persistence.dao.projections.BookProjection;
+import com.releevante.core.adapter.persistence.dao.projections.PartialBookProjection;
 import com.releevante.core.adapter.persistence.records.*;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.BookRepository;
@@ -91,12 +93,13 @@ public class BookRepositoryImpl implements BookRepository {
 
   private Flux<BookTagRecord> persistBookTags(List<Book> books) {
     return Flux.fromStream(books.stream())
-        .flatMap(book -> Flux.fromIterable(book.tags()).flatMap(this::getTag).map(toBookTag(book)))
+        .flatMap(
+            book -> Flux.fromIterable(book.tags()).flatMap(this::getTagOrSave).map(toBookTag(book)))
         .collectList()
         .flatMapMany(bookTagHibernateDao::saveAll);
   }
 
-  private Mono<TagRecord> getTag(Tag tag) {
+  private Mono<TagRecord> getTagOrSave(Tag tag) {
     return tagHibernateDao
         .findFirstByValueIgnoreCase(tag.value())
         .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.from(tag))));
@@ -190,5 +193,46 @@ public class BookRepositoryImpl implements BookRepository {
                 .map(LibraryInventoryRecord::fromDomain)
                 .collect(Collectors.toList()))
         .thenMany(Flux.fromIterable(inventories));
+  }
+
+  @Override
+  public Flux<PartialBook> findAllBy(String orgId) {
+    return bookHibernateDao.findAllByOrgId(orgId).map(PartialBookProjection::toDomain);
+  }
+
+  @Override
+  public Flux<Book> findAllBy(String isbn, String translationId) {
+    return bookHibernateDao
+        .findAllBy(translationId)
+        .sort(
+            (i1, i2) -> {
+              if (i1.getIsbn().equals(i2.getIsbn())) {
+                return 0;
+              } else if (i1.getIsbn().equals(isbn)) {
+                return -1;
+              }
+              return 1;
+            })
+        .map(BookProjection::toDomain);
+  }
+
+  @Override
+  public Flux<Book> getByTagIdList(List<String> tagIdList) {
+    return bookHibernateDao.getByTagIdList(tagIdList).map(BookProjection::toDomain);
+  }
+
+  @Override
+  public Flux<Book> getByIsbnList(List<String> isbnList) {
+    return bookHibernateDao.getByIsbnList(isbnList).map(BookProjection::toDomain);
+  }
+
+  @Override
+  public Flux<Book> getByTagValues(List<String> tagValues) {
+    return bookHibernateDao.getByTagValues(tagValues).map(BookProjection::toDomain);
+  }
+
+  @Override
+  public Mono<Book> findByIsbn(String isbn) {
+    return null;
   }
 }

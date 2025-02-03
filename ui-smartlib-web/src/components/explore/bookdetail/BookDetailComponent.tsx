@@ -15,8 +15,6 @@ import { CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IBookDetail } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
-import BookByIdBanner from "@/components/bookById/BookByIdBanner";
-import useGetBooksByTranslationId from "@/hooks/useGetBooksByTranslationId";
 
 const BestSellerSlider = dynamic(
   () => import("@/components/search/BestSellerSlider"),
@@ -56,12 +54,6 @@ export default function BookDetailComponent({ isbn, translationId }) {
 
   return (
     <section className="relative px-7 mt-7 space-y-10">
-      {/* <BookByIdBanner
-        selectedBook={book}
-        relatedBooks={books}
-        setSelectedBook={(value) => setBook(getSelectedBook(value))}
-      /> */}
-
       <div className="flex gap-5 p-3 rounded-md m-auto bg-white px-5 py-10">
         <div>
           <ImageWithSkeleton

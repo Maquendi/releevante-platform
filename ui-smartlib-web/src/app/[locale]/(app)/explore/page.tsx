@@ -10,12 +10,11 @@ const ExploreComponent = lazy(
 );
 import { lazy, Suspense } from "react";
 
-export default async function ExplorePage({ searchParams }) {
-  //const categoryId = searchParams?.categoryId;
-
+export default async function ExplorePage() {
   const queryClient = new QueryClient();
+
   await queryClient.ensureQueryData({
-    queryKey: ["CATEGORY_GRAPH", "All"],
+    queryKey: ["BOOK_INVENTORY", "All"],
     queryFn: async () => await loadLibraryInventory(),
   });
 

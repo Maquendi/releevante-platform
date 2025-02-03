@@ -1,6 +1,4 @@
 import {
-  FetchAllBookByCategory,
-  FetchAllBookCategories,
   FetchFtagsBy,
 } from "@/actions/book-actions";
 import { Link } from "@/config/i18n/routing";
@@ -16,15 +14,6 @@ import React from "react";
 export default async function HomePage() {
   const t = await getTranslations("catalogPage");
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["BOOKS_BY_CATEGORIES"],
-    queryFn: async () => await FetchAllBookByCategory(),
-  });
-  await queryClient.prefetchQuery({
-    queryKey: ["CATEGORIES"],
-    queryFn: async () => await FetchAllBookCategories(),
-  });
-
   await queryClient.prefetchQuery({
     queryKey: ["READING_VIBE"],
     queryFn: async () => await FetchFtagsBy("reading_vibe"),

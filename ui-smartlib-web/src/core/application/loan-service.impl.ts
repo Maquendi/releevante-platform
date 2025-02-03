@@ -6,7 +6,6 @@ import {
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
-  LoanGroup,
 } from "../domain/loan.model";
 import { BookLoanService } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
@@ -120,7 +119,7 @@ export class BookLoanServiceImpl implements BookLoanService {
     return transactions;
   }
 
-  getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
-    return this.bookLoanRepository.getUserLoanBooks(clientId);
+  getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
+    return this.bookLoanRepository.getUserLoans(clientId);
   }
 }

@@ -94,3 +94,4 @@ const Slider: React.FC<SliderProps> = ({
 };
 
 export default Slider;
+

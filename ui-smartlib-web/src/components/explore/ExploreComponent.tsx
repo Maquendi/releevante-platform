@@ -1,40 +1,27 @@
 "use client";
-import { Link } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import BookNotFound from "../BookNotFound";
 import HelpFindBookBanner from "../HelpFindBookBanner";
-import SubCategoryComponent from "./subcategory/SubCategoryComponent";
-import useLibraryInventory, {
-  filterLibraryInventory,
-} from "@/hooks/useLibraryInventory";
 import { useEffect, useState } from "react";
-import { CategoryGraph } from "@/book/domain/models";
-
-interface CatalogPageProps {
-  categoryId: string;
-}
+import { CategoryV2 } from "@/book/domain/models";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import SubCategoryComponent from "./subcategory/SubCategoryComponent";
+import useLibraryInventory from "@/hooks/useLibraryInventory";
 
 export default function ExploreComponent() {
   const t = useTranslations("catalogPage");
   const locale = useLocale();
-  const { isPending, libraryInventory } = useLibraryInventory();
-  const [categories, setCategories] = useState<CategoryGraph[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryGraph>();
-  const [categoryAll, setCategoryAll] = useState<CategoryGraph>();
+  const [categories, setCategories] = useState<CategoryV2[]>([]);
+
+  const { libraryInventory, isPending, subCategoryFrom } =
+  useLibraryInventory();
 
   useEffect(() => {
-    setCategories(libraryInventory?.categories || []);
-    const categoyAll = filterLibraryInventory(libraryInventory);
-
-    setCategoryAll(categoyAll);
-    setSelectedCategory(categoryAll);
-  }, [categories]);
-
-  const onSelected = (selectedCategory: CategoryGraph) => {
-    setSelectedCategory(selectedCategory);
-  };
+    setCategories(libraryInventory!.categories);
+  }, [libraryInventory]);
 
   return (
     <div className="space-y-4 pb-5">
@@ -57,48 +44,45 @@ export default function ExploreComponent() {
           <h3 className="mb-2 text-secondary-foreground uppercase font-medium text-sm ">
             {t("selectCategory")}
           </h3>
-          <div className="flex gap-2 items-center text-sm font-medium overflow-x-scroll no-scrollbar snap-x snap-mandatory select-none whitespace-nowrap">
-            <button
-              className={cn(
-                "flex-none border px-6 py-3 border-gray-500 rounded-full snap-start",
-                !selectedCategory?.id &&
-                  "bg-primary border-4 border-accent-foreground text-white"
-              )}
-              onClick={() => onSelected(categoryAll!)}
-            >
-              All
-            </button>
-            {categories.map((category) => (
-              <button
-                onClick={() => onSelected(category)}
-                className={cn(
-                  "flex-none border px-6 py-3 border-gray-500 rounded-full snap-start",
-                  selectedCategory?.id === category?.id &&
-                    "bg-primary border-4 border-accent-foreground text-white"
-                )}
-                key={category?.id}
-              >
-                {category?.[`${locale}`] || ""}
-              </button>
-            ))}
+          <div className="flex gap-2 items-center text-sm font-medium snap-x snap-mandatory select-none whitespace-nowrap">
+            <Tabs className={`w-full`}>
+              <TabList className={`overflow-x-scroll no-scrollbar flex`}>
+                {categories.map((category, index) => (
+                  <Tab
+                    key={index}
+                    className={cn(
+                      "flex-none border px-6 pt-3 pb-2 mx-1 border-gray-500 rounded-full snap-start"
+                    )}
+                    selectedClassName="bg-primary border-4 border-accent-foreground text-white"
+                  >
+                    {category?.[`${locale}`]}
+                  </Tab>
+                ))}
+              </TabList>
+
+              {categories.map((category, index) => (
+                <TabPanel key={index}>
+                  <section className="space-y-6 px-6">
+                    {!category?.subCategoryRelations?.length && !isPending ? (
+                      <div className="space-y-5">
+                        <BookNotFound />
+                        <HelpFindBookBanner />
+                      </div>
+                    ) : null}
+                    {category?.subCategoryRelations?.map((item, index) => (
+                      <SubCategoryComponent
+                        key={index}
+                        categoryId={category?.id}
+                        subCategory={subCategoryFrom(item)}
+                      />
+                    ))}{" "}
+                  </section>
+                </TabPanel>
+              ))}
+            </Tabs>
           </div>
         </div>
       </header>
-      <section className="space-y-6 px-6">
-        {!selectedCategory?.subCategories?.length && !isPending ? (
-          <div className="space-y-5">
-            <BookNotFound />
-            <HelpFindBookBanner />
-          </div>
-        ) : null}
-        {selectedCategory?.subCategories?.map((item, index) => (
-          <SubCategoryComponent
-            key={index}
-            categoryId={selectedCategory?.id}
-            subCategory={item}
-          />
-        ))}{" "}
-      </section>
     </div>
   );
 }

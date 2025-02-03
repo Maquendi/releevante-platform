@@ -3,12 +3,9 @@
 import { useEffect, useState } from "react";
 import BookItem from "./BookItem";
 import { useLocale, useTranslations } from "next-intl";
-import { CategoryGraph, PartialBook } from "@/book/domain/models";
+import { Category, PartialBook } from "@/book/domain/models";
 
-
-
-function SeeAllBooks({ category }: { category: CategoryGraph}) {
-
+function SeeAllBooks({ category }: { category: Category }) {
   const locale = useLocale();
   const t = useTranslations("SeeAllPage");
 

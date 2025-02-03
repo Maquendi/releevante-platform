@@ -18,13 +18,3 @@ export const checkout = async (
     throw new Error("error checkout" + error);
   }
 };
-
-export const FetchUserBooksLoan = async () => {
-  try {
-    const { userId } = await getAuthToken();
-    return await cartServiceFacade.getUserLoanBooks(userId!);
-  } catch (error) {
-    console.log("error checkout" + error);
-    throw new Error("error checkout" + error);
-  }
-};

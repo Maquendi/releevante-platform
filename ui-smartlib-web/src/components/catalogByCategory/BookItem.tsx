@@ -3,7 +3,7 @@ import ImageWithSkeleton from "../ImageWithSkeleton";
 import Rating from "../Rating";
 import { cn } from "@/lib/utils";
 import { Link } from "@/config/i18n/routing";
-import { BookItems, PartialBook } from "@/book/domain/models";
+import { PartialBook } from "@/book/domain/models";
 
 interface BookItemProps {
   book: PartialBook;
@@ -26,10 +26,13 @@ export default function BookItem({
       )}
       style={{ width: width ? `${width}px` : "30%" }}
     >
-      <Link className="cursor-pointer" href={`/explore/book/${book?.isbn}?translationId=${book?.translationId}`}>
+      <Link
+        className="cursor-pointer"
+        href={`/explore/book/${book?.isbn}?translationId=${book?.translationId}`}
+      >
         <ImageWithSkeleton
-          src={book?.image || ''}
-          alt={book?.title || ''}
+          src={book?.image || ""}
+          alt={book?.title || ""}
           width={width || 180}
           height={height || 250}
           className="w-full  object-cover rounded-lg"

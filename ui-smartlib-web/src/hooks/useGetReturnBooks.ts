@@ -1,42 +1,39 @@
-import { FetchUserBooksLoan } from "@/actions/cart-actions";
 import { useQuery } from "@tanstack/react-query";
-import useImagesIndexDb from "./useImagesIndexDb";
 import { useEffect, useState } from "react";
-import { LoanGroup } from "@/core/domain/loan.model";
+import { BookTransaction } from "@/core/domain/loan.model";
+import { fetchUserBookLoans } from "@/actions/book-transactions-actions";
+import { useAppSelector } from "@/redux/hooks";
 
-export default function useGetReturnBooks() {
-  const [returnBooksWithImages, setReturnBooksWithImages] = useState<
-    LoanGroup[]
-  >([]);
+export default function useGetUserTransactions() {
+  const [bookTransactions, setBookTransactions] = useState<BookTransaction[]>(
+    []
+  );
 
-  const { getImageByBookId } = useImagesIndexDb();
-  const [isPending,setIsPending]=useState<boolean>(true)
+  const { currentItemForCheckin } = useAppSelector(
+    (state) => state.returnbooks
+  );
 
-  const { data: userReturnBooks = [] } = useQuery({
+  // const { getImageByBookId } = useImagesIndexDb();
+  const [isPending, setIsPending] = useState<boolean>(true);
+
+  const { data: transactions = [] } = useQuery({
     queryKey: ["RETURN_BOOKS"],
-    queryFn: async () => await FetchUserBooksLoan(),
+    queryFn: async () => await fetchUserBookLoans(),
   });
 
   useEffect(() => {
     setIsPending(true);
     (async () => {
-      const bookImagesPromises = userReturnBooks.map(async (item) => ({
-        returnDate: item.returnDate,
-        books: await Promise.all(
-          item.books.map(async (book) => ({
-            ...book,
-            image: (await getImageByBookId({id:book.id,image:book.image})) || book.image,
-          }))
-        ),
-      }));
-      const bookWithImages = await Promise.all(bookImagesPromises);
-      setReturnBooksWithImages(bookWithImages);
-      setIsPending(false)
+      const userTransactions = transactions.filter((transaction) => {
+        return transaction.items.length > 0;
+      });
+      setBookTransactions([...userTransactions]);
+      setIsPending(false);
     })();
-  }, [userReturnBooks]);
+  }, [transactions]);
 
-  return{
-    userReturnBooks:returnBooksWithImages,
-    isPending
-  }
+  return {
+    bookTransactions,
+    isPending,
+  };
 }

@@ -26,7 +26,12 @@ export default function BookCard({
       )}
       style={{ width: width ? `${width}px` : "30%" }}
     >
-      <Link className="cursor-pointer" href={`/explore/book/${book?.isbn}?translationId=${book.translationId}`}>
+      <Link
+        className="cursor-pointer"
+        href={`/explore/book/${book!.isbn}?translationId=${
+          book!.translationId
+        }`}
+      >
         <ImageWithSkeleton
           src={book?.image || ""}
           alt={book?.title}
@@ -37,8 +42,8 @@ export default function BookCard({
         <div className="flex flex-col  space-y-1">
           <div className="flex text-end text-nowrap text-secondary-foreground items-center gap-3">
             <Rating rating={book?.rating || 0} />
-            <p>{book?.rating || 0}</p>
-            <p>({book?.votes || 0} votes)</p>
+            <p>{book!.rating || 0}</p>
+            <p>({book!.votes || 0} votes)</p>
           </div>
         </div>
       </Link>
