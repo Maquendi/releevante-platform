@@ -5,11 +5,16 @@
   "HomePage": {
     "showAllBooksTitle": "Muéstrame todos los libros",
     "showAllBooksText": "¡Explora nuestra biblioteca completa de libros! Navega por una amplia colección de géneros, temas y autores para descubrir tu próxima gran lectura.",
-    "showAllBooksBtn": "Ver todos los libros",
-    "helpFindBookTitle": "Ayúdame a encontrar el libro perfecto",
-    "helpFindBookText": "¡Déjanos guiarte! Te recomendaremos el libro perfecto hecho a tu medida, solo responde unas preguntas rápidas.",
-    "helpFindBookBtn": "Sugiéreme libros"
+    "showAllBooksBtn": "Explorar todos los libros",
+    "helpFindBookTitle": "Ayúdame a encontrar el libro adecuado",
+    "helpFindBookText": "¡Déjanos guiarte! Te recomendaremos el libro perfecto adaptado a tus necesidades, solo responde a algunas preguntas rápidas.",
+    "helpFindBookBtn": "Sugiéreme libros",
+    "title1": "Explorar",
+    "title2": "y",
+    "title3": "alquilar",
+    "title4": "libros gratis en nuestra rica colección de libros"
   },
+
   "wristbandScanAuth": {
     "header": "¡Bienvenido a tu biblioteca personal!",
     "title": "Comienza a escanear tu brazalete",
@@ -30,11 +35,11 @@
     "selectCategory": "Selecciona una categoría",
     "seeAll": "Ver todo",
     "notFound1": "No pudimos encontrar ningún",
-    "book": "libro",
     "notFound2": "Por favor, busca en otra categoría o encuentra otro libro que te recomendamos a continuación.",
     "findRightBook": "Encuentra el libro adecuado para ti",
-    "helpMessage": "¿Aún no has encontrado un libro? Estamos aquí para ayudarte. Vamos a encontrar el libro perfecto para alquilar gratis.",
-    "startNow": "Comienza ahora"
+    "helpMessage": "¿Aún no encuentras un libro? Estamos aquí para ayudarte. Vamos a encontrar el libro perfecto para alquilar gratis.",
+    "startNow": "Comienza ahora",
+    "books": "libros"
   },
   "SeeAllPage": {
     "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis",

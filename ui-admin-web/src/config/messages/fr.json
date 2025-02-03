@@ -4,12 +4,17 @@
   },
   "HomePage": {
     "showAllBooksTitle": "Montrez-moi tous les livres",
-    "showAllBooksText": "Explorez notre bibliothèque complète de livres ! Parcourez une vaste collection de genres, de thèmes et d’auteurs pour découvrir votre prochaine grande lecture.",
-    "showAllBooksBtn": "Voir tous les livres",
-    "helpFindBookTitle": "Aidez-moi à trouver le livre parfait",
-    "helpFindBookText": "Laissez-nous vous guider ! Nous vous recommanderons le livre parfait adapté juste pour vous, il suffit de répondre à quelques questions rapides.",
-    "helpFindBookBtn": "Suggérez-moi des livres"
+    "showAllBooksText": "Explorez notre bibliothèque complète de livres ! Parcourez une vaste collection de genres, de thèmes et d'auteurs pour découvrir votre prochaine grande lecture.",
+    "showAllBooksBtn": "Parcourir tous les livres",
+    "helpFindBookTitle": "Aidez-moi à trouver le bon livre",
+    "helpFindBookText": "Laissez-nous vous guider ! Nous vous recommanderons le livre parfait adapté à vos besoins, il vous suffit de répondre à quelques questions rapides.",
+    "helpFindBookBtn": "Suggérez-moi des livres",
+    "title1": "Explorer",
+    "title2": "et",
+    "title3": "emprunter",
+    "title4": "des livres gratuitement dans notre riche collection de livres"
   },
+
   "wristbandScanAuth": {
     "header": "Bienvenue dans votre bibliothèque personnelle !",
     "title": "Commencez à scanner votre bracelet",
@@ -26,15 +31,15 @@
   },
   "catalogPage": {
     "title": "Bon après-midi !",
-    "subTitle": "Explorez et empruntez gratuitement notre riche collection de livres",
+    "subTitle": "Explorez et louez gratuitement notre vaste collection de livres",
     "selectCategory": "Sélectionnez une catégorie",
     "seeAll": "Voir tout",
     "notFound1": "Nous n'avons trouvé aucun",
-    "book": "livre",
     "notFound2": "Veuillez rechercher une autre catégorie ou trouver un autre livre que nous vous recommandons ci-dessous.",
     "findRightBook": "Trouvez le livre qui vous convient",
-    "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à emprunter gratuitement.",
-    "startNow": "Commencez maintenant"
+    "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à louer gratuitement.",
+    "startNow": "Commencez maintenant",
+    "books": "livres"
   },
   "SeeAllPage": {
     "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à emprunter gratuitement",
