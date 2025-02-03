@@ -83,7 +83,7 @@ export default function ExploreComponent() {
                     const {books,subCategory} = subCategoryBooksFrom(item);
                     if(!books?.length){
                       return (
-                        <div className="space-y-5">
+                        <div key={item.id} className="space-y-5">
                         <BookNotFound />
                         <HelpFindBookBanner />
                       </div>
