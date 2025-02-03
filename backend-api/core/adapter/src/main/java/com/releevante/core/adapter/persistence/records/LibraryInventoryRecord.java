@@ -26,6 +26,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
   private String slid;
   private boolean isSync;
   private String status;
+  private int usageCount;
 
   public static LibraryInventoryRecord updateFrom(
       SequentialGenerator<ZonedDateTime> generator, LoanItem item) {
@@ -57,6 +58,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
     record.setCreatedAt(bookCopy.createdAt());
     record.setUpdatedAt(bookCopy.updatedAt());
     record.setSync(bookCopy.isSync());
+    record.setUsageCount(bookCopy.usageCount());
     return record;
   }
 
@@ -69,6 +71,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
     record.setCreatedAt(inventory.createdAt());
     record.setUpdatedAt(inventory.updatedAt());
     record.setSync(inventory.isSync());
+    record.setUsageCount(inventory.usageCount());
     return record;
   }
 
@@ -89,6 +92,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
         .descriptionFr(projection.getDescriptionFr())
         .descriptionSp(projection.getDescriptionEs())
         .price(projection.getPrice())
+        .usageCount(projection.getUsageCount())
         .build();
   }
 }

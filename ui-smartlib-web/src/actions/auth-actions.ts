@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import { userServiceFacade } from "@/identity/application";
 import { extractPayload } from "@/lib/jwt-parser";
+import { revalidateTag } from "next/cache";
 
 export async function getAuthToken() {
   const cookieStore =await cookies();
@@ -34,7 +35,9 @@ export const authSignIn = async (passcode: string) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7,
-    });
+    })
+
+    revalidateTag('library_inventory')
   } catch (error) {
     throw new Error("Error signing in: " + error);
   }

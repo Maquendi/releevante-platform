@@ -22,8 +22,10 @@ export const bookSchema = sqliteTable("books", {
   publisher: text("publisher").notNull(),
   bindingType: text("binding_type").notNull(),
   image: text("image").notNull(),
-  qty: integer("book_copy_qty", { mode: "number" }).notNull().default(0),
-  qty_for_sale: integer("qty_for_sale", { mode: "number" })
+  imageId: text("image_id").notNull(),
+  translationId: text("translation_id").notNull(),
+  qty: integer("qty").notNull().default(0),
+  qty_for_sale: integer("qty_for_sale")
     .notNull()
     .default(0),
   rating: numeric(),

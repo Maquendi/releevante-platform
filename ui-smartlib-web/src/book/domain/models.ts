@@ -20,7 +20,7 @@ export interface FtagItem {
 
 export interface BookImage {
   id: string;
-  image:string
+  image: string;
 }
 
 export interface BookByFtagsVibes {
@@ -37,7 +37,6 @@ export interface BookCategory {
   esTagValue: string;
 }
 
-
 // export interface BookItems {
 //   id: string;
 //   title: string;
@@ -53,9 +52,10 @@ export interface CategoryTranslations {
 }
 
 export interface BookItems {
-  categories:FtagItem[],
-  subCategories:FtagItem[]
-  isbn: string;
+  categories: FtagItem[];
+  subCategories: FtagItem[];
+  tags: FtagItem[];
+  id: string;
   bookTitle: string;
   publisher: string;
   image: string;
@@ -63,8 +63,6 @@ export interface BookItems {
   rating: string;
   correlationId: string;
 }
-
-
 
 export interface BooksByCategory {
   subCategory: {
@@ -81,7 +79,7 @@ export interface BookCopy {
   is_available: boolean;
   at_position: string;
   book_isbn: string;
-  usageCount: number
+  usageCount: number;
 }
 
 export interface BookCompartment {
@@ -91,7 +89,6 @@ export interface BookCompartment {
 export interface Isbn {
   value: string;
 }
-
 
 export interface BooksPagination {
   limit?: number;
@@ -109,22 +106,33 @@ export interface BookLanguage {
   language: string;
 }
 
+interface BookCopies {
+  spanish: number;
+  french: number;
+  english: number;
+}
 
-interface BookCopies{
-  spanish:number;
-  french:number;
-  english:number;
+export interface BookRecomendationParams {
+  usersFavFlavorOfStory: string;
+  usersCurrentMood: string;
+  usersReadingPurpose: string;
+}
+
+export interface BookRecomendations {
+  recommended: IBookDetail;
+  translations: IBookDetail[];
+  others: PartialBook[];
 }
 
 export interface Book {
   id: string;
   bookTitle: string;
-  copies:BookCopies
+  copies: BookCopies;
   author: string;
-  language?:{
-    bookId:string,
-    name:string
-  }
+  language?: {
+    bookId: string;
+    name: string;
+  };
   correlationId: string;
   editionTitle: string;
   image: string;
@@ -136,23 +144,25 @@ export interface Book {
   printLength: number;
   dimensions: string;
   languages: BookLanguage[];
-  categories:BookCategory[]
+  categories: FtagItem[];
+  subCategories: FtagItem[];
+  tags: FtagItem[];
   rating?: number;
   votes?: number;
   price?: number;
 }
-
 
 export interface CategoryBooks {
   categoryName: string;
   books: Book[];
 }
 
-export interface IBook {
+export interface IBookDetail {
   isbn: string;
   bookTitle: string;
   author: string;
   correlationId: string;
+  translationId: string;
   editionTitle: string;
   publisher: string;
   en: string;
@@ -167,15 +177,30 @@ export interface IBook {
   price: number;
   bindingType: string;
   image: string;
+  imageId: string;
   publicIsbn?: string;
   qty: number;
+  qtyForSale: number;
+  categories: { en: string; fr: string; es: string; id: string }[];
 }
 
 export interface PartialBook {
   isbn: string;
+  title: string;
+  author: string;
+  translationId: string;
+  image: string;
+  imageId: string;
+  rating: number;
+  votes: number;
 }
 
-export interface SubCategoryGraph {
+export interface Paging {
+  page: number;
+  size: number;
+}
+
+export interface SubCategory {
   id: string;
   en: string;
   fr: string;
@@ -183,17 +208,40 @@ export interface SubCategoryGraph {
   books: PartialBook[];
 }
 
-export interface CategoryGraph {
+export interface Category {
   id: string;
   en: string;
   fr: string;
   es: string;
-  subCategories: SubCategoryGraph[];
+  subCategories: SubCategory[];
+}
+
+export interface CategoryV2 {
+  id: string;
+  en: string;
+  fr: string;
+  es: string;
+  subCategoryRelations: [
+    {
+      id: string;
+      bookRelations: string[];
+    }
+  ];
 }
 
 export interface LibraryInventory {
-  categories: CategoryGraph[];
-  inventory: IBook[];
+  categories: CategoryV2[];
+
+  subCategoryMap: {
+    [subCategoryId: string]: {
+      id: string;
+      en: string;
+      fr: string;
+      es: string;
+    };
+  };
+
+  books: {
+    [isbn: string]: PartialBook;
+  };
 }
-
-

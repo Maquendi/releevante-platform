@@ -13,11 +13,11 @@ import org.immutables.value.Value;
 public abstract class AbstractBookRating {
   abstract String id();
 
+  abstract String isbn();
+
   abstract Integer rating();
 
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
-
-  abstract LazyLoaderInit<Book> book();
 }

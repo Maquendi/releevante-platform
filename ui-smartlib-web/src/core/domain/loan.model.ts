@@ -19,6 +19,10 @@ export type LoanItemStatusValues =
   | "DOOR_OPENING"
   | "DOOR_OPENED"
   | "CHECKOUT_STARTED"
+  | "CHECKOUT_PENDING"
+  | "CHECKIN_STARTED"
+  | "CHECKIN_PENDING"
+  | "CHECKIN_SUCCESS"
   | "CHECKOUT_FAILED"
   | "CHECKOUT_SUCCESS";
 
@@ -29,9 +33,9 @@ export interface BookTransactionItemStatus {
   createdAt: string;
 }
 
-export interface BookTransactions{
+export interface BookTransactions {
   rent?: BookTransaction;
-  purchase?: BookTransaction 
+  purchase?: BookTransaction;
 }
 
 export interface BookTransactionItem {
@@ -39,6 +43,8 @@ export interface BookTransactionItem {
   isbn: string;
   cpy: string;
   position: string;
+  image?: string;
+  title?: string;
 }
 
 export interface BookTransactionStatus {
@@ -54,25 +60,6 @@ export interface BookTransaction {
   transactionType: "RENT" | "PURCHASE";
   items: BookTransactionItem[];
   status: BookTransactionStatus[];
-  createdAt: Date;
-  returnsAt?: Date;
-}
-
-interface BookLoanQuery {
-  id: string;
-  bookTitle: string;
-  author: string;
-  loanItemId: string;
-  image: string;
-  categories: {
-    enCategory: string;
-    frCategory: string;
-    esCategory: string;
-    isbn: string;
-  }[];
-}
-
-export interface LoanGroup {
-  returnDate: string;
-  books: BookLoanQuery[];
+  createdAt: string;
+  returnsAt?: string;
 }

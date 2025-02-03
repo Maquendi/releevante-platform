@@ -20,6 +20,8 @@ public abstract class AbstractLibraryInventory {
 
   abstract BookCopyStatus status();
 
+  abstract int usageCount();
+
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();

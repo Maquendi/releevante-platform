@@ -27,7 +27,7 @@ export default function CheckoutPage() {
           <div className="">
             {cartItems.map((item, index) => {
               const isBookWorking = item.isbn === currentBook.isbn;
-              const isBookCompleated = completedBooks
+              const isBookCompleted = completedBooks
                 .map((item) => item.isbn)
                 .includes(item.isbn);
               return (
@@ -42,18 +42,19 @@ export default function CheckoutPage() {
                     <p
                       className={cn(
                         "font-medium",
-                        !isBookCompleated && "text-gray-500",
+                        !isBookCompleted && "text-gray-500",
                         isBookWorking && "text-primary"
                       )}
                     >
                       {index + 1}. {item.title}
                     </p>
                   </div>
+
                   <div>
-                    {isBookCompleated && (
+                    {isBookCompleted && (
                       <CircleCheck className="fill-black  text-white" />
                     )}
-                    {isBookWorking && !isBookCompleated && (
+                    {isBookWorking && !isBookCompleted && (
                       <RefreshCcw
                         size={20}
                         className="animate-spin  text-black"

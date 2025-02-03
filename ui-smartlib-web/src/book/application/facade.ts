@@ -3,37 +3,34 @@ import {
   BookByFtagsVibes,
   BookCategory,
   BookCopy,
-  BookImage,
-  BookItems,
-  BooksByCategory,
-  BooksPagination,
+  BookRecomendationParams,
+  BookRecomendations,
   FtagItem,
   FtagsEnum,
+  IBookDetail,
   LibraryInventory,
+  Paging,
+  PartialBook,
+  SubCategory,
 } from "../domain/models";
-import { BookCopySearch, BookRatingDto } from "./dto";
+import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
 
- export class BookServiceFacadeImpl implements BookServiceFacade {
+export class BookServiceFacadeImpl implements BookServiceFacade {
   constructor(private bookService: BookService) {}
+
+
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
   }
-  async findAllBookByCategory(): Promise<BooksByCategory[]> {
-    return await this.bookService.findAllBookByCategory();
-  }
-  async findAllBookBySearchCriteria(searchCriteria: string): Promise<Book[]> {
-    return await this.bookService.findAllBookBySearchCriteria(searchCriteria);
-  }
-  async findAllBooks(params: BooksPagination): Promise<Book[]> {
-    return await this.bookService.findAllBooks(params);
-  }
-  async findBookById(isbn: string): Promise<Book> {
-    return await this.bookService.findBookById(isbn);
+
+  async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
+    console.log("loading book details: " + translationId);
+    return await this.bookService.findByTranslationId(translationId);
   }
 
   async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
-    return await this.bookService.getFtagsByType(tagName)
+    return await this.bookService.getFtagsByType(tagName);
   }
 
   async findAvailableCopiesByIsbnForPurchase(
@@ -49,13 +46,24 @@ import { BookService, BookServiceFacade } from "./service.definitions";
   }
 
   findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]> {
-    return this.bookService.findBooksByVibeTags(tagsValues)
+    return this.bookService.findBooksByVibeTags(tagsValues);
   }
 
-  loanLibraryInventory(): Promise<BookItems[]> {
-    return this.bookService.loanLibraryInventory()
+  loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory> {
+    return this.bookService.loadBooksBySubcategory(subcategoryEnValue);
   }
 
+  loadLibraryInventory(): Promise<LibraryInventory> {
+    return this.bookService.loadLibraryInventory();
+  }
 
- 
+  loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]> {
+    return this.bookService.loadPartialBooksPaginated(paging);
+  }
+
+  bookRecomendationsByTags(
+    params: BookRecomendationParams
+  ): Promise<BookRecomendations> {
+    return this.bookService.bookRecomendationsByTags(params);
+  }
 }

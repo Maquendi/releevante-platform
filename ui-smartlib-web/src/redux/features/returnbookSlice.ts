@@ -1,54 +1,66 @@
+import { LoanItemStatusValues } from "@/core/domain/loan.model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type ItemStatus =
-  | "return_pending"
-  | "return_started"
-  | "return_successful"
-  | "door_opening"
-  | "opened_waiting"
-  | "return_failure";
-
-export type ReturnBook = {
-  itemId:string
-  image:string;
-  bookId:string
-  bookTitle:string;
-  status:ItemStatus;
+export type CheckinItem = {
+  transactionId: string;
+  id: string;
+  image: string;
+  isbn: string;
+  title: string;
+  status: LoanItemStatusValues;
 };
 
 interface CheckoutState {
-  currentReturnBook: ReturnBook;
-  completedBooks: ReturnBook[];
+  currentItemForCheckin: CheckinItem;
+  completedBooks: CheckinItem[];
 }
 
 const initialState: CheckoutState = {
-  currentReturnBook:{
-    itemId:'',
-    bookId:'',
-    image:'',
-    bookTitle:'',
-    status:'return_pending'
-  } ,
+  currentItemForCheckin: {
+    transactionId: "",
+    id: "",
+    isbn: "",
+    image: "",
+    title: "",
+    status: "CHECKIN_PENDING",
+  },
   completedBooks: [],
 };
 
-export const checkoutSlice = createSlice({
+export const returnBookSlice = createSlice({
   name: "returnBookSlice",
   initialState,
   reducers: {
-    setCurrentReturnBook(state, action: PayloadAction<ReturnBook>) {
-      state.currentReturnBook = action.payload;
+    setCurrentBookForCheckin(state, action: PayloadAction<CheckinItem>) {
+      state.currentItemForCheckin = action.payload;
     },
-    updateCurrentReturnBookStatus(state, action: PayloadAction<{status:ItemStatus}>) {
-      state.currentReturnBook = {...state.currentReturnBook,status:action.payload.status};
+    updateCurrentBookStatus(
+      state,
+      action: PayloadAction<{ status: LoanItemStatusValues }>
+    ) {
+      state.currentItemForCheckin = {
+        ...state.currentItemForCheckin,
+        status: action.payload.status,
+      };
+
+      if (state.currentItemForCheckin?.status === "CHECKIN_SUCCESS") {
+        state.completedBooks = [
+          ...state.completedBooks,
+          state.currentItemForCheckin,
+        ];
+      }
     },
     clearReturnBooks(state) {
-      state.currentReturnBook = initialState.currentReturnBook;
+      state.currentItemForCheckin = initialState.currentItemForCheckin;
       state.completedBooks = initialState.completedBooks;
     },
   },
 });
 
-export const { setCurrentReturnBook, clearReturnBooks,updateCurrentReturnBookStatus } = checkoutSlice.actions;
+export const {
+  setCurrentBookForCheckin,
+  clearReturnBooks,
+  updateCurrentBookStatus,
+} = returnBookSlice.actions;
 
-export default checkoutSlice.reducer;
+export default returnBookSlice.reducer;

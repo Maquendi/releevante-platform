@@ -1,4 +1,4 @@
-import { FetchUserBooksLoan } from "@/actions/cart-actions";
+import { fetchUserBookLoans } from "@/actions/book-transactions-actions";
 import ReturnBookList from "@/components/returnbooks/ReturnBookList";
 import SimpleNavbar from "@/components/SimpleNavbar";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
@@ -9,11 +9,11 @@ export default async function ReturnBook() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["RETURN_BOOKS"],
-    queryFn: async () => await FetchUserBooksLoan(),
+    queryFn: async () => await fetchUserBookLoans(),
   });
   return (
     <div className="space-y-12 pb-3">
-      <SimpleNavbar href="/catalog" intName="returnBook" intValue="back" />
+      <SimpleNavbar href="/explore" intName="returnBook" intValue="back" />
       <header className="text-center pt-8">
         <div>
           <h1 className="text-3xl font-medium mb-1">{t("yourRentedBooks")}</h1>

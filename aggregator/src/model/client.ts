@@ -21,6 +21,7 @@ export interface BookCopy {
   status: string;
   isbn: string;
   atPosition: string;
+  usageCount: number,
   isSync: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -50,6 +51,8 @@ export interface Book {
   rating: number;
   votes: number;
   qty: number;
+  qtyForSale: number;
+  translationId: string;
 }
 
 export interface LibrarySetting {

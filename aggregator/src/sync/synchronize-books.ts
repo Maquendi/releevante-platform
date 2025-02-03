@@ -33,9 +33,9 @@ export const synchronizeBooks = async (token: string) => {
           totalBookCopies += books.length;
           totalRecordsSynced += await insertBook(books);
           totalRecordsSynced += await insertTags(books);
-          totalRecordsSynced += await insertImages(books);
+          //totalRecordsSynced += await insertImages(books);
           totalRecordsSynced += await insertBookCopies(books);
-          totalRecordsSynced += await insertCategories(books);
+          //totalRecordsSynced += await insertCategories(books);
         }
       } else {
         console.log(
@@ -44,7 +44,7 @@ export const synchronizeBooks = async (token: string) => {
       }
     } catch (error) {
       syncComplete = true;
-      console.log(error);
+     // console.log(error);
     }
   }
 
@@ -186,18 +186,21 @@ const insertTags = async (books: Book[]): Promise<number> => {
 
 const insertBook = async (books: Book[]) => {
   const create_stmt = dbConnection.prepare(
-    `INSERT INTO books(id, book_title, correlation_id, edition_title, language, author,  
-    description_en, description_fr, description_es, print_length, publicationDate,  
-    dimensions, price, public_isbn, publisher, binding_type,  
-    image, qty, created_at, rating, votes, updated_at)  
-    VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en,  
-    @description_fr, @description_es,  @print_length, @publicationDate, @dimensions,  
-    @price, @public_isbn, @publisher, @binding_type,  
-    @image, @qty, @rating, @votes, @created_at, @updated_at)`
+    `INSERT INTO books(id, book_title, correlation_id, edition_title, language, author, 
+    description_en, description_fr, description_es, print_length, publicationDate, 
+    dimensions, price, public_isbn, publisher, binding_type, 
+    image, image_id, translation_id, qty, qty_for_sale, rating, votes, created_at, updated_at) 
+    VALUES (@id, @book_title, @correlation_id, @edition_title, @language, @author, @description_en, 
+    @description_fr, @description_es,  @print_length, @publicationDate, @dimensions, 
+    @price, @public_isbn, @publisher, @binding_type, @image, @image_id, @translation_id, 
+    @qty, @qty_for_sale, @rating, @votes, @created_at, @updated_at)`
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE books SET book_title=?, correlation_id=?, edition_title=?, language=?, author=?, description_en=?, description_fr=?, description_es=?, print_length=?, publicationDate=?, dimensions=?, price=?, public_isbn=?, publisher=?, binding_type=?, rating=?, votes=?, updated_at=? WHERE id=?"
+    `UPDATE books SET book_title=?, correlation_id=?, edition_title=?, language=?, author=?, 
+    description_en=?, description_fr=?, description_es=?, print_length=?, publicationDate=?, 
+    dimensions=?, price=?, public_isbn=?, publisher=?, binding_type=?, rating=?, votes=?, updated_at=?, 
+    image=?, image_id=?, translation_id=?, qty=?, qty_for_sale=? WHERE id=?`
   );
 
   let dbChanges = 0;
@@ -222,13 +225,17 @@ const insertBook = async (books: Book[]) => {
         publisher: book.publisher,
         binding_type: book.bindingType,
         image: book.images[0].url,
+        image_id: book.images[0].id,
+        translation_id: book.translationId,
+        qty: book.qty,
+        qty_for_sale: book.qtyForSale || 0,
         rating: book.rating || 0,
         votes: book.votes || 0,
-        qty: book.qty,
         created_at: book.createdAt,
         updated_at: book.updatedAt,
       }).changes;
     } catch (error: any) {
+      console.log(error)
       dbChanges += update_stmt.run(
         book.title,
         book.correlationId,
@@ -248,6 +255,11 @@ const insertBook = async (books: Book[]) => {
         book.rating,
         book.votes,
         book.updatedAt,
+        book.images[0].url,
+        book.images[0].id,
+        book.translationId,
+        book.qty,
+        book.qtyForSale || 0,
         book.isbn
       ).changes;
     }
@@ -292,11 +304,12 @@ const insertImages = async (books: Book[]) => {
 
 const insertBookCopies = async (books: Book[]) => {
   const create_stmt = dbConnection.prepare(
-    "INSERT INTO books_copies(id, book_isbn, is_available, at_position, created_at, updated_at) VALUES (@id, @book_isbn, @is_available, @at_position, @created_at, @updated_at)"
+    `INSERT INTO books_copies(id, book_isbn, is_available, at_position, usage_count, created_at, updated_at) 
+     VALUES (@id, @book_isbn, @is_available, @at_position, @usage_count, @created_at, @updated_at)`
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE books_copies SET book_isbn=?, is_available=?, at_position=?, updated_at=? WHERE id=?"
+    "UPDATE books_copies SET book_isbn=?, is_available=?, at_position=?, usage_count=?, updated_at=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -314,6 +327,7 @@ const insertBookCopies = async (books: Book[]) => {
         book_isbn: copy.isbn,
         is_available: 1,
         at_position: copy.atPosition,
+        usage_count: copy.usageCount,
         created_at: copy.createdAt,
         updated_at: copy.updatedAt,
       }).changes;
@@ -322,6 +336,7 @@ const insertBookCopies = async (books: Book[]) => {
         copy.isbn,
         1,
         copy.atPosition,
+        copy.usageCount,
         copy.updatedAt,
         copy.id
       ).changes;

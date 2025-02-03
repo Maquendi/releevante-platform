@@ -10,17 +10,7 @@ import {
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-const vibeIcons: Record<string, string> = {
-  "lighthearted and fun": "🤣",
-  "swoon-worthy": "😍",
-  suspenseful: "🕵️‍♀️",
-  "magical and enchanting": "🧙‍♀️",
-  "adventurous and daring": "✨",
-  "cozy and nostalgic": "🐻",
-  "thoughtful and inspiring": "🤩",
-  "spine-tingling and eerie": "😱",
-  growing: "💰",
-};
+
 
 export default async function MoodVidePage() {
   const t = await getTranslations("moodPage");
@@ -72,7 +62,6 @@ export default async function MoodVidePage() {
 
             <div className="max-w-[754px] m-auto">
               <VibeItemsList
-                icons={vibeIcons}
                 items={noodVibeTags}
                 vibeType="moodVibe"
               />

@@ -15,7 +15,7 @@ export function openIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
         const dbName = 'LibraryDB';
         const version = 1;
-        const request = indexedDB.open(dbName, version);
+        const request = indexedDB?.open(dbName, version);
 
         request.onupgradeneeded = (event:any) => {
             const db = event.target.result as IDBDatabase;

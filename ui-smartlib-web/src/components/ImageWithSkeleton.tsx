@@ -20,9 +20,9 @@ const ImageWithSkeleton = ({ src, width, height, alt, className }: ImageWithSkel
     <div suppressHydrationWarning className="relative !bg-gray-200 rounded-md" style={{minWidth:`${width}px`,minHeight:`${height}px`}}>
       {isLoading && <Skeleton className="absolute inset-0 bg-gray-100 w-full h-full" />}
       <Image
-        src={src || "/images/reeleante.svg"}
+        src={src || "/images/releevante.svg"}
         fill
-        alt={alt}
+        alt={alt || 'image'}
         sizes="w-full h-full"
         className={cn('transition-opacity',className,isLoading && "w-full h-full rounded-md object-contain object-top opacity-0 bg-gray-100")}
         onLoad={() => setIsLoading(false)}

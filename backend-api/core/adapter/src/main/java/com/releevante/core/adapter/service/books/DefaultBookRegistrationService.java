@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 public class DefaultBookRegistrationService implements BookRegistrationService {
 
   private static final String SPREADSHEET_ID = "1JX5MFqjtIs5pJbYIHtADGR27z-X9Tiv2LOb-d_SBjFs";
-  private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:W";
+  private static final String MAIN_BOOK_INVENTORY_RANGE = "BOOK_INVENTORY!A2:X";
   private static final String LIBRARY_INVENTORY_RANGE = "A2:C";
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
 
@@ -90,6 +90,11 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               Optional.of(row.get(BookGSheetUtils.CORRELATION_ID).toString().strip())
                   .filter(Predicate.not(String::isEmpty))
                   .orElseThrow(() -> new RuntimeException("CORRELATION_ID REQUIRED"));
+
+          var translationId =
+              Optional.of(row.get(BookGSheetUtils.TRANSLATION_ID).toString().strip())
+                  .filter(Predicate.not(String::isEmpty))
+                  .orElseThrow(() -> new RuntimeException("TRANSLATION_ID REQUIRED"));
 
           var language =
               Optional.of(row.get(BookGSheetUtils.BOOK_LANG).toString().strip())
@@ -288,6 +293,8 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
               .createdAt(createdAt)
               .updatedAt(createdAt)
               .correlationId(correlationId)
+              .translationId(translationId)
+              .qtyForSale(0)
               .language(language)
               .publishDate(publishDate)
               .publisher(publisher)

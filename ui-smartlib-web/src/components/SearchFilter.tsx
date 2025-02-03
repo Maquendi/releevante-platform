@@ -1,5 +1,4 @@
 'use client'
-import { FetchAllBookBySearchCriteria } from "@/actions/book-actions";
 import { Book } from "@/book/domain/models";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
@@ -20,10 +19,10 @@ const SearchFilter = () => {
     if (!value) return;
     setIsPending(true);
     setIsError(false);
-    FetchAllBookBySearchCriteria(value)
-      .then((data) => setResults(data))
-      .catch(() => setIsError(true))
-      .finally(() => setIsPending(false));
+    // FetchAllBookBySearchCriteria(value)
+    //   .then((data) => setResults(data))
+    //   .catch(() => setIsError(true))
+    //   .finally(() => setIsPending(false));
   }, [value]);
 
   const handleQueryTerm = (param: string) => {
@@ -77,8 +76,8 @@ const SearchFilter = () => {
       )}
 
       <VirtualKeyboard
-        handleInputChangeFn={handleQueryTerm}
         open={showKeyboard}
+        setInputText={setQueryTerm}
         state={queryTerm}
         setOpen={(value)=> console.log(value)}
       />

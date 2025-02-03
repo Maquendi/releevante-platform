@@ -1,5 +1,7 @@
 "use server";
-import { FetchAllBooks, LoanLibraryInventory } from "@/actions/book-actions";
+import {
+  loadPartialBooksPaginated,
+} from "@/actions/book-actions";
 import RestHomePage from "@/components/restHome/RestHomePage";
 import {
   dehydrate,
@@ -9,15 +11,18 @@ import {
 
 export default async function Home() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["ALL_BOOKS"],
-    queryFn: async () => await LoanLibraryInventory({ limit: 25 }),
+  await queryClient.ensureQueryData({
+    queryKey: ["MAIN_SLIDER_BOOKS"],
+    queryFn: async () =>
+      await loadPartialBooksPaginated({
+        page: 0,
+        size: 100,
+      }),
   });
-
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <RestHomePage/>
+      <RestHomePage />
     </HydrationBoundary>
-  )
+  );
 }

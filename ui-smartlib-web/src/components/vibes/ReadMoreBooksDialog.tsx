@@ -1,5 +1,5 @@
 "use client";
-import { Book } from "@/book/domain/models";
+import { IBookDetail } from "@/book/domain/models";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,7 +16,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 interface DialogReadMoreBooksDialogrops {
-  book: Book;
+  book: IBookDetail;
 }
 
 export function DialogReadMoreBooksDialog({
@@ -25,22 +25,15 @@ export function DialogReadMoreBooksDialog({
   const t = useTranslations("recommendationsPage");
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const {
-    maxBookAllowed,
-    booksInCartCount,
-    handleAddToCart,
-    selectedLanguage,
-    hasEnoughCopies,
-  } = useAddBookToCart(book);
+  const { maxBookAllowed, booksInCartCount, handleAddToCart, hasEnoughCopies } =
+    useAddBookToCart(book);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Button
-       onClick={()=>setOpen(true)}
+        onClick={() => setOpen(true)}
         disabled={
-          !selectedLanguage ||
-          booksInCartCount.rentItemsCount >= maxBookAllowed! ||
-          !hasEnoughCopies
+          booksInCartCount.rentItemsCount >= maxBookAllowed! || !hasEnoughCopies
         }
         className="py-7  px-8 rounded-full font-medium hover:text-black hover:bg-accent"
       >

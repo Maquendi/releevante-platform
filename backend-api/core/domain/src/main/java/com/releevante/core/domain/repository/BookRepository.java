@@ -1,12 +1,10 @@
 package com.releevante.core.domain.repository;
 
-import com.releevante.core.domain.Book;
-import com.releevante.core.domain.BookImage;
-import com.releevante.core.domain.Isbn;
-import com.releevante.core.domain.LibraryInventory;
+import com.releevante.core.domain.*;
 import com.releevante.types.Slid;
 import java.util.List;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface BookRepository {
   Flux<Book> saveAll(List<Book> books);
@@ -20,4 +18,16 @@ public interface BookRepository {
   Flux<BookImage> getImages(Isbn isbn);
 
   Flux<LibraryInventory> saveInventory(List<LibraryInventory> inventories);
+
+  Flux<PartialBook> findAllBy(String orgId);
+
+  Flux<Book> findAllBy(String isbn, String translationId);
+
+  Flux<Book> getByTagIdList(List<String> tagIdList);
+
+  Flux<Book> getByIsbnList(List<String> isbnList);
+
+  Flux<Book> getByTagValues(List<String> tagValues);
+
+  Mono<Book> findByIsbn(String isbn);
 }

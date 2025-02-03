@@ -3,10 +3,10 @@ import ImageWithSkeleton from "../ImageWithSkeleton";
 import Rating from "../Rating";
 import { cn } from "@/lib/utils";
 import { Link } from "@/config/i18n/routing";
-import { BookItems } from "@/book/domain/models";
+import { PartialBook } from "@/book/domain/models";
 
 interface BookItemProps {
-  book: BookItems;
+  book: PartialBook;
   width?: number;
   height?: number;
   className?: string;
@@ -26,17 +26,20 @@ export default function BookItem({
       )}
       style={{ width: width ? `${width}px` : "30%" }}
     >
-      <Link className="cursor-pointer" href={`/catalog/book/${book?.correlationId}`}>
+      <Link
+        className="cursor-pointer"
+        href={`/explore/book/${book?.isbn}?translationId=${book?.translationId}`}
+      >
         <ImageWithSkeleton
-          src={book?.image || ''}
-          alt={book?.bookTitle}
+          src={book?.image || ""}
+          alt={book?.title || ""}
           width={width || 180}
           height={height || 250}
           className="w-full  object-cover rounded-lg"
         />
         <div className="flex flex-col  space-y-1">
           <div className="flex text-end text-nowrap text-secondary-foreground items-center gap-3">
-            <Rating rating={parseInt(book?.rating) || 0} />
+            <Rating rating={book?.rating || 0} />
             <p>{book?.rating || 0}</p>
             <p>({book?.votes || 0} votes)</p>
           </div>

@@ -1,8 +1,10 @@
 'use client'
 import React from "react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Link } from "@/config/i18n/routing";
+import { cn } from "@/lib/utils";
 
 export default function HelpFindBookBanner() {
   const t = useTranslations("catalogPage");
@@ -12,9 +14,9 @@ export default function HelpFindBookBanner() {
       <div className="space-y-4">
         <h3 className="text-xl font-medium">{t("findRightBook")}</h3>
         <p className="text-sm text-black font-light">{t("helpMessage")}</p>
-        <Button className="rounded-3xl bg-white text-black px-6 tracking-widest">
+        <Link className={cn(buttonVariants(),"rounded-3xl py-6 px-6 tracking-widest hover:text-black")} href={'/vibes/readingvibe'} >
           {t("startNow")}
-        </Button>
+        </Link>
       </div>
       <Image
         src="/images/work-in-progress.svg"

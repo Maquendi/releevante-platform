@@ -6,7 +6,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchConfiguration = createAsyncThunk(
   "configuration/fetchConfiguration",
   async () => {
-    return await FetchLibrarySettings();
+    const settings = await FetchLibrarySettings();
+    //const usersActiveLoanItemsCount = await getUsersActiveLoanItemsCount();
+    const usersCurrentLoanItemsAcount = 0;
+    settings.maxBooksPerLoan =
+      settings.maxBooksPerLoan - usersCurrentLoanItemsAcount;
+    return settings;
   }
 );
 

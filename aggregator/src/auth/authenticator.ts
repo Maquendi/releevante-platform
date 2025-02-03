@@ -3,18 +3,19 @@ import { executePost } from "../htttp-client/http-client";
 import { ApiCredential } from "../model/client";
 const slid = process.env.slid;
 
-const credentialFileName = "credentials.json";
+const credentialFileName = "./credentials.json";
 
 const loadFromFile = async (): Promise<ApiCredential> => {
   try {
-    return JSON.parse(await fs.readFile(credentialFileName, "utf-8")); // Parse JSON string to an object
+    return JSON.parse(await fs.readFile(credentialFileName, "utf-8"));
   } catch (error) {
-    return loadFromServer();
+    console.log("Failed to load credential from file with error " + error);
+    return await loadFromServer();
   }
 };
 
 const loadFromServer = async (): Promise<ApiCredential> => {
-  console.log("loading from server .... ");
+  console.log("loading credentials from server .... ");
   const request = {
     resource: `auth/aggregator`,
     body: { slid },
@@ -56,9 +57,17 @@ const credentialVerified = (credentials: ApiCredential): boolean => {
 };
 
 export const getCredential = async (): Promise<string> => {
-  let credential = await loadFromFile();
+  let credential = null;
+  try {
+    credential = await loadFromFile();
+  } catch (error) {
+    throw error;
+  }
 
-  if (!credentialVerified(credential)) {
+  const credentialIsVerified = credentialVerified(credential);
+
+  if (!credentialIsVerified) {
+    console.log("reloading credentials " + credentialIsVerified);
     credential = await loadFromServer();
   }
 

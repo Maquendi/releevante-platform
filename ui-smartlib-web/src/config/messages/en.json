@@ -35,7 +35,8 @@
     "notFound2": "Please search another category or find another book that we recommend you below.",
     "findRightBook": "Find the right book for you",
     "helpMessage": "Didn’t find a book yet? We are here to help you. Let’s find the perfect book for rent for free.",
-    "startNow": "Start now"
+    "startNow": "Start now",
+    "books":"books"
   },
   "SeeAllPage": {
     "subTitleBanner": "Excellent choice, select up to 4 books to rent for free",
@@ -148,7 +149,8 @@
     "return": "return",
     "returnDate": "return date",
     "noRentedBooks":"You don’t have any book rented yet. Find out the best option in your personal library now.",
-    "rentBook":"Rent a book"
+    "rentBook":"Rent a book",
+    "of": "of"
   },
   "depositPage":{
     "depositBookTitle1":"Deposit this book on",

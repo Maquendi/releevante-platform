@@ -21,11 +21,15 @@ public abstract class AbstractBook {
 
   abstract String correlationId();
 
+  abstract String translationId();
+
   abstract String title();
 
   abstract BigDecimal price();
 
   abstract int qty();
+
+  abstract int qtyForSale();
 
   abstract String description();
 
@@ -56,6 +60,8 @@ public abstract class AbstractBook {
   abstract Float rating();
 
   abstract Integer votes();
+
+  abstract Optional<String> image();
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Value.Default

@@ -57,7 +57,7 @@ export default function EmptyRentedBooks() {
       </div>
       <div className="flex relative    justify-center py-4 border-t border-gray-200 ">
         <Link
-          href={"/catalog"}
+          href={"/explore"}
           className="m-auto border rounded-full font-medium tracking-wider text-sm py-4 px-7 border-primary text-primary bg-transparent"
         >
           {t("rentBook")}

@@ -3,18 +3,9 @@ import NextPrevVibesBtns from "@/components/vibes/NextPrevVibesBtns";
 import VibeItemsList from "@/components/vibes/VibeItemsList";
 import VibesStateIndicator from "@/components/vibes/VibesStateIndicator";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-// Definir los íconos correspondientes a cada tag
-const tagIcons: Record<string, string> = {
-  "to be entertained": "🌟", 
-  "Something relaxing": "🧘‍♀️", 
-  "an adventure": "🚀", 
-  " something new": "🧠", 
-  " here for feels": "❤️", 
-  " love a good mystery ": "🔍"
-};
 
 
 
@@ -67,7 +58,7 @@ export default async function ReadingVidePage() {
           </h3>
 
           <div className="max-w-[754px]  m-auto">
-          <VibeItemsList icons={tagIcons} items={readingVibeTags} vibeType="readingVibe"/>
+          <VibeItemsList items={readingVibeTags} vibeType="readingVibe"/>
           </div>
         </div>
         <NextPrevVibesBtns nextPage="/vibes/mood"/>

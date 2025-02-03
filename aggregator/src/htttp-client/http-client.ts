@@ -30,7 +30,7 @@ export const executeGet = async function <T>(
     headers,
   });
 
-  return (await data.json()) as ApiResponse<T>;
+  return (await data?.json()) as ApiResponse<T>;
 };
 
 export const executePut = async <T>(

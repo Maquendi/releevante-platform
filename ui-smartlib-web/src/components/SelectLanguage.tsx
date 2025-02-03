@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useRouter, Link } from "@/config/i18n/routing";
+import { usePathname, useRouter } from "@/config/i18n/routing";
 import {
   Select,
   SelectContent,
@@ -28,7 +28,7 @@ export default function SelectLanguage() {
 
   return (
     <>
-      {!path.endsWith("catalog") &&
+      {!path.endsWith("explore") &&
       !path.includes("auth") &&
       !path.endsWith("readingvibe") &&
       !path.endsWith("flavorofstory") &&

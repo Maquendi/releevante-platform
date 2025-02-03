@@ -7,33 +7,38 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/config/i18n/routing";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { FetchAllBookBySearchCriteria } from "@/actions/book-actions";
+import { loadLibraryInventory } from "@/actions/book-actions";
 import { useDebounce } from "use-debounce";
 import VirtualKeyboard from "@/components/VirtualKeyboard";
 import NotFoundSearchBooks from "@/components/search/NotFound";
 import BestSellerSlider from "@/components/search/BestSellerSlider";
 
-
 export default function SearchBooksPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [queryValue]=useDebounce(searchQuery,400)
+  const [queryValue] = useDebounce(searchQuery, 400);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
 
-  const { data, isPending,isFetching } = useQuery({
-    queryKey: ["searchResults", queryValue],
-    queryFn: () => FetchAllBookBySearchCriteria(queryValue),
-    refetchOnWindowFocus:false
+  const {
+    data: books = [],
+    isPending,
+    isFetching,
+  } = useQuery({
+    queryKey: ["BOOK_INVENTORY_BOOKS", "All"],
+    queryFn: async () => {
+      const inventory = await loadLibraryInventory();
+      return Object.values(inventory.books);
+    },
+    refetchOnWindowFocus: false,
   });
 
-  const handleInputChange = (val:string) => {
+  const handleInputChange = (val: string) => {
     setSearchQuery(val);
   };
 
   const handleInputFocus = () => {
-    if(isKeyboardVisible)return
-    setIsKeyboardVisible(true)
+    if (isKeyboardVisible) return;
+    setIsKeyboardVisible(true);
   };
-
 
   return (
     <>
@@ -48,9 +53,9 @@ export default function SearchBooksPage() {
           "w-full h-screen overflow-y-auto"
         )}
       >
-        <div  className="flex items-center justify-between gap-3 border-b border-secondary pb-3 px-5">
+        <div className="flex items-center justify-between gap-3 border-b border-secondary pb-3 px-5">
           <div className="px-5">
-            <Link href={"/catalog"}>
+            <Link href={"/explore"}>
               <Image
                 width={40}
                 height={40}
@@ -64,7 +69,7 @@ export default function SearchBooksPage() {
             <Input
               placeholder="Buscar..."
               value={searchQuery}
-              onChange={(e)=>setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="pr-10 py-6 w-full px-5 rounded-md transition duration-500"
             />
             <button
@@ -76,33 +81,37 @@ export default function SearchBooksPage() {
           </div>
         </div>
 
-        {isPending && queryValue? <div className="grid place-content-center min-h-[80vh]">
-          <p>loading...</p>
-        </div>:null}
-        {!data?.length && !isFetching? <div className="space-y-10 px-7">
-          <NotFoundSearchBooks/>
-           <Suspense>
-             <BestSellerSlider/>
-           </Suspense>
-        </div> : null}
+        {isPending && queryValue ? (
+          <div className="grid place-content-center min-h-[80vh]">
+            <p>loading...</p>
+          </div>
+        ) : null}
+        {!books?.length && !isFetching ? (
+          <div className="space-y-10 px-7">
+            <NotFoundSearchBooks />
+            <Suspense>
+              <BestSellerSlider />
+            </Suspense>
+          </div>
+        ) : null}
         <div className="flex flex-col">
-          {data?.map((item) => (
-            <article key={item.id}>
+          {books?.map((book, index) => (
+            <article key={index}>
               <Link
-                href={`/catalog/book/${item.correlationId}`}
+                href={`/explore/book/${book?.isbn}?translationId=${book?.translationId}`}
                 className="py-3 borde-y cursor-pointer px-6 flex gap-3 items-center justify-between rounded-md border-b border-secondary hover:bg-gray-50"
               >
                 <div className="flex gap-3 items-center ">
                   <Image
-                    src={item.image}
+                    src={book.image}
                     width={100}
                     height={100}
                     className="w-[70px] h-[90px] object-cover rounded-md"
-                    alt={` ${item.bookTitle} book`}
+                    alt={` ${book.title} book`}
                   />
                   <div>
-                    <h4 className="font-semibold">{item.bookTitle}</h4>
-                    <p>{item.author}</p>
+                    <h4 className="font-semibold">{book.title}</h4>
+                    <p>{book.author}</p>
                   </div>
                 </div>
                 <ChevronRight size={40} />

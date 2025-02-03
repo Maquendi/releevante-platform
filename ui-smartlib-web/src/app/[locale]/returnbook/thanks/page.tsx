@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function ThanksDepositPage() {
   const t = useTranslations("returnThanksPage");
-  const currentReturnBook=useAppSelector(state=>state.returnbooks.currentReturnBook)
+  const currentReturnBook=useAppSelector(state=>state.returnbooks.currentItemForCheckin)
 
   return (
     <div className=" min-h-screen grid grid-rows-[auto_1fr_auto] text-center">
@@ -36,7 +36,7 @@ export default function ThanksDepositPage() {
           <span>{t("thanksForReturn1")}</span>
           <br />
           <span className="text-primary text-nowrap">
-            {currentReturnBook?.bookTitle}
+            {currentReturnBook?.title}
           </span>
           <span>{t("thanksForReturn2")}!</span>
         </h2>

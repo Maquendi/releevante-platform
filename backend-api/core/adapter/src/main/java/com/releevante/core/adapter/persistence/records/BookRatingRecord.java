@@ -29,10 +29,9 @@ public class BookRatingRecord extends PersistableEntity {
 
   private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
     var record = new BookRatingRecord();
-    var book = rating.book().get();
     record.setId(rating.id());
     record.setRating(rating.rating());
-    record.setIsbn(book.isbn().value());
+    record.setIsbn(rating.isbn());
     record.setClientId(client.getId());
     return record;
   }

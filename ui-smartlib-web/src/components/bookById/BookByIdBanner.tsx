@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Rating from "../Rating";
-import { Book } from "@/book/domain/models";
+import { Book, BookItems } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import useSyncImagesIndexDb from "@/hooks/useImagesIndexDb";

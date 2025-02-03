@@ -147,7 +147,8 @@
     "return": "devolver",
     "returnDate": "fecha de devolución",
     "noRentedBooks": "Aún no tienes ningún libro alquilado. Descubre la mejor opción en tu biblioteca personal ahora.",
-    "rentBook": "Alquilar un libro"
+    "rentBook": "Alquilar un libro",
+    "of": "de"
   },
   "depositPage": {
     "depositBookTitle1": "Deposita este libro en",

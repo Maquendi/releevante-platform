@@ -37,6 +37,11 @@ public class BookLoanRepositoryImpl implements BookLoanRepository {
     return null;
   }
 
+  @Override
+  public Flux<BookLoan> getByAllUnSynchronized() {
+    return null;
+  }
+
   // @Override
   //  public Mono<Long> addLoanStatuses(List<LoanStatus> statuses) {
   //    return loanStatusHibernateDao

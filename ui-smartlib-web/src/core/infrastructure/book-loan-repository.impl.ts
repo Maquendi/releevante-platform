@@ -1,27 +1,16 @@
 import {
   BookTransaction,
-  BookTransactionItem,
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
-  LoanGroup,
 } from "../domain/loan.model";
 import { LoanRepository } from "../domain/repositories";
 import { executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
-import { bookLoanSchema } from "@/config/drizzle/schemas/bookLoan";
-import { loanItemSchema } from "@/config/drizzle/schemas/LoanItems";
-import { loanStatusSchema } from "@/config/drizzle/schemas/LoanStatus";
 import { db } from "@/config/drizzle/db";
-import { loanItemStatusSchema } from "@/config/drizzle/schemas/LoanItemStatus";
-import { eq, sql, and, max } from "drizzle-orm";
-import { jsonAgg } from "@/lib/db/helpers";
-import {
-  bookFtagSchema,
-  bookSchema,
-  ftagsSchema,
-} from "@/config/drizzle/schemas";
+import { eq, and } from "drizzle-orm";
+import { bookSchema, bookCopieSchema } from "@/config/drizzle/schemas";
 import { UserId } from "@/identity/domain/models";
 import { bookTransactionStatusSchema } from "@/config/drizzle/schemas/bookTransactionStatus";
 import { bookTransactionItemStatusSchema } from "@/config/drizzle/schemas/bookTransactionItemStatus";
@@ -44,7 +33,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
               id: bookTransaction.id,
               clientId: bookTransaction.clientId.value,
               transactionType: bookTransaction.transactionType,
-              returnsAt: bookTransaction?.returnsAt?.toISOString()
+              returnsAt: bookTransaction?.returnsAt,
             };
 
             return await tx
@@ -59,7 +48,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
               isbn: item.isbn,
               id: item.id,
               bookCopyId: item.cpy,
-              transactionId: t.id
+              transactionId: t.id,
             });
           });
         });
@@ -70,7 +59,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
               id: status.id,
               transactionId: status.transactionId,
               isSynced: false,
-              status: status.status
+              status: status.status,
             });
           });
         });
@@ -95,7 +84,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       id: status.id,
       itemId: status.itemId,
       status: status.status,
-      isSynced: false
+      isSynced: false,
     });
 
     return status;
@@ -109,83 +98,96 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       id: status.id,
       transactionId: status.transactionId,
       status: status.status,
-      isSynced: false
+      isSynced: false,
     });
 
     return status;
   }
 
-  async getUserLoanBooks(clientId: UserId): Promise<LoanGroup[]> {
-    const lastLoanStatus = db
+  async getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
+    console.log("getUserLoans: " + clientId.value);
+    const bookTransaction = await db
       .select({
-        loanId: loanStatusSchema.loanId,
-        status: loanStatusSchema.status,
-        createdAt: max(loanStatusSchema.createdAt),
+        id: bookTransactionSchema.id,
+        clientId: bookTransactionSchema.clientId,
+        transactionType: bookTransactionSchema.transactionType,
+        createdAt: bookTransactionSchema.createdAt,
+        returnsAt: bookTransactionSchema.returnsAt,
       })
-      .from(loanStatusSchema)
-      .groupBy(loanStatusSchema.loanId, loanStatusSchema.status)
-      .having(
-        sql`${loanStatusSchema.status} IN ('CURRENT', 'OVERDUE', 'PENDING')`
-      )
-      .as("lastLoanStatus");
-
-    const data = await db
-      .select({
-        returnDate: bookLoanSchema.returnsAt,
-        id: bookSchema.id,
-        loanItemId: loanItemSchema.id,
-        bookTitle: bookSchema.bookTitle,
-        author: bookSchema.author,
-        image: bookSchema.image,
-        itemStatuses: jsonAgg({
-          status: loanItemStatusSchema.status,
-          createdAt: loanItemStatusSchema.created_at,
-        }).as("itemStatuses"),
-        categories: {
-          enCategory: ftagsSchema.enTagValue,
-          frCategory: ftagsSchema.frTagValue,
-          esCategory: ftagsSchema.esTagValue,
-          isbn: bookFtagSchema.bookIsbn,
-        },
-      })
-      .from(bookLoanSchema)
-      .innerJoin(lastLoanStatus, eq(lastLoanStatus.loanId, bookLoanSchema.id))
-      .leftJoin(loanItemSchema, eq(loanItemSchema.loanId, bookLoanSchema.id))
-      .leftJoin(
-        loanItemStatusSchema,
-        eq(loanItemStatusSchema.itemId, loanItemSchema.id)
-      )
-      .leftJoin(bookSchema, eq(loanItemSchema.isbn, bookSchema.id))
-      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
-      .leftJoin(
-        ftagsSchema,
+      .from(bookTransactionSchema)
+      .innerJoin(
+        bookTransactionStatusSchema,
         and(
-          eq(ftagsSchema.id, bookFtagSchema.ftagId),
-          eq(ftagsSchema.tagName, "category")
+          eq(
+            bookTransactionStatusSchema.transactionId,
+            bookTransactionSchema.id
+          ),
+          eq(bookTransactionStatusSchema.status, "CURRENT")
         )
       )
-      .where(eq(bookLoanSchema.clientId, clientId.value))
-      .groupBy(loanItemSchema.id, bookFtagSchema.bookIsbn);
+      .where(
+        and(
+          eq(bookTransactionSchema.clientId, clientId.value),
+          eq(bookTransactionSchema.transactionType, "RENT")
+        )
+      );
 
-    const filteredData = data.filter((item) => {
-      if (!item.itemStatuses) return true;
-      return !item.itemStatuses.some((item) => item.status === "RETURNED");
+    const bookLoans = bookTransaction.map(async (transaction) => {
+      const bookTransactionStatus = await db
+        .select({
+          id: bookTransactionStatusSchema.id,
+          transactionId: bookTransactionStatusSchema.transactionId,
+          status: bookTransactionStatusSchema.status,
+        })
+        .from(bookTransactionStatusSchema)
+        .where(eq(bookTransactionStatusSchema.transactionId, transaction.id));
+
+      const bookTransactionItems = await db
+        .select({
+          id: bookTransactionItemSchema.id,
+          isbn: bookTransactionItemSchema.isbn,
+          cpy: bookTransactionItemSchema.bookCopyId,
+          position: bookCopieSchema.at_position,
+          image: bookSchema.image,
+          title: bookSchema.bookTitle,
+          status: bookTransactionItemStatusSchema.status,
+        })
+        .from(bookTransactionItemSchema)
+        .leftJoin(
+          bookTransactionItemStatusSchema,
+          and(
+            eq(
+              bookTransactionItemStatusSchema.itemId,
+              bookTransactionItemSchema.id
+            ),
+            eq(bookTransactionItemStatusSchema.status, "CHECKIN_SUCCESS")
+          )
+        )
+        .innerJoin(
+          bookCopieSchema,
+          eq(bookCopieSchema.id, bookTransactionItemSchema.bookCopyId)
+        )
+        .innerJoin(
+          bookSchema,
+          eq(bookSchema.id, bookTransactionItemSchema.isbn)
+        )
+        .where(eq(bookTransactionItemSchema.transactionId, transaction.id));
+
+      return {
+        ...transaction,
+        clientId: { value: transaction.clientId },
+        items: bookTransactionItems.filter(
+          (item) => item.status !== "CHECKIN_SUCCESS"
+        ),
+        status: bookTransactionStatus,
+      } as any;
     });
 
-    const groupedResults = Object.values(
-      filteredData.reduce(
-        (acc, { returnDate, categories, itemStatuses, ...book }) => {
-          if (!acc[returnDate]) {
-            acc[returnDate] = { returnDate, books: [] };
-          }
-          acc[returnDate].books.push(book);
-          return acc;
-        },
-        {}
-      )
-    );
+    const bookLoanTransactions = await Promise.all(bookLoans);
 
-    return (groupedResults.length > 0 ? groupedResults : []) as LoanGroup[];
+    return bookLoanTransactions.filter(
+      (transaction) => transaction.items.length > 0
+    );
   }
 }
 

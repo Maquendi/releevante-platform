@@ -9,7 +9,7 @@ import { clearCart } from "@/redux/features/cartSlice";
 import { clearCheckout } from "@/redux/features/checkoutSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
-import { FetchUserBooksLoan } from "@/actions/cart-actions";
+import { fetchUserBookLoans } from "@/actions/book-transactions-actions";
 
 interface Credential {
   code: string;
@@ -54,7 +54,7 @@ const useAuth = () => {
      if(isUserSignin){
       queryClient.prefetchQuery({
         queryKey:['RETURN_BOOKS'],
-        queryFn:async()=>await FetchUserBooksLoan()
+        queryFn:async()=>await fetchUserBookLoans()
       })
      }
   },[isUserSignin])

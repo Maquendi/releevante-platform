@@ -1,28 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addItem } from "@/redux/features/cartSlice";
-import { Book, BookLanguage } from "@/book/domain/models";
+import { IBookDetail } from "@/book/domain/models";
 import useSyncImagesIndexDb from "./useImagesIndexDb";
 
-export function useAddBookToCart(selectedBook:Book) {
+export function useAddBookToCart(selectedBook: IBookDetail) {
   const dispatch = useAppDispatch();
-  const {getImageByBookId}= useSyncImagesIndexDb()
-  const { items: cartItems, language: selectedLanguage } = useAppSelector(
-    (state) => state.cart
-  );
+  const { getImageByBookId } = useSyncImagesIndexDb();
+  const { items: cartItems } = useAppSelector((state) => state.cart);
   const settings = useAppSelector((store) => store.settings.data);
 
+  const hasEnoughCopies = useMemo(() => {
+    return selectedBook?.qty > 0;
+  }, [selectedBook]);
 
-  const hasEnoughCopies= useMemo(()=>{
-    if(!selectedBook)return
-    return selectedBook.copies[selectedLanguage!] > 0 ? true : false
-  },[selectedBook,selectedLanguage])
-
+  const canBeSold = useMemo(() => {
+    return selectedBook?.qtyForSale > 0;
+  }, [selectedBook]);
 
   const maxBookAllowed = useMemo(() => {
     return settings ? settings.maxBooksPerLoan! : 4;
   }, [settings]);
-
 
   const booksInCartCount = useMemo(() => {
     const rentItemsCount =
@@ -33,32 +31,38 @@ export function useAddBookToCart(selectedBook:Book) {
     return { rentItemsCount, purchaseItemsCount };
   }, [cartItems]);
 
-  const isBookInCart = (bookLanguages: BookLanguage[]): boolean => {
-    const cartIsbns = cartItems.map((item) => item.isbn);
-    return bookLanguages.some((book) => cartIsbns.includes(book.bookId));
+  const isBookInCart = (book: IBookDetail): boolean => {
+    return !!cartItems.find((item) => item.isbn == book.isbn);
   };
 
-  const cartItemPayload = async (book: Book) => {
-    const bookId = book.languages.find(
-      (item) => item.language === selectedLanguage
-    )?.bookId;
+  const cartItemPayload = async (book: IBookDetail) => {
+    const bookImage = await getImageByBookId({
+      id: book.isbn,
+      image: book.image,
+    });
 
-    if (!book || !bookId) return;
-
-    const bookImage= await getImageByBookId({id:bookId,image:book.image})
-    
     return {
-      isbn: bookId!,
+      isbn: book.isbn!,
       title: book.bookTitle,
-      image: bookImage || book?.image as string,
+      image: bookImage || (book?.image as string),
       qty: 1,
       price: book.price,
-      categories:book.categories,
-      author:book.author
+      categories: book.categories.map((category) => ({
+        id: category.id,
+        tagName: "category",
+        enTagValue: category.en,
+        frTagValue: category.fr,
+        esTagValue: category.es,
+      })),
+      author: book.author,
+      qtyForSale: book.qtyForSale,
     };
   };
 
-  const handleAddToCart = async (transactionType: "RENT" | "PURCHASE", book: Book) => {
+  const handleAddToCart = async (
+    transactionType: "RENT" | "PURCHASE",
+    book: IBookDetail
+  ) => {
     if (
       transactionType === "RENT" &&
       booksInCartCount.rentItemsCount >= maxBookAllowed
@@ -69,7 +73,7 @@ export function useAddBookToCart(selectedBook:Book) {
       booksInCartCount.purchaseItemsCount >= maxBookAllowed
     )
       return;
-    const payload = await cartItemPayload(book);
+    const payload: any = await cartItemPayload(book);
     if (payload) {
       dispatch(addItem({ ...payload, transactionType }));
     }
@@ -80,7 +84,7 @@ export function useAddBookToCart(selectedBook:Book) {
     booksInCartCount,
     isBookInCart,
     handleAddToCart,
-    selectedLanguage,
-    hasEnoughCopies
+    hasEnoughCopies,
+    canBeSold,
   };
 }

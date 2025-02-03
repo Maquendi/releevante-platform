@@ -17,6 +17,8 @@ public abstract class AbstractBookCpy {
 
   abstract BookCopyStatus status();
 
+  abstract int usageCount();
+
   abstract String isbn();
 
   abstract ZonedDateTime createdAt();
