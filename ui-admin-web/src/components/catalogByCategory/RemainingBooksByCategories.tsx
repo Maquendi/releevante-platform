@@ -1,27 +1,26 @@
-import MaxWithWrapper from "../MaxWithWrapper";
+'use client'
+import useLibraryInventory from "@/hooks/useLibraryInventory";
 import CatalogSliderItem from "./CatalogSliderItem";
-import { FetchBookByCategory } from "@/actions/book-actions";
 
 interface RemainingBooksByCategoriesPros {
   subCategoryId: string;
+  categoryId:string
 }
 
-export default async function RemainingBooksByCategories({
+export default  function RemainingBooksByCategories({
   subCategoryId,
+  categoryId
 }: RemainingBooksByCategoriesPros) {
-  const booksByCategory = await FetchBookByCategory();
 
-  const remainingCategories =
-    booksByCategory?.filter((item) => item.subCategory.id !== subCategoryId) ||
-    [];
+   const {filterBySubCategory}=useLibraryInventory()
+    const {remaining} = filterBySubCategory(categoryId,subCategoryId)
+
 
   return (
-   <MaxWithWrapper>
      <div className="space-y-5">
-      {remainingCategories.map((item) => (
-        <CatalogSliderItem key={item?.subCategory.id} {...item} />
+      {remaining?.map(({books,subCategory},index) => (
+        <CatalogSliderItem key={index} categoryId={categoryId} books={books} subCategory={subCategory} />
       ))}
     </div>
-   </MaxWithWrapper>
   );
 }

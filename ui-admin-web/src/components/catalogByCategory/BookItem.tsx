@@ -5,9 +5,10 @@ import Rating from "../Rating";
 import { cn } from "@/lib/utils";
 import { Link } from "@/config/i18n/routing";
 import { useMediaQuery } from "react-responsive";
+import { Book } from "@/types/book";
 
 interface BookItemProps {
-  book: any;
+  book: Book;
   width?: number;
   height?: number;
   className?: string;
@@ -29,17 +30,17 @@ export default function BookItem({
       )}
       style={{ width: width ? `${width}px` : isMobile ? '100%':'30%'}}
     >
-      <Link className="cursor-pointer" href={`/catalog/book/${book?.correlationId}`}>
+      <Link className="cursor-pointer" href={`/catalog/book/${book?.isbn}?translationId=${book.translationId}`}>
         <ImageWithSkeleton
           src={book?.image || ''}
-          alt={book?.bookTitle}
+          alt={book?.title}
           width={width || 80}
           height={height || defaultHeight}
           className="w-full  object-cover rounded-lg"
         />
         <div className="flex flex-col  space-y-1">
           <div className="flex text-end text-nowrap text-secondary-foreground items-center gap-3">
-            <Rating rating={parseInt(book?.rating) || 0} />
+            <Rating rating={book.rating || 0} />
             <p className="text-xs md:text-sm">{book?.rating || 0}</p>
             <p className="text-xs md:text-sm">({book?.votes || 0} votes)</p>
           </div>
