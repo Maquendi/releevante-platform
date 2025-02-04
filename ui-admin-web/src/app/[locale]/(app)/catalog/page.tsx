@@ -1,29 +1,36 @@
 import Image from "next/image";
 import React from "react";
-import BookNotFound from "@/components/BookNotFound";
-import CatalogSliderItem from "@/components/catalogByCategory/CatalogSliderItem";
-import HelpFindBookBanner from "@/components/HelpFindBookBanner";
 import { getTranslations } from "next-intl/server";
 import {
   FetchAllBookCategories,
-  FetchBookByCategory,
+  FetchAllBooksByOrg,
 } from "@/actions/book-actions";
-import BookCategories from "@/components/catalogByCategory/BookCategories";
 import MaxWithWrapper from "@/components/MaxWithWrapper";
 import { Button } from "@/components/ui/button";
+import ExploreComponent from "@/components/catalogByCategory/ExploreComponent";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
-export default async function CatalogPage({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
-}) {
+export default async function CatalogPage() {
   const t = await getTranslations("catalogPage");
-  const booksByCategory = await FetchBookByCategory(searchParams?.categoryId);
-  const allCategories = await FetchAllBookCategories();
+  const queryClient = new QueryClient();
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: ["LIBRARY_INVENTORY"],
+      queryFn: FetchAllBooksByOrg,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["BOOK_CATEGORIES"],
+      queryFn: FetchAllBookCategories,
+    }),
+  ]);
 
   return (
-    <div className="space-y-4 pb-5">
-      <header className="text-center  bg-background pt-10 bg-white p-3 rounded-b-3xl">
+    <div className="pb-5">
+      <header className="text-center  bg-background pt-10 bg-white p-3">
         <MaxWithWrapper>
           <div className="grid grid-rows-2 place-items-center md:flex flex-row-reverse gap-y-2 items-center  justify-center md:justify-between mb-5">
             <Image
@@ -44,27 +51,11 @@ export default async function CatalogPage({
               </Button>
             </div>
           </div>
-          <div>
-            <h3 className="mb-2 text-secondary-foreground uppercase font-medium text-sm ">
-              {t("selectCategory")}
-            </h3>
-            <BookCategories allCategories={allCategories} />
-          </div>
         </MaxWithWrapper>
       </header>
-      <MaxWithWrapper>
-        <section className="space-y-6 ">
-          {!booksByCategory?.length ? (
-            <div className="space-y-5">
-              <BookNotFound />
-              <HelpFindBookBanner />
-            </div>
-          ) : null}
-          {booksByCategory?.map((item, index) => (
-            <CatalogSliderItem key={index} {...item} />
-          ))}
-        </section>
-      </MaxWithWrapper>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ExploreComponent/>
+      </HydrationBoundary>
     </div>
   );
 }

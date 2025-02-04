@@ -60,8 +60,10 @@
       "dimensions": "Dimensions",
       "language": "Language",
       "publisher": "Publisher",
-      "rentBannerBtn": "Rent for free",
-      "buyBannerBtn": "Buy book"
+      "rentBtn": "Rent free",
+      "buyBannerBtn": "Buy",
+      "readInHotelBtn": "Read in the hotel",
+      "buyBtn": "Buy book"
     },
     "cart": {
       "rent": "rent",

@@ -1,55 +1,96 @@
-import mockBooks from "../config/mockbooks.json";
+'use server'
+import { BookDetails, CategoryQuery, VibeTag } from "@/types/book";
 
-export function FetchBookByCategory(categoryId?: string) {
-  const groupedBooks: { [key: string]: any } = {};
+export async function FetchAllBooksByOrg() {
+  const token=process.env.TOKEN
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/org/4e11b8d6-c797-4cd6-9d46-e484a79f0b66/books?asMap=true`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,  
+    },
+  })
+  if (!res.ok) {
+    console.error('Error al obtener categorías:', res.status, res.statusText);
+    return [];
+  }
 
-  mockBooks.json.forEach(({ subCategories, ...book }) => {
-    subCategories.forEach((subCat) => {
-      const subCategoryId = subCat.id || "";
-      if (!groupedBooks[subCategoryId]) {
-        groupedBooks[subCategoryId] = {
-          subCategory: subCat,
-          books: [],
-          bookIds: new Set(),
-        };
-      }
-
-      if (!groupedBooks[subCategoryId].bookIds.has(book.id)) {
-        groupedBooks[subCategoryId].books.push(book);
-        groupedBooks[subCategoryId].bookIds.add(book.id);
-      }
-    });
-  });
-
-  const resultData = Object.values(groupedBooks).map(
-    ({ bookIds, ...rest }) => rest
-  );
-
-  if (!categoryId) return resultData;
-
-  return resultData
-    .map((group) => ({
-      subCategory: group.subCategory,
-      books: group.books.filter((book: any) =>
-        book.categories.some((category: any) => category.id === categoryId)
-      ),
-    }))
-    .filter((group) => group.books.length > 0);
+  const data = await res.json()
+  return  data?.context?.data || []
 }
 
-export async function FetchAllBookCategories():Promise<any[]> {
-  const allCategories = mockBooks.json.reduce((acc, book) => {
-    book.categories.forEach((item) => {
-      if (!acc[item.id]) {
-        acc[item.id] = item;
-      }
-    });
-    return acc;
-  }, {});
+export async function FetchAllBookCategories():Promise<CategoryQuery> {
+  const token=process.env.TOKEN
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/org/4e11b8d6-c797-4cd6-9d46-e484a79f0b66/categories`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,  
+    },
+  })
+  if (!res.ok) {
+    console.error('Error al obtener categorías:', res.status, res.statusText);
+    return {} as any;
+  }
 
-  return  Object.values(allCategories) as any[]
+  const data = await res.json()
+  return  data?.context?.data || {}
 }
 
-export async function FetchBookById(bookId:string):Promise<any>{
-  return mockBooks.json.find(item=>item.correlationId === bookId)
+export async function FetchBookById(bookId:string,translationId:string):Promise<BookDetails[]>{
+
+  const token=process.env.TOKEN
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/${bookId}?translationId=${translationId}`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,  
+    },
+  })
+  if (!res.ok) {
+    console.error('Error al book by id:', res.status, res.statusText);
+    return {} as any;
+  }
+
+  const data = await res.json()
+  return  data?.context?.data || []
+}
+
+
+export async function FetchBooksByTag(tagValue:string):Promise<BookDetails[]>{
+
+  const token=process.env.TOKEN
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/search?tagValue=${tagValue}`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,  
+    },
+  })
+  if (!res.ok) {
+    console.error('Error al book tags:', res.status, res.statusText);
+    return {} as any;
+  }
+
+  const data = await res.json()
+  return  data?.context?.data || []
+}
+
+export async function FetchVibeTags():Promise<VibeTag[]>{
+
+  const token=process.env.TOKEN
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags?name=flavor,vibe,mood`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,  
+    },
+  })
+  if (!res.ok) {
+    console.error('Error getting tags:', res.status, res.statusText);
+    return {} as any;
+  }
+
+  const data = await res.json()
+  return  data?.context?.data || []
 }
