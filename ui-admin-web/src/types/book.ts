@@ -35,6 +35,12 @@ export interface Book {
   rating: number;
 }
 
+type Languages ={
+  en:string,
+  es:string,
+  fr:string
+}
+
 export interface BookDetails {
   isbn: string;
   correlationId: string;
@@ -43,9 +49,8 @@ export interface BookDetails {
   price: number;
   qty: number;
   qtyForSale: number;
-  description: string;
-  descriptionFr: string;
-  descriptionSp: string;
+  description:Languages;
+  categories:Languages[]
   dimensions:string
   author: string;
   language: string;
@@ -81,7 +86,7 @@ export interface BookDetails {
 // }
 
 export type SubCategory = {
-  id: string;
+  id?: string;
   en: string;
   fr: string;
   es: string;
@@ -106,4 +111,17 @@ export type SubCategoryMap=Record<string, SubCategory>
 export interface CategoryQuery{
   categories:Category[],
   subCategoryMap:SubCategoryMap
+}
+
+export type VibeType = 'vibe' | 'flavor' | 'mood'
+
+export interface VibeTag {
+  id: string;
+  name: VibeType;
+  value: {
+    en: string;
+    fr: string;
+    es: string;
+  };
+  createdAt: string;
 }

@@ -60,8 +60,10 @@
     "dimensions": "Dimensiones",
     "language": "Idioma",
     "publisher": "Editorial",
-    "rentBannerBtn": "Alquilar gratis",
-    "buyBannerBtn": "Comprar libro"
+    "rentBtn": "Alquilar gratis",
+    "buyBannerBtn": "Comprar",
+    "readInHotelBtn": "Leer en el hotel",
+    "buyBtn": "Comprar libro"
   },
   "cart": {
     "rent": "alquilar",

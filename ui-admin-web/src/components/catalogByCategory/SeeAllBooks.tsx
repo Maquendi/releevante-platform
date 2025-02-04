@@ -18,7 +18,6 @@ export default  function SeeAllBooks({
   const {filterBySubCategory}=useLibraryInventory()
   const {selected} = filterBySubCategory(categoryId,subCategoryId)
   
-
   return (
    <MaxWithWrapper>
      <div className="min-h-[250px]">

@@ -19,7 +19,7 @@ interface SelectedCategoryBooks extends SubCategoryBooks{
 export default function useLibraryInventory() {
   const { data: books} = useQuery({
     queryKey: ["LIBRARY_INVENTORY"],
-    queryFn: FetchAllBooksByOrg,
+    queryFn: async()=>FetchAllBooksByOrg(),
     refetchOnMount:false,
     refetchOnWindowFocus:false,
     placeholderData: (prev) => prev,
@@ -27,7 +27,7 @@ export default function useLibraryInventory() {
   });
   const { data: categoriesData } = useQuery({
     queryKey: ["BOOK_CATEGORIES"],
-    queryFn: FetchAllBookCategories,
+    queryFn: async()=>FetchAllBookCategories(),
     refetchOnMount:false,
     refetchOnWindowFocus:false,
     placeholderData: (prev) => prev,
