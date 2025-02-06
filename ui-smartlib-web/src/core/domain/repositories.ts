@@ -16,7 +16,8 @@ export interface TransactionCallback {
 export interface CartRepository {
   save(cart: Cart): Promise<Cart>;
   update(cart: Cart): Promise<Cart>;
-  find(cartId: CartId): Promise<Cart>;
+  findById(cartId: CartId): Promise<Cart>;
+  findByUser(userId: UserId): Promise<Cart>;
 }
 
 export interface LoanRepository {

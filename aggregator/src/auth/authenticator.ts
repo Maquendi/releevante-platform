@@ -49,7 +49,7 @@ const credentialVerified = (credentials: ApiCredential): boolean => {
   const expiresAt = new Date(credentials?.expiresAt as string); // 10:00 AM on December 1, 2024
   const now = new Date(); // 3:30 PM on December 1, 2024
 
-  const diffInHours = Math.abs(expiresAt.getTime() - now.getTime()) / 3600000;
+  const diffInHours = (expiresAt.getTime() - now.getTime()) / 3600000;
 
   console.log("diffInHours " + diffInHours);
 

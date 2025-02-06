@@ -12,27 +12,25 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoanItemStatusRecord extends AuditableEntity {
+public class TransactionItemStatusRecord extends AuditableEntity {
   String id;
   String itemId;
-  LoanItemStatuses status;
+  TransactionItemStatusEnum status;
 
-  public static Set<LoanItemStatusRecord> from(
-      LoanItemsRecord record, LoanItem item, BookLoan loan) {
-    return item.statuses().stream()
-        .map((status) -> fromDomain(record, status, loan))
+  public static Set<TransactionItemStatusRecord> from(TransactionItem item) {
+    return item.status().stream()
+        .map(TransactionItemStatusRecord::fromDomain)
         .collect(Collectors.toSet());
   }
 
-  protected static LoanItemStatusRecord fromDomain(
-      LoanItemsRecord loanItemsRecord, LoanItemStatus status, BookLoan loan) {
-    var record = new LoanItemStatusRecord();
+  public static TransactionItemStatusRecord fromDomain(TransactionItemStatus status) {
+    var record = new TransactionItemStatusRecord();
     record.setId(status.id());
-    record.setItemId(loanItemsRecord.getId());
+    record.setItemId(status.itemId());
     record.setStatus(status.status());
     record.setCreatedAt(status.createdAt());
-    record.setOrigin(loan.origin());
-    record.setAudit(loan.audit());
+    record.setOrigin(status.origin());
+    record.setAudit(status.audit());
     return record;
   }
 }

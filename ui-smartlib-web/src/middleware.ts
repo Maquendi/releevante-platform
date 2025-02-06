@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./config/i18n/routing";
 

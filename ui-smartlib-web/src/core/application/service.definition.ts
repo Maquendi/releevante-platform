@@ -1,6 +1,6 @@
 import { BookCompartment } from "@/book/domain/models";
 import { Cart } from "../domain/cart.model";
-import { CartDto } from "./dto";
+import { CartDto, CartInitDto, CartItemDto } from "./dto";
 import {
   BookTransaction,
   BookTransactionItemStatus,
@@ -12,7 +12,9 @@ import { UserId } from "@/identity/domain/models";
 
 export interface CartService {
   checkout(dto: CartDto): Promise<Cart>;
-  onCheckOutFailed(cart: Cart): Promise<Cart>;
+  onCheckOutFailed(dto: CartDto): Promise<Cart>;
+  update(dto: CartDto): Promise<Cart>;
+  initCart(dto: CartInitDto): Promise<CartDto>
 }
 
 export interface BookLendingService {
@@ -27,8 +29,18 @@ export interface BridgeIoApiClient {
   openCompartments(comparments: BookCompartment[]): Promise<any>;
 }
 
-export interface BookLoanService {
+export interface BookTransactionService {
   checkout(cart: Cart): Promise<BookTransactions>;
+  addLoanItemStatus(
+    status: BookTransactionItemStatus
+  ): Promise<BookTransactionItemStatus>;
+  addLoanStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
+  getUserLoans(clientId: UserId): Promise<BookTransaction[]>;
+}
+
+
+export interface BookTransactionServiceFacade {
+  checkout(cart: CartDto): Promise<BookTransactions>;
   addLoanItemStatus(
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus>;

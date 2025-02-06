@@ -2,7 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { bookSchema } from "./books";
 import { bookLayoutSchema } from "./bookLayout";
-import { loanItemSchema } from "./LoanItems";
+import { bookTransactionItemSchema } from "./bookTransactionItem";
 
 export const bookCopieSchema = sqliteTable("books_copies", {
   id: text("id").primaryKey(),
@@ -36,7 +36,7 @@ export const bookCopieRelations = relations(
       fields: [bookCopieSchema.at_position],
       references: [bookLayoutSchema.id],
     }),
-    loanItems: many(loanItemSchema),
+    loanItems: many(bookTransactionItemSchema),
   })
 );
 

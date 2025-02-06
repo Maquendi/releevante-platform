@@ -1,8 +1,8 @@
 package com.releevante.core.adapter.persistence.repository;
 
-import com.releevante.core.adapter.persistence.dao.BookLoanHibernateDao;
-import com.releevante.core.adapter.persistence.dao.LoanItemStatusRecordHibernateDao;
-import com.releevante.core.adapter.persistence.dao.LoanStatusHibernateDao;
+import com.releevante.core.adapter.persistence.dao.BookTransactionHibernateDao;
+import com.releevante.core.adapter.persistence.dao.TransactionItemStatusRecordHibernateDao;
+import com.releevante.core.adapter.persistence.dao.TransactionStatusHibernateDao;
 import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.repository.BookLoanRepository;
 import com.releevante.types.Slid;
@@ -12,16 +12,16 @@ import reactor.core.publisher.Flux;
 
 @Component
 public class BookLoanRepositoryImpl implements BookLoanRepository {
-  private final BookLoanHibernateDao bookLoanHibernateDao;
+  private final BookTransactionHibernateDao bookLoanHibernateDao;
 
-  private final LoanItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao;
+  private final TransactionItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao;
 
-  private final LoanStatusHibernateDao loanStatusHibernateDao;
+  private final TransactionStatusHibernateDao loanStatusHibernateDao;
 
   public BookLoanRepositoryImpl(
-      BookLoanHibernateDao bookLoanHibernateDao,
-      LoanItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao,
-      LoanStatusHibernateDao loanStatusHibernateDao) {
+      BookTransactionHibernateDao bookLoanHibernateDao,
+      TransactionItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao,
+      TransactionStatusHibernateDao loanStatusHibernateDao) {
     this.bookLoanHibernateDao = bookLoanHibernateDao;
     this.loanItemStatusRecordHibernateDao = loanItemStatusRecordHibernateDao;
     this.loanStatusHibernateDao = loanStatusHibernateDao;

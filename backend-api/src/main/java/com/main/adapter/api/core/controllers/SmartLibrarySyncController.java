@@ -30,8 +30,8 @@ public class SmartLibrarySyncController {
   }
 
   @Operation(
-      summary = "Synchronize client's loans",
-      description = "Synchronizes the given client's loans from smart library to server")
+      summary = "Synchronize client's transactions",
+      description = "Synchronizes the given client's transaction from smart library to server")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -69,11 +69,60 @@ public class SmartLibrarySyncController {
             })
       })
   @PreAuthorize("hasRole('AGGREGATOR')")
-  @PostMapping("/loans")
-  public Mono<CustomApiResponse<SmartLibrary>> createLoans(
-      @RequestBody SmartLibrarySyncDto loanSynchronizeDto) {
+  @PostMapping("/transactions")
+  public Mono<CustomApiResponse<SmartLibrary>> createTransactions(
+      @RequestBody SmartLibrarySyncDto transactionDto) {
     return smartLibraryService
-        .synchronizeClientsLoans(loanSynchronizeDto)
+        .synchronizeLibraryTransactions(transactionDto)
+        .map(CustomApiResponse::from);
+  }
+
+  @Operation(
+      summary = "Synchronize client's transactions status",
+      description =
+          "Synchronizes the given client's transaction status from smart library to server")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PreAuthorize("hasRole('AGGREGATOR')")
+  @PostMapping("/transactionStatus")
+  public Mono<CustomApiResponse<SmartLibrary>> syncTransactionStatus(
+      @RequestBody SmartLibrarySyncDto transactionDto) {
+    return smartLibraryService
+        .synchronizeLibraryTransactionStatus(transactionDto)
         .map(CustomApiResponse::from);
   }
 

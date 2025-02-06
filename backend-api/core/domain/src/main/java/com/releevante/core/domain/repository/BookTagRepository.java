@@ -13,7 +13,9 @@ public interface BookTagRepository {
 
   Flux<Tag> create(List<Tag> tags);
 
-  Flux<Tag> get(TagTypes name);
+  Flux<Tag> get(List<TagTypes> name);
+
+  Mono<Tag> get(TagTypes name, String value);
 
   Flux<Tag> getTags(Isbn isbn);
 

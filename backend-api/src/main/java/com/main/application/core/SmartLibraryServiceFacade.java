@@ -14,7 +14,9 @@ public interface SmartLibraryServiceFacade {
 
   Flux<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Set<Slid> sLids);
 
-  Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto synchronizeDto);
+  Mono<SmartLibrary> synchronizeLibraryTransactions(SmartLibrarySyncDto synchronizeDto);
+
+  Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrarySyncDto synchronizeDto);
 
   Flux<LibrarySetting> getSetting(Slid slid, boolean synced);
 

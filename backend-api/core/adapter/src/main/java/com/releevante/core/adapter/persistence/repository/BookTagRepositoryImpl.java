@@ -46,8 +46,15 @@ public class BookTagRepositoryImpl implements BookTagRepository {
   }
 
   @Override
-  public Flux<Tag> get(TagTypes name) {
-    return tagHibernateDao.findAllByName(name.name()).map(TagRecord::toDomain);
+  public Flux<Tag> get(List<TagTypes> names) {
+    return tagHibernateDao
+        .findAllByNameIn(names.stream().map(Enum::name).collect(toSet()))
+        .map(TagRecord::toDomain);
+  }
+
+  @Override
+  public Mono<Tag> get(TagTypes name, String value) {
+    return tagHibernateDao.findFirstByValueIgnoreCase(value).map(TagRecord::toDomain);
   }
 
   @Override
@@ -61,9 +68,12 @@ public class BookTagRepositoryImpl implements BookTagRepository {
                     .isbn(isbn.value())
                     .bookTagId(projection.getBookTagId())
                     .name(projection.getName())
-                    .value(projection.getValueEn())
-                    .valueFr(Optional.ofNullable(projection.getValueFr()))
-                    .valueSp(Optional.ofNullable(projection.getValueSp()))
+                    .value(
+                        TagValue.builder()
+                            .en(projection.getValueEn())
+                            .fr(Optional.ofNullable(projection.getValueFr()))
+                            .es(Optional.ofNullable(projection.getValueSp()))
+                            .build())
                     .createdAt(projection.getCreatedAt())
                     .build());
   }

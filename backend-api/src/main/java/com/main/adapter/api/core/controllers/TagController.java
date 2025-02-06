@@ -108,7 +108,52 @@ public class TagController {
             })
       })
   @GetMapping
-  public Mono<CustomApiResponse<List<Tag>>> getTags(@RequestParam("name") TagTypes name) {
-    return bookService.getTags(name).collectList().map(CustomApiResponse::from);
+  public Mono<CustomApiResponse<List<Tag>>> getTags(@RequestParam("name") List<TagTypes> tagNames) {
+    return bookService.getTags(tagNames).collectList().map(CustomApiResponse::from);
+  }
+
+  @Operation(
+      summary = "retrieve tag value by name",
+      description = "get tags that can be later added to books for better identification")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @GetMapping("/{name}")
+  public Mono<CustomApiResponse<Tag>> getTagValueValue(
+      @PathVariable("name") TagTypes tagName, @RequestParam("value") String tagValue) {
+    return bookService.getTag(tagName, tagValue).map(CustomApiResponse::from);
   }
 }

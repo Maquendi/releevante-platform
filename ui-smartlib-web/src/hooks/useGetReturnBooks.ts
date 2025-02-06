@@ -24,10 +24,11 @@ export default function useGetUserTransactions() {
   useEffect(() => {
     setIsPending(true);
     (async () => {
-      const userTransactions = transactions.filter((transaction) => {
-        return transaction.items.length > 0;
-      });
-      setBookTransactions([...userTransactions]);
+      // const userTransactions = transactions.filter((transaction) => {
+      //   return transaction.items.length > 0;
+      // });
+
+      setBookTransactions(transactions);
       setIsPending(false);
     })();
   }, [transactions]);

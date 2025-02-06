@@ -76,7 +76,7 @@ async def on_message(sid, data):
 async def on_message(sid, data):
     print(f"checkin event from {sid}: {data}")
     try:
-            res = {"id": data['itemId'], "isbn": data['isbn']}
+            res = {"id": data['id'], "isbn": data['isbn']}
             print(res)
             await sio.emit('item_checkin_started', res)
             await sleep(5)

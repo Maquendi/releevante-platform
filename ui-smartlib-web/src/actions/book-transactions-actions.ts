@@ -1,6 +1,6 @@
 "use server";
 
-import { cartServiceFacade, loanServiceFacade } from "@/core/application";
+import { bookTransactionServiceFacade, cartServiceFacade } from "@/core/application";
 import { getAuthToken } from "./auth-actions";
 import { LoanItemStatusDto, LoanStatusDto } from "@/core/application/dto";
 import { CheckinItem } from "@/redux/features/returnbookSlice";
@@ -9,7 +9,7 @@ import { BookTransactionItemStatus } from "@/core/domain/loan.model";
 export const fetchUserBookLoans = async () => {
   try {
     const { userId } = await getAuthToken();
-    return await loanServiceFacade.getUserLoans(userId!);
+    return await bookTransactionServiceFacade.getUserLoans(userId!);
   } catch (error) {
     return [];
   }

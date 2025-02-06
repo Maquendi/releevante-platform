@@ -3,9 +3,8 @@ package com.releevante.core.application.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.Client;
-import com.releevante.types.AccountPrincipal;
-import com.releevante.types.ImmutableExt;
-import com.releevante.types.Slid;
+import com.releevante.types.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.immutables.value.Value;
@@ -15,14 +14,14 @@ import org.immutables.value.Value;
 @JsonSerialize(as = SmartLibrarySyncDto.class)
 @ImmutableExt
 public abstract class AbstractSmartLibrarySyncDto {
-  abstract String slid();
+  abstract List<ClientDto> clients();
 
-  abstract List<ClientSyncDto> clients();
-
-  public List<Client> domainClients(AccountPrincipal principal) {
-    var slid = Slid.of(slid());
+  public List<Client> domainClients(
+      AccountPrincipal principal,
+      SequentialGenerator<String> uuidGenerator,
+      SequentialGenerator<ZonedDateTime> dateTimeGenerator) {
     return clients().stream()
-        .map(client -> client.toDomain(principal, slid))
+        .map(client -> client.toDomain(principal, uuidGenerator, dateTimeGenerator))
         .collect(Collectors.toList());
   }
 }

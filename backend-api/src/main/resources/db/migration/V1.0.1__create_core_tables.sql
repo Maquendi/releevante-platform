@@ -180,74 +180,52 @@ CREATE TABLE core.authorized_origins (
 	CONSTRAINT authorized_origin_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE core.book_loans (
+CREATE TABLE core.book_transactions (
 	id varchar(36) NOT NULL,
 	external_id varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
-	returns_at timestamp NOT NULL,
+	transaction_type varchar(30) NOT NULL,
 	audit varchar(36) NOT NULL,
 	origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT book_loans_pk PRIMARY KEY (id),
+	CONSTRAINT book_transactions_pk PRIMARY KEY (id),
 	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
 	FOREIGN KEY (client_id) REFERENCES core.clients(id)
 );
 
-CREATE INDEX IF NOT EXISTS loan_external_id_idx ON core.book_loans USING btree(external_id);
-
-CREATE TABLE core.loan_items (
+CREATE TABLE core.transaction_status (
 	id varchar(36) NOT NULL,
-	cpy varchar(36) NOT NULL,
-	loan_id varchar(36) NOT NULL,
-	CONSTRAINT loan_items_pk PRIMARY KEY (id),
-	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
-	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
-);
-
-CREATE TABLE core.loan_item_status (
-	id varchar(36) NOT NULL,
-	item_id varchar(36) NOT NULL,
-	status varchar(50) NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		audit varchar(36) NOT NULL,
-    	origin varchar(36) NOT NULL,
-	CONSTRAINT loan_item_status_pk PRIMARY KEY (id),
-	FOREIGN KEY (item_id) REFERENCES core.loan_items(id)
-);
-
-CREATE TABLE core.loan_status (
-	id varchar(36) NOT NULL,
-	loan_id varchar(36) NOT NULL,
+	transaction_id varchar(36) NOT NULL,
 	status varchar(50),
 	audit varchar(36) NOT NULL,
     origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT loan_status_pk PRIMARY KEY (id),
-	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
+	CONSTRAINT transaction_status_pk PRIMARY KEY (id),
+	FOREIGN KEY (transaction_id) REFERENCES core.book_transactions(id)
 );
 
-CREATE TABLE core.book_sales (
+CREATE TABLE core.transaction_items (
 	id varchar(36) NOT NULL,
-	client_id varchar(36) NOT NULL,
-	total numeric NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT book_sales_pk PRIMARY KEY (id),
-	FOREIGN KEY (client_id) REFERENCES core.clients(id)
-);
-
-CREATE TABLE core.sale_items (
-	id varchar(36) NOT NULL,
-	isbn varchar(36) NOT NULL,
-	sale_id varchar(36) NOT NULL,
-	cpy varchar(36) NULL,
-	price numeric NOT NULL,
-	CONSTRAINT sale_items_pk PRIMARY KEY (id),
+	cpy varchar(36) NOT NULL,
+	price numeric NULL,
+	transaction_id varchar(36) NOT NULL,
+	CONSTRAINT transaction_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
-	FOREIGN KEY (sale_id) REFERENCES core.book_sales(id),
-	FOREIGN KEY (isbn) REFERENCES core.books(isbn)
+	FOREIGN KEY (transaction_id) REFERENCES core.book_transactions(id)
 );
 
+
+CREATE TABLE core.transaction_item_status (
+	id varchar(36) NOT NULL,
+	item_id varchar(36) NOT NULL,
+	status varchar(50) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	audit varchar(36) NOT NULL,
+    origin varchar(36) NOT NULL,
+	CONSTRAINT transaction_item_status_pk PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS transaction_external_id_idx ON core.book_transactions USING btree(external_id);
 
 -- identity
 

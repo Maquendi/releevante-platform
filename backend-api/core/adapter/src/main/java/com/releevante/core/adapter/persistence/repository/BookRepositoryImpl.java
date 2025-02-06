@@ -103,7 +103,7 @@ public class BookRepositoryImpl implements BookRepository {
 
   private Mono<TagRecord> getTagOrSave(Tag tag) {
     return tagHibernateDao
-        .findFirstByValueIgnoreCase(tag.value())
+        .findFirstByValueIgnoreCase(tag.value().en())
         .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.from(tag))));
   }
 

@@ -22,6 +22,12 @@ export function useCheckout() {
     onSuccess(data) {
       dispatch({ type: "socket/checkout", event: "checkout", payload: data });
     },
+    onError(error) {
+      console.log("error on checkout");
+      if (error?.message?.includes("exceeded")) {
+        console.log("error type is MaxBookItemThresholdExceeded");
+      }
+    },
   });
 
   useEffect(() => {

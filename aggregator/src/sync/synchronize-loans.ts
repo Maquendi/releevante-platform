@@ -1,91 +1,70 @@
 import { dbConnection } from "../config/db";
 import { executePost } from "../htttp-client/http-client";
 import { ApiRequest, ApiResponse } from "../htttp-client/model";
-import { LibrarySyncDto, LibrarySyncResponse } from "../model/library-sync";
+import {
+  ClientSyncDto,
+  LibrarySyncDto,
+  LibrarySyncResponse,
+} from "../model/library-sync";
 import { arrayGroupinBy } from "../utils";
 const slid = process.env.slid || "";
 
-export const synchronizeLoans = async (token: string) => {
-  let recordsUploaded = await createLoans(token);
+export const synchronizeTransactions = async (token: string) => {
+  let recordsUploaded = await createTransactions(token);
 
-  recordsUploaded += await createLoanStatuses(token);
+  // recordsUploaded += await createTransactionStatuses(token);
 };
 
-async function createLoanStatuses(token: string): Promise<number> {
-  const loanStatusDto = dbConnection
+async function createTransactionStatuses(token: string): Promise<number> {
+  const transactionStatusDto = dbConnection
     .prepare(
-      `select ls.*, ls.user_id, bl.external_id  from loan_status ls inner join book_loans bl on bl.id=ls.loan_id where ls.is_synced = false`
+      `select bts.*, bt.client_id, bt.external_id from book_transaction_status bts join book_transactions bt on bt.id=bts.transaction_id where bts.is_synced = false`
     )
     .all()
     .map((status: any) => {
       return {
-        clientId: status.client_id,
-        loanId: status.loan_id,
         id: status.id,
+        clientId: status.client_id,
+        transactionId: status.external_id,
         status: status.status,
         createdAt: status.created_at,
-        isLoanStatus: true,
-        externalId: status.external_id,
       };
     });
 
-  dbConnection
+  const transactionItemStatusDto = dbConnection
     .prepare(
-      `select lis.*, li.loan_id, bl.user_id, lb.external_id from loan_item_status lis inner join loan_items li on li.id=lis.item_id inner join book_loans bl on bl.id=li.loan_id where lis.is_synced = false`
+      `select btis.*, bti.transaction_id, bt.client_id, bt.external_id from book_transaction_item_status btis join book_transaction_items bti on bti.id=btis.item_id join book_transactions bt on bt.id=bti.transaction_id where btis.is_synced = false`
     )
     .all()
-    .forEach((itemStatus: any) => {
-      var status: any = {
-        clientId: itemStatus.client_id,
-        loanId: itemStatus.loan_id,
+    .map((itemStatus: any) => {
+      return {
         id: itemStatus.id,
+        itemId: itemStatus.item_id,
+        clientId: itemStatus.client_id,
         status: itemStatus.status,
         createdAt: itemStatus.created_at,
-        itemId: itemStatus.item_id,
-        isLoanStatus: false,
-        externalId: status.external_id,
       };
-      loanStatusDto.push(status);
     });
 
-  let loanStatusGroups = arrayGroupinBy(loanStatusDto, "loanId");
+  const clientTransactionStatuses = arrayGroupinBy(
+    transactionStatusDto,
+    "clientId"
+  );
 
-  const clients = Object.keys(loanStatusGroups).map((loanId) => {
-    const all = loanStatusGroups[loanId][0];
-    const sample = all[0];
+  const clientTransactionItemStatuses = arrayGroupinBy(
+    transactionItemStatusDto,
+    "clientId"
+  );
 
-    const loanStatuses = all
-      .filter((item: any) => item.isLoanStatus)
-      .map((item: any) => ({
-        id: item.id,
-        status: item.status,
-        createdAt: item.createdAt,
-      }));
-
-    //const loanItemStatuses = all.filter((item: any) => !item.isLoanStatus);
-
-    const loanItemGroups = arrayGroupinBy(
-      all.filter((item: any) => !item.isLoanStatus),
-      "itemId"
-    );
-
-    const itemStatuses = Object.keys(loanItemGroups).flatMap((itemId) => {
-      const allItem = loanItemGroups[itemId];
-      return allItem.map((item: any) => ({
-        id: item.id,
-        status: item.status,
-        createdAt: item.createdAt,
-      }));
-    });
+  const clients = Object.keys(clientTransactionStatuses).map((key) => {
+    const transactionStatuses: any[] = clientTransactionStatuses[key];
+    const transactionItemStatuses: any[] = clientTransactionItemStatuses[key];
+    const clientId = key;
 
     return {
-      id: sample.clientId,
-      loan: {
-        id: sample.loanId,
-        externalId: sample.externalId,
-        status: loanStatuses as any[],
-        items: itemStatuses,
-      },
+      id: clientId,
+      transactionItemStatus: transactionItemStatuses,
+      transactionStatus: transactionStatuses,
     };
   });
 
@@ -93,121 +72,153 @@ async function createLoanStatuses(token: string): Promise<number> {
     return 0;
   }
 
-  const response = await callApi(token, {
-    slid: slid,
+  const response = await createTransactionStatusApi(token, {
     clients,
   });
 
   if (response.statusCode == 200) {
-    Object.keys(loanStatusGroups).map((key) => {
-      const statuses = loanStatusGroups[key];
+    const statuses = Object.keys(clientTransactionStatuses).map((key) => {
+      const transactionStatuses: any[] = clientTransactionStatuses[key];
+      const transactionItemStatuses: any[] = clientTransactionItemStatuses[key];
 
-      statuses
-        .filter((status: any) => status.isLoanStatus)
-        .forEach((status: any) => {
-          dbConnection
-            .prepare(
-              `UPDATE loan_status SET is_synced=true where id=${status.id}`
-            )
-            .run().changes;
-        });
+      const transactionStatusIds: string[] = transactionStatuses.map(
+        (status) => status.id
+      );
 
-      statuses
-        .filter((status: any) => !status.isLoanStatus)
-        .forEach((status: any) => {
-          dbConnection
-            .prepare(
-              `UPDATE loan_item_status SET is_synced=true where id=${status.id}`
-            )
-            .run().changes;
-        });
+      const transactionItemStatusIds: string[] = transactionItemStatuses.map(
+        (status) => status.id
+      );
+
+      return {
+        transactionStatusIds,
+        transactionItemStatusIds,
+      };
     });
 
-    return loanStatusDto.length;
+    const clientTransactionStatusIds = statuses.flatMap(
+      (client) => client.transactionStatusIds
+    );
+
+    const clientTransactionItemStatusIds = statuses.flatMap(
+      (client) => client.transactionItemStatusIds
+    );
+
+    let changes = dbConnection
+      .prepare(
+        `UPDATE book_transaction_status SET is_synced=true where id in (${clientTransactionStatusIds})`
+      )
+      .run().changes;
+
+    changes += dbConnection
+      .prepare(
+        `UPDATE book_transaction_item_status SET is_synced=true where id in (${clientTransactionItemStatusIds})`
+      )
+      .run().changes;
+
+    return changes;
   }
 
   return 0;
 }
 
-async function createLoans(token: string): Promise<number> {
-  const loans = dbConnection
-    .prepare(`select * from book_loans where external_id is null`)
+async function createTransactions(token: string): Promise<number> {
+  const transactions = dbConnection
+    .prepare(
+      `select * from book_transactions where external_id is NULL or external_id = '';`
+    )
     .all();
 
-  console.log(loans);
+  //console.log(transactions)
 
-  const clients = loans.map((loan: any) => {
-    const loanId = loan.id;
+  const transactionsGrouped = arrayGroupinBy(transactions, "client_id");
 
-    const loanStatusDto = dbConnection
-      .prepare(`select * from loan_status where loan_id = ?`)
-      .all(loanId)
-      .map((status: any) => {
-        return {
-          id: status.id,
-          status: status.status,
-          createdAt: status.created_at,
-        };
-      });
+  const clients = Object.keys(transactionsGrouped).map((clientId) => {
+    const clientTransactions: any[] = transactionsGrouped[clientId];
+    const transactions = clientTransactions.map((transaction: any) => {
+      const transactionId = transaction.id;
 
-    const loanItemsDto = dbConnection
-      .prepare(`select * from loan_items where loan_id = ?`)
-      .all(loanId)
-      .map((loanItem: any) => {
-        const itemId = loanItem.id;
+      const transactionStatusDto = dbConnection
+        .prepare(
+          `select * from book_transaction_status where transaction_id = ?`
+        )
+        .all(transactionId)
+        .map((status: any) => {
+          return {
+            id: status.id,
+            status: status.status,
+            createdAt: status.created_at,
+          };
+        });
 
-        const loanItemStatuses = dbConnection
-          .prepare(`select * from loan_item_status where item_id = ?`)
-          .all(itemId)
-          .map((itemStatus: any) => {
-            return {
-              id: itemStatus.id,
-              status: itemStatus.status,
-              createdAt: itemStatus.created_at,
-            };
-          });
+      const transactionItemsDto = dbConnection
+        .prepare(
+          `select * from book_transaction_items where transaction_id = ?`
+        )
+        .all(transactionId)
+        .map((transactionItem: any) => {
+          const itemId = transactionItem.id;
 
-        return {
-          id: itemId,
-          cpy: loanItem.book_copy_id,
-          statuses: loanItemStatuses,
-        };
-      });
+          const transactionItemStatuses = dbConnection
+            .prepare(
+              `select * from book_transaction_item_status where item_id = ?`
+            )
+            .all(itemId)
+            .map(({ id, status, created_at }: any) => {
+              return {
+                id: id,
+                status: status,
+                createdAt: created_at,
+              };
+            });
 
-    const loanDto = {
-      externalId: loanId,
-      returnsAt: loan.returns_at,
-      createdAt: loan.created_at,
-      status: loanStatusDto,
-      items: loanItemsDto,
-    };
+          return {
+            id: itemId,
+            cpy: transactionItem.book_copy_id,
+            statuses: transactionItemStatuses,
+          };
+        });
+
+      return {
+        id: transactionId,
+        transactionType: transaction.transaction_type,
+        createdAt: transaction.created_at,
+        status: transactionStatusDto,
+        items: transactionItemsDto,
+      };
+    });
+
     return {
-      id: loan.user_id,
-      loan: loanDto,
+      id: clientId,
+      transactions,
     };
   });
 
+ // console.log(JSON.stringify(clients));
+
+  //console.log(clients)
   if (clients.length == 0) {
     return 0;
   }
 
-  var requestBody: LibrarySyncDto = {
-    slid: slid,
+  var request: LibrarySyncDto = {
     clients,
   };
 
-  const response = await callApi(token, requestBody);
+  const response = await createTransactionApi(token, request);
 
   if (response.statusCode == 200) {
     const syncResponse = response.context.data;
 
     syncResponse.clients.forEach((client) => {
-      client.loans.forEach((loan) => {
+      client.transactions?.forEach((transaction) => {
         const stmt = dbConnection.prepare(
-          `UPDATE book_loans SET external_id=? where id=?`
+          `UPDATE book_transactions SET external_id=? where id=?`
         );
 
-        return stmt.run({ external_id: loan.exteralId, id: loan.id }).changes;
+        return stmt.run({
+          external_id: transaction.id,
+          id: transaction.externalId,
+        }).changes;
       });
     });
 
@@ -217,13 +228,28 @@ async function createLoans(token: string): Promise<number> {
   return 0;
 }
 
-async function callApi(
+async function createTransactionApi(
   token: string,
   body: LibrarySyncDto
 ): Promise<ApiResponse<LibrarySyncResponse>> {
   const request: ApiRequest = {
     token,
-    resource: `sl/${slid}/loans`,
+    resource: `sl/${slid}/transactions`,
+    body,
+  };
+
+  return executePost<LibrarySyncResponse>(request);
+}
+
+async function createTransactionStatusApi(
+  token: string,
+  body: {
+    clients: ClientSyncDto[];
+  }
+): Promise<ApiResponse<LibrarySyncResponse>> {
+  const request: ApiRequest = {
+    token,
+    resource: `sl/${slid}/transactionStatus`,
     body,
   };
 

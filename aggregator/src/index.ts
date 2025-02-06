@@ -3,25 +3,26 @@ import { markLibrarySynchronized } from "./sync/mark-library-synced";
 import { synchronizeSettings } from "./sync/synchronize-settings";
 import { synchronizeLibraryAccess } from "./sync/synchronize-library-access";
 import { getCredential } from "./auth/authenticator";
-import { synchronizeLoans } from "./sync/synchronize-loans";
+import { synchronizeTransactions } from "./sync/synchronize-loans";
 
 const runAsync = async () => {
   let token = await getCredential();
 
-  let dataSynced = await synchronizeBooks(token);
+  //console.log(token)
 
-  dataSynced += await synchronizeLibraryAccess(token);
+  //let dataSynced = await synchronizeBooks(token);
 
-  dataSynced += await synchronizeSettings(token);
+  // dataSynced += await synchronizeLibraryAccess(token);
 
- 
-  console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
+  // dataSynced += await synchronizeSettings(token);
 
-  if (dataSynced > 0) {
-    await markLibrarySynchronized(token);
-  }
+  // console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
 
-  // await synchronizeLoans(token)
+  // if (dataSynced > 0) {
+  //   await markLibrarySynchronized(token);
+  // }
+
+  await synchronizeTransactions(token);
 };
 
 runAsync();

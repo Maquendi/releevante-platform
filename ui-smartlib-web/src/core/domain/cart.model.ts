@@ -34,11 +34,10 @@ export class Cart {
     return true;
   }
 
-  public markasCheckedOut(): boolean {
+  public markCheckedOut(): boolean {
     if (this.state !== "CHECKING_OUT") {
       throw new Error("Cart invalid state for checkout.");
     }
-
     this.state = "CHECKED_OUT";
     this.items = this.items.map((book) => ({ ...book, is_available: false }));
     return true;

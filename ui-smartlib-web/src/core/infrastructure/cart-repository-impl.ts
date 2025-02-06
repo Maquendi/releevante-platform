@@ -3,11 +3,46 @@ import { Cart, CartId, CartItem } from "../domain/cart.model";
 import { CartRepository } from "../domain/repositories";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
-import { eq } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import { dbGetOne, executeTransaction } from "@/lib/db/drizzle-client";
+import { UserId } from "@/identity/domain/models";
 
 class CartRepositoryImpl implements CartRepository {
-  async find(cartId: CartId): Promise<Cart> {
+  async findByUser(userId: UserId): Promise<Cart> {
+    const data = await dbGetOne("cartSchema", {
+      id: cartSchema.id,
+      with: {
+        items: {
+          columns: {
+            id: true,
+            qty: true,
+            isbn: true,
+            transactionType: true,
+          },
+        },
+      },
+      where: and(
+        eq(cartSchema.user_id, userId.value),
+        or(
+          eq(cartSchema.state, "PENDING"),
+          eq(cartSchema.state, "CHECKOUT_FAILED"),
+          eq(cartSchema.state, "CHECKING_OUT"),
+          eq(cartSchema.state, "STALE")
+        )
+      ),
+    });
+
+    const cartItems: CartItem[] =
+      data?.items?.map((item) => ({
+        id: item.id,
+        isbn: item.isbn,
+        qty: item.qty,
+        transactionType: item.transactionType,
+      })) || [];
+
+    return new Cart({ value: data.id }, userId, cartItems);
+  }
+  async findById(cartId: CartId): Promise<Cart> {
     const data = await dbGetOne("cartSchema", {
       with: {
         items: {
@@ -85,6 +120,8 @@ class CartRepositoryImpl implements CartRepository {
           id: cart.id.value,
           user_id: cart.userId.value,
           state: cart.state,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         };
 
         const cartInsertion = tx.insert(cartSchema).values(cartData);

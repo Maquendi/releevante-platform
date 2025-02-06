@@ -26,8 +26,14 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
-  public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto synchronizeDto) {
-    return smartLibraryService.synchronizeClientsLoans(synchronizeDto);
+  public Mono<SmartLibrary> synchronizeLibraryTransactions(SmartLibrarySyncDto synchronizeDto) {
+    return smartLibraryService.synchronizeLibraryTransactions(synchronizeDto);
+  }
+
+  @Override
+  public Mono<SmartLibrary> synchronizeLibraryTransactionStatus(
+      SmartLibrarySyncDto synchronizeDto) {
+    return smartLibraryService.synchronizeLibraryTransactionStatus(synchronizeDto);
   }
 
   @Override

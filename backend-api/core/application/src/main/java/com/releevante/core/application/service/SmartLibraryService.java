@@ -10,7 +10,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface SmartLibraryService {
-  Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto syncDto);
+  Mono<SmartLibrary> synchronizeLibraryTransactions(SmartLibrarySyncDto syncDto);
+
+  Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrarySyncDto synchronizeDto);
 
   Flux<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Set<Slid> sLids);
 

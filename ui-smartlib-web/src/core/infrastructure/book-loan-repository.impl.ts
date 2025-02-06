@@ -9,13 +9,15 @@ import { executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { db } from "@/config/drizzle/db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, or } from "drizzle-orm";
 import { bookSchema, bookCopieSchema } from "@/config/drizzle/schemas";
 import { UserId } from "@/identity/domain/models";
 import { bookTransactionStatusSchema } from "@/config/drizzle/schemas/bookTransactionStatus";
 import { bookTransactionItemStatusSchema } from "@/config/drizzle/schemas/bookTransactionItemStatus";
 import { bookTransactionSchema } from "@/config/drizzle/schemas/bookTransaction";
 import { bookTransactionItemSchema } from "@/config/drizzle/schemas/bookTransactionItem";
+import { arrayGroupinBy } from "@/lib/utils";
+import { v4 as uuidv4 } from "uuid";
 
 export class BookLoanRepositoryImpl implements LoanRepository {
   async save(bookTransactions: BookTransactions): Promise<void> {
@@ -34,6 +36,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
               clientId: bookTransaction.clientId.value,
               transactionType: bookTransaction.transactionType,
               returnsAt: bookTransaction?.returnsAt,
+              createdAt: bookTransaction?.createdAt,
             };
 
             return await tx
@@ -106,13 +109,14 @@ export class BookLoanRepositoryImpl implements LoanRepository {
 
   async getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
     console.log("getUserLoans: " + clientId.value);
-    const bookTransaction = await db
+    let bookTransactions = await db
       .select({
         id: bookTransactionSchema.id,
         clientId: bookTransactionSchema.clientId,
         transactionType: bookTransactionSchema.transactionType,
         createdAt: bookTransactionSchema.createdAt,
         returnsAt: bookTransactionSchema.returnsAt,
+        status: bookTransactionStatusSchema.status,
       })
       .from(bookTransactionSchema)
       .innerJoin(
@@ -122,7 +126,10 @@ export class BookLoanRepositoryImpl implements LoanRepository {
             bookTransactionStatusSchema.transactionId,
             bookTransactionSchema.id
           ),
-          eq(bookTransactionStatusSchema.status, "CURRENT")
+          or(
+            eq(bookTransactionStatusSchema.status, "CURRENT"),
+            eq(bookTransactionStatusSchema.status, "RETURNED")
+          )
         )
       )
       .where(
@@ -132,7 +139,16 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         )
       );
 
-    const bookLoans = bookTransaction.map(async (transaction) => {
+    const transactionsByStatus = arrayGroupinBy(bookTransactions, "id");
+
+    bookTransactions = Object.entries<any[]>(transactionsByStatus)
+      .filter((entry) => {
+        const [, values] = entry;
+        return !values.some((item) => item.status == "RETURNED");
+      })
+      .flatMap(([, values]) => values);
+
+    const bookLoans = bookTransactions.map(async (transaction) => {
       const bookTransactionStatus = await db
         .select({
           id: bookTransactionStatusSchema.id,
@@ -153,14 +169,17 @@ export class BookLoanRepositoryImpl implements LoanRepository {
           status: bookTransactionItemStatusSchema.status,
         })
         .from(bookTransactionItemSchema)
-        .leftJoin(
+        .innerJoin(
           bookTransactionItemStatusSchema,
           and(
             eq(
               bookTransactionItemStatusSchema.itemId,
               bookTransactionItemSchema.id
             ),
-            eq(bookTransactionItemStatusSchema.status, "CHECKIN_SUCCESS")
+            or(
+              eq(bookTransactionItemStatusSchema.status, "CHECKOUT_SUCCESS"),
+              eq(bookTransactionItemStatusSchema.status, "CHECKIN_SUCCESS")
+            )
           )
         )
         .innerJoin(
@@ -173,12 +192,28 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         )
         .where(eq(bookTransactionItemSchema.transactionId, transaction.id));
 
+      const itemsGroupedById = arrayGroupinBy(bookTransactionItems, "id");
+
+      const filteredTransactionItems = Object.entries<any[]>(itemsGroupedById)
+        .filter((entry) => {
+          const [, items] = entry;
+          return !items.some((item) => item.status == "CHECKIN_SUCCESS");
+        })
+        .flatMap(([, items]) => items);
+
+      if (!filteredTransactionItems.length) {
+        await this.addLoanStatus({
+          id: uuidv4(),
+          createdAt: new Date().toISOString(),
+          status: "RETURNED",
+          transactionId: transaction.id,
+        });
+      }
+
       return {
         ...transaction,
         clientId: { value: transaction.clientId },
-        items: bookTransactionItems.filter(
-          (item) => item.status !== "CHECKIN_SUCCESS"
-        ),
+        items: filteredTransactionItems,
         status: bookTransactionStatus,
       } as any;
     });

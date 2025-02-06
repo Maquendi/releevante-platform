@@ -4,6 +4,7 @@ import com.releevante.core.adapter.persistence.dao.projections.BookCategoryProje
 import com.releevante.core.adapter.persistence.dao.projections.BookTagProjection;
 import com.releevante.core.adapter.persistence.records.TagRecord;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
@@ -17,7 +18,7 @@ public interface TagHibernateDao extends ReactiveCrudRepository<TagRecord, Strin
 
   Mono<TagRecord> findFirstByValueIgnoreCase(String value);
 
-  Flux<TagRecord> findAllByName(String name);
+  Flux<TagRecord> findAllByNameIn(Set<String> names);
 
   @Query(
       "select\n"

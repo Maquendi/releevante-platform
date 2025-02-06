@@ -25,5 +25,5 @@ public abstract class AbstractBookReservation {
 
   abstract ZonedDateTime endTime();
 
-  abstract LazyLoaderInit<List<BookReservationItem>> items();
+  abstract List<BookReservationItem> items();
 }

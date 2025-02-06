@@ -33,7 +33,7 @@ public class BookReservationItemsRecord extends PersistableEntity {
 
   public static Set<BookReservationItemsRecord> fromDomain(
       BookReservationRecord reservationRecord, BookReservation reservation) {
-    return reservation.items().get().stream()
+    return reservation.items().stream()
         .map(BookReservationItemsRecord::fromDomain)
         .map(bookReservationItemRecord -> bookReservationItemRecord.with(reservationRecord))
         .collect(Collectors.toSet());

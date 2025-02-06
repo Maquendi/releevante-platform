@@ -109,8 +109,13 @@ public class DefaultBookServiceImpl implements BookService {
   }
 
   @Override
-  public Flux<Tag> getTags(TagTypes name) {
+  public Flux<Tag> getTags(List<TagTypes> name) {
     return bookTagRepository.get(name);
+  }
+
+  @Override
+  public Mono<Tag> getTag(TagTypes name, String value) {
+    return bookTagRepository.get(name, value);
   }
 
   @Override

@@ -6,6 +6,7 @@ import { buttonVariants } from '../ui/button';
 import Image from 'next/image';
 import MainSliderBooks from '../MainSliderBooks';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
+import useSessionTimeout from '@/hooks/useSessionTimeout';
 
 export default function RestHomePage() {
   const refSliderContainer = useRef(null);

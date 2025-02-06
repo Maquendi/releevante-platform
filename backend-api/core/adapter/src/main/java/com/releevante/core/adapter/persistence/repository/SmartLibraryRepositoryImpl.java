@@ -126,12 +126,19 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Transactional
   @Override
-  public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrary library) {
-    var persistLoans =
-        Flux.fromIterable(library.clients()).flatMap(clientRepository::saveBookLoan).collectList();
-    // var updateInventory = updateInventoryStatus(library.clients());
+  public Mono<SmartLibrary> synchronizeLibraryTransactions(SmartLibrary library) {
+    return Flux.fromIterable(library.clients())
+        .flatMap(clientRepository::saveBookTransactions)
+        .collectList()
+        .thenReturn(library);
+  }
 
-    return persistLoans.thenReturn(library);
+  @Override
+  public Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrary library) {
+    return Flux.fromIterable(library.clients())
+        .flatMap(clientRepository::saveBookTransactionStatus)
+        .collectList()
+        .thenReturn(library);
   }
 
   @Override

@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.LazyLoaderInit;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -58,8 +57,7 @@ public class BookReservationRecord extends PersistableEntity {
         .endTime(endTime)
         .createdAt(createdAt)
         .updateAt(updatedAt)
-        .items(
-            new LazyLoaderInit<>(() -> BookReservationItemsRecord.toDomain(getReservationItems())))
+        .items(BookReservationItemsRecord.toDomain(getReservationItems()))
         .build();
   }
 

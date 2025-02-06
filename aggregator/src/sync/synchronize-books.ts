@@ -17,12 +17,13 @@ export const synchronizeBooks = async (token: string) => {
   let syncComplete = false;
   let page = 0;
   let totalRecordsSynced = 0;
+  let totalBookRecords = 0;
   let totalBookCopies = 0;
   while (syncComplete == false) {
     try {
       const request: ApiRequest = {
         token,
-        resource: `books?page=${page}&size=2000&includeTags=true&slid=${slid}&status=not_synced&includeImages=true`,
+        resource: `slid/${slid}/books?page=${page}&size=2000&includeTags=true&status=not_synced&includeImages=true`,
       };
       const response = await executeGet<Book[]>(request);
       const books = response.context.data;
@@ -30,12 +31,9 @@ export const synchronizeBooks = async (token: string) => {
       syncComplete = books?.length == 0 || response.statusCode !== 200;
       if (response.statusCode == 200) {
         if (books && books.length) {
-          totalBookCopies += books.length;
-          totalRecordsSynced += await insertBook(books);
+          totalBookRecords += await insertBook(books);
           totalRecordsSynced += await insertTags(books);
-          //totalRecordsSynced += await insertImages(books);
-          totalRecordsSynced += await insertBookCopies(books);
-          //totalRecordsSynced += await insertCategories(books);
+          totalBookCopies += await insertBookCopies(books);
         }
       } else {
         console.log(
@@ -44,13 +42,14 @@ export const synchronizeBooks = async (token: string) => {
       }
     } catch (error) {
       syncComplete = true;
-     // console.log(error);
     }
   }
 
+  console.log("TOTAL BOOK RECORDS SYNCHRONIZED: " + totalBookRecords);
+
   console.log("TOTAL BOOK COPIES SYNCHRONIZED: " + totalBookCopies);
 
-  return totalRecordsSynced;
+  return totalRecordsSynced + totalRecordsSynced + totalBookRecords;
 };
 
 const insertCategories = async (books: Book[]): Promise<number> => {
@@ -214,9 +213,9 @@ const insertBook = async (books: Book[]) => {
         edition_title: book.title,
         language: book.language,
         author: book.author,
-        description_en: book.description,
-        description_es: book.descriptionSp,
-        description_fr: book.descriptionFr,
+        description_en: book.description.en,
+        description_es: book.description.es,
+        description_fr: book.description.fr,
         print_length: book.printLength,
         publicationDate: book.publishDate,
         dimensions: book.dimensions,
@@ -235,16 +234,16 @@ const insertBook = async (books: Book[]) => {
         updated_at: book.updatedAt,
       }).changes;
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
       dbChanges += update_stmt.run(
         book.title,
         book.correlationId,
         book.title,
         book.language,
         book.author,
-        book.description,
-        book.descriptionFr,
-        book.descriptionSp,
+        book.description.en,
+        book.description.fr,
+        book.description.es,
         book.printLength,
         book.publishDate,
         book.dimensions,
@@ -312,6 +311,8 @@ const insertBookCopies = async (books: Book[]) => {
     "UPDATE books_copies SET book_isbn=?, is_available=?, at_position=?, usage_count=?, updated_at=? WHERE id=?"
   );
 
+  console.log(books);
+
   let dbChanges = 0;
 
   let bookCopies: BookCopy[] = [];
@@ -319,6 +320,7 @@ const insertBookCopies = async (books: Book[]) => {
   books.forEach((book) => {
     bookCopies = [...bookCopies, ...book.copies];
   });
+  console.log(bookCopies);
 
   bookCopies.forEach((copy) => {
     try {
@@ -332,6 +334,7 @@ const insertBookCopies = async (books: Book[]) => {
         updated_at: copy.updatedAt,
       }).changes;
     } catch (error: any) {
+      console.log(error);
       dbChanges += update_stmt.run(
         copy.isbn,
         1,

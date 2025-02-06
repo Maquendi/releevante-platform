@@ -21,7 +21,7 @@ export interface BookCopy {
   status: string;
   isbn: string;
   atPosition: string;
-  usageCount: number,
+  usageCount: number;
   isSync: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -34,9 +34,11 @@ export interface Book {
   language: string;
   price: number;
   correlationId: string;
-  description: string;
-  descriptionFr: string;
-  descriptionSp: string;
+  description: {
+    en: string;
+    fr: string;
+    es: string;
+  };
   createdAt: Date;
   updatedAt: Date;
   tags: Tag[];

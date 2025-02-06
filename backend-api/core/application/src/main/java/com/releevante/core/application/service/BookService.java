@@ -21,7 +21,9 @@ public interface BookService {
 
   Flux<Tag> createTags(TagCreateDto dto);
 
-  Flux<Tag> getTags(TagTypes name);
+  Flux<Tag> getTags(List<TagTypes> name);
+
+  Mono<Tag> getTag(TagTypes name, String value);
 
   Flux<Book> getBooks(
       Slid slid, int page, int size, SyncStatus status, boolean includeImages, boolean includeTags);

@@ -1,9 +1,7 @@
 import { UserId } from "@/identity/domain/models";
 
 export type LoanStatusValues =
-  | "RETURNED_ON_TIME"
-  | "RETURNED_BEFORE_TIME"
-  | "RETURNED_OVERDUE"
+  | "RETURNED"
   | "CURRENT"
   | "OVERDUE"
   | "PENDING"

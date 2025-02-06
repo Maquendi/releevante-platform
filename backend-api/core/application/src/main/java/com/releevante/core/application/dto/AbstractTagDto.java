@@ -3,6 +3,7 @@ package com.releevante.core.application.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.Tag;
+import com.releevante.core.domain.TagValue;
 import com.releevante.core.domain.tags.TagTypes;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.SequentialGenerator;
@@ -28,9 +29,7 @@ public abstract class AbstractTagDto {
     return Tag.builder()
         .id(uuidGen.next())
         .name(tagName().name())
-        .value(tagValue())
-        .valueFr(tagValueFr())
-        .valueSp(tagValueSp())
+        .value(TagValue.builder().en(tagValue()).fr(tagValueFr()).es(tagValueSp()).build())
         .createdAt(datetimeGen.next())
         .build();
   }
