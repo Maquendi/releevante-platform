@@ -52,7 +52,7 @@
     "tryTheseBooks": "Essayez ces livres à la place"
   },
   "bookById": {
-    "selectLanguage": "Sélectionnez une langue",
+    "selectLanguage": "Sélectionner une langue",
     "bookSummary": "Résumé du livre",
     "bookDetail": "Détail du livre",
     "printLength": "Nombre de pages",
@@ -60,8 +60,10 @@
     "dimensions": "Dimensions",
     "language": "Langue",
     "publisher": "Éditeur",
-    "rentBannerBtn": "Louer gratuitement",
-    "buyBannerBtn": "Acheter le livre"
+    "rentBtn": "Louer gratuitement",
+    "buyBannerBtn": "Acheter",
+    "readInHotelBtn": "Lire à l'hôtel",
+    "buyBtn": "Acheter le livre"
   },
   "cart": {
     "rent": "louer",

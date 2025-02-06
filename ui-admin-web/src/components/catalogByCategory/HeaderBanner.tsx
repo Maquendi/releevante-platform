@@ -1,5 +1,4 @@
 'use client'
-import { getLocale, getTranslations } from "next-intl/server";
 import Image from "next/image";
 import BreadCrumbsPages, { Breadcrumb } from "../BreadCrumbsPages";
 import { Button } from "../ui/button";
