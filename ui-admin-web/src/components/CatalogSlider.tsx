@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
 import BookItem from "./catalogByCategory/BookItem";
@@ -11,7 +11,7 @@ type SliderProps = {
   books: any[];
   categoryId: string;
   subCategoryId?: string;
-
+  tags?:Record<string,any>
   slidesToShow?: number;
 };
 
@@ -31,6 +31,7 @@ const Slider: React.FC<SliderProps> = ({
   books,
   categoryId,
   subCategoryId,
+  tags,
   slidesToShow = 3,
 }) => {
   const t = useTranslations("catalogPage");
@@ -49,6 +50,14 @@ const Slider: React.FC<SliderProps> = ({
       ref.current.scrollLeft -= slideWidth;
     }
   };
+
+  const URLSeeAll=useMemo(()=>{
+    if(tags){
+      const params = new URLSearchParams(tags)
+      return `/catalog/${categoryId}/?${params.toString()}`
+    }
+    return`/catalog/${categoryId}/?subCategoryId=${subCategoryId}`
+  },[tags,categoryId,subCategoryId])
 
   return (
     <div className="flex gap-y-3 flex-col-reverse w-full overflow-hidden">
@@ -69,7 +78,7 @@ const Slider: React.FC<SliderProps> = ({
             </button>
           </div>
           <Link
-            href={`/catalog/${categoryId}/?subCategoryId=${subCategoryId}`}
+            href={URLSeeAll}
             className="w-full md:w-fit border cursor-pointer border-[#827F7F] py-3 px-4 rounded-full text-xs font-medium text-center"
           >
             {t("seeAll")}

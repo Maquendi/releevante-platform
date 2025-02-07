@@ -11,13 +11,13 @@ import { Locales } from "@/types/globals";
 
 interface BookByIdBannerProps {
   selectedBook: BookDetails;
-  book:BookDetails[]
-  setSelectedBookTranslationId:React.Dispatch<React.SetStateAction<string>>
+  bookTranslations:BookDetails[]
+  setSelectedBookId:(isbn:string)=>void
 }
-export default function BookByIdBanner({ book,selectedBook,setSelectedBookTranslationId }: BookByIdBannerProps) {
+export default function BookByIdBanner({ bookTranslations,selectedBook,setSelectedBookId }: BookByIdBannerProps) {
   const locale = useLocale();
   const t = useTranslations("bookById");
-  if (!book) return;
+  if (!bookTranslations) return;
 
   return (
     <div className="flex flex-col md:flex-row text-center md:text-left gap-5 p-3 rounded-md m-auto bg-white px-5 py-10 overflow-hidden:">
@@ -58,7 +58,7 @@ export default function BookByIdBanner({ book,selectedBook,setSelectedBookTransl
           <div className="min-w-[200px]">
             <h4 className="font-medium mb-1">{t("selectLanguage")}</h4>
             <div className="flex gap-4 items-center">
-              {book?.map(({ isbn, language }) => (
+              {bookTranslations?.map(({ isbn, language }) => (
                 <button
                   suppressHydrationWarning
                   className={cn(
@@ -67,7 +67,7 @@ export default function BookByIdBanner({ book,selectedBook,setSelectedBookTransl
                   )}
                   key={isbn}
                   onClick={() =>
-                    setSelectedBookTranslationId(isbn)
+                    setSelectedBookId(isbn)
                   }
                 >
                   {selectedBook?.language === language && (

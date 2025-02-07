@@ -37,8 +37,8 @@ export default function BookDetails({ isbn, translationId }: BookDetailsProps) {
     <section className="relative mt-7 space-y-10">
       <BookByIdBanner
         selectedBook={selectedBookTranslation!}
-        book={book!}
-        setSelectedBookTranslationId={setSelectedBookTranslationId}
+        bookTranslations={book!}
+        setSelectedBookId={setSelectedBookTranslationId}
       />
       <div className="border-b border-secondary-foreground py-4">
         <h3 className="text-xl font-semibold mb-2">{t("bookSummary")}</h3>

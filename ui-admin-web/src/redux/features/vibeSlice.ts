@@ -1,20 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type VibeState = {
-  readingVibe: string | null;
-  moodVibe: string | null;
-  favorStoryVibe: string | null;
+  vibe: string | null;
+  mood: string | null;
+  flavor: string | null;
 };
 
-const getLocalStorageState = (): VibeState => {
-  if (typeof window !== "undefined") {
-    const savedState = localStorage.getItem("vibeState");
-    return savedState ? JSON.parse(savedState) : { readingVibe: null, moodVibe: null, favorStoryVibe: null };
-  }
-  return { readingVibe: null, moodVibe: null, favorStoryVibe: null };
-};
 
-const initialState: VibeState = getLocalStorageState();
+const initialState:VibeState={ vibe: null, mood: null, flavor: null }
 
 export const vibeSlice = createSlice({
   name: "vibes",
@@ -31,9 +24,9 @@ export const vibeSlice = createSlice({
       }
     },
     resetVibes: (state) => {
-      state.readingVibe = null;
-      state.moodVibe = null;
-      state.favorStoryVibe = null;
+      state.vibe = null;
+      state.mood = null;
+      state.flavor = null;
 
       if (typeof window !== "undefined") {
         localStorage.setItem("vibeState", JSON.stringify(state));

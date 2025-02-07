@@ -1,5 +1,5 @@
 'use server'
-import { BookDetails, CategoryQuery, VibeTag } from "@/types/book";
+import { BookDetails, CategoryQuery, RecommendedBookResponse, VibeTag } from "@/types/book";
 
 export async function FetchAllBooksByOrg() {
   const token=process.env.TOKEN
@@ -80,6 +80,26 @@ export async function FetchVibeTags():Promise<VibeTag[]>{
 
   const token=process.env.TOKEN
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags?name=flavor,vibe,mood`,{
+    method:'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,  
+    },
+  })
+  if (!res.ok) {
+    console.error('Error getting tags:', res.status, res.statusText);
+    return {} as any;
+  }
+
+  const data = await res.json()
+  return  data?.context?.data || []
+}
+
+export async function FetchRecomendationBook(searchParams:Record<string,any>):Promise<RecommendedBookResponse>{
+  const preferencesValues = Object.values(searchParams)
+  console.log("perefered values",preferencesValues)
+  const token=process.env.TOKEN
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/books/recommendation?preferences=${preferencesValues}`,{
     method:'GET',
     headers: {
       'Content-Type': 'application/json', 
