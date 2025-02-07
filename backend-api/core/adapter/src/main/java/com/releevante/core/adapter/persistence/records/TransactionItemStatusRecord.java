@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "loan_item_status", schema = "core")
+@Table(name = "transaction_item_status", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor

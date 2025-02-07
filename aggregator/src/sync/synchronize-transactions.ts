@@ -10,15 +10,19 @@ import { arrayGroupinBy } from "../utils";
 const slid = process.env.slid || "";
 
 export const synchronizeTransactions = async (token: string) => {
-  let recordsUploaded = await createTransactions(token);
-
-  // recordsUploaded += await createTransactionStatuses(token);
+  let recordsUploaded = await createTransactions(token).then(
+    async (response) => {
+      console.log("GOOT HERER.....");
+      await createTransactionStatuses(token);
+      return response;
+    }
+  );
 };
 
 async function createTransactionStatuses(token: string): Promise<number> {
   const transactionStatusDto = dbConnection
     .prepare(
-      `select bts.*, bt.client_id, bt.external_id from book_transaction_status bts join book_transactions bt on bt.id=bts.transaction_id where bts.is_synced = false`
+      `select bts.*, bt.client_id, bt.external_id from book_transaction_status bts join book_transactions bt on bt.id=bts.transaction_id where bts.is_synced=0`
     )
     .all()
     .map((status: any) => {
@@ -27,13 +31,13 @@ async function createTransactionStatuses(token: string): Promise<number> {
         clientId: status.client_id,
         transactionId: status.external_id,
         status: status.status,
-        createdAt: status.created_at,
+        createdAt: new Date(status.created_at),
       };
     });
 
   const transactionItemStatusDto = dbConnection
     .prepare(
-      `select btis.*, bti.transaction_id, bt.client_id, bt.external_id from book_transaction_item_status btis join book_transaction_items bti on bti.id=btis.item_id join book_transactions bt on bt.id=bti.transaction_id where btis.is_synced = false`
+      `select btis.*, bti.transaction_id, bt.client_id, bt.external_id from book_transaction_item_status btis join book_transaction_items bti on bti.id=btis.item_id join book_transactions bt on bt.id=bti.transaction_id where btis.is_synced=0`
     )
     .all()
     .map((itemStatus: any) => {
@@ -42,7 +46,7 @@ async function createTransactionStatuses(token: string): Promise<number> {
         itemId: itemStatus.item_id,
         clientId: itemStatus.client_id,
         status: itemStatus.status,
-        createdAt: itemStatus.created_at,
+        createdAt: new Date(itemStatus.created_at),
       };
     });
 
@@ -56,17 +60,31 @@ async function createTransactionStatuses(token: string): Promise<number> {
     "clientId"
   );
 
-  const clients = Object.keys(clientTransactionStatuses).map((key) => {
-    const transactionStatuses: any[] = clientTransactionStatuses[key];
-    const transactionItemStatuses: any[] = clientTransactionItemStatuses[key];
-    const clientId = key;
+  const clientTransactionStatusesKeys = Object.keys(clientTransactionStatuses);
+
+  const clientTransactionItemStatusesKeys = Object.keys(
+    clientTransactionItemStatuses
+  );
+
+  let iterator = clientTransactionStatusesKeys;
+
+  if (clientTransactionItemStatusesKeys.length > iterator.length) {
+    iterator = clientTransactionItemStatusesKeys;
+  }
+
+  const clients = iterator.map((clientId) => {
+    const transactionItemStatus: any[] =
+      clientTransactionItemStatuses[clientId];
+    const transactionStatus: any[] = clientTransactionStatuses[clientId];
 
     return {
       id: clientId,
-      transactionItemStatus: transactionItemStatuses,
-      transactionStatus: transactionStatuses,
+      transactionItemStatus,
+      transactionStatus,
     };
   });
+
+  console.log(JSON.stringify(clients));
 
   if (clients.length == 0) {
     return 0;
@@ -75,6 +93,8 @@ async function createTransactionStatuses(token: string): Promise<number> {
   const response = await createTransactionStatusApi(token, {
     clients,
   });
+
+  console.log(JSON.stringify(response));
 
   if (response.statusCode == 200) {
     const statuses = Object.keys(clientTransactionStatuses).map((key) => {
@@ -95,23 +115,25 @@ async function createTransactionStatuses(token: string): Promise<number> {
       };
     });
 
-    const clientTransactionStatusIds = statuses.flatMap(
-      (client) => client.transactionStatusIds
-    );
+    const clientTransactionStatusIds = statuses
+      .flatMap((client) => client.transactionStatusIds)
+      .map((str) => `'${str}'`)
+      .join(",");
 
-    const clientTransactionItemStatusIds = statuses.flatMap(
-      (client) => client.transactionItemStatusIds
-    );
+    const clientTransactionItemStatusIds = statuses
+      .flatMap((client) => client.transactionItemStatusIds)
+      .map((str) => `'${str}'`)
+      .join(",");
 
     let changes = dbConnection
       .prepare(
-        `UPDATE book_transaction_status SET is_synced=true where id in (${clientTransactionStatusIds})`
+        `UPDATE book_transaction_status SET is_synced=1 where id in (${clientTransactionStatusIds})`
       )
       .run().changes;
 
     changes += dbConnection
       .prepare(
-        `UPDATE book_transaction_item_status SET is_synced=true where id in (${clientTransactionItemStatusIds})`
+        `UPDATE book_transaction_item_status SET is_synced=1 where id in (${clientTransactionItemStatusIds})`
       )
       .run().changes;
 
@@ -146,7 +168,7 @@ async function createTransactions(token: string): Promise<number> {
           return {
             id: status.id,
             status: status.status,
-            createdAt: status.created_at,
+            createdAt: new Date(status.created_at),
           };
         });
 
@@ -167,21 +189,21 @@ async function createTransactions(token: string): Promise<number> {
               return {
                 id: id,
                 status: status,
-                createdAt: created_at,
+                createdAt: new Date(created_at),
               };
             });
 
           return {
             id: itemId,
             cpy: transactionItem.book_copy_id,
-            statuses: transactionItemStatuses,
+            status: transactionItemStatuses,
           };
         });
 
       return {
         id: transactionId,
         transactionType: transaction.transaction_type,
-        createdAt: transaction.created_at,
+        createdAt: new Date(transaction.created_at),
         status: transactionStatusDto,
         items: transactionItemsDto,
       };
@@ -193,8 +215,6 @@ async function createTransactions(token: string): Promise<number> {
     };
   });
 
- // console.log(JSON.stringify(clients));
-
   //console.log(clients)
   if (clients.length == 0) {
     return 0;
@@ -205,22 +225,53 @@ async function createTransactions(token: string): Promise<number> {
   };
 
   const response = await createTransactionApi(token, request);
-
   if (response.statusCode == 200) {
     const syncResponse = response.context.data;
 
-    syncResponse.clients.forEach((client) => {
-      client.transactions?.forEach((transaction) => {
-        const stmt = dbConnection.prepare(
-          `UPDATE book_transactions SET external_id=? where id=?`
-        );
+    const statusIdList =
+      syncResponse.clients.flatMap((client) => {
+        return client.transactions?.map((transaction) => {
+          const stmt = dbConnection.prepare(
+            `UPDATE book_transactions SET external_id=? where id=?`
+          );
+          stmt.run(transaction.id, transaction.externalId).changes;
+          return {
+            transactionStatusIds: transaction.status.map((st) => st.id) || [],
+            transactionItemStatusIds:
+              transaction.items.flatMap((item) =>
+                item.status.map((item) => item.id)
+              ) || [],
+          };
+        });
+      }) || [];
 
-        return stmt.run({
-          external_id: transaction.id,
-          id: transaction.externalId,
-        }).changes;
-      });
-    });
+    const clientTransactionStatusIds = statusIdList
+      .flatMap((item) => item?.transactionStatusIds)
+      .map((str) => `'${str}'`)
+      .join(",");
+
+    const clientTransactionItemStatusIds = statusIdList
+      .flatMap((item) => item?.transactionItemStatusIds)
+      .map((str) => `'${str}'`)
+      .join(",");
+
+    console.log(clientTransactionStatusIds);
+
+    console.log("\n\n\n");
+
+    console.log(clientTransactionItemStatusIds);
+
+    let changes = dbConnection
+      .prepare(
+        `UPDATE book_transaction_status SET is_synced=1 where id in (${clientTransactionStatusIds})`
+      )
+      .run().changes;
+
+    changes += dbConnection
+      .prepare(
+        `UPDATE book_transaction_item_status SET is_synced=1 where id in (${clientTransactionItemStatusIds})`
+      )
+      .run().changes;
 
     return clients.length;
   }

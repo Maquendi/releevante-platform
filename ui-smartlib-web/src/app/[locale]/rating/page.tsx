@@ -27,7 +27,7 @@ export default function RatingPage() {
   const { mutateAsync: saveBookReviewMutation, isPending } = useMutation({
     mutationFn: SaveBookReview,
     onSuccess() {
-      router.push('/home')
+      router.push('/selection')
     },
   });
 

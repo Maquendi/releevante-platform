@@ -2,12 +2,15 @@
 
 import SelectLanguage from "@/components/SelectLanguage";
 import { Link } from "@/config/i18n/routing";
+import useLogoutOnTimeout from "@/hooks/useLogoutOnTimeout";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function ThanksPage() {
   const t = useTranslations("thanksPage");
-  
+
+  useLogoutOnTimeout(5000);
+
   return (
     <div className=" min-h-screen grid grid-rows-[auto_1fr_auto] text-center">
       <nav className="flex justify-between px-5 py-3">
@@ -33,7 +36,7 @@ export default function ThanksPage() {
         <h2 className="text-3xl font-medium mt-3">{t("title")}</h2>
         <p>{t("content")}</p>
         <Link
-          href="/home"
+          href="/"
           className="rounded-full z-[999] m-auto px-5 py-3 text-sm font-medium bg-primary text-white w-fit"
         >
           Ok
@@ -42,7 +45,7 @@ export default function ThanksPage() {
       <div className="pb-2">
         <p className="font-medium space-x-1">
           <span> {t("closeSessionTime1")}</span>
-          <span>{t("closeSessionTime2")}</span> 3
+          <span>{t("closeSessionTime2")}</span> 5
           <span>{t("closeSessionTime3")}</span>
         </p>{" "}
       </div>

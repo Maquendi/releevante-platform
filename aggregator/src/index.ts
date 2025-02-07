@@ -3,7 +3,7 @@ import { markLibrarySynchronized } from "./sync/mark-library-synced";
 import { synchronizeSettings } from "./sync/synchronize-settings";
 import { synchronizeLibraryAccess } from "./sync/synchronize-library-access";
 import { getCredential } from "./auth/authenticator";
-import { synchronizeTransactions } from "./sync/synchronize-loans";
+import { synchronizeTransactions } from "./sync/synchronize-transactions";
 
 const runAsync = async () => {
   let token = await getCredential();

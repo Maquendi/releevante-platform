@@ -136,7 +136,7 @@
     "content": "Merci d'utiliser notre service. Veuillez vous rappeler de retourner les livres avant votre départ de l'hôtel",
     "closeSessionTime1": "La session",
     "closeSessionTime2": "se fermera dans",
-    "closeSessionTime3": "minutes"
+    "closeSessionTime3": "secondes"
   },
   "returnBook": {
     "yourRentedBooks": "Vos livres loués",
@@ -169,7 +169,7 @@
     "returnBookBtn": "D'accord, retournez un autre livre",
     "closeSessionTime1": "La session",
     "closeSessionTime2": "se fermera dans",
-    "closeSessionTime3": "minutes"
+    "closeSessionTime3": "secondes"
   },
   "ratingPage": {
     "title": "Faites-nous savoir votre niveau de satisfaction",
@@ -181,6 +181,6 @@
     "submit": "Soumettre",
     "closeSessionTime1": "La session",
     "closeSessionTime2": "se fermera dans",
-    "closeSessionTime3": "minutes"
+    "closeSessionTime3": "secondes"
   }
 }

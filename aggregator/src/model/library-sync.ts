@@ -33,7 +33,7 @@ export interface TransactionStatus {
 export interface TransactionItem {
   id: string;
   cpy: string;
-  statuses: TransactionItemStatus[];
+  status: TransactionItemStatus[];
 }
 
 export interface TransactionDto {
@@ -42,6 +42,7 @@ export interface TransactionDto {
   createdAt: Date;
   status: TransactionStatus[];
   items: TransactionItem[];
+  transactionType: 'RENT' | 'PURCHASE'
 }
 
 export interface ClientSyncDto {

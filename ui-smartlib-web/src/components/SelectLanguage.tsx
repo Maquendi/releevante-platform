@@ -33,7 +33,7 @@ export default function SelectLanguage() {
       !path.endsWith("readingvibe") &&
       !path.endsWith("flavorofstory") &&
       !path.endsWith("mood") &&
-      !path.includes("home") &&
+      !path.includes("selection") &&
       !path.endsWith("/thanks") && 
       !path.endsWith("/rating")? (
         <div>

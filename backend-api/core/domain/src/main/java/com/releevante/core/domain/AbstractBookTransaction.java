@@ -28,7 +28,7 @@ public abstract class AbstractBookTransaction implements Auditable {
   }
 
   @Value.Default
-  List<TransactionStatus> transactionStatus() {
+  List<TransactionStatus> status() {
     return Collections.emptyList();
   }
 }

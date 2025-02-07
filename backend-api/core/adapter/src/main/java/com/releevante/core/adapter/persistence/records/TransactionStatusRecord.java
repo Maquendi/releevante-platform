@@ -20,7 +20,7 @@ public class TransactionStatusRecord extends AuditableEntity {
   private String status;
 
   public static Set<TransactionStatusRecord> fromDomain(BookTransaction transaction) {
-    return transaction.transactionStatus().stream()
+    return transaction.status().stream()
         .map(TransactionStatusRecord::fromDomain)
         .collect(Collectors.toSet());
   }

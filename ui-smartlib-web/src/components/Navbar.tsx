@@ -2,7 +2,7 @@
 import React, { Suspense, useState } from "react";
 import SelectLanguage from "./SelectLanguage";
 import Image from "next/image";
-import { Link, usePathname, useRouter } from "@/config/i18n/routing";
+import { Link, usePathname } from "@/config/i18n/routing";
 import useAuth from "@/hooks/useAuth";
 import {
   DropdownMenu,
@@ -13,9 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
-const CartSidebarTrigger = dynamic(() => import( "./CartSidebarTrigger"), {
+const CartSidebarTrigger = dynamic(() => import("./CartSidebarTrigger"), {
   ssr: false,
 });
 
@@ -61,6 +61,7 @@ function LogoutDropDown() {
 
 export default function Navbar() {
   const path = usePathname();
+  console.log(path);
   const { isUserSignin } = useAuth();
   return (
     <nav className="flex justify-between items-center px-6 bg-white py-2 border border-b border-secondary">
@@ -69,7 +70,8 @@ export default function Navbar() {
           <SelectLanguage />
         </Suspense>
 
-        <Link href={"/home"}>
+
+        <Link href={"/explore"}>
           <Image
             width={40}
             height={40}
@@ -79,7 +81,8 @@ export default function Navbar() {
           />
         </Link>
       </div>
-      {!path.endsWith("home") && (
+
+      {path.endsWith("selection") && (
         <div>
           <Image
             width={100}
@@ -90,8 +93,9 @@ export default function Navbar() {
           />
         </div>
       )}
+
       <div className="flex gap-5">
-        {!path.endsWith("home") && (
+        {!path.endsWith("selection") && (
           <Link href="/search">
             <Image
               src="/icons/search.svg"
@@ -102,8 +106,8 @@ export default function Navbar() {
             />
           </Link>
         )}
-        {isUserSignin && (<LogoutDropDown />)}
-        {!path.endsWith("home") && <CartSidebarTrigger />}
+        {isUserSignin && <LogoutDropDown />}
+        {!path.endsWith("selection") && <CartSidebarTrigger />}
       </div>
     </nav>
   );

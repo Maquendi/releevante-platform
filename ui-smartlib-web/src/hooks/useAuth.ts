@@ -28,7 +28,7 @@ const useAuth = () => {
     onSuccess() {
       setIsUserSignin(true);
       dispatch(fetchConfiguration());
-      const redirectUrl = searchParams?.get("redirect") || `/${locale}/home`;
+      const redirectUrl = searchParams?.get("redirect") || `/${locale}/selection`;
       router.push(redirectUrl);
       queryClient.invalidateQueries({ queryKey: ["BOOKS_BY_CATEGORIES"] });
     },

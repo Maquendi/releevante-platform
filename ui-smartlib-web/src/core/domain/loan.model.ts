@@ -8,12 +8,10 @@ export type LoanStatusValues =
   | "CHECKING_OUT";
 
 export type LoanItemStatusValues =
-  | "REPORTED_LOST"
   | "LOST"
   | "RETURNED"
-  | "REPORTED_DAMAGE"
   | "DAMAGED"
-  | "REPORTED_SOLD"
+  | "SOLD"
   | "DOOR_OPENING"
   | "DOOR_OPENED"
   | "CHECKOUT_STARTED"

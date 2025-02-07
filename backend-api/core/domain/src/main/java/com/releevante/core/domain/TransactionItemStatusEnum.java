@@ -1,15 +1,11 @@
 package com.releevante.core.domain;
 
 public enum TransactionItemStatusEnum {
-  REPORTED_LOST,
   LOST,
   RETURNED,
-  REPORTED_DAMAGE,
   DAMAGED,
-  REPORTED_SOLD,
   SOLD,
   BORROWED,
-
   DOOR_OPENING,
   DOOR_OPENED,
   CHECKOUT_STARTED,

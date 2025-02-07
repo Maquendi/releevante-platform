@@ -55,7 +55,7 @@ export function DialogReadMoreBooksDialog({
             variant="outline"
             onClick={() => {
               handleAddToCart("RENT", book);
-              router.push("/home");
+              router.push("/selection");
             }}
             className="py-6 border-primary text-primary  px-6 rounded-full font-medium hover:text-black hover:bg-accent"
           >

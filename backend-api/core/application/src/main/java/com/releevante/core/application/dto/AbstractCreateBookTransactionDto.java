@@ -36,7 +36,7 @@ public abstract class AbstractCreateBookTransactionDto {
         .externalId(TransactionId.of(id()))
         .transactionType(transactionType())
         .createdAt(createdAt())
-        .transactionStatus(
+        .status(
             status().stream()
                 .map(status -> status.toDomain(principal, transactionId))
                 .collect(Collectors.toList()))

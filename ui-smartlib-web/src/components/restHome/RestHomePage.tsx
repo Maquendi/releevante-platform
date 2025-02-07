@@ -1,22 +1,32 @@
-'use client';
-import { Link, useRouter } from '@/config/i18n/routing';
-import { cn } from '@/lib/utils';
-import React, { useRef } from 'react';
-import { buttonVariants } from '../ui/button';
-import Image from 'next/image';
-import MainSliderBooks from '../MainSliderBooks';
-import useOnClickOutside from '@/hooks/useOnClickOutside';
-import useSessionTimeout from '@/hooks/useSessionTimeout';
+"use client";
+import { Link, useRouter } from "@/config/i18n/routing";
+import { cn } from "@/lib/utils";
+import React, { useEffect, useRef } from "react";
+import { buttonVariants } from "../ui/button";
+import Image from "next/image";
+import MainSliderBooks from "../MainSliderBooks";
+import useOnClickOutside from "@/hooks/useOnClickOutside";
+import useAuth from "@/hooks/useAuth";
 
 export default function RestHomePage() {
   const refSliderContainer = useRef(null);
   const refButtonsContainer = useRef(null);
   const router = useRouter();
   const handleOutsideClick = () => {
-    router.push('/home');
+    router.push("/selection");
   };
 
-  useOnClickOutside(refSliderContainer, handleOutsideClick, refButtonsContainer);
+  useOnClickOutside(
+    refSliderContainer,
+    handleOutsideClick,
+    refButtonsContainer
+  );
+
+  const { logoutMutation } = useAuth();
+
+  useEffect(() => {
+    logoutMutation.mutateAsync();
+  }, []);
 
   return (
     <div className="relative min-h-[80vh] overflow-hidden">
@@ -52,16 +62,16 @@ export default function RestHomePage() {
         <Link
           className={cn(
             buttonVariants(),
-            'rounded-3xl font-medium text-xs hover:text-primary '
+            "rounded-3xl font-medium text-xs hover:text-primary "
           )}
-          href="/home"
+          href="/selection"
         >
           Search a book
         </Link>
         <Link
           className={cn(
             buttonVariants(),
-            'rounded-3xl font-medium text-xs hover:text-primary '
+            "rounded-3xl font-medium text-xs hover:text-primary "
           )}
           href="/returnbook"
         >

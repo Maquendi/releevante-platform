@@ -88,6 +88,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       itemId: status.itemId,
       status: status.status,
       isSynced: false,
+      created_at: status.createdAt,
     });
 
     return status;
@@ -102,6 +103,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       transactionId: status.transactionId,
       status: status.status,
       isSynced: false,
+      createdAt: status.createdAt,
     });
 
     return status;

@@ -26,13 +26,19 @@ export class DefaultBookTransactionServiceFacade
   async addLoanItemStatus(
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus> {
-    return this.bookTransactionService.addLoanItemStatus(status);
+    return this.bookTransactionService.addLoanItemStatus({
+      ...status,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   async addLoanStatus(
     status: BookTransactionStatus
   ): Promise<BookTransactionStatus> {
-    return this.bookTransactionService.addLoanStatus(status);
+    return this.bookTransactionService.addLoanStatus({
+      ...status,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   async getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
