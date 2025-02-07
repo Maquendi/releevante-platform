@@ -34,8 +34,7 @@ export default  function HeaderBanner({
  const {filterBySubCategory}=useLibraryInventory()
   const {selected} = filterBySubCategory(categoryId,subCategoryId)  
 
-  
-
+  console.log('selected',selected)
   return (
     <header className="text-center   py-12 bg-background  bg-white  rounded-b-3xl">
       <MaxWithWrapper>
@@ -50,7 +49,7 @@ export default  function HeaderBanner({
                 <span>
                   {selected?.subCategory?.[`${locale}` as Locales]}
                 </span>
-                {selected?.category?.en?.toLowerCase() !== 'all' && (
+                  {selected?.category && selected?.category?.en?.toLowerCase() !== 'all' && (
                   <>
                     <span>{t("in")}</span>
                     <span className="text-primary">

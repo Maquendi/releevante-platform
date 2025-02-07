@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import "../globals.css";
 import { AppReduxProvider } from "@/redux/provider";
 import { QueryProvider } from "@/components/QueryProvider";
+export const experimental_ppr = true
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],

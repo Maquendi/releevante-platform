@@ -125,3 +125,44 @@ export interface VibeTag {
   };
   createdAt: string;
 }
+
+
+export interface RecommendedBook {
+  isbn: string;
+  correlationId: string;
+  translationId: string;
+  title: string;
+  price: number;
+  qty: number;
+  qtyForSale: number;
+  description: Languages;
+  author: string;
+  language: string;
+  createdAt: string;
+  updatedAt: string;
+  printLength: number;
+  publishDate: string;
+  dimensions: string;
+  publisher: string;
+  publicIsbn: string;
+  bindingType: string;
+  rating: number;
+  votes: number;
+  image: string;
+  categories: Languages[];
+}
+
+export interface OtherRecommendedBook {
+  isbn: string;
+  translationId: string;
+  title: string;
+  author: string;
+  image: string;
+  votes: number;
+  rating: number;
+}
+
+export interface RecommendedBookResponse {
+  recommended: RecommendedBook[];
+  others: OtherRecommendedBook[];
+}
