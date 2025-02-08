@@ -22,7 +22,9 @@ const runAsync = async () => {
   //   await markLibrarySynchronized(token);
   // }
 
-  await synchronizeTransactions(token);
+  const stats = await synchronizeTransactions(token);
+
+  console.log(stats);
 };
 
 runAsync();

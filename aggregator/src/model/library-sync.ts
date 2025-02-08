@@ -33,14 +33,14 @@ export interface TransactionStatus {
 export interface TransactionItem {
   id: string;
   cpy: string;
-  status: TransactionItemStatus[];
+  status?: TransactionItemStatus[];
 }
 
 export interface TransactionDto {
   id: string;
   externalId?: string;
   createdAt: Date;
-  status: TransactionStatus[];
+  status?: TransactionStatus[];
   items: TransactionItem[];
   transactionType: 'RENT' | 'PURCHASE'
 }
