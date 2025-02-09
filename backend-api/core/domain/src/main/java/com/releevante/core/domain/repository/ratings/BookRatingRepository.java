@@ -1,8 +1,7 @@
 package com.releevante.core.domain.repository.ratings;
 
-import com.releevante.core.domain.BookRating;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface BookRatingRepository {
-  Flux<BookRating> getByAllUnSynchronized();
+  Mono<Void> updateBookRatingUnSynced();
 }

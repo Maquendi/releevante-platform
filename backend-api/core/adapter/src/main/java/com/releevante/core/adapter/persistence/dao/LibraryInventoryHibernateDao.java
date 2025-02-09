@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.dao;
 
 import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
 import com.releevante.core.adapter.persistence.records.LibraryInventoryRecord;
-import java.time.ZonedDateTime;
 import java.util.Set;
 import org.springframework.data.r2dbc.repository.Modifying;
 import org.springframework.data.r2dbc.repository.Query;
@@ -22,14 +21,17 @@ public interface LibraryInventoryHibernateDao
       @Param("status") String status, @Param("copies") Set<String> copies);
 
   @Modifying
-  @Query("update core.library_inventories set status=:status, updated_at=:updatedAt where cpy=:cpy")
-  Mono<Void> updateInventoryStatusByCpy(
-      @Param("status") String status,
-      @Param("updatedAt") ZonedDateTime updatedAt,
-      @Param("cpy") String cpy);
+  @Query("update core.library_inventories set status=:status, is_synced=false where cpy=:cpy")
+  Mono<Void> updateInventoryStatusByCpy(@Param("status") String status, @Param("cpy") String cpy);
 
   @Modifying
   Flux<LibraryInventoryRecord> findAllBySlidAndIsSyncFalse(String slid);
+
+  @Query(
+      "update core.library_inventories li \n"
+          + "set usage_count = (usage_count + 1), status='AVAILABLE'\n"
+          + "where li.cpy=:cpy ")
+  Mono<Void> updateLibraryInventoryUsageCount(@Param("cpy") String cpy);
 
   @Query(
       value =

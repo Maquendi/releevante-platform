@@ -10,15 +10,23 @@ import com.releevante.core.application.service.impl.SettingServiceImpl;
 import com.releevante.core.domain.repository.*;
 import com.releevante.core.domain.tasks.TaskRepository;
 import com.releevante.identity.application.service.auth.AuthorizationService;
+import java.time.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Configuration
 public class CoreServiceBeanFactory {
 
-  @Autowired BookLoanRepository bookLoanRepository;
+  Logger logger = LoggerFactory.getLogger(CoreServiceBeanFactory.class);
+  @Autowired BookTransactionRepository bookLoanRepository;
 
   @Autowired SmartLibraryRepository smartLibraryRepository;
 
@@ -71,5 +79,23 @@ public class CoreServiceBeanFactory {
   public BookService bookService(BookRegistrationService bookRegistrationService) {
     return new DefaultBookServiceImpl(
         bookRepository, bookRegistrationService, bookTagRepository, smartLibraryRepository);
+  }
+
+  @Bean
+  public Disposable someTaskScheduler() {
+    return Flux.interval(Duration.ofMinutes(1)) // run every minute
+        .publishOn(Schedulers.boundedElastic())
+        .onBackpressureDrop() // if the task below takes a long time, greater than the next tick,
+        // then just drop this tick
+        .concatMap(
+            __ ->
+                Mono.defer(
+                    () -> {
+                      // process your tasks below
+                      logger.info("Trying to process the task...");
+                      return Mono.just("completed");
+                    }),
+            0)
+        .subscribe();
   }
 }

@@ -4,21 +4,21 @@ import com.releevante.core.adapter.persistence.dao.BookTransactionHibernateDao;
 import com.releevante.core.adapter.persistence.dao.TransactionItemStatusRecordHibernateDao;
 import com.releevante.core.adapter.persistence.dao.TransactionStatusHibernateDao;
 import com.releevante.core.domain.BookLoan;
-import com.releevante.core.domain.repository.BookLoanRepository;
+import com.releevante.core.domain.repository.BookTransactionRepository;
 import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 @Component
-public class BookLoanRepositoryImpl implements BookLoanRepository {
+public class BookTransactionRepositoryImpl implements BookTransactionRepository {
   private final BookTransactionHibernateDao bookLoanHibernateDao;
 
   private final TransactionItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao;
 
   private final TransactionStatusHibernateDao loanStatusHibernateDao;
 
-  public BookLoanRepositoryImpl(
+  public BookTransactionRepositoryImpl(
       BookTransactionHibernateDao bookLoanHibernateDao,
       TransactionItemStatusRecordHibernateDao loanItemStatusRecordHibernateDao,
       TransactionStatusHibernateDao loanStatusHibernateDao) {
@@ -41,18 +41,4 @@ public class BookLoanRepositoryImpl implements BookLoanRepository {
   public Flux<BookLoan> getByAllUnSynchronized() {
     return null;
   }
-
-  // @Override
-  //  public Mono<Long> addLoanStatuses(List<LoanStatus> statuses) {
-  //    return loanStatusHibernateDao
-  //        .saveAll(LoanStatusRecord.many(statuses))
-  //        .then(Mono.just((long) statuses.size()));
-  //  }
-
-  // @Override
-  //  public Mono<Long> addLoanItemStatuses(List<LoanItemStatus> loanItemStatuses) {
-  //    return loanItemStatusRecordHibernateDao
-  //        .saveAll(LoanItemStatusRecord.many(loanItemStatuses))
-  //        .then(Mono.just((long) loanItemStatuses.size()));
-  //  }
 }

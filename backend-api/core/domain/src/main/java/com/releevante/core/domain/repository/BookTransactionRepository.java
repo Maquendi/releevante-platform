@@ -5,7 +5,7 @@ import com.releevante.types.Slid;
 import java.time.ZonedDateTime;
 import reactor.core.publisher.Flux;
 
-public interface BookLoanRepository {
+public interface BookTransactionRepository {
   Flux<BookLoan> findActiveLoans(Slid slid);
 
   Flux<BookLoan> findCreatedInRange(ZonedDateTime start, ZonedDateTime end);

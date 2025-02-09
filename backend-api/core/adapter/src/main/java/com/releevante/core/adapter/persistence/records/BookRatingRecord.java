@@ -27,6 +27,8 @@ public class BookRatingRecord extends PersistableEntity {
 
   private String orgId;
 
+  private boolean isSynced;
+
   private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
     var record = new BookRatingRecord();
     record.setId(rating.id());
