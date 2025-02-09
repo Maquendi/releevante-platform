@@ -7,7 +7,7 @@ import {
   TransactionStatusEnum,
   TransactionType,
 } from "../domain/loan.model";
-import { LoanRepository } from "../domain/repositories";
+import { BookTransactionRepository } from "../domain/repositories";
 import { executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
@@ -21,8 +21,11 @@ import { bookTransactionSchema } from "@/config/drizzle/schemas/bookTransaction"
 import { bookTransactionItemSchema } from "@/config/drizzle/schemas/bookTransactionItem";
 import { arrayGroupinBy } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
+import { bookCopyStatusMapper } from "@/book/domain/models";
 
-export class BookLoanRepositoryImpl implements LoanRepository {
+export class BookTransactionRepositoryImpl
+  implements BookTransactionRepository
+{
   async save(bookTransactions: BookTransactions): Promise<void> {
     /**
      * transaction operation
@@ -81,7 +84,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
     await executeTransaction(transaction);
   }
 
-  async addLoanItemStatus(
+  async newTransactionItemStatus(
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus> {
     console.log(status);
@@ -94,10 +97,25 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       created_at: status.createdAt,
     });
 
+    if (
+      status.status == TransactionItemStatusEnum.CHECKOUT_SUCCESS ||
+      status.status == TransactionItemStatusEnum.CHECKIN_SUCCESS
+    ) {
+      await db
+        .update(bookCopieSchema)
+        .set({
+          status: bookCopyStatusMapper({
+            itemStatus: status.status,
+            type: status.transactionType,
+          }),
+        })
+        .where(eq(bookCopieSchema.id, status.cpy));
+    }
+
     return status;
   }
 
-  async addLoanStatus(
+  async newTransactionStatus(
     status: BookTransactionStatus
   ): Promise<BookTransactionStatus> {
     console.log(status);
@@ -223,7 +241,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         .flatMap(([, items]) => items);
 
       if (!filteredTransactionItems.length) {
-        await this.addLoanStatus({
+        await this.newTransactionStatus({
           id: uuidv4(),
           createdAt: new Date().toISOString(),
           status: TransactionStatusEnum.RETURNED,
@@ -247,4 +265,5 @@ export class BookLoanRepositoryImpl implements LoanRepository {
   }
 }
 
-export const defaultBookLoanRepositoryImpl = new BookLoanRepositoryImpl();
+export const defaultBookTransactionRepositoryImpl =
+  new BookTransactionRepositoryImpl();

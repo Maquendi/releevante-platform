@@ -18,6 +18,7 @@ import com.releevante.types.ZonedDateTimeGenerator;
 import com.releevante.types.exceptions.InvalidInputException;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +30,6 @@ public class DefaultBookServiceImpl implements BookService {
   private final BookTagRepository bookTagRepository;
   private final SmartLibraryRepository smartLibraryRepository;
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
-
   private final SequentialGenerator<ZonedDateTime> dateTimeGenerator =
       ZonedDateTimeGenerator.instance();
   private static final int BATCH_SIZE = 100;
@@ -58,22 +58,18 @@ public class DefaultBookServiceImpl implements BookService {
   @Override
   public Mono<Long> executeLoadInventory(Slid slid, String source) {
     return smartLibraryRepository
-        .findBy(slid)
-        .map(
-            smartLibrary -> {
-              smartLibrary.validateIsActive();
-              return smartLibrary;
-            })
-        .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")))
+        .findWithAllocations(slid)
+        .doOnNext(AbstractSmartLibrary::validateIsActive)
         .flatMap(
             smartLibrary ->
                 bookRegistrationService
                     .getLibraryInventory(source)
-                    .buffer(BATCH_SIZE)
-                    .flatMap(inventories -> buildInventory(inventories, smartLibrary))
+                    .collectList()
+                    .flatMapMany(inventories -> buildInventory(inventories, smartLibrary))
                     .buffer(BATCH_SIZE)
                     .flatMap(bookRepository::saveInventory)
-                    .count());
+                    .count())
+        .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")));
   }
 
   @Override
@@ -178,17 +174,35 @@ public class DefaultBookServiceImpl implements BookService {
   }
 
   Flux<LibraryInventory> buildInventory(
-      List<LibraryInventoryDto> bookInventory, SmartLibrary slid) {
-    return Flux.fromStream(bookInventory.stream())
-        .flatMap(
-            inventory -> {
-              var createdAt = ZonedDateTimeGenerator.instance().next();
-              return mapToInventory(inventory, slid, createdAt);
-            });
+      List<LibraryInventoryDto> inventories, SmartLibrary library) {
+    return Mono.fromCallable(
+            () -> {
+              var availablePositions = library.availablePositions();
+              var copyCount = inventories.stream().mapToInt(LibraryInventoryDto::qty).sum();
+              if (availablePositions.size() < copyCount) {
+                throw new RuntimeException("Insufficient positions available for allocations");
+              }
+              return availablePositions;
+            })
+        .flatMapMany(
+            availablePositions -> {
+                var index = new AtomicInteger(0);
+                return Flux.fromStream(inventories.stream())
+                        .flatMap(
+                                inventory -> {
+                                    var createdAt = ZonedDateTimeGenerator.instance().next();
+                                    return mapToInventory(inventory, library, createdAt, availablePositions, index);
+                                });
+            }
+        );
   }
 
   Flux<LibraryInventory> mapToInventory(
-      LibraryInventoryDto inventory, SmartLibrary library, ZonedDateTime createdAt) {
+      LibraryInventoryDto inventory,
+      SmartLibrary library,
+      ZonedDateTime createdAt,
+      List<String> availablePositions,
+      AtomicInteger startIndex) {
     return Flux.range(0, inventory.qty())
         .map(
             index ->
@@ -200,8 +214,13 @@ public class DefaultBookServiceImpl implements BookService {
                     .slid(library.id().value())
                     .updatedAt(createdAt)
                     .usageCount(0)
+                    .allocation(availablePositions.get(startIndex.getAndIncrement()))
                     .createdAt(createdAt)
                     .build());
+  }
+
+  String allocateInventoryPosition(List<String> availablePositions) {
+    return availablePositions.remove(0);
   }
 
   private Flux<Book> aggregateBooks(

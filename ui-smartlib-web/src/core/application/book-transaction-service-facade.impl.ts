@@ -4,10 +4,14 @@ import {
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
+  TransactionItemStatusEnum,
+  TransactionStatusEnum,
 } from "../domain/loan.model";
 import {
   BookTransactionService,
   BookTransactionServiceFacade,
+  TransactionItemStatusDto,
+  TransactionStatusDto,
 } from "./service.definition";
 import { CartDto } from "./dto";
 import { v4 as uuidv4 } from "uuid";
@@ -23,20 +27,23 @@ export class DefaultBookTransactionServiceFacade
     return this.bookTransactionService.checkout(cart);
   }
 
-  async addLoanItemStatus(
-    status: BookTransactionItemStatus
+  async newTransactionItemStatus(
+    status: TransactionItemStatusDto
   ): Promise<BookTransactionItemStatus> {
-    return this.bookTransactionService.addLoanItemStatus({
+    return this.bookTransactionService.newTransactionItemStatus({
       ...status,
+      id: uuidv4(),
       createdAt: new Date().toISOString(),
     });
   }
 
-  async addLoanStatus(
-    status: BookTransactionStatus
+  async newTransactionStatus(
+    status: TransactionStatusDto
   ): Promise<BookTransactionStatus> {
-    return this.bookTransactionService.addLoanStatus({
-      ...status,
+    return this.bookTransactionService.newTransactionStatus({
+      id: uuidv4(),
+      status: status.status,
+      transactionId: status.transactionId,
       createdAt: new Date().toISOString(),
     });
   }

@@ -34,6 +34,8 @@ public abstract class AbstractBookCopy {
 
   abstract String descriptionSp();
 
+  abstract String allocation();
+
   @JsonIgnore
   abstract Slid slid();
 

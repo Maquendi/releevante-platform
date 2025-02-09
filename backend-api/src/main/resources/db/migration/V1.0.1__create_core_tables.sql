@@ -14,7 +14,6 @@ CREATE TABLE core.books (
   translation_id varchar(36) NOT NULL,
   title varchar(250) NULL,
   qty numeric NOT NULL,
-  qty_for_sale numeric NOT NULL DEFAULT 0,
   price numeric NOT NULL,
   author varchar(120) NOT NULL,
   description varchar(1080) NOT NULL,
@@ -92,6 +91,8 @@ CREATE TABLE core.smart_libraries (
 	model_name varchar(100) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modules numeric NOT NULL DEFAULT 4,
+    module_capacity numeric NOT NULL DEFAULT 80,
 	CONSTRAINT slid_pk PRIMARY KEY (slid)
 );
 
@@ -102,6 +103,7 @@ CREATE TABLE core.library_inventories (
 	is_sync BOOLEAN NOT NULL DEFAULT false,
 	status varchar(30) NOT NULL,
 	usage_count numeric NOT NULL DEFAULT 0,
+	allocation varchar(20) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_copy_pk PRIMARY KEY (cpy),
@@ -153,6 +155,7 @@ CREATE TABLE core.book_ratings (
 	rating numeric NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_synced boolean NOT NULL DEFAULT false,
 	CONSTRAINT book_rating_pk PRIMARY KEY (id),
 	FOREIGN KEY (org_id) REFERENCES core.org(id),
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn),
@@ -200,6 +203,7 @@ CREATE TABLE core.transaction_status (
 	audit varchar(36) NOT NULL,
     origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	is_synced boolean NOT NULL DEFAULT false,
 	CONSTRAINT transaction_status_pk PRIMARY KEY (id),
 	FOREIGN KEY (transaction_id) REFERENCES core.book_transactions(id)
 );
@@ -222,6 +226,7 @@ CREATE TABLE core.transaction_item_status (
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	audit varchar(36) NOT NULL,
     origin varchar(36) NOT NULL,
+    is_synced boolean NOT NULL DEFAULT false,
 	CONSTRAINT transaction_item_status_pk PRIMARY KEY (id)
 );
 

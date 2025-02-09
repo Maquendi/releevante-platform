@@ -13,6 +13,8 @@ public interface SmartLibraryRepository {
 
   Mono<SmartLibrary> findBy(Slid slid);
 
+  Mono<SmartLibrary> findWithAllocations(Slid slid);
+
   Mono<SmartLibrary> synchronizeLibraryTransactions(SmartLibrary smartLibrary);
 
   Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrary smartLibrary);

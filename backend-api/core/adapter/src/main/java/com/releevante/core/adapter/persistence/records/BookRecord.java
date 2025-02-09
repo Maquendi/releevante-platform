@@ -30,7 +30,6 @@ public class BookRecord extends PersistableEntity {
   private String translationId;
   private String title;
   private int qty;
-  private int qtyForSale;
   private BigDecimal price;
   private String author;
   private String description;
@@ -70,7 +69,6 @@ public class BookRecord extends PersistableEntity {
     record.setBindingType(book.bindingType().orElse(null));
     record.setRating(book.rating());
     record.setVotes(book.votes());
-    record.setQtyForSale(book.qtyForSale());
     record.setTranslationId(book.translationId());
     return record;
   }
@@ -98,7 +96,7 @@ public class BookRecord extends PersistableEntity {
         .price(price)
         .title(title)
         .translationId(translationId)
-        .qtyForSale(qtyForSale)
+        .qtyForSale(0)
         .build();
   }
 

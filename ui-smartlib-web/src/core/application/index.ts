@@ -2,7 +2,7 @@ import { defaultCartRepository } from "../infrastructure/cart-repository-impl";
 import { DefaultCartService } from "./cart-service.impl";
 import { CartServiceFacade } from "./cart-service-facade-impl";
 import { DefaultBookTransactionService } from "./book-transaction-service.impl";
-import { defaultBookLoanRepositoryImpl } from "../infrastructure/book-loan-repository.impl";
+import { defaultBookTransactionRepositoryImpl } from "../infrastructure/book-transaction-repository.impl";
 import { bookServiceFacade } from "@/book/application";
 import { SettingsFacade } from "./settings.facade";
 import { defaultSettingsRepository } from "../infrastructure/settings-repository.impl";
@@ -15,7 +15,7 @@ const defaultCartService = new DefaultCartService(defaultCartRepository);
 
 export const settingsFacade = new SettingsFacade(defaultSettingsRepository);
 const bookLoanService = new DefaultBookTransactionService(
-  defaultBookLoanRepositoryImpl,
+  defaultBookTransactionRepositoryImpl,
   bookServiceFacade,
   settingsFacade
 );

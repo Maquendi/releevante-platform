@@ -1,5 +1,6 @@
 package com.main.adapter.api.core.factory;
 
+import com.main.adapter.api.core.jobs.BookScheduledUpdateJob;
 import com.releevante.core.adapter.service.books.DefaultBookRegistrationService;
 import com.releevante.core.adapter.service.google.GoogleSheetService;
 import com.releevante.core.application.service.*;
@@ -8,6 +9,7 @@ import com.releevante.core.application.service.impl.DefaultLibraryService;
 import com.releevante.core.application.service.impl.DefaultTaskExecutionService;
 import com.releevante.core.application.service.impl.SettingServiceImpl;
 import com.releevante.core.domain.repository.*;
+import com.releevante.core.domain.repository.ratings.BookRatingRepository;
 import com.releevante.core.domain.tasks.TaskRepository;
 import com.releevante.identity.application.service.auth.AuthorizationService;
 import java.time.Duration;
@@ -39,6 +41,10 @@ public class CoreServiceBeanFactory {
   @Autowired BookTagRepository bookTagRepository;
 
   @Autowired SettingsRepository settingsRepository;
+
+  @Autowired BookRatingRepository bookRatingRepository;
+
+  @Autowired SmartLibraryInventoryRepository smartLibraryInventoryRepository;
 
   @Value("${spring.application.name}")
   String applicationName;
@@ -82,18 +88,23 @@ public class CoreServiceBeanFactory {
   }
 
   @Bean
-  public Disposable someTaskScheduler() {
-    return Flux.interval(Duration.ofMinutes(1)) // run every minute
+  public BookScheduledUpdateJob bookScheduledUpdateJob() {
+    return new BookScheduledUpdateJob(bookRatingRepository, smartLibraryInventoryRepository);
+  }
+
+  @Bean
+  public Disposable someTaskScheduler(BookScheduledUpdateJob bookScheduledUpdateJob) {
+    return Flux.interval(Duration.ofMinutes(1))
         .publishOn(Schedulers.boundedElastic())
-        .onBackpressureDrop() // if the task below takes a long time, greater than the next tick,
-        // then just drop this tick
+        .onBackpressureDrop()
         .concatMap(
-            __ ->
+            ignored ->
                 Mono.defer(
                     () -> {
-                      // process your tasks below
                       logger.info("Trying to process the task...");
-                      return Mono.just("completed");
+                      return Mono.zip(
+                          bookScheduledUpdateJob.bookInventoryScheduledUpdater(),
+                          bookScheduledUpdateJob.bookRatingScheduledUpdater());
                     }),
             0)
         .subscribe();

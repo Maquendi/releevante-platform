@@ -148,6 +148,7 @@ public class BookRepositoryImpl implements BookRepository {
                     .createdAt(projection.getCreatedAt())
                     .updatedAt(projection.getUpdatedAt())
                     .id(copy.getCpy())
+                    .allocation(projection.getAllocation())
                     .isSync(copy.isSync())
                     .status(BookCopyStatus.valueOf(copy.getStatus()))
                     .usageCount(copy.getUsageCount())

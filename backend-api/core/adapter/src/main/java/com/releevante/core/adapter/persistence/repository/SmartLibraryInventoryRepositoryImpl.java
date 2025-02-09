@@ -7,6 +7,7 @@ import com.releevante.core.domain.TransactionItemStatusEnum;
 import com.releevante.core.domain.repository.SmartLibraryInventoryRepository;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Component
 public class SmartLibraryInventoryRepositoryImpl implements SmartLibraryInventoryRepository {
@@ -35,5 +36,10 @@ public class SmartLibraryInventoryRepositoryImpl implements SmartLibraryInventor
               return libraryInventoryHibernateDao.updateInventoryStatusByCpy(
                   BookCopyStatus.from(projection.getStatus()).name(), projection.getCpy());
             });
+  }
+
+  @Override
+  public Mono<Void> updateLibraryInventories() {
+    return libraryInventoryHibernateDao.updateLibraryInventories();
   }
 }

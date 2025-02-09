@@ -9,7 +9,10 @@ import { Link, useRouter } from "@/config/i18n/routing";
 import EmptyRentedBooks from "./EmptyRentedBooks";
 import { setCurrentBookForCheckin } from "@/redux/features/returnbookSlice";
 import useGetUserTransactions from "@/hooks/useGetReturnBooks";
-import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
+import {
+  TransactionItemStatusEnum,
+  TransactionType,
+} from "@/core/domain/loan.model";
 
 const TIME_REGIONS = {
   en: "en-US",
@@ -107,10 +110,12 @@ export default function ReturnBookList() {
                     dispath(
                       setCurrentBookForCheckin({
                         transactionId: id,
-                        id: item.id,
+                        itemId: item.id,
                         isbn: item.isbn,
                         image: item.image!,
                         title: item.title!,
+                        cpy: item.cpy,
+                        transactionType: TransactionType.RENT,
                         status: TransactionItemStatusEnum.CHECKIN_PENDING,
                       })
                     );

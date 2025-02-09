@@ -2,9 +2,7 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.adapter.persistence.dao.projections.BookCopyProjection;
 import com.releevante.core.domain.*;
-import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,14 +25,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
   private boolean isSync;
   private String status;
   private int usageCount;
-
-  public static LibraryInventoryRecord updateFrom(
-      SequentialGenerator<ZonedDateTime> generator, LoanItem item) {
-    var record = new LibraryInventoryRecord();
-    record.setNew(false);
-    record.setUpdatedAt(generator.next());
-    return record;
-  }
+  private String allocation;
 
   @Override
   public boolean equals(Object o) {
@@ -59,6 +50,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
     record.setUpdatedAt(bookCopy.updatedAt());
     record.setSync(bookCopy.isSync());
     record.setUsageCount(bookCopy.usageCount());
+    record.setAllocation(bookCopy.allocation());
     return record;
   }
 
@@ -71,6 +63,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
     record.setCreatedAt(inventory.createdAt());
     record.setUpdatedAt(inventory.updatedAt());
     record.setSync(inventory.isSync());
+    record.setAllocation(inventory.allocation());
     record.setUsageCount(inventory.usageCount());
     return record;
   }
@@ -92,6 +85,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
         .descriptionFr(projection.getDescriptionFr())
         .descriptionSp(projection.getDescriptionEs())
         .price(projection.getPrice())
+        .allocation(projection.getAllocation())
         .usageCount(projection.getUsageCount())
         .build();
   }

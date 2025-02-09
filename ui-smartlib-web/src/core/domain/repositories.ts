@@ -20,12 +20,12 @@ export interface CartRepository {
   findByUser(userId: UserId): Promise<Cart>;
 }
 
-export interface LoanRepository {
+export interface BookTransactionRepository {
   save(transactions: BookTransactions): Promise<void>;
-  addLoanItemStatus(
+  newTransactionItemStatus(
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus>;
-  addLoanStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
+  newTransactionStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
   getUserLoans(clientId: UserId): Promise<BookTransaction[]>;
 }
 

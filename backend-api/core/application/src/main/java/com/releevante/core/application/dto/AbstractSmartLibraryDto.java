@@ -3,7 +3,7 @@ package com.releevante.core.application.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.SmartLibrary;
-import com.releevante.core.domain.SmartLibraryStatus;
+import com.releevante.core.domain.types.SmartLibraryState;
 import com.releevante.types.ImmutableExt;
 import org.immutables.value.Value;
 
@@ -16,7 +16,7 @@ public abstract class AbstractSmartLibraryDto {
 
   abstract String org();
 
-  abstract SmartLibraryStatus status();
+  abstract SmartLibraryState status();
 
   public static SmartLibraryDto from(SmartLibrary smartLibrary) {
     return SmartLibraryDto.builder()

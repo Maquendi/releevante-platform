@@ -27,6 +27,8 @@ export interface BookTransactionItemStatus {
   itemId: string;
   status: TransactionItemStatusEnum;
   createdAt: string;
+  transactionType: TransactionType;
+  cpy: string;
 }
 
 export interface BookTransactions {

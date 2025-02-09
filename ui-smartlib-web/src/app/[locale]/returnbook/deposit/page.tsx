@@ -22,7 +22,7 @@ export default function DepositPage() {
 
   const { mutate: returnBookMutation } = useMutation({
     mutationFn: onNewItemStatus,
-    onSuccess(loanItem) {
+    onSuccess(loanjItem) {
       queryClient.invalidateQueries({
         queryKey: ["RETURN_BOOKS"],
         exact: true,
@@ -37,18 +37,17 @@ export default function DepositPage() {
   });
 
   useEffect(() => {
-    console.log("USE EFFECT 1: " + currentItemForCheckin.id);
-    if (!currentItemForCheckin.id) return;
+    console.log("USE EFFECT 1: " + currentItemForCheckin.itemId);
+    if (!currentItemForCheckin.itemId) return;
     if (hasCheckedIn.current) return;
     returnBookMutation({
-      itemId: currentItemForCheckin.id,
-      status: currentItemForCheckin.status,
+      ...currentItemForCheckin,
     });
     hasCheckedIn.current = true;
   }, []);
 
   useEffect(() => {
-    console.log("USE EFFECT 2: " + currentItemForCheckin.id);
+    console.log("USE EFFECT 2: " + currentItemForCheckin.itemId);
 
     if (
       currentItemForCheckin.status === TransactionItemStatusEnum.CHECKIN_SUCCESS

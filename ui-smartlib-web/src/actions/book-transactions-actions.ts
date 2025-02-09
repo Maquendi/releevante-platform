@@ -2,15 +2,12 @@
 
 import {
   bookTransactionServiceFacade,
-  cartServiceFacade,
 } from "@/core/application";
 import { getAuthToken } from "./auth-actions";
-import { LoanItemStatusDto, LoanStatusDto } from "@/core/application/dto";
-import { CheckinItem } from "@/redux/features/returnbookSlice";
 import {
   BookTransactionItemStatus,
-  TransactionItemStatusEnum,
 } from "@/core/domain/loan.model";
+import { TransactionItemStatusDto, TransactionStatusDto } from "@/core/application/service.definition";
 
 export const fetchUserBookLoans = async () => {
   try {
@@ -21,23 +18,9 @@ export const fetchUserBookLoans = async () => {
   }
 };
 
-export const returnSingleBook = async (loanItem: CheckinItem): Promise<any> => {
+export const onNewItemStatus = async (status: TransactionItemStatusDto): Promise<BookTransactionItemStatus> => {
   try {
-    return await cartServiceFacade.newLoanItemStatus({
-      itemId: loanItem.id,
-      status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
-    });
-  } catch (error) {
-    console.log("error return book" + error);
-    throw new Error("error return book" + error);
-  }
-};
-
-export const onNewItemStatus = async (
-  status: LoanItemStatusDto
-): Promise<BookTransactionItemStatus> => {
-  try {
-    return await cartServiceFacade.newLoanItemStatus(status);
+    return await bookTransactionServiceFacade.newTransactionItemStatus(status);
   } catch (error) {
     console.log("error return book" + error);
     throw new Error("error return book" + error);
@@ -45,10 +28,10 @@ export const onNewItemStatus = async (
 };
 
 export const onNewTransactionStatus = async (
-  status: LoanStatusDto
+  status: TransactionStatusDto
 ): Promise<any> => {
   try {
-    return await cartServiceFacade.newLoanStatus(status);
+    return await bookTransactionServiceFacade.newTransactionStatus(status);
   } catch (error) {
     throw new Error("error return book" + error);
   }

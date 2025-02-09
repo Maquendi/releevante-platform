@@ -30,8 +30,61 @@ public interface LibraryInventoryHibernateDao
   @Query(
       "update core.library_inventories li \n"
           + "set usage_count = (usage_count + 1), status='AVAILABLE'\n"
-          + "where li.cpy=:cpy ")
+          + "where li.cpy=:cpy")
   Mono<Void> updateLibraryInventoryUsageCount(@Param("cpy") String cpy);
+
+  @Query(
+      "with subquery as (\n"
+          + " with items_last_status as (\n"
+          + "select\n"
+          + "\t\ttis.item_id,\n"
+          + "\t\tmax(tis.created_at) as created_at\n"
+          + "from\n"
+          + "\t\tcore.transaction_item_status tis\n"
+          + "group by\n"
+          + "\t\ttis.item_id, tis.is_synced\n"
+          + "having\n"
+          + "\ttis.is_synced = false\n"
+          + ")\n"
+          + "select\n"
+          + "\t\tti.cpy as copy_id,\n"
+          + "\t\tcase\n"
+          + "\t\t\twhen tis.status = 'CHECK_OUT_SUCCESS' \n"
+          + "\t\t\tthen case\n"
+          + "\t\t\twhen bt.transaction_type = 'RENT' then 'BORROWED'\n"
+          + "\t\t\telse 'SOLD'\n"
+          + "\t\tend\n"
+          + "\t\twhen tis.status = 'LOST' then 'LOST'\n"
+          + "\t\twhen tis.status = 'SOLD' then 'SOLD'\n"
+          + "\t\twhen tis.status = 'DAMAGED' then 'DAMAGED'\n"
+          + "\t\telse 'AVAILABLE'\n"
+          + "\tend\n"
+          + "\t     as status,\n"
+          + "\t\tcase\n"
+          + "\t\t\twhen tis.status = 'CHECKIN_SUCCESS' then 1\n"
+          + "\t\telse 0\n"
+          + "\tend\n"
+          + "        as usage_count_new\n"
+          + "from\n"
+          + "\t\tcore.transaction_item_status tis\n"
+          + "join items_last_status ils on\n"
+          + "\tils.created_at = tis.created_at\n"
+          + "join core.transaction_items ti on\n"
+          + "\tti.id = tis.item_id\n"
+          + "join core.book_transactions bt on\n"
+          + "\tbt.id = ti.transaction_id\n"
+          + ")\n"
+          + "update\n"
+          + "\tcore.library_inventories li\n"
+          + "set\n"
+          + "\tusage_count = (usage_count + subquery.usage_count_new),\n"
+          + "\tstatus = subquery.status,\n"
+          + "\tis_sync = false\n"
+          + "from\n"
+          + "\tsubquery\n"
+          + "where\n"
+          + "\tcpy = subquery.copy_id;")
+  Mono<Void> updateLibraryInventories();
 
   @Query(
       value =
@@ -42,6 +95,7 @@ public interface LibraryInventoryHibernateDao
               + "\tli.is_sync,\n"
               + "\tli.usage_count,\n"
               + "\tli.status,\n"
+              + "\tli.allocation,\n"
               + "\tli.created_at,\n"
               + "\tli.updated_at,\n"
               + "\tb.price,\n"
@@ -84,6 +138,7 @@ public interface LibraryInventoryHibernateDao
               + "\tli.slid,\n"
               + "\tli.is_sync,\n"
               + "\tli.usage_count,\n"
+              + "\tli.allocation,\n"
               + "\tli.status,\n"
               + "\tli.created_at,\n"
               + "\tli.updated_at,\n"
@@ -117,4 +172,14 @@ public interface LibraryInventoryHibernateDao
 
   @Query("update core.library_inventories set is_sync = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);
+
+  @Query(
+      "select\n"
+          + "\tallocation\n"
+          + "from\n"
+          + "\tcore.library_inventories li\n"
+          + "where\n"
+          + "\tli.slid = :slid\n"
+          + "\tand li.status in ('AVAILABLE', 'BORROWED')")
+  Flux<String> getAllocations(String slid);
 }

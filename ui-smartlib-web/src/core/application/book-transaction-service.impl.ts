@@ -11,26 +11,28 @@ import {
 } from "../domain/loan.model";
 import { BookTransactionService } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
-import { LoanRepository } from "../domain/repositories";
+import { BookTransactionRepository } from "../domain/repositories";
 import { UserId } from "@/identity/domain/models";
 import { SettingsFacade } from "./settings.facade";
 import { MaxBookItemThresholdExceeded } from "@/errors/custom-errors";
 
 export class DefaultBookTransactionService implements BookTransactionService {
   constructor(
-    private bookLoanRepository: LoanRepository,
+    private bookTransactionRepository: BookTransactionRepository,
     private bookService: BookServiceFacade,
     private librarySettingsService: SettingsFacade
   ) {}
 
-  addLoanStatus(status: BookTransactionStatus): Promise<BookTransactionStatus> {
-    return this.bookLoanRepository.addLoanStatus(status);
+  newTransactionStatus(
+    status: BookTransactionStatus
+  ): Promise<BookTransactionStatus> {
+    return this.bookTransactionRepository.newTransactionStatus(status);
   }
 
-  addLoanItemStatus(
+  newTransactionItemStatus(
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus> {
-    return this.bookLoanRepository.addLoanItemStatus(status);
+    return this.bookTransactionRepository.newTransactionItemStatus(status);
   }
 
   async checkout(cart: Cart): Promise<BookTransactions> {
@@ -142,12 +144,12 @@ export class DefaultBookTransactionService implements BookTransactionService {
       throw new Error("failed to find all items selected");
     }
 
-    await this.bookLoanRepository.save(transactions);
+    await this.bookTransactionRepository.save(transactions);
 
     return transactions;
   }
 
   getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
-    return this.bookLoanRepository.getUserLoans(clientId);
+    return this.bookTransactionRepository.getUserLoans(clientId);
   }
 }

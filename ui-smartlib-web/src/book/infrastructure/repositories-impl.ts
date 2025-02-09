@@ -5,6 +5,7 @@ import {
   BookByFtagsVibes,
   BookCompartment,
   BookCopy,
+  BookCopyStatusEnum,
   BookRecomendationParams,
   BookRecomendations,
   BooksByCategory,
@@ -45,13 +46,14 @@ class DefaultBookRepositoryImpl implements BookRepository {
     const data = dbGetAll("bookCopieSchema", {
       columns: {
         id: true,
-        is_available: true,
+        status: true,
         at_position: true,
         book_isbn: true,
+        usageCount: true,
       },
       where: and(
         eq(bookCopieSchema.book_isbn, isbn.value),
-        eq(bookCopieSchema.is_available, true)
+        eq(bookCopieSchema.status, BookCopyStatusEnum.AVAILABLE)
       ),
     });
 
@@ -69,7 +71,7 @@ class DefaultBookRepositoryImpl implements BookRepository {
       return dbPut({
         table: "bookCopieSchema",
         where: { id: book.id },
-        values: { is_available: book.is_available },
+        values: { status: book.status },
       });
     });
 

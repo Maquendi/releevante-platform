@@ -38,4 +38,5 @@ public class BookCopyProjection {
   public String bindingType;
   public float rating;
   public int votes;
+  public String allocation;
 }

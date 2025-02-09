@@ -27,4 +27,6 @@ public abstract class AbstractLibraryInventory {
   abstract ZonedDateTime updatedAt();
 
   abstract Boolean isSync();
+
+  abstract String allocation();
 }

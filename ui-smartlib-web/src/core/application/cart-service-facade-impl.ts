@@ -5,7 +5,7 @@ import {
   BookTransactionStatus,
 } from "../domain/loan.model";
 import { CartDto, CartInitDto, LoanItemStatusDto, LoanStatusDto } from "./dto";
-import { CartService, BookTransactionService } from "./service.definition";
+import { CartService, BookTransactionService, TransactionItemStatusDto } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
 
 /***
@@ -44,15 +44,14 @@ export class CartServiceFacade {
   }
 
   async newLoanItemStatus(
-    dto: LoanItemStatusDto
+    dto: TransactionItemStatusDto
   ): Promise<BookTransactionItemStatus> {
     const status: BookTransactionItemStatus = {
+      ...dto,
       id: uuidv4(),
       createdAt: new Date().toISOString(),
-      itemId: dto.itemId,
-      status: dto.status,
     };
-    return await this.bookLoanService.addLoanItemStatus(status);
+    return await this.bookLoanService.newTransactionItemStatus(status);
   }
 
   async newLoanStatus(dto: LoanStatusDto): Promise<BookTransactionStatus> {
@@ -62,6 +61,6 @@ export class CartServiceFacade {
       transactionId: dto.loanId,
       status: dto.status,
     };
-    return await this.bookLoanService.addLoanStatus(status);
+    return await this.bookLoanService.newTransactionStatus(status);
   }
 }

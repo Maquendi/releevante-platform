@@ -1,13 +1,18 @@
-import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
+import {
+  TransactionItemStatusEnum,
+  TransactionType,
+} from "@/core/domain/loan.model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type CheckinItem = {
   transactionId: string;
-  id: string;
+  itemId: string;
   image: string;
   isbn: string;
   title: string;
   status: TransactionItemStatusEnum;
+  cpy: string;
+  transactionType: TransactionType;
 };
 
 interface CheckoutState {
@@ -18,11 +23,13 @@ interface CheckoutState {
 const initialState: CheckoutState = {
   currentItemForCheckin: {
     transactionId: "",
-    id: "",
+    itemId: "",
     isbn: "",
     image: "",
     title: "",
     status: TransactionItemStatusEnum.CHECKIN_PENDING,
+    cpy: "",
+    transactionType: TransactionType.RENT,
   },
   completedBooks: [],
 };

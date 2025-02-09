@@ -312,7 +312,7 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
   private Tag buildTag(TagTypes name, String value) {
     return Tag.builder()
         .name(name.name())
-        .value(TagValue.builder().es(value).fr(value).es(value).build())
+        .value(TagValue.builder().es(value).fr(value).en(value).build())
         .id(uuidGenerator.next())
         .createdAt(dateTimeGenerator.next())
         .build();

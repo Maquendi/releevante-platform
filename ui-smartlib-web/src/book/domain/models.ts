@@ -1,3 +1,8 @@
+import {
+  TransactionItemStatusEnum,
+  TransactionType,
+} from "@/core/domain/loan.model";
+
 export const ftagsEnum = [
   "category",
   "subcategory",
@@ -37,13 +42,6 @@ export interface BookCategory {
   esTagValue: string;
 }
 
-// export interface BookItems {
-//   id: string;
-//   title: string;
-//   publisher: string;
-//   images: BookImage[];
-// }
-
 export interface CategoryTranslations {
   id?: string;
   esCategoryName: string;
@@ -74,9 +72,39 @@ export interface BooksByCategory {
   books: BookItems[];
 }
 
+export enum BookCopyStatusEnum {
+  SOLD = "SOLD",
+  LOST = "LOST",
+  BORROWED = "BORROWED",
+  DAMAGED = "DAMAGED",
+  AVAILABLE = "AVAILABLE",
+}
+
+export const BookCopyStatusMap = {
+  [TransactionItemStatusEnum.CHECKIN_SUCCESS]: BookCopyStatusEnum.AVAILABLE,
+  [`${TransactionItemStatusEnum.CHECKOUT_SUCCESS}:${TransactionType.RENT}`]:
+    BookCopyStatusEnum.BORROWED,
+  [`${TransactionItemStatusEnum.CHECKOUT_SUCCESS}:${TransactionType.PURCHASE}`]:
+    BookCopyStatusEnum.SOLD,
+  [TransactionItemStatusEnum.DAMAGED]: BookCopyStatusEnum.DAMAGED,
+  [TransactionItemStatusEnum.LOST]: BookCopyStatusEnum.LOST,
+  [TransactionItemStatusEnum.SOLD]: BookCopyStatusEnum.SOLD,
+};
+
+export const bookCopyStatusMapper = (transaction: {
+  type: TransactionType;
+  itemStatus: TransactionItemStatusEnum;
+}): string => {
+  if (transaction.itemStatus === TransactionItemStatusEnum.CHECKOUT_SUCCESS) {
+    return BookCopyStatusMap[`${transaction.itemStatus}:${transaction.type}`];
+  }
+
+  return BookCopyStatusMap[transaction.itemStatus];
+};
+
 export interface BookCopy {
   id: string;
-  is_available: boolean;
+  status: BookCopyStatusEnum;
   at_position: string;
   book_isbn: string;
   usageCount: number;

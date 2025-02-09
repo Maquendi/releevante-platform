@@ -16,7 +16,7 @@ export function useAddBookToCart(selectedBook: IBookDetail) {
   }, [selectedBook]);
 
   const canBeSold = useMemo(() => {
-    return selectedBook?.qtyForSale > 0;
+    return selectedBook.qty > 0 && selectedBook?.qtyForSale > 0;
   }, [selectedBook]);
 
   const maxBookAllowed = useMemo(() => {

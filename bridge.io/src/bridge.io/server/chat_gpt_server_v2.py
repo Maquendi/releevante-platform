@@ -41,14 +41,15 @@ async def on_message(sid, data):
 
 async def process(data):
         transaction_id = data['id']
+        transactionType = data['transactionType']
         items   = data['items']
 
         for item in items:
-            res = {"id": item['id'], "isbn": item['isbn']}
-            print(res)
-            await sio.emit('item_checkout_started', res)
+            status = {"itemId": item['id'], "isbn": item['isbn'], "cpy": item['cpy'], "transactionType": transactionType}
+            print(status)
+            await sio.emit('item_checkout_started', status)
             await sleep(5)
-            await sio.emit('item_checkout_success', res)
+            await sio.emit('item_checkout_success', status)
         
         await sio.emit("checkout_success", {'transactionId': transaction_id})
 
