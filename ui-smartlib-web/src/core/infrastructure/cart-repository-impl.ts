@@ -6,6 +6,7 @@ import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { and, eq, or } from "drizzle-orm";
 import { dbGetOne, executeTransaction } from "@/lib/db/drizzle-client";
 import { UserId } from "@/identity/domain/models";
+import { TransactionType } from "../domain/loan.model";
 
 class CartRepositoryImpl implements CartRepository {
   async findByUser(userId: UserId): Promise<Cart> {
@@ -37,7 +38,7 @@ class CartRepositoryImpl implements CartRepository {
         id: item.id,
         isbn: item.isbn,
         qty: item.qty,
-        transactionType: item.transactionType,
+        transactionType: item.transactionType as any,
       })) || [];
 
     return new Cart({ value: data.id }, userId, cartItems);
@@ -62,7 +63,7 @@ class CartRepositoryImpl implements CartRepository {
       id: item.id,
       isbn: item.isbn,
       qty: item.qty,
-      transactionType: item.transactionType,
+      transactionType: item.transactionType as TransactionType,
     }));
 
     return new Cart(cartId, userId, cartItems);

@@ -1,7 +1,6 @@
 import { CategoryTranslations, FtagItem } from "@/book/domain/models";
+import { TransactionType } from "@/core/domain/loan.model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export type TransaccionType = "RENT" | "PURCHASE";
 
 export interface CartItemState {
   title: string;
@@ -11,7 +10,7 @@ export interface CartItemState {
   price?: number;
   author: string;
   categories: FtagItem[];
-  transactionType: TransaccionType;
+  transactionType: TransactionType;
 }
 
 export type LanguageType = "English" | "Spanish" | "French" | null;
@@ -28,11 +27,9 @@ const initialState: CartState = {
   language: null,
 };
 
-
-
 const cartSlice = createSlice({
   name: "cart",
-  initialState:initialState,
+  initialState: initialState,
   reducers: {
     addItem: (state, { payload }: PayloadAction<CartItemState>) => {
       const isBookExist = state.items.find(
@@ -82,7 +79,6 @@ const cartSlice = createSlice({
     },
   },
 });
-
 
 export const {
   addItem,

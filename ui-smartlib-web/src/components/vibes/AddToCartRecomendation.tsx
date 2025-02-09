@@ -7,6 +7,7 @@ import { useAddBookToCart } from "@/hooks/useAddBookToCart";
 import { IBookDetail } from "@/book/domain/models";
 import { DialogReadMoreBooksDialog } from "./ReadMoreBooksDialog";
 import { useRouter } from "@/config/i18n/routing";
+import { TransactionType } from "@/core/domain/loan.model";
 
 interface AddToCartRecomendationProps {
   book: IBookDetail | null;
@@ -40,7 +41,10 @@ export default function AddToCartRecomendation({
       )}
     >
       <div>
-        <Button onClick={ediPreferences} className="py-7 px-8 bg-transparent rounded-full font-medium text-primary border border-primary hover:text-black hover:bg-accent">
+        <Button
+          onClick={ediPreferences}
+          className="py-7 px-8 bg-transparent rounded-full font-medium text-primary border border-primary hover:text-black hover:bg-accent"
+        >
           <span className="first-letter:uppercase">{t("editPreferences")}</span>
         </Button>
       </div>
@@ -52,7 +56,7 @@ export default function AddToCartRecomendation({
             booksInCartCount.purchaseItemsCount >= maxBookAllowed! || !canBeSold
           }
           variant="outline"
-          onClick={() => handleAddToCart("PURCHASE", book)}
+          onClick={() => handleAddToCart(TransactionType.PURCHASE, book)}
           className="py-7 px-8 rounded-full font-medium bg-transparent border-black"
         >
           <p className="flex items-center">

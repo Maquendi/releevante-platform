@@ -6,6 +6,8 @@ import {
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
+  TransactionStatusEnum,
+  TransactionType,
 } from "../domain/loan.model";
 import { BookTransactionService } from "./service.definition";
 import { v4 as uuidv4 } from "uuid";
@@ -42,7 +44,9 @@ export class DefaultBookTransactionService implements BookTransactionService {
 
     const loanItems: BookTransactionItem[] = (
       await this.bookService.findAvailableCopiesByIsbnForRent(
-        bookCopySearch.filter((item) => item.transactionType == "RENT")
+        bookCopySearch.filter(
+          (item) => item.transactionType == TransactionType.RENT
+        )
       )
     ).map(({ book_isbn, id, at_position }) => ({
       id: uuidv4(),
@@ -81,7 +85,7 @@ export class DefaultBookTransactionService implements BookTransactionService {
       const loanStatus: BookTransactionStatus = {
         id: uuidv4(),
         transactionId: loanId,
-        status: "CHECKING_OUT",
+        status: TransactionStatusEnum.PENDING,
         createdAt: currentDate,
       };
 
@@ -90,7 +94,7 @@ export class DefaultBookTransactionService implements BookTransactionService {
         clientId: cart.userId,
         items: loanItems,
         createdAt: currentDate,
-        transactionType: "RENT",
+        transactionType: TransactionType.RENT,
         returnsAt: currentDate,
         status: [loanStatus],
       };
@@ -114,7 +118,7 @@ export class DefaultBookTransactionService implements BookTransactionService {
       const purchaseStatus: BookTransactionStatus = {
         id: uuidv4(),
         transactionId: purchaseId,
-        status: "CHECKING_OUT",
+        status: TransactionStatusEnum.PENDING,
         createdAt: currentDate,
       };
 
@@ -123,7 +127,7 @@ export class DefaultBookTransactionService implements BookTransactionService {
         clientId: cart.userId,
         items: purchasedItems,
         createdAt: currentDate,
-        transactionType: "PURCHASE",
+        transactionType: TransactionType.PURCHASE,
         status: [purchaseStatus],
       };
 

@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Dot } from "lucide-react";
 import { useAddBookToCart } from "@/hooks/useAddBookToCart";
 import { IBookDetail } from "@/book/domain/models";
+import { TransactionType } from "@/core/domain/loan.model";
 
 interface AddToCartProps {
   book?: IBookDetail;
@@ -36,7 +37,7 @@ export default function AddBookToCartBanner({ book }: AddToCartProps) {
         disabled={
           booksInCartCount.rentItemsCount >= maxBookAllowed! || !hasEnoughCopies
         }
-        onClick={async () => await handleAddToCart("RENT", book)}
+        onClick={async () => await handleAddToCart(TransactionType.RENT, book)}
         className="py-7 px-8 rounded-full font-medium hover:text-black hover:bg-accent"
       >
         {t("rentBannerBtn")}
@@ -47,7 +48,9 @@ export default function AddBookToCartBanner({ book }: AddToCartProps) {
           booksInCartCount.purchaseItemsCount >= maxBookAllowed! || !canBeSold
         }
         variant="outline"
-        onClick={async () => await handleAddToCart("PURCHASE", book)}
+        onClick={async () =>
+          await handleAddToCart(TransactionType.PURCHASE, book)
+        }
         className="py-7 px-8 rounded-full font-medium bg-transparent border-black"
       >
         <p className="flex items-center">

@@ -1,10 +1,16 @@
 "use server";
 
-import { bookTransactionServiceFacade, cartServiceFacade } from "@/core/application";
+import {
+  bookTransactionServiceFacade,
+  cartServiceFacade,
+} from "@/core/application";
 import { getAuthToken } from "./auth-actions";
 import { LoanItemStatusDto, LoanStatusDto } from "@/core/application/dto";
 import { CheckinItem } from "@/redux/features/returnbookSlice";
-import { BookTransactionItemStatus } from "@/core/domain/loan.model";
+import {
+  BookTransactionItemStatus,
+  TransactionItemStatusEnum,
+} from "@/core/domain/loan.model";
 
 export const fetchUserBookLoans = async () => {
   try {
@@ -19,7 +25,7 @@ export const returnSingleBook = async (loanItem: CheckinItem): Promise<any> => {
   try {
     return await cartServiceFacade.newLoanItemStatus({
       itemId: loanItem.id,
-      status: "RETURNED",
+      status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
     });
   } catch (error) {
     console.log("error return book" + error);

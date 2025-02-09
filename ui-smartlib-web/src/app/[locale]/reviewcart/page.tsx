@@ -3,6 +3,7 @@
 import SimpleNavbar from "@/components/SimpleNavbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link, useRouter } from "@/config/i18n/routing";
+import { TransactionType } from "@/core/domain/loan.model";
 import { useAddBookToCart } from "@/hooks/useAddBookToCart";
 import useGetBooks from "@/hooks/useGetBooks";
 import { cn } from "@/lib/utils";
@@ -97,11 +98,11 @@ export default function ReviewCartPage() {
   const dispatch = useAppDispatch();
 
   const handleMoveToBuy = (isbn: string) => {
-    dispatch(updateItem({ isbn, transactionType: "PURCHASE" }));
+    dispatch(updateItem({ isbn, transactionType: TransactionType.PURCHASE }));
   };
 
   const handleMoveToRent = (isbn: string) => {
-    dispatch(updateItem({ isbn, transactionType: "RENT" }));
+    dispatch(updateItem({ isbn, transactionType: TransactionType.RENT }));
   };
 
   const handleRemoveItem = (isbn: string) => {

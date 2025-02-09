@@ -1,9 +1,7 @@
 "use client";
-import {
-  onNewItemStatus,
-  returnSingleBook,
-} from "@/actions/book-transactions-actions";
+import { onNewItemStatus } from "@/actions/book-transactions-actions";
 import { useRouter } from "@/config/i18n/routing";
+import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
 import { useAppSelector } from "@/redux/hooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { RefreshCcw } from "lucide-react";
@@ -52,7 +50,9 @@ export default function DepositPage() {
   useEffect(() => {
     console.log("USE EFFECT 2: " + currentItemForCheckin.id);
 
-    if (currentItemForCheckin.status === "CHECKIN_SUCCESS") {
+    if (
+      currentItemForCheckin.status === TransactionItemStatusEnum.CHECKIN_SUCCESS
+    ) {
       router.push("/returnbook/thanks");
     }
   }, [currentItemForCheckin]);

@@ -3,6 +3,9 @@ import {
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
+  TransactionItemStatusEnum,
+  TransactionStatusEnum,
+  TransactionType,
 } from "../domain/loan.model";
 import { LoanRepository } from "../domain/repositories";
 import { executeTransaction } from "@/lib/db/drizzle-client";
@@ -129,15 +132,21 @@ export class BookLoanRepositoryImpl implements LoanRepository {
             bookTransactionSchema.id
           ),
           or(
-            eq(bookTransactionStatusSchema.status, "CURRENT"),
-            eq(bookTransactionStatusSchema.status, "RETURNED")
+            eq(
+              bookTransactionStatusSchema.status,
+              TransactionStatusEnum.CURRENT
+            ),
+            eq(
+              bookTransactionStatusSchema.status,
+              TransactionStatusEnum.RETURNED
+            )
           )
         )
       )
       .where(
         and(
           eq(bookTransactionSchema.clientId, clientId.value),
-          eq(bookTransactionSchema.transactionType, "RENT")
+          eq(bookTransactionSchema.transactionType, TransactionType.RENT)
         )
       );
 
@@ -146,7 +155,9 @@ export class BookLoanRepositoryImpl implements LoanRepository {
     bookTransactions = Object.entries<any[]>(transactionsByStatus)
       .filter((entry) => {
         const [, values] = entry;
-        return !values.some((item) => item.status == "RETURNED");
+        return !values.some(
+          (item) => item.status == TransactionStatusEnum.RETURNED
+        );
       })
       .flatMap(([, values]) => values);
 
@@ -179,8 +190,14 @@ export class BookLoanRepositoryImpl implements LoanRepository {
               bookTransactionItemSchema.id
             ),
             or(
-              eq(bookTransactionItemStatusSchema.status, "CHECKOUT_SUCCESS"),
-              eq(bookTransactionItemStatusSchema.status, "CHECKIN_SUCCESS")
+              eq(
+                bookTransactionItemStatusSchema.status,
+                TransactionItemStatusEnum.CHECKOUT_SUCCESS
+              ),
+              eq(
+                bookTransactionItemStatusSchema.status,
+                TransactionItemStatusEnum.CHECKIN_SUCCESS
+              )
             )
           )
         )
@@ -199,7 +216,9 @@ export class BookLoanRepositoryImpl implements LoanRepository {
       const filteredTransactionItems = Object.entries<any[]>(itemsGroupedById)
         .filter((entry) => {
           const [, items] = entry;
-          return !items.some((item) => item.status == "CHECKIN_SUCCESS");
+          return !items.some(
+            (item) => item.status == TransactionItemStatusEnum.CHECKIN_SUCCESS
+          );
         })
         .flatMap(([, items]) => items);
 
@@ -207,7 +226,7 @@ export class BookLoanRepositoryImpl implements LoanRepository {
         await this.addLoanStatus({
           id: uuidv4(),
           createdAt: new Date().toISOString(),
-          status: "RETURNED",
+          status: TransactionStatusEnum.RETURNED,
           transactionId: transaction.id,
         });
       }

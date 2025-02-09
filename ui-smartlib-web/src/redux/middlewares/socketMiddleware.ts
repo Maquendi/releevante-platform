@@ -1,14 +1,15 @@
 // src/middleware/socketMiddleware.js
 import { io, Socket } from "socket.io-client";
 import { setCurrentCopy } from "../features/checkoutSlice";
-import {
-  CheckinItem,
-  updateCurrentBookStatus,
-} from "../features/returnbookSlice";
+import { updateCurrentBookStatus } from "../features/returnbookSlice";
 import {
   onNewItemStatus,
   onNewTransactionStatus,
 } from "@/actions/book-transactions-actions";
+import {
+  TransactionItemStatusEnum,
+  TransactionStatusEnum,
+} from "@/core/domain/loan.model";
 
 const SOCKET_URL = "http://localhost:7777";
 
@@ -19,12 +20,11 @@ const SOCKET_URL = "http://localhost:7777";
  */
 
 function susbcribeOnServerEvents(socket: Socket, store: any) {
-
   socket.on("connect", () => {
     console.log("Socket connected:", socket.id);
     store.dispatch({ type: "socket/connected", payload: socket.id });
   });
-  
+
   socket.on("disconnect", (reason) => {
     console.warn("Socket disconnected:", reason);
     store.dispatch({ type: "socket/disconnected", payload: reason });
@@ -40,13 +40,13 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
     store.dispatch(
       setCurrentCopy({
         isbn,
-        status: "checkout_successful",
+        status: TransactionItemStatusEnum.CHECKOUT_SUCCESS,
       })
     );
 
     onNewItemStatus({
       itemId: id,
-      status: "CHECKOUT_SUCCESS",
+      status: TransactionItemStatusEnum.CHECKOUT_SUCCESS,
     });
   });
 
@@ -62,43 +62,43 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
     store.dispatch(
       setCurrentCopy({
         isbn,
-        status: "checkout_started",
+        status: TransactionItemStatusEnum.CHECKOUT_STARTED,
       })
     );
 
     onNewItemStatus({
       itemId: id,
-      status: "CHECKOUT_STARTED",
+      status: TransactionItemStatusEnum.CHECKOUT_STARTED,
     });
   });
 
   socket.on("item_checkin_started", (data) => {
-    console.log("item_checkin_started")
+    console.log("item_checkin_started");
     const { id } = data;
     store.dispatch(
       updateCurrentBookStatus({
-        status: "CHECKIN_STARTED",
+        status: TransactionItemStatusEnum.CHECKIN_STARTED,
       })
     );
 
     onNewItemStatus({
       itemId: id,
-      status: "CHECKIN_STARTED",
+      status: TransactionItemStatusEnum.CHECKIN_STARTED,
     });
   });
 
   socket.on("item_checkin_success", (data) => {
-    console.log("item_checkin_success")
+    console.log("item_checkin_success");
     const { id } = data;
     store.dispatch(
       updateCurrentBookStatus({
-        status: "CHECKIN_SUCCESS",
+        status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
       })
     );
 
     onNewItemStatus({
       itemId: id,
-      status: "CHECKIN_SUCCESS",
+      status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
     });
   });
 
@@ -106,7 +106,7 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
     const { transactionId } = data;
     onNewTransactionStatus({
       loanId: transactionId,
-      status: "CURRENT",
+      status: TransactionStatusEnum.CURRENT,
     });
   });
 

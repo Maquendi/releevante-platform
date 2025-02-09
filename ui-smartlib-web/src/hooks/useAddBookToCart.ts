@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addItem } from "@/redux/features/cartSlice";
 import { IBookDetail } from "@/book/domain/models";
 import useSyncImagesIndexDb from "./useImagesIndexDb";
+import { TransactionType } from "@/core/domain/loan.model";
 
 export function useAddBookToCart(selectedBook: IBookDetail) {
   const dispatch = useAppDispatch();
@@ -60,16 +61,16 @@ export function useAddBookToCart(selectedBook: IBookDetail) {
   };
 
   const handleAddToCart = async (
-    transactionType: "RENT" | "PURCHASE",
+    transactionType: TransactionType,
     book: IBookDetail
   ) => {
     if (
-      transactionType === "RENT" &&
+      transactionType === TransactionType.RENT &&
       booksInCartCount.rentItemsCount >= maxBookAllowed
     )
       return;
     if (
-      transactionType === "PURCHASE" &&
+      transactionType === TransactionType.PURCHASE &&
       booksInCartCount.purchaseItemsCount >= maxBookAllowed
     )
       return;

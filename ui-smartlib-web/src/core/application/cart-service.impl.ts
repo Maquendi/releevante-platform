@@ -34,12 +34,10 @@ export class DefaultCartService implements CartService {
 
   async onCheckOutFailed(dto: CartDto): Promise<Cart> {
     const cart = await this.cartFromDto(dto);
-    cart.markFailed();
     return await this.cartRepository.update(cart);
   }
 
   async onCheckOutSuccess(cart: Cart): Promise<Cart> {
-    cart.markCheckedOut();
     return await this.cartRepository.update(cart);
   }
 
@@ -82,8 +80,6 @@ export class DefaultCartService implements CartService {
 
   async checkout(dto: CartDto): Promise<Cart> {
     const cart = await this.cartFromDto(dto);
-    cart.markForCheckout();
-
     return this.cartRepository.save(cart);
   }
 }

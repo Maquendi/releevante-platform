@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from "@/config/i18n/routing";
+import { TransactionType } from "@/core/domain/loan.model";
 import { useAddBookToCart } from "@/hooks/useAddBookToCart";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -54,7 +55,7 @@ export function DialogReadMoreBooksDialog({
           <Button
             variant="outline"
             onClick={() => {
-              handleAddToCart("RENT", book);
+              handleAddToCart(TransactionType.RENT, book);
               router.push("/selection");
             }}
             className="py-6 border-primary text-primary  px-6 rounded-full font-medium hover:text-black hover:bg-accent"
@@ -65,7 +66,7 @@ export function DialogReadMoreBooksDialog({
           </Button>{" "}
           <Button
             onClick={() => {
-              handleAddToCart("RENT", book);
+              handleAddToCart(TransactionType.RENT, book);
               router.push("/reviewcart");
             }}
             className="py-6   px-6 rounded-full font-medium hover:text-black hover:bg-accent"

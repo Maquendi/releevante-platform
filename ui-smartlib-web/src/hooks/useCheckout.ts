@@ -6,6 +6,7 @@ import { checkout } from "@/actions/cart-actions";
 import { clearCart } from "@/redux/features/cartSlice";
 import { clearCheckout } from "@/redux/features/checkoutSlice";
 import { useRouter } from "@/config/i18n/routing";
+import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
 
 export function useCheckout() {
   const cartItems = useAppSelector((state) => state.cart.items);
@@ -52,7 +53,7 @@ export function useCheckout() {
 
   useEffect(() => {
     const isAllBookProcessed = completedBooks.every(
-      (item) => item.status === "checkout_successful"
+      (item) => item.status === TransactionItemStatusEnum.CHECKOUT_SUCCESS
     );
     if (isAllBookProcessed && completedBooks.length === cartItems.length) {
       clearAllData();

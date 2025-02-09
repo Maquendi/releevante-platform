@@ -9,6 +9,7 @@ import { Link, useRouter } from "@/config/i18n/routing";
 import EmptyRentedBooks from "./EmptyRentedBooks";
 import { setCurrentBookForCheckin } from "@/redux/features/returnbookSlice";
 import useGetUserTransactions from "@/hooks/useGetReturnBooks";
+import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
 
 const TIME_REGIONS = {
   en: "en-US",
@@ -110,7 +111,7 @@ export default function ReturnBookList() {
                         isbn: item.isbn,
                         image: item.image!,
                         title: item.title!,
-                        status: "CHECKIN_PENDING",
+                        status: TransactionItemStatusEnum.CHECKIN_PENDING,
                       })
                     );
                     router.push("/returnbook/deposit");
