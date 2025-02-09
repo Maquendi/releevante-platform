@@ -9,12 +9,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 public interface BookHibernateDao extends ReactiveCrudRepository<BookRecord, String> {
 
   @Query("select * from core.books b \n" + "order by b.isbn \n" + "limit :size offset :offset")
   Flux<BookRecord> findPaginated(int offset, int size);
+
+  @Query("update core.books set rating=:rating, votes=:votes where isbn=:isbn")
+  Mono<Void> updateBookRatingAndVotes(
+      @Param("isbn") String isbn, @Param("rating") float rating, @Param("votes") int votes);
 
   @Query(
       "select\n"

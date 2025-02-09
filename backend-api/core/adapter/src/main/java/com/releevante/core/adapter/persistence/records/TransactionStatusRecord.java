@@ -18,6 +18,7 @@ public class TransactionStatusRecord extends AuditableEntity {
   @Id private String id;
   private String transactionId;
   private String status;
+  boolean isSynced;
 
   public static Set<TransactionStatusRecord> fromDomain(BookTransaction transaction) {
     return transaction.status().stream()

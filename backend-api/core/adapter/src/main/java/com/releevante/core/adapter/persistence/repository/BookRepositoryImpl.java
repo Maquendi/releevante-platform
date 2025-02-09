@@ -262,4 +262,11 @@ public class BookRepositoryImpl implements BookRepository {
   public Mono<Book> findByIsbn(String isbn) {
     return null;
   }
+
+  @Override
+  public Mono<Book> updateRating(Book book) {
+    return bookHibernateDao
+        .updateBookRatingAndVotes(book.isbn().value(), book.rating(), book.votes())
+        .thenReturn(book);
+  }
 }

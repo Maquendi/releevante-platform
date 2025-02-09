@@ -54,7 +54,7 @@ public class BookScheduledUpdateJob {
                                     return book.withRating(newRating).withVotes(voteCountSum);
                                   });
                         }))
-        .collectList()
+        .flatMap(bookRepository::updateRating)
         .then();
   }
 }

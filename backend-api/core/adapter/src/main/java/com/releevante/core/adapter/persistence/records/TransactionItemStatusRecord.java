@@ -16,6 +16,7 @@ public class TransactionItemStatusRecord extends AuditableEntity {
   String id;
   String itemId;
   TransactionItemStatusEnum status;
+  boolean isSynced;
 
   public static Set<TransactionItemStatusRecord> from(TransactionItem item) {
     return item.status().stream()

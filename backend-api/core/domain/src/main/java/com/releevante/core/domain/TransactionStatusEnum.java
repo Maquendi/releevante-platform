@@ -4,6 +4,5 @@ public enum TransactionStatusEnum {
   RETURNED,
   CURRENT,
   OVERDUE,
-  PENDING,
-  CHECKING_OUT
+  PENDING
 }

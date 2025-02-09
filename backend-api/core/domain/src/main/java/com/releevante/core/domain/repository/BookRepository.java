@@ -30,4 +30,6 @@ public interface BookRepository {
   Flux<Book> getByTagValues(List<String> tagValues);
 
   Mono<Book> findByIsbn(String isbn);
+
+  Mono<Book> updateRating(Book book);
 }
