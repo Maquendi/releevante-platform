@@ -10,6 +10,7 @@ export interface CartItemState {
   price?: number;
   author: string;
   categories: any[];
+  qtyForSale:number;
   transactionType: TransaccionType;
 }
 
