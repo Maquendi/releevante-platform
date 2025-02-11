@@ -114,13 +114,18 @@
     "buy": "comprar",
     "otherRecomendations": "Otras recomendaciones"
   },
-  "reviewMyCart": {
-    "myCart": "mi carrito",
+"reviewMyCart": {
+    "readInHotel": "Leer en el hotel",
+    "returnDate": "Fecha de devolución",
+    "toBuy": "Para comprar",
+    "myCart": "Mi carrito",
     "moveToBuy": "Mover a compra",
-    "moveToRent": "Mover a renta",
-    "rentAnotherBook": "Rentar otro libro",
+    "moveToReadInHotel": "Mover a leer en el hotel",
+    "rentAnotherBook": "Tomar otro libro",
     "confirmWithdrawal": "Confirmar retiro",
-    "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel"
+    "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel",
+    "continue": "Continuar",
+    "delete": "Eliminar"
   },
   "checkout": {
     "readInstructions": "Lea las instrucciones a continuación",

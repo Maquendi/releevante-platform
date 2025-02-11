@@ -7,6 +7,7 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { Button } from "./ui/button";
+import CartSidebarTrigger from "./CartSidebarTrigger";
 
 interface NavbarProps {
   onlyMobile?: boolean;
@@ -31,6 +32,7 @@ export default function Navbar({ onlyMobile }: NavbarProps) {
             sizes="160px"
           />
         </figure>
+        <CartSidebarTrigger/>
       </nav>
     );
   }
@@ -77,15 +79,7 @@ export default function Navbar({ onlyMobile }: NavbarProps) {
         </Button>
         <SelectLanguage />
       </div>
-      <Link href={"/home"}>
-        <Image
-          width={40}
-          height={40}
-          className="w-[30px] h-[30px]"
-          src="/icons/cart.svg"
-          alt="cart icon"
-        />
-      </Link>
+      <CartSidebarTrigger/>
     </nav>
   );
 }

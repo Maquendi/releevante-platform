@@ -9,13 +9,7 @@ import {
 import { getQueryClient } from "@/app/getQueryClient";
 
 const BestSellerSlider = lazy(()=>import("@/components/BestSellerSlider"))
-// const BestSellerSlider = dynamic(
-//   () => import("@/components/search/BestSellerSlider"),
-//   {
-//     loading: () => <p>Loading...</p>,
-//     ssr: false,
-//   }
-// );
+
 
 
 export default async function BookDetailsPage({
