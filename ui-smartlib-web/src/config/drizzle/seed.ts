@@ -2,11 +2,9 @@ import { faker } from "@faker-js/faker";
 import { v4 as uuidv4 } from "uuid";
 
 import {
-  bookCategorySchema,
   bookCopieSchema,
   bookFtagSchema,
   bookSchema,
-  categorySchema,
   ftagsSchema,
   userSchema,
 } from "./schemas";

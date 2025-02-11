@@ -1,44 +1,45 @@
-// src/middleware/socketMiddleware.js
+"use client";
+
+import { AnyAction } from "@reduxjs/toolkit";
+import { Dispatch } from "react";
 import { io, Socket } from "socket.io-client";
-import { setCurrentCopy } from "../features/checkoutSlice";
-import { updateCurrentBookStatus } from "../features/returnbookSlice";
 import {
   onNewItemStatus,
   onNewTransactionStatus,
-} from "@/actions/book-transactions-actions";
+} from "./actions/book-transactions-actions";
 import {
-  BookTransactions,
   TransactionItemStatusEnum,
   TransactionStatusEnum,
-} from "@/core/domain/loan.model";
+  BookTransactions,
+} from "./core/domain/loan.model";
+import { setCurrentCopy } from "./redux/features/checkoutSlice";
+import { updateCurrentBookStatus } from "./redux/features/returnbookSlice";
+
+let socketClientInitialized = false;
 
 const SOCKET_URL = "http://localhost:7777";
 
-/**
- *
- * @param socket
- * @param store
- */
+const socket = io(SOCKET_URL, {
+  autoConnect: true,
+});
 
-function susbcribeOnServerEvents(socket: Socket, store: any) {
-  socket.on("connect", () => {
-    console.log("Socket connected:", socket.id);
-    store.dispatch({ type: "socket/connected", payload: socket.id });
-  });
+socket.on("connect", () => {
+  console.log("Socket connected:", socket.id);
+});
 
-  socket.on("disconnect", (reason) => {
-    console.warn("Socket disconnected:", reason);
-    store.dispatch({ type: "socket/disconnected", payload: reason });
-  });
+socket.on("disconnect", (reason) => {
+  console.warn("Socket disconnected:", reason);
+});
 
-  /**
-   * Business events
-   */
+function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
+  if (socketClientInitialized) return;
+
+  console.log("caling .... susbcribeOnServerEvents");
 
   socket.on("item_checkout_success", (data) => {
     const { itemId, isbn, cpy, transactionType } = data;
 
-    store.dispatch(
+    dispatch(
       setCurrentCopy({
         isbn,
         status: TransactionItemStatusEnum.CHECKOUT_SUCCESS,
@@ -63,7 +64,7 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
   socket.on("item_checkout_started", (data) => {
     const { itemId, isbn, cpy, transactionType } = data;
 
-    store.dispatch(
+    dispatch(
       setCurrentCopy({
         isbn,
         status: TransactionItemStatusEnum.CHECKOUT_STARTED,
@@ -82,7 +83,7 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
   socket.on("item_checkin_started", (data) => {
     console.log("item_checkin_started");
     const { itemId, isbn, cpy, transactionType } = data;
-    store.dispatch(
+    dispatch(
       updateCurrentBookStatus({
         status: TransactionItemStatusEnum.CHECKIN_STARTED,
       })
@@ -100,7 +101,7 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
   socket.on("item_checkin_success", (data) => {
     console.log("item_checkin_success");
     const { itemId, isbn, cpy, transactionType } = data;
-    store.dispatch(
+    dispatch(
       updateCurrentBookStatus({
         status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
       })
@@ -126,48 +127,34 @@ function susbcribeOnServerEvents(socket: Socket, store: any) {
   socket.on("health_report", (msg) => {
     console.log("health_report report received ", msg);
   });
+
+  socketClientInitialized = true;
 }
 
 function onCheckin({ payload }, socket: Socket) {
   //const data: CheckinItem = payload;
-  socket?.emit("checkin", payload);
+  socket.emit("checkin", payload);
 }
 
 function onCheckout(data: { payload: BookTransactions }, socket: Socket) {
+  console.log("on checkout ****************************");
+  console.log(data);
   const { payload } = data;
-  socket?.emit("checkout", payload);
+  socket.emit("checkout", payload);
 }
 
-/**
- *
- * @param store
- * @returns
- */
-const socketMiddleware = (store) => {
-  let socket: Socket;
-  return (next) => (action) => {
-    switch (action.type) {
-      case "socket/connect":
-        if (!socket) {
-          socket = io(SOCKET_URL);
-          susbcribeOnServerEvents(socket, store);
-        }
-        break;
+export enum SocketEventType {
+  checkout = "checkout",
+  checkin = "checkin",
+}
 
-      case "socket/checkin":
-        onCheckin(action, socket);
-        break;
+function eventEmitter(event: SocketEventType, { payload }) {
+  socket.emit(event, payload);
+}
 
-      case "socket/checkout":
-        onCheckout(action, socket);
-        break;
-
-      default:
-        break;
-    }
-
-    return next(action);
+export function useWebSocketServer() {
+  return {
+    susbcribeOnServerEvents,
+    eventEmitter,
   };
-};
-
-export default socketMiddleware;
+}

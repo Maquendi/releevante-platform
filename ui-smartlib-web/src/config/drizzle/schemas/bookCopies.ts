@@ -15,7 +15,8 @@ export const bookCopieSchema = sqliteTable("books_copies", {
     .notNull()
     .references(() => bookSchema.id),
   status: text("status").notNull(),
-  at_position: text("at_position").default("M10"),
+  isAvailable: integer("is_available", { mode: "boolean" }).default(true),
+  at_position: text("at_position").notNull(),
   usageCount: integer("usage_count", { mode: "number" }).notNull().default(0),
   created_at: text("created_at")
     .notNull()

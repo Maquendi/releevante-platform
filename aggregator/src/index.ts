@@ -8,23 +8,25 @@ import { synchronizeTransactions } from "./sync/synchronize-transactions";
 const runAsync = async () => {
   let token = await getCredential();
 
-  //console.log(token)
+  console.log(token);
 
-  //let dataSynced = await synchronizeBooks(token);
+  let dataSynced = await synchronizeBooks(token);
 
-  // dataSynced += await synchronizeLibraryAccess(token);
+  dataSynced += await synchronizeLibraryAccess(token);
 
-  // dataSynced += await synchronizeSettings(token);
+  dataSynced += await synchronizeSettings(token);
 
-  // console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
+  console.log("TOTAL OBJECTS SYNCHRONIZED: " + dataSynced);
 
-  // if (dataSynced > 0) {
-  //   await markLibrarySynchronized(token);
-  // }
+  if (dataSynced > 0) {
+    await markLibrarySynchronized(token);
+  }
 
   const stats = await synchronizeTransactions(token);
 
   console.log(stats);
 };
 
-runAsync();
+setInterval(() => {
+  runAsync();
+}, 1 * 60 * 1000);

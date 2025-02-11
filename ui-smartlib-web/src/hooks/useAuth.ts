@@ -27,7 +27,6 @@ const useAuth = () => {
     mutationFn: (credentials: Credential) => authSignIn(credentials.code),
     onSuccess() {
       setIsUserSignin(true);
-      dispatch(fetchConfiguration());
       const redirectUrl = searchParams?.get("redirect") || `/${locale}/selection`;
       router.push(redirectUrl);
       queryClient.invalidateQueries({ queryKey: ["BOOKS_BY_CATEGORIES"] });

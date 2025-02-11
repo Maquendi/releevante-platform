@@ -7,6 +7,7 @@ import { clearCart } from "@/redux/features/cartSlice";
 import { clearCheckout } from "@/redux/features/checkoutSlice";
 import { useRouter } from "@/config/i18n/routing";
 import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
+import { SocketEventType, useWebSocketServer } from "@/socket";
 
 export function useCheckout() {
   const cartItems = useAppSelector((state) => state.cart.items);
@@ -18,13 +19,17 @@ export function useCheckout() {
   const hasClearedData = useRef(false);
   const hasCheckedOut = useRef(false);
 
+  const { eventEmitter } = useWebSocketServer();
+
   const { mutate: addCartItemsMutation } = useMutation({
     mutationFn: checkout,
     onSuccess(data) {
-      dispatch({ type: "socket/checkout", event: "checkout", payload: data });
+      console.log("DATA onSuccess");
+      eventEmitter(SocketEventType.checkout, { payload: data });
     },
     onError(error) {
       console.log("error on checkout");
+      console.log(error);
       if (error?.message?.includes("exceeded")) {
         console.log("error type is MaxBookItemThresholdExceeded");
       }

@@ -48,5 +48,11 @@ public interface BookRatingHibernateDao extends ReactiveCrudRepository<BookRatin
           + "\tsubquery\n"
           + "where\n"
           + "\tisbn = subquery.book_id;")
-  Mono<Void> updateBookRatingUnSynced();
+  Mono<Integer> updateBookRatingUnSynced();
+
+  @Query("UPDATE core.book_ratings SET is_synced=true;")
+  Mono<Void> setRatingSynced();
+
+  @Query("DO $$ BEGIN CALL update_library_inventory(); END $$;")
+  Mono<Void> callUpdateBookRatingsStoredProcedure();
 }

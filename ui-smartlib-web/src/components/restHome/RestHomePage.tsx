@@ -7,10 +7,17 @@ import Image from "next/image";
 import MainSliderBooks from "../MainSliderBooks";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import useAuth from "@/hooks/useAuth";
+import { fetchConfiguration } from "@/redux/features/settingsSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useWebSocketServer } from "@/socket";
 
 export default function RestHomePage() {
   const refSliderContainer = useRef(null);
   const refButtonsContainer = useRef(null);
+  const dispatch = useAppDispatch();
+
+  const { susbcribeOnServerEvents } = useWebSocketServer();
+
   const router = useRouter();
   const handleOutsideClick = () => {
     router.push("/selection");
@@ -23,8 +30,9 @@ export default function RestHomePage() {
   );
 
   const { logoutMutation } = useAuth();
-
   useEffect(() => {
+    susbcribeOnServerEvents(dispatch);
+    dispatch(fetchConfiguration());
     logoutMutation.mutateAsync();
   }, []);
 

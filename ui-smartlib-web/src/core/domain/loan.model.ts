@@ -29,6 +29,7 @@ export interface BookTransactionItemStatus {
   createdAt: string;
   transactionType: TransactionType;
   cpy: string;
+  isbn: string;
 }
 
 export interface BookTransactions {

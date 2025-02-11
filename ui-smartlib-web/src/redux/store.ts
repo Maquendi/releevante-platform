@@ -5,7 +5,6 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import cartReducer from "./features/cartSlice";
 import settingReducer from "./features/settingsSlice";
 import videReducer from "./features/vibeSlice";
-import socketMiddleware from "./middlewares/socketMiddleware";
 import checkoutReducer from "./features/checkoutSlice";
 import returnbooksReducer from "./features/returnbookSlice";
 import pageTransitionPayloadReducer from "./features/pageTransitionSlice";
@@ -23,7 +22,7 @@ export const store = configureStore({
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([socketMiddleware, userApi.middleware]),
+    getDefaultMiddleware().concat([userApi.middleware]),
 });
 
 setupListeners(store.dispatch);

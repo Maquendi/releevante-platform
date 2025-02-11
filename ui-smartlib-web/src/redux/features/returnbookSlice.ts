@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type CheckinItem = {
   transactionId: string;
-  itemId: string;
+  id: string;
   image: string;
   isbn: string;
   title: string;
@@ -23,7 +23,7 @@ interface CheckoutState {
 const initialState: CheckoutState = {
   currentItemForCheckin: {
     transactionId: "",
-    itemId: "",
+    id: "",
     isbn: "",
     image: "",
     title: "",

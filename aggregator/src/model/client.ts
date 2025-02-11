@@ -20,7 +20,7 @@ export interface BookCopy {
   id: string;
   status: string;
   isbn: string;
-  atPosition: string;
+  allocation: string;
   usageCount: number;
   isSync: boolean;
   createdAt: Date;

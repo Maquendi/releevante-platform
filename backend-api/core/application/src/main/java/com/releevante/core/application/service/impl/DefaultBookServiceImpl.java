@@ -186,15 +186,15 @@ public class DefaultBookServiceImpl implements BookService {
             })
         .flatMapMany(
             availablePositions -> {
-                var index = new AtomicInteger(0);
-                return Flux.fromStream(inventories.stream())
-                        .flatMap(
-                                inventory -> {
-                                    var createdAt = ZonedDateTimeGenerator.instance().next();
-                                    return mapToInventory(inventory, library, createdAt, availablePositions, index);
-                                });
-            }
-        );
+              var index = new AtomicInteger(0);
+              return Flux.fromStream(inventories.stream())
+                  .flatMap(
+                      inventory -> {
+                        var createdAt = ZonedDateTimeGenerator.instance().next();
+                        return mapToInventory(
+                            inventory, library, createdAt, availablePositions, index);
+                      });
+            });
   }
 
   Flux<LibraryInventory> mapToInventory(

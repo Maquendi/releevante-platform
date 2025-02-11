@@ -3,6 +3,7 @@ import { onNewItemStatus } from "@/actions/book-transactions-actions";
 import { useRouter } from "@/config/i18n/routing";
 import { TransactionItemStatusEnum } from "@/core/domain/loan.model";
 import { useAppSelector } from "@/redux/hooks";
+import { SocketEventType, useWebSocketServer } from "@/socket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { RefreshCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -20,6 +21,8 @@ export default function DepositPage() {
   const queryClient = useQueryClient();
   const hasCheckedIn = useRef(false);
 
+  const { eventEmitter } = useWebSocketServer();
+
   const { mutate: returnBookMutation } = useMutation({
     mutationFn: onNewItemStatus,
     onSuccess(loanjItem) {
@@ -28,27 +31,22 @@ export default function DepositPage() {
         exact: true,
         refetchType: "all",
       });
-      dispatch({
-        type: "socket/checkin",
-        event: "checkin",
-        payload: currentItemForCheckin,
-      });
+
+      eventEmitter(SocketEventType.checkin, { payload: currentItemForCheckin });
     },
   });
 
   useEffect(() => {
-    console.log("USE EFFECT 1: " + currentItemForCheckin.itemId);
-    if (!currentItemForCheckin.itemId) return;
+    if (!currentItemForCheckin.id) return;
     if (hasCheckedIn.current) return;
     returnBookMutation({
       ...currentItemForCheckin,
+      itemId: currentItemForCheckin.id,
     });
     hasCheckedIn.current = true;
   }, []);
 
   useEffect(() => {
-    console.log("USE EFFECT 2: " + currentItemForCheckin.itemId);
-
     if (
       currentItemForCheckin.status === TransactionItemStatusEnum.CHECKIN_SUCCESS
     ) {

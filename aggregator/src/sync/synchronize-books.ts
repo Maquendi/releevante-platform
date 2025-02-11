@@ -141,17 +141,17 @@ const insertTags = async (books: Book[]): Promise<number> => {
       dbChanges += create_stmt1.run({
         id: tag.id,
         tag_name: tagNameMapper[tag.name] || tag.name,
-        en_tag_value: tag.value,
-        fr_tag_value: tag.valueFr || tag.value,
-        es_tag_value: tag.valueSp || tag.value,
+        en_tag_value: tag.value?.en,
+        fr_tag_value: tag.value?.fr || tag.value?.en,
+        es_tag_value: tag.value?.es || tag.value?.en,
       }).changes;
     } catch (error: any) {
       try {
         dbChanges += update_stmt1.run(
           tagNameMapper[tag.name] || tag.name,
-          tag.value,
-          tag.valueFr || tag.value,
-          tag.valueSp || tag.value,
+          tag.value?.en,
+          tag.value?.fr || tag.value?.en,
+          tag.value?.es || tag.value?.en,
           tag.id
         ).changes;
       } catch (error: any) {
@@ -303,15 +303,13 @@ const insertImages = async (books: Book[]) => {
 
 const insertBookCopies = async (books: Book[]) => {
   const create_stmt = dbConnection.prepare(
-    `INSERT INTO books_copies(id, book_isbn, is_available, at_position, usage_count, created_at, updated_at) 
-     VALUES (@id, @book_isbn, @is_available, @at_position, @usage_count, @created_at, @updated_at)`
+    `INSERT INTO books_copies(id, book_isbn, status, at_position, usage_count, created_at, updated_at) 
+     VALUES (@id, @book_isbn, @status, @at_position, @usage_count, @created_at, @updated_at)`
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE books_copies SET book_isbn=?, is_available=?, at_position=?, usage_count=?, updated_at=? WHERE id=?"
+    "UPDATE books_copies SET book_isbn=?, status=?, is_available=?, at_position=?, usage_count=?, updated_at=? WHERE id=?"
   );
-
-  console.log(books);
 
   let dbChanges = 0;
 
@@ -320,15 +318,14 @@ const insertBookCopies = async (books: Book[]) => {
   books.forEach((book) => {
     bookCopies = [...bookCopies, ...book.copies];
   });
-  console.log(bookCopies);
 
   bookCopies.forEach((copy) => {
     try {
       dbChanges += create_stmt.run({
         id: copy.id,
         book_isbn: copy.isbn,
-        is_available: 1,
-        at_position: copy.atPosition,
+        status: copy.status,
+        at_position: copy.allocation,
         usage_count: copy.usageCount,
         created_at: copy.createdAt,
         updated_at: copy.updatedAt,
@@ -337,8 +334,9 @@ const insertBookCopies = async (books: Book[]) => {
       console.log(error);
       dbChanges += update_stmt.run(
         copy.isbn,
-        1,
-        copy.atPosition,
+        copy.status,
+        copy.status == "AVAILABLE",
+        copy.allocation,
         copy.usageCount,
         copy.updatedAt,
         copy.id

@@ -1,5 +1,6 @@
 import {
   BookTransaction,
+  BookTransactionItem,
   BookTransactionItemStatus,
   BookTransactions,
   BookTransactionStatus,
@@ -36,7 +37,7 @@ export class BookTransactionRepositoryImpl
       ): Promise<void> {
         const transactions = Object.values(bookTransactions);
         const transactionsInsertion = transactions.map(
-          async (bookTransaction) => {
+          async (bookTransaction: BookTransaction) => {
             const transactionData = {
               id: bookTransaction.id,
               clientId: bookTransaction.clientId.value,
@@ -52,23 +53,25 @@ export class BookTransactionRepositoryImpl
         );
 
         const transactionItemsInsertion = transactions.map((t) => {
-          return t.items.map(async (item) => {
+          return t.items.map(async (item: BookTransactionItem) => {
             return await tx.insert(bookTransactionItemSchema).values({
               isbn: item.isbn,
               id: item.id,
               bookCopyId: item.cpy,
               transactionId: t.id,
+              createdAt: new Date().toISOString(),
             });
           });
         });
 
         const transactionStatusInsertion = transactions.map((t) => {
-          return t.status.map(async (status) => {
+          return t.status.map(async (status: BookTransactionStatus) => {
             return await tx.insert(bookTransactionStatusSchema).values({
               id: status.id,
               transactionId: status.transactionId,
               isSynced: false,
               status: status.status,
+              createdAt: status.createdAt,
             });
           });
         });
@@ -101,15 +104,35 @@ export class BookTransactionRepositoryImpl
       status.status == TransactionItemStatusEnum.CHECKOUT_SUCCESS ||
       status.status == TransactionItemStatusEnum.CHECKIN_SUCCESS
     ) {
-      await db
+      let calculateQty = (current: number) => current + 1;
+      let calculateQtyForSale = (current: number) =>
+        current == 0 ? current : current - 1;
+
+      if (status.status == TransactionItemStatusEnum.CHECKOUT_SUCCESS) {
+        calculateQty = (current: number) =>
+          current == 0 ? current : current - 1;
+        if (status.transactionType !== TransactionType.PURCHASE) {
+          calculateQtyForSale = (current: number) => current;
+        }
+      }
+
+      const bookSchemaUpdate = db
+        .update(bookSchema)
+        .set({
+          qty: calculateQty(+bookSchema.qty),
+          qty_for_sale: calculateQtyForSale(+bookSchema.qty_for_sale),
+        })
+        .where(eq(bookSchema.id, status.isbn));
+
+      const bookCopySchemaUpdate = db
         .update(bookCopieSchema)
         .set({
-          status: bookCopyStatusMapper({
-            itemStatus: status.status,
-            type: status.transactionType,
-          }),
+          isAvailable:
+            status.status == TransactionItemStatusEnum.CHECKIN_SUCCESS,
         })
         .where(eq(bookCopieSchema.id, status.cpy));
+
+      await Promise.all([bookSchemaUpdate, bookCopySchemaUpdate]);
     }
 
     return status;

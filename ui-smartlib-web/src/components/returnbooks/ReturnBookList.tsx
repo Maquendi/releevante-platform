@@ -110,7 +110,7 @@ export default function ReturnBookList() {
                     dispath(
                       setCurrentBookForCheckin({
                         transactionId: id,
-                        itemId: item.id,
+                        id: item.id,
                         isbn: item.isbn,
                         image: item.image!,
                         title: item.title!,

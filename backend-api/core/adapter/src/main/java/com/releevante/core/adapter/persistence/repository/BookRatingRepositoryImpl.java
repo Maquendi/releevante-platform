@@ -16,6 +16,6 @@ public class BookRatingRepositoryImpl implements BookRatingRepository {
 
   @Override
   public Mono<Void> updateBookRatingUnSynced() {
-    return bookRatingHibernateDao.updateBookRatingUnSynced();
+    return bookRatingHibernateDao.callUpdateBookRatingsStoredProcedure();
   }
 }

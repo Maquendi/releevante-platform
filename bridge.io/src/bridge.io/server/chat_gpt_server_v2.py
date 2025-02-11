@@ -46,7 +46,6 @@ async def process(data):
 
         for item in items:
             status = {"itemId": item['id'], "isbn": item['isbn'], "cpy": item['cpy'], "transactionType": transactionType}
-            print(status)
             await sio.emit('item_checkout_started', status)
             await sleep(5)
             await sio.emit('item_checkout_success', status)
@@ -77,11 +76,10 @@ async def on_message(sid, data):
 async def on_message(sid, data):
     print(f"checkin event from {sid}: {data}")
     try:
-            res = {"id": data['id'], "isbn": data['isbn']}
-            print(res)
-            await sio.emit('item_checkin_started', res)
+            status = {"itemId": data['id'], "isbn": data['isbn'], "cpy": data['cpy'], "transactionType": data['transactionType']}
+            await sio.emit('item_checkin_started', status)
             await sleep(5)
-            await sio.emit('item_checkin_success', res)
+            await sio.emit('item_checkin_success', status)
     except:
          pass
 

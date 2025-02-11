@@ -106,7 +106,7 @@ export class DefaultBookTransactionService implements BookTransactionService {
 
     const purchasedItems = (
       await this.bookService.findAvailableCopiesByIsbnForPurchase(
-        bookCopySearch.filter((item) => item.transactionType == "PURCHASE")
+        bookCopySearch.filter((item) => item.transactionType == TransactionType.PURCHASE)
       )
     ).map(({ book_isbn, id, at_position }) => ({
       id: uuidv4(),

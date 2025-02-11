@@ -61,7 +61,7 @@ public interface LibraryInventoryHibernateDao
           + "\tend\n"
           + "\t     as status,\n"
           + "\t\tcase\n"
-          + "\t\t\twhen tis.status = 'CHECKIN_SUCCESS' then 1\n"
+          + "\t\t\twhen tis.status = 'CHECK_IN_SUCCESS' then 1\n"
           + "\t\telse 0\n"
           + "\tend\n"
           + "        as usage_count_new\n"
@@ -84,7 +84,7 @@ public interface LibraryInventoryHibernateDao
           + "\tsubquery\n"
           + "where\n"
           + "\tcpy = subquery.copy_id;")
-  Mono<Void> updateLibraryInventories();
+  Mono<Integer> updateLibraryInventories();
 
   @Query(
       value =
@@ -182,4 +182,7 @@ public interface LibraryInventoryHibernateDao
           + "\tli.slid = :slid\n"
           + "\tand li.status in ('AVAILABLE', 'BORROWED')")
   Flux<String> getAllocations(String slid);
+
+  @Query("DO $$ BEGIN CALL update_library_inventory(); END $$;")
+  Mono<Void> callUpdateLibraryInventoryStoredProcedure();
 }

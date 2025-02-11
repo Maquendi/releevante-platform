@@ -40,6 +40,6 @@ public class SmartLibraryInventoryRepositoryImpl implements SmartLibraryInventor
 
   @Override
   public Mono<Void> updateLibraryInventories() {
-    return libraryInventoryHibernateDao.updateLibraryInventories();
+    return libraryInventoryHibernateDao.callUpdateLibraryInventoryStoredProcedure();
   }
 }

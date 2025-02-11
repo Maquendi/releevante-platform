@@ -8,7 +8,6 @@ import {
   BookCopyStatusEnum,
   BookRecomendationParams,
   BookRecomendations,
-  BooksByCategory,
   BooksPagination,
   CategoryV2,
   FtagItem,
@@ -26,14 +25,10 @@ import {
   bookCopieSchema,
   BookCopySchema,
   bookFtagSchema,
-  bookImageSchema,
   bookSchema,
-  categorySchema,
   ftagsSchema,
 } from "@/config/drizzle/schemas";
 import { db } from "@/config/drizzle/db";
-import { bookCategorySchema } from "@/config/drizzle/schemas/bookCategory";
-import { bookRatingsSchema } from "@/config/drizzle/schemas/bookRatings";
 import { jsonAgg } from "@/lib/db/helpers";
 import { arrayGroupinBy } from "@/lib/utils";
 
@@ -53,7 +48,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
       },
       where: and(
         eq(bookCopieSchema.book_isbn, isbn.value),
-        eq(bookCopieSchema.status, BookCopyStatusEnum.AVAILABLE)
+        eq(bookCopieSchema.status, BookCopyStatusEnum.AVAILABLE),
+        eq(bookCopieSchema.isAvailable, true)
       ),
     });
 
@@ -400,80 +396,6 @@ class DefaultBookRepositoryImpl implements BookRepository {
       rating: book.rating || 0,
       votes: book.votes || 0,
     };
-  }
-
-  async findAllByCategory(categoryId?: string): Promise<BooksByCategory[]> {
-    const results = await db
-      .select({
-        category: jsonAgg({
-          esCategoryName: categorySchema.esName,
-          frCategoryName: categorySchema.frName,
-          enCategoryName: categorySchema.enName,
-          id: bookCategorySchema.categoryId,
-        }),
-        subCategory: jsonAgg({
-          id: ftagsSchema.id,
-          esSubCategoryName: ftagsSchema.esTagValue,
-          enSubCategoryName: ftagsSchema.enTagValue,
-          frSubCategoryName: ftagsSchema.frTagValue,
-        }),
-        isbn: bookSchema.id,
-        bookTitle: bookSchema.bookTitle,
-        publisher: bookSchema.author,
-        image: bookImageSchema.url,
-        correlationId: bookSchema.correlationId,
-        rating: sql<number>`cast(coalesce(avg(${bookRatingsSchema.rating}),0)as int)`,
-        votes: sql<number>`cast(coalesce(count(${bookRatingsSchema.rating}),0)as int)`,
-      })
-      .from(bookSchema)
-      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
-      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
-      .leftJoin(bookImageSchema, eq(bookImageSchema.book_isbn, bookSchema.id))
-      .leftJoin(bookRatingsSchema, eq(bookRatingsSchema.isbn, bookSchema.id))
-      .leftJoin(
-        bookCategorySchema,
-        eq(bookCategorySchema.bookIsbn, bookSchema.id)
-      )
-      .leftJoin(
-        categorySchema,
-        eq(categorySchema.id, bookCategorySchema.categoryId)
-      )
-      .where(
-        and(
-          categoryId
-            ? eq(bookCategorySchema.categoryId, categoryId)
-            : undefined,
-          eq(ftagsSchema.tagName, "subcategory")
-        )
-      )
-      .groupBy(bookSchema.correlationId);
-
-    const groupedBooks: { [key: string]: any } = {};
-
-    results.forEach(({ category, subCategory, ...book }) => {
-      subCategory?.forEach((subCat) => {
-        const subCategoryId = subCat.id || "";
-        if (!groupedBooks[subCategoryId]) {
-          groupedBooks[subCategoryId] = {
-            category,
-            subCategory: subCat,
-            books: [],
-            bookIds: new Set(),
-          };
-        }
-
-        if (!groupedBooks[subCategoryId].bookIds.has(book.isbn)) {
-          groupedBooks[subCategoryId].books.push(book);
-          groupedBooks[subCategoryId].bookIds.add(book.isbn);
-        }
-      });
-    });
-
-    const data = Object.values(groupedBooks).map(
-      ({ bookIds, ...rest }) => rest
-    );
-
-    return data as BooksByCategory[];
   }
 
   async findAllBy(query: string): Promise<Book[]> {

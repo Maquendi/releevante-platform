@@ -14,9 +14,7 @@ function SeeAllBooks({ category }: { category: Category }) {
   const { id: categoryId, subCategories } = category || {};
 
   useEffect(() => {
-    console.log("setting books...");
     setBooks(subCategories?.map((sub) => sub.books).flat());
-    console.log(books);
   }, [subCategories]);
 
   return (

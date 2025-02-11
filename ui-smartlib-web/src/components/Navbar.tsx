@@ -61,7 +61,6 @@ function LogoutDropDown() {
 
 export default function Navbar() {
   const path = usePathname();
-  console.log(path);
   const { isUserSignin } = useAuth();
   return (
     <nav className="flex justify-between items-center px-6 bg-white py-2 border border-b border-secondary">

@@ -6,6 +6,9 @@ import { librarySettingsSchema } from "@/config/drizzle/schemas";
 
 class SettingsRepositoryImpl implements SettingsRepository {
   async getSetting(): Promise<LibrarySettings> {
+
+    console.log("loading library settings.....**************************************")
+
     const settings = (await dbGetOne("librarySettingsSchema", {
       orderBy: [desc(librarySettingsSchema.createdAt)],
       columns: {

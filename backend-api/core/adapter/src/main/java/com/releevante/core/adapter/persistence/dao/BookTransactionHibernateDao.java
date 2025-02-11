@@ -6,6 +6,7 @@ import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 public interface BookTransactionHibernateDao
@@ -37,4 +38,7 @@ public interface BookTransactionHibernateDao
           + "order by\n"
           + "\ttis.status")
   Flux<TransactionItemStatusProjection> findUnSynced();
+
+  @Query("UPDATE core.transaction_item_status SET is_synced=true;")
+  Mono<Void> setLibraryInventoriesSynced();
 }
