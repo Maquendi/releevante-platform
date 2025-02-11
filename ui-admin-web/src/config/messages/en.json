@@ -115,12 +115,17 @@
       "otherRecomendations":"Other Recomendations"
     },
     "reviewMyCart":{
-      "myCart":"my cart",
+      "readInHotel":"Read in the hotel",
+      "returnDate":"return date",
+      "toBuy":"To buy",
+      "myCart":"My cart",
       "moveToBuy":"Move to buy",
-      "moveToRent":"Move to rent",
-      "rentAnotherBook":"Rent another book",
-      "confirmWithdrawal":"confirm withdrawal",
-      "purchaseMsg":"The book will be pay when you do the check out at the hotel"
+      "moveToReadInHotel":"Move to read in the hotel",
+      "rentAnotherBook":"Take another book",
+      "confirmWithdrawal":"Confirm withdrawal",
+      "purchaseMsg":"The book will be pay when you do the check out at the hotel",
+      "continue":"Continue",
+      "delete":"Delete"
     },
     "checkout":{
       "readInstructions":"Read the instructions below",
