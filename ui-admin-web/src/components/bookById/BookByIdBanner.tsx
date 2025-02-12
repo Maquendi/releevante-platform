@@ -20,7 +20,7 @@ export default function BookByIdBanner({ bookTranslations,selectedBook,setSelect
   if (!bookTranslations) return;
 
   return (
-    <div className="flex flex-col md:flex-row text-center md:text-left gap-5 p-3 rounded-md m-auto bg-white px-5 py-10 overflow-hidden:">
+    <div className="flex flex-col md:flex-row text-center md:text-left gap-5 p-3 rounded-md m-auto bg-white px-5 py-10 overflow-hidden">
       <div>
         <ImageWithSkeleton
           className="rounded-xl object-cover"
@@ -57,7 +57,7 @@ export default function BookByIdBanner({ bookTranslations,selectedBook,setSelect
         <div className="flex  flex-col md:flex-row items-center md:items-stretch border-t border-gray-200 pt-3  gap-5  ">
           <div className="min-w-[200px]">
             <h4 className="font-medium mb-1">{t("selectLanguage")}</h4>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center justify-center md:justify-start">
               {bookTranslations?.map(({ isbn, language }) => (
                 <button
                   suppressHydrationWarning
