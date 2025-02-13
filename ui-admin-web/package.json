@@ -32,7 +32,8 @@
     "react-tabs": "^6.1.0",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.65.0",
