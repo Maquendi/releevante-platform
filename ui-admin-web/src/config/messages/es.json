@@ -159,18 +159,16 @@
     "noRentedBooks": "Aún no tienes ningún libro alquilado. Descubre la mejor opción en tu biblioteca personal ahora.",
     "rentBook": "Alquilar un libro"
   },
-  "depositPage": {
-    "depositBookTitle1": "Deposita este libro en",
-    "depositBookTitle2": "la puerta",
-    "firstStepTitle": "Primer paso",
-    "firstStepContent1": "Dirígete a la",
-    "firstStepContent2": "puerta",
-    "firstStepContent3": "después de introducir el libro, la puerta se cerrará automáticamente. Por favor, asegúrate de insertar el libro correctamente.",
-    "nextStepTitle": "Siguiente paso",
-    "nextStepContent": "Por favor, regresa para devolver tu próximo libro.",
-    "closeDoorTime1": "La puerta",
-    "closeDoorTime2": "se cerrará en",
-    "closeDoorTime3": "minutos"
+  "reservedBooks": {
+    "moveToBuy": "Mover a compra",
+    "moveToReadInHotel": "Mover para leer en el hotel",
+    "readInHotel": "Leer en el hotel",
+    "returnDate": "Fecha de devolución",
+    "reservedBooks1": "Tus",
+    "reservedBooks2": "libros",
+    "reservedBooks3": "reservados",
+    "modifyReservation": "Modifica tu reserva como quieras",
+    "reserveAnotherBook": "Reservar otro libro"
   },
   "returnThanksPage": {
     "thanksForReturn1": "Gracias por devolver",

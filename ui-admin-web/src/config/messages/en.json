@@ -159,18 +159,16 @@
       "noRentedBooks":"You don’t have any book rented yet. Find out the best option in your personal library now.",
       "rentBook":"Rent a book"
     },
-    "depositPage":{
-      "depositBookTitle1":"Deposit this book on",
-      "depositBookTitle2":"door",
-      "firstStepTitle":"First step",
-      "firstStepContent1":"Go to the",
-      "firstStepContent2":"door",
-      "firstStepContent3":"after enter the book the door will close automatically. Please ensure to insert the book correctly.",
-      "nextStepTitle":"Next step",
-      "nextStepContent":"Please, come again to return your next book.",
-      "closeDoorTime1":"The door",
-      "closeDoorTime2":"will close in",
-      "closeDoorTime3":"minutes"
+    "reservedBooks":{
+      "moveToBuy":"Move to buy",
+      "moveToReadInHotel":"Move to read in the hotel",
+      "readInHotel":"Read in the hotel",
+      "returnDate":"return date",
+      "reservedBooks1":"Your",
+      "reservedBooks2":"reserved",
+      "reservedBooks3":"books",
+      "modifyReservation":"Modify your reservation how ever you want",
+      "reserveAnotherBook":"Reserve another book"
     },
     "returnThanksPage":{
       "thanksForReturn1":"Thanks for return",
