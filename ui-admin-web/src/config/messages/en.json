@@ -145,10 +145,8 @@
     },
     "thanksPage":{
       "title":"Happy reading!",
-      "content":"Thanks for using our service. Please, remember to return the books before your checkout at the hotel",
-      "closeSessionTime1":"The session",
-      "closeSessionTime2":"will close in",
-      "closeSessionTime3":"minutes"
+      "content":"Your books will be ready for you in your room. Thanks for using our service",
+      "goBackBtn":"Go back home"
     },
     "returnBook":{
       "yourRentedBooks":"Your rented books",

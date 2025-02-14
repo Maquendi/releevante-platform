@@ -145,10 +145,8 @@
   },
   "thanksPage": {
     "title": "Bonne lecture !",
-    "content": "Merci d'utiliser notre service. Veuillez vous rappeler de retourner les livres avant votre départ de l'hôtel",
-    "closeSessionTime1": "La session",
-    "closeSessionTime2": "se fermera dans",
-    "closeSessionTime3": "minutes"
+    "content": "Vos livres seront prêts pour vous dans votre chambre. Merci d'utiliser notre service",
+    "goBackBtn": "Retour à l'accueil"
   },
   "returnBook": {
     "yourRentedBooks": "Vos livres loués",
