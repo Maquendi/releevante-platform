@@ -28,13 +28,13 @@ export default function CartSidebarTrigger() {
     <button suppressHydrationWarning className="relative" onClick={() => setOpen(!open)}>
       <Image
         src="/icons/cart.svg"
-        className="w-[30px] h-[30px]"
+        className="w-[40px] h-[40px]"
         width={40}
         height={40}
         alt="cart icon"
       />
       {numItemsInCart > 0 && (
-        <span suppressHydrationWarning className="grid place-content-center pt-[0.100rem] absolute -top-3 -right-2.5 font-medium text-xs text-white w-6 h-6 rounded-full  bg-[#FF2D55]">
+        <span suppressHydrationWarning className="grid place-content-center pt-[0.100rem] absolute -top-2 -right-2.5 font-medium text-xs text-white w-6 h-6 rounded-full  bg-[#FF2D55]">
           {numItemsInCart}
         </span>
       )}

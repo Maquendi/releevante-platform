@@ -114,7 +114,7 @@
     "buy": "comprar",
     "otherRecomendations": "Otras recomendaciones"
   },
-"reviewMyCart": {
+  "reviewMyCart": {
     "readInHotel": "Leer en el hotel",
     "returnDate": "Fecha de devolución",
     "toBuy": "Para comprar",
@@ -145,10 +145,8 @@
   },
   "thanksPage": {
     "title": "¡Feliz lectura!",
-    "content": "Gracias por usar nuestro servicio. Por favor, recuerde devolver los libros antes de su salida del hotel",
-    "closeSessionTime1": "La sesión",
-    "closeSessionTime2": "se cerrará en",
-    "closeSessionTime3": "minutos"
+    "content": "Tus libros estarán listos para ti en tu habitación. Gracias por usar nuestro servicio",
+    "goBackBtn": "Volver al inicio"
   },
   "returnBook": {
     "yourRentedBooks": "Tus libros alquilados",
