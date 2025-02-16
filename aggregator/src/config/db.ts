@@ -6,7 +6,7 @@ console.log("dbpath:  " + dbPath);
 
 import Database from "better-sqlite3";
 
-const database = new Database(dbPath, { verbose: console.log });
+const database = new Database(dbPath, { fileMustExist: true });
 database.pragma("journal_mode = WAL");
 
 export const dbConnection = database;

@@ -37,6 +37,11 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   }
 
   @Override
+  public Mono<SmartLibrary> synchronizeLibraryClientRatings(SmartLibrarySyncDto synchronizeDto) {
+    return smartLibraryService.synchronizeLibraryClientRatings(synchronizeDto);
+  }
+
+  @Override
   public Flux<SmartLibraryDto> smartLibrariesValidated(
       AccountPrincipal principal, Set<Slid> sLids) {
     return smartLibraryService.smartLibrariesValidated(principal, sLids);
@@ -50,6 +55,21 @@ public class SmartLibraryServiceFacadeImpl implements SmartLibraryServiceFacade 
   @Override
   public Flux<LibrarySetting> getSetting(Slid slid) {
     return smartLibraryService.getSetting(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setBooksSynchronized(Slid slid) {
+    return smartLibraryService.setBooksSynchronized(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setLibrarySettingsSynchronized(Slid slid) {
+    return smartLibraryService.setLibrarySettingsSynchronized(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setAccessSynchronized(Slid slid) {
+    return smartLibraryService.setAccessSynchronized(slid);
   }
 
   @Override

@@ -40,7 +40,6 @@ export default function MainSliderBooks() {
   const { data: books = [] } = useQuery({
     queryKey: ["MAIN_SLIDER_BOOKS"],
     queryFn: async () => await loadPartialBooksPaginated(),
-    staleTime: 5 * 60 * 1000,
   });
 
   return (

@@ -21,11 +21,11 @@ export default function DepositPage() {
   const queryClient = useQueryClient();
   const hasCheckedIn = useRef(false);
 
-  const { eventEmitter } = useWebSocketServer();
+  const { eventEmitter } = useWebSocketServer(dispatch);
 
   const { mutate: returnBookMutation } = useMutation({
     mutationFn: onNewItemStatus,
-    onSuccess(loanjItem) {
+    onSuccess(__) {
       queryClient.invalidateQueries({
         queryKey: ["RETURN_BOOKS"],
         exact: true,
@@ -36,7 +36,17 @@ export default function DepositPage() {
     },
   });
 
+
+
+  const startCheckingProcess = ()=>{
+
+
+  }
+
+
+
   useEffect(() => {
+    console.log("ARRIVING HERE WITH status: " + currentItemForCheckin.status)
     if (!currentItemForCheckin.id) return;
     if (hasCheckedIn.current) return;
     returnBookMutation({
@@ -47,10 +57,11 @@ export default function DepositPage() {
   }, []);
 
   useEffect(() => {
+    console.log("current status: " + currentItemForCheckin.status)
     if (
       currentItemForCheckin.status === TransactionItemStatusEnum.CHECKIN_SUCCESS
     ) {
-      router.push("/returnbook/thanks");
+      router.push("/checkin/thanks");
     }
   }, [currentItemForCheckin]);
 

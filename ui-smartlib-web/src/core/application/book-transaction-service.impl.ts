@@ -50,12 +50,18 @@ export class DefaultBookTransactionService implements BookTransactionService {
           (item) => item.transactionType == TransactionType.RENT
         )
       )
-    ).map(({ book_isbn, id, at_position }) => ({
-      id: uuidv4(),
-      isbn: book_isbn,
-      cpy: id,
-      position: at_position,
-    }));
+    ).map(
+      ({ book_isbn, id, at_position, image, title, status, usageCount }) => ({
+        id: uuidv4(),
+        isbn: book_isbn,
+        cpy: id,
+        position: at_position,
+        image,
+        title,
+        status,
+        usageCount,
+      })
+    );
 
     const transactions: BookTransactions = {};
 
@@ -65,10 +71,10 @@ export class DefaultBookTransactionService implements BookTransactionService {
       // check if user has a pending loan
       // if so check is current loan items + this loan items <= 4;
 
-      const currentLoans = await this.getUserLoans(cart.userId);
+      const userTransactions = await this.getUserTransactions(cart.userId);
 
-      if (currentLoans?.length) {
-        const allItems = currentLoans.flatMap((loan) => loan.items);
+      if (userTransactions?.rent?.length) {
+        const allItems = userTransactions.rent.flatMap((loan) => loan.items);
 
         if (allItems.length) {
           const librarySetting =
@@ -78,19 +84,12 @@ export class DefaultBookTransactionService implements BookTransactionService {
             allItems.length + loanItems.length > librarySetting.maxBooksPerLoan;
 
           if (isMaxBookThresholdExceeded) {
-            throw new MaxBookItemThresholdExceeded(currentLoans);
+            throw new MaxBookItemThresholdExceeded(userTransactions.rent);
           }
         }
       }
 
       const loanId = uuidv4();
-      const loanStatus: BookTransactionStatus = {
-        id: uuidv4(),
-        transactionId: loanId,
-        status: TransactionStatusEnum.PENDING,
-        createdAt: currentDate,
-      };
-
       const bookLoan: BookTransaction = {
         id: loanId,
         clientId: cart.userId,
@@ -98,58 +97,58 @@ export class DefaultBookTransactionService implements BookTransactionService {
         createdAt: currentDate,
         transactionType: TransactionType.RENT,
         returnsAt: currentDate,
-        status: [loanStatus],
+        status: [],
       };
 
-      transactions["rent"] = bookLoan;
+      transactions["rent"] = [bookLoan];
     }
 
     const purchasedItems = (
       await this.bookService.findAvailableCopiesByIsbnForPurchase(
-        bookCopySearch.filter((item) => item.transactionType == TransactionType.PURCHASE)
+        bookCopySearch.filter(
+          (item) => item.transactionType == TransactionType.PURCHASE
+        )
       )
-    ).map(({ book_isbn, id, at_position }) => ({
-      id: uuidv4(),
-      isbn: book_isbn,
-      cpy: id,
-      position: at_position,
-    }));
+    ).map(
+      ({ book_isbn, id, at_position, image, title, status, usageCount }) => ({
+        id: uuidv4(),
+        isbn: book_isbn,
+        cpy: id,
+        position: at_position,
+        image,
+        title,
+        status,
+        usageCount,
+      })
+    );
+
+    const selectedItemsCount = purchasedItems.length + loanItems.length;
+
+    if (selectedItemsCount !== cart.cartItems.length) {
+      throw new Error(
+        `Failed to find all items selected: ${selectedItemsCount} != ${cart.cartItems.length}`
+      );
+    }
 
     if (purchasedItems.length) {
       const purchaseId = uuidv4();
-      const purchaseStatus: BookTransactionStatus = {
-        id: uuidv4(),
-        transactionId: purchaseId,
-        status: TransactionStatusEnum.PENDING,
-        createdAt: currentDate,
-      };
-
       const bookPurchase: BookTransaction = {
         id: purchaseId,
         clientId: cart.userId,
         items: purchasedItems,
         createdAt: currentDate,
         transactionType: TransactionType.PURCHASE,
-        status: [purchaseStatus],
+        status: [],
       };
 
-      transactions["purchase"] = bookPurchase;
+      transactions["purchase"] = [bookPurchase];
     }
-
-    const itemsCount = Object.keys(transactions)
-      .map((key) => transactions[key].items.length)
-      .reduce((a, b) => a + b, 0);
-
-    if (itemsCount !== cart.cartItems.length) {
-      throw new Error("failed to find all items selected");
-    }
-
     await this.bookTransactionRepository.save(transactions);
 
     return transactions;
   }
 
-  getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
-    return this.bookTransactionRepository.getUserLoans(clientId);
+  getUserTransactions(clientId: UserId): Promise<BookTransactions> {
+    return this.bookTransactionRepository.getUserTransactions(clientId);
   }
 }

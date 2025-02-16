@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./config/i18n/routing";
 
-const PROTECTED_ROUTES = ["/returnbook", "/checkout"];
+const PROTECTED_ROUTES = ["/checkin", "/checkout", "/reviewcart"];
 const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(req: NextRequest) {
@@ -25,5 +25,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/(en|es|fr)/:path*", "/returnbook", "/checkout"],
+  matcher: ["/", "/(en|es|fr)/:path*", "/checkin", "/checkout"],
 };

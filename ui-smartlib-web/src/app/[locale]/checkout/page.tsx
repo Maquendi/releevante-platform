@@ -1,17 +1,34 @@
 "use client";
-import { useCheckout } from "@/hooks/useCheckout";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/redux/hooks";
 import { CircleCheck, RefreshCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useRouter } from "@/config/i18n/routing";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { clearBookExchangeState } from "@/redux/features/bookExchangeSlice";
 
 export default function CheckoutPage() {
   const t = useTranslations("checkout");
 
-  const { cartItems, currentBook, completedBooks, currentBookShowing } =
-    useCheckout();
+  const router = useRouter();
 
-    
+  const dispatch = useDispatch();
+
+  const { transactionItems, currentItem, bookExchangeSuccess } = useAppSelector(
+    (state) => state.bookExchange
+  );
+
+  useEffect(() => {
+    if (bookExchangeSuccess) {
+      setTimeout(() => {
+        router.push("/");
+        dispatch(clearBookExchangeState());
+      }, 3000);
+    }
+  }, [currentItem, transactionItems, bookExchangeSuccess]);
+
   return (
     <div className=" overflow-hidden">
       <header className="bg-white py-5 flex justify-center">
@@ -25,25 +42,22 @@ export default function CheckoutPage() {
             <h3 className="text-2xl pl-3 font-semibold">{t("yourBooks")}</h3>
           </div>
           <div className="">
-            {cartItems.map((item, index) => {
-              const isBookWorking = item.isbn === currentBook.isbn;
-              const isBookCompleted = completedBooks
-                .map((item) => item.isbn)
-                .includes(item.isbn);
+            {transactionItems.map((item, index) => {
               return (
                 <article
                   key={item.isbn}
                   className={cn(
                     "py-4 px-3 flex justify-between items-center",
-                    isBookWorking && "border-r-[5px]  border-primary bg-accent"
+                    item.currentlyExchanging &&
+                      "border-r-[5px]  border-primary bg-accent"
                   )}
                 >
                   <div>
                     <p
                       className={cn(
                         "font-medium",
-                        !isBookCompleted && "text-gray-500",
-                        isBookWorking && "text-primary"
+                        !item.exchangeCompleted && "text-gray-500",
+                        item.currentlyExchanging && "text-primary"
                       )}
                     >
                       {index + 1}. {item.title}
@@ -51,10 +65,10 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    {isBookCompleted && (
+                    {item.exchangeCompleted && (
                       <CircleCheck className="fill-black  text-white" />
                     )}
-                    {isBookWorking && !isBookCompleted && (
+                    {item.currentlyExchanging && !item.exchangeCompleted && (
                       <RefreshCcw
                         size={20}
                         className="animate-spin  text-black"
@@ -74,10 +88,10 @@ export default function CheckoutPage() {
             <div>
               <figure>
                 <Image
-                  src={currentBookShowing?.image || ''}
+                  src={currentItem?.image || ""}
                   width={250}
                   height={350}
-                  alt={`${currentBookShowing?.title} image`}
+                  alt={`${currentItem?.title} image`}
                   className="m-auto object-cover rounded-md w-[210px] h-[270px]"
                 />
               </figure>
@@ -86,7 +100,7 @@ export default function CheckoutPage() {
               <h3 className="text-4xl font-medium">
                 {t("openingDoor1")}{" "}
                 <span className="text-primary ">{t("openingDoor2")}</span>{" "}
-                <span className="text-primary">(3B)</span>
+                <span className="text-primary">({currentItem?.position})</span>
               </h3>
             </div>
             <div className="text-left flex gap-3 bg-white p-5 rounded-2xl max-w-[500px]">
@@ -105,7 +119,7 @@ export default function CheckoutPage() {
                     <span className="text-primary">
                       {" "}
                       {t("firstStepContent2")}
-                      3B
+                      {currentItem?.position}
                     </span>{" "}
                     {t("firstStepContent3")}
                   </p>

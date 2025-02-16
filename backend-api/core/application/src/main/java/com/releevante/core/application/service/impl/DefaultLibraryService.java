@@ -39,19 +39,22 @@ public class DefaultLibraryService implements SmartLibraryService {
                 smartLibraryRepository
                     .findBy(Slid.of(principal.audience()))
                     .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")))
+                    .doOnNext(AbstractSmartLibrary::validateIsActive)
                     .map(
-                        smartLibrary -> {
-                          smartLibrary.validateIsActive();
-                          return smartLibrary.withClients(
-                              libraryDto.domainClients(
-                                  principal, uuidGenerator, dateTimeGenerator));
-                        }));
+                        smartLibrary ->
+                            smartLibrary.withClients(
+                                libraryDto.toDomain(principal, uuidGenerator, dateTimeGenerator))));
   }
 
   @Override
   public Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrarySyncDto libraryDto) {
     return libraryFrom(libraryDto)
         .flatMap(smartLibraryRepository::synchronizeLibraryTransactionStatus);
+  }
+
+  @Override
+  public Mono<SmartLibrary> synchronizeLibraryClientRatings(SmartLibrarySyncDto libraryDto) {
+    return libraryFrom(libraryDto).flatMap(smartLibraryRepository::synchronizeLibraryClientRatings);
   }
 
   @Override
@@ -91,5 +94,20 @@ public class DefaultLibraryService implements SmartLibraryService {
   @Override
   public Mono<Boolean> setSynchronized(Slid slid) {
     return smartLibraryRepository.setSynchronized(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setBooksSynchronized(Slid slid) {
+    return null;
+  }
+
+  @Override
+  public Mono<Boolean> setLibrarySettingsSynchronized(Slid slid) {
+    return null;
+  }
+
+  @Override
+  public Mono<Boolean> setAccessSynchronized(Slid slid) {
+    return null;
   }
 }

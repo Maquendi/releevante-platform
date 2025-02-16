@@ -14,6 +14,8 @@ import org.immutables.value.Value;
 public abstract class AbstractTransactionStatus implements Auditable {
   abstract String id();
 
+  abstract String externalId();
+
   abstract TransactionId transactionId();
 
   abstract TransactionStatusEnum status();

@@ -16,7 +16,7 @@ import org.immutables.value.Value;
 public abstract class AbstractSmartLibrarySyncDto {
   abstract List<ClientDto> clients();
 
-  public List<Client> domainClients(
+  public List<Client> toDomain(
       AccountPrincipal principal,
       SequentialGenerator<String> uuidGenerator,
       SequentialGenerator<ZonedDateTime> dateTimeGenerator) {

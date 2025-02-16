@@ -33,8 +33,8 @@ export interface BookTransactionItemStatus {
 }
 
 export interface BookTransactions {
-  rent?: BookTransaction;
-  purchase?: BookTransaction;
+  rent?: BookTransaction[];
+  purchase?: BookTransaction[];
 }
 
 export interface BookTransactionItem {
@@ -42,8 +42,14 @@ export interface BookTransactionItem {
   isbn: string;
   cpy: string;
   position: string;
-  image?: string;
-  title?: string;
+  image: string;
+  title: string;
+  author?: string;
+  categories?: {
+    en: string;
+    fr: string;
+    es: string;
+  }[];
 }
 
 export interface BookTransactionStatus {
@@ -63,7 +69,7 @@ export interface BookTransaction {
   clientId: UserId;
   transactionType: TransactionType;
   items: BookTransactionItem[];
-  status: BookTransactionStatus[];
+  status?: BookTransactionStatus[];
   createdAt: string;
   returnsAt?: string;
 }

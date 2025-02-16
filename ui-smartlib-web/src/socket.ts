@@ -2,7 +2,7 @@
 
 import { AnyAction } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 import {
   onNewItemStatus,
   onNewTransactionStatus,
@@ -10,17 +10,20 @@ import {
 import {
   TransactionItemStatusEnum,
   TransactionStatusEnum,
-  BookTransactions,
 } from "./core/domain/loan.model";
-import { setCurrentCopy } from "./redux/features/checkoutSlice";
-import { updateCurrentBookStatus } from "./redux/features/returnbookSlice";
+import {
+  BookTransactionItemState,
+  onBookExchangeSuccess,
+  setCurrentItem,
+} from "./redux/features/bookExchangeSlice";
+import { clearCart } from "./redux/features/cartSlice";
 
 let socketClientInitialized = false;
 
 const SOCKET_URL = "http://localhost:7777";
 
 const socket = io(SOCKET_URL, {
-  autoConnect: true,
+  autoConnect: false,
 });
 
 socket.on("connect", () => {
@@ -34,42 +37,17 @@ socket.on("disconnect", (reason) => {
 function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
   if (socketClientInitialized) return;
 
-  console.log("caling .... susbcribeOnServerEvents");
-
-  socket.on("item_checkout_success", (data) => {
-    const { itemId, isbn, cpy, transactionType } = data;
-
-    dispatch(
-      setCurrentCopy({
-        isbn,
-        status: TransactionItemStatusEnum.CHECKOUT_SUCCESS,
-      })
-    );
-
-    onNewItemStatus({
-      itemId,
-      isbn,
-      cpy,
-      transactionType,
-      status: TransactionItemStatusEnum.CHECKOUT_SUCCESS,
-    });
-  });
-
+  console.log("susbcribeOnServerEvents EXECUTING **************");
+  socket.removeAllListeners();
   socket.on("user_wristband_scanned", (data) => {
     const { id } = data;
-
-    console.log("user wristband scanned with id: " + id);
   });
 
-  socket.on("item_checkout_started", (data) => {
-    const { itemId, isbn, cpy, transactionType } = data;
+  socket.on("item_checkout_started", (data: BookTransactionItemState) => {
+    console.log("item_checkout_started here.....");
+    const { id: itemId, isbn, cpy, transactionType } = data;
 
-    dispatch(
-      setCurrentCopy({
-        isbn,
-        status: TransactionItemStatusEnum.CHECKOUT_STARTED,
-      })
-    );
+    dispatch(setCurrentItem(data));
 
     onNewItemStatus({
       itemId,
@@ -80,14 +58,35 @@ function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
     });
   });
 
-  socket.on("item_checkin_started", (data) => {
+  socket.on("item_checkout_success", (data: BookTransactionItemState) => {
+    console.log("item_checkout_success here.....");
+    const { id: itemId, isbn, cpy, transactionType } = data;
+
+    dispatch(setCurrentItem(data));
+
+    onNewItemStatus({
+      itemId,
+      isbn,
+      cpy,
+      transactionType,
+      status: TransactionItemStatusEnum.CHECKOUT_SUCCESS,
+    });
+  });
+
+  socket.on("checkout_success", (data) => {
+    const { transactionId } = data;
+    dispatch(onBookExchangeSuccess());
+    dispatch(clearCart());
+    onNewTransactionStatus({
+      transactionId: transactionId,
+      status: TransactionStatusEnum.CURRENT,
+    });
+  });
+
+  socket.on("item_checkin_started", (data: BookTransactionItemState) => {
     console.log("item_checkin_started");
-    const { itemId, isbn, cpy, transactionType } = data;
-    dispatch(
-      updateCurrentBookStatus({
-        status: TransactionItemStatusEnum.CHECKIN_STARTED,
-      })
-    );
+    const { id: itemId, isbn, cpy, transactionType } = data;
+    dispatch(setCurrentItem(data));
 
     onNewItemStatus({
       itemId,
@@ -98,14 +97,12 @@ function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
     });
   });
 
-  socket.on("item_checkin_success", (data) => {
+  socket.on("item_checkin_success", (data: BookTransactionItemState) => {
     console.log("item_checkin_success");
-    const { itemId, isbn, cpy, transactionType } = data;
-    dispatch(
-      updateCurrentBookStatus({
-        status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
-      })
-    );
+
+    const { id: itemId, isbn, cpy, transactionType } = data;
+
+    dispatch(setCurrentItem(data));
 
     onNewItemStatus({
       itemId,
@@ -115,32 +112,11 @@ function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
       status: TransactionItemStatusEnum.CHECKIN_SUCCESS,
     });
   });
-
-  socket.on("checkout_success", (data) => {
-    const { transactionId } = data;
-    onNewTransactionStatus({
-      transactionId: transactionId,
-      status: TransactionStatusEnum.CURRENT,
-    });
-  });
-
   socket.on("health_report", (msg) => {
     console.log("health_report report received ", msg);
   });
 
   socketClientInitialized = true;
-}
-
-function onCheckin({ payload }, socket: Socket) {
-  //const data: CheckinItem = payload;
-  socket.emit("checkin", payload);
-}
-
-function onCheckout(data: { payload: BookTransactions }, socket: Socket) {
-  console.log("on checkout ****************************");
-  console.log(data);
-  const { payload } = data;
-  socket.emit("checkout", payload);
 }
 
 export enum SocketEventType {
@@ -152,9 +128,17 @@ function eventEmitter(event: SocketEventType, { payload }) {
   socket.emit(event, payload);
 }
 
-export function useWebSocketServer() {
+export function initWebSocketServer(dispatch: Dispatch<AnyAction>) {
+  if (socket?.disconnected) {
+    socketClientInitialized = false;
+    susbcribeOnServerEvents(dispatch);
+    socket.connect();
+  }
+}
+
+export function useWebSocketServer(dispatch: Dispatch<AnyAction>) {
+  initWebSocketServer(dispatch);
   return {
-    susbcribeOnServerEvents,
     eventEmitter,
   };
 }

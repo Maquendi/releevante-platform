@@ -5,6 +5,7 @@ import { bookTransactionSchema } from "./bookTransaction";
 
 export const bookTransactionItemSchema = sqliteTable("book_transaction_items", {
   id: text("id").primaryKey().notNull(),
+  extenalId: text("external_id"),
   transactionId: text("transaction_id")
     .notNull()
     .references(() => bookTransactionSchema.id),

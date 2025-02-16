@@ -14,6 +14,8 @@ public interface SmartLibraryService {
 
   Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrarySyncDto synchronizeDto);
 
+  Mono<SmartLibrary> synchronizeLibraryClientRatings(SmartLibrarySyncDto synchronizeDto);
+
   Flux<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Set<Slid> sLids);
 
   Flux<SmartLibraryDto> findAll(Set<Slid> sLids);
@@ -23,4 +25,10 @@ public interface SmartLibraryService {
   Flux<LibrarySetting> getSetting(Slid slid);
 
   Mono<Boolean> setSynchronized(Slid slid);
+
+  Mono<Boolean> setBooksSynchronized(Slid slid);
+
+  Mono<Boolean> setLibrarySettingsSynchronized(Slid slid);
+
+  Mono<Boolean> setAccessSynchronized(Slid slid);
 }

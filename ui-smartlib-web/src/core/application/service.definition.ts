@@ -38,7 +38,7 @@ export interface BookTransactionService {
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus>;
   newTransactionStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
-  getUserLoans(clientId: UserId): Promise<BookTransaction[]>;
+  getUserTransactions(clientId: UserId): Promise<BookTransactions>;
 }
 
 export interface TransactionItemStatusDto {
@@ -62,7 +62,7 @@ export interface BookTransactionServiceFacade {
   newTransactionStatus(
     status: TransactionStatusDto
   ): Promise<BookTransactionStatus>;
-  getUserLoans(clientId: UserId): Promise<BookTransaction[]>;
+  getUserTransactions(clientId: UserId): Promise<BookTransactions>;
 }
 
 export interface ServiceRatingService {

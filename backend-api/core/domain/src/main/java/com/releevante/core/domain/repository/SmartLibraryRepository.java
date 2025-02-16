@@ -17,6 +17,8 @@ public interface SmartLibraryRepository {
 
   Mono<SmartLibrary> synchronizeLibraryTransactions(SmartLibrary smartLibrary);
 
+  Mono<SmartLibrary> synchronizeLibraryClientRatings(SmartLibrary smartLibrary);
+
   Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrary smartLibrary);
 
   Flux<LibrarySetting> getSetting(Slid slid, boolean synced);
@@ -28,4 +30,10 @@ public interface SmartLibraryRepository {
   Flux<BookImage> getImages(Isbn isbn);
 
   Mono<Boolean> setSynchronized(Slid slid);
+
+  Mono<Boolean> setBooksSynchronized(Slid slid);
+
+  Mono<Boolean> setLibrarySettingsSynchronized(Slid slid);
+
+  Mono<Boolean> setAccessSynchronized(Slid slid);
 }

@@ -7,10 +7,7 @@ import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.ClientRepository;
 import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
-import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
-import com.releevante.types.ZonedDateTimeGenerator;
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
@@ -37,7 +34,7 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao;
 
-  final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
+  final BookRatingHibernateDao bookRatingHibernateDao;
 
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
@@ -47,7 +44,8 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
       SettingsRepository settingsRepository,
       BookImageHibernateDao bookImageHibernateDao,
       SmartLibraryAccessControlDao smartLibraryAccessControlDao,
-      AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao) {
+      AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao,
+      BookRatingHibernateDao bookRatingHibernateDao) {
     this.smartLibraryDao = smartLibraryDao;
     this.smartLibraryEventsHibernateDao = smartLibraryEventsHibernateDao;
     this.clientRepository = clientRepository;
@@ -56,6 +54,7 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
     this.bookImageHibernateDao = bookImageHibernateDao;
     this.smartLibraryAccessControlDao = smartLibraryAccessControlDao;
     this.authorizedOriginRecordHibernateDao = authorizedOriginRecordHibernateDao;
+    this.bookRatingHibernateDao = bookRatingHibernateDao;
   }
 
   @Override
@@ -98,6 +97,15 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   }
 
   @Override
+  public Mono<SmartLibrary> synchronizeLibraryClientRatings(SmartLibrary smartLibrary) {
+    return Flux.fromStream(smartLibrary.clients().stream())
+        .map(BookRatingRecord::fromDomain)
+        .flatMap(bookRatingHibernateDao::saveAll)
+        .collectList()
+        .thenReturn(smartLibrary);
+  }
+
+  @Override
   public Mono<SmartLibrary> synchronizeLibraryTransactionStatus(SmartLibrary library) {
     return Flux.fromIterable(library.clients())
         .flatMap(clientRepository::saveBookTransactionStatus)
@@ -137,25 +145,18 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
         .defaultIfEmpty(true);
   }
 
-  //  public Mono<Void> updateInventoryStatus(List<Client> clients) {
-  //    var updatedAt = dateTimeGenerator.next();
-  //    return Flux.fromStream(
-  //            clients.stream()
-  //                .map(Client::loans)
-  //                .flatMap(List::stream)
-  //                .map(BookLoan::loanStatus)
-  //                .flatMap(List::stream))
-  //        .flatMap(
-  //            loanStatus -> {
-  //              var status =
-  //                      loanStatus.itemStatuses().stream()
-  //                      .min((i1, i2) -> i2.createdAt().compareTo(i1.createdAt()))
-  //                      .map(LoanItemStatus::statuses)
-  //                      .orElse(LoanItemStatuses.BORROWED);
-  //
-  //              return libraryInventoryHibernateDao.updateInventoryStatusByCpy(
-  //                  status.name(), updatedAt, item.cpy());
-  //            })
-  //        .then();
-  //  }
+  @Override
+  public Mono<Boolean> setBooksSynchronized(Slid slid) {
+    return libraryInventoryHibernateDao.setSynchronized(slid.value()).thenReturn(true);
+  }
+
+  @Override
+  public Mono<Boolean> setLibrarySettingsSynchronized(Slid slid) {
+    return settingsRepository.setSynchronized(slid).thenReturn(true);
+  }
+
+  @Override
+  public Mono<Boolean> setAccessSynchronized(Slid slid) {
+    return smartLibraryAccessControlDao.setSynchronized(slid.value()).thenReturn(true);
+  }
 }

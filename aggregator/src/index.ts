@@ -8,7 +8,14 @@ import { synchronizeTransactions } from "./sync/synchronize-transactions";
 const runAsync = async () => {
   let token = await getCredential();
 
-  console.log(token);
+  const stats = await synchronizeTransactions(token);
+
+  console.log("New transactions synced " + stats.transactionsCreated);
+
+  console.log(
+    "New Transaction Status/Item status synced " +
+      stats.transactionStatusesCreated
+  );
 
   let dataSynced = await synchronizeBooks(token);
 
@@ -21,11 +28,9 @@ const runAsync = async () => {
   if (dataSynced > 0) {
     await markLibrarySynchronized(token);
   }
-
-  const stats = await synchronizeTransactions(token);
-
-  console.log(stats);
 };
+
+runAsync();
 
 setInterval(() => {
   runAsync();

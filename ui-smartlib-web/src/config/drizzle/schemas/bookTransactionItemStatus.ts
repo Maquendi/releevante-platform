@@ -1,4 +1,4 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { bookTransactionItemSchema } from "./bookTransactionItem";
 
@@ -14,7 +14,10 @@ export const bookTransactionItemStatusSchema = sqliteTable(
     created_at: text("created_at")
       .default(sql`(current_timestamp)`)
       .$defaultFn(() => new Date().toISOString()),
-  }
+  },
+  (t) => ({
+    uniqueTransactionItemStatus: unique().on(t.itemId, t.status),
+  })
 );
 
 export const bookTransactionItemStatusSchemaRelations = relations(

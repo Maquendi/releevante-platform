@@ -18,6 +18,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 public class TransactionItemRecord extends SimplePersistable {
   @Id private String id;
+  private String externalId;
   private String cpy;
   private String transactionId;
   private BigDecimal price;
@@ -46,6 +47,7 @@ public class TransactionItemRecord extends SimplePersistable {
   private static TransactionItemRecord from(BookTransaction transaction, TransactionItem item) {
     var record = new TransactionItemRecord();
     record.setId(item.id());
+    record.setExternalId(item.externalId());
     record.setCpy(item.cpy());
     record.setTransactionId(transaction.id().value());
     record.setTransactionItemStatuses(TransactionItemStatusRecord.from(item));

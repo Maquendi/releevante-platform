@@ -20,7 +20,7 @@ const initialState: CheckoutState = {
 };
 
 export const checkoutSlice = createSlice({
-  name: "counter",
+  name: "checkout",
   initialState,
   reducers: {
     setCurrentCopy(state, action: PayloadAction<CurrentBook>) {

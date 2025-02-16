@@ -26,7 +26,7 @@ export interface BookTransactionRepository {
     status: BookTransactionItemStatus
   ): Promise<BookTransactionItemStatus>;
   newTransactionStatus(status: BookTransactionStatus): Promise<BookTransactionStatus>;
-  getUserLoans(clientId: UserId): Promise<BookTransaction[]>;
+  getUserTransactions(clientId: UserId): Promise<BookTransactions>;
 }
 
 export interface SettingsRepository {

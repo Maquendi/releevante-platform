@@ -5,7 +5,7 @@ const slid = process.env.slid;
 export const markLibrarySynchronized = async (token: string) => {
   const request: ApiRequest = {
     token,
-    resource: `sl/${slid}/synchronize`,
+    resource: `sl/${slid}/synchronized`,
   };
 
   const response = await executePut<boolean>(request);

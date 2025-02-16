@@ -1,5 +1,6 @@
 package com.releevante.core.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.BookTransaction;
@@ -17,6 +18,7 @@ import org.immutables.value.Value;
 @Value.Immutable()
 @JsonDeserialize(as = CreateBookTransactionDto.class)
 @JsonSerialize(as = CreateBookTransactionDto.class)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AbstractCreateBookTransactionDto {
   abstract String id();
 
@@ -38,9 +40,12 @@ public abstract class AbstractCreateBookTransactionDto {
         .createdAt(createdAt())
         .status(
             status().stream()
-                .map(status -> status.toDomain(principal, transactionId))
+                .map(status -> status.toDomain(principal, transactionId, uuidGenerator))
                 .collect(Collectors.toList()))
-        .items(items().stream().map(item -> item.toDomain(principal)).collect(Collectors.toList()))
+        .items(
+            items().stream()
+                .map(item -> item.toDomain(principal, uuidGenerator))
+                .collect(Collectors.toList()))
         .origin(principal.audience())
         .audit(principal.subject())
         .build();

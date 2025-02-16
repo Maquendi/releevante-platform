@@ -127,8 +127,56 @@ public class SmartLibrarySyncController {
   }
 
   @Operation(
-      summary = "library is synchronized",
-      description = "Synchronizes the given clients from smart library to server")
+      summary = "Synchronize client's ratings of books",
+      description = "synchronizes the ratings of books by client")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PreAuthorize("hasRole('AGGREGATOR')")
+  @PostMapping("/ratings")
+  public Mono<CustomApiResponse<SmartLibrary>> syncRatings(
+      @RequestBody SmartLibrarySyncDto transactionDto) {
+    return smartLibraryService
+        .synchronizeLibraryClientRatings(transactionDto)
+        .map(CustomApiResponse::from);
+  }
+
+  @Operation(
+      summary = "library accesses is synchronized",
+      description = "library accesses is synchronized")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -166,7 +214,143 @@ public class SmartLibrarySyncController {
             })
       })
   @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin')")
-  @PutMapping("/synchronize")
+  @PutMapping("/accesses")
+  public Mono<CustomApiResponse<Boolean>> setLibraryAccessesIsSynchronized(
+      @PathVariable("slid") Slid slid) {
+    return smartLibraryService.setAccessSynchronized(slid).map(CustomApiResponse::from);
+  }
+
+  @Operation(
+      summary = "library books is synchronized",
+      description = "library books is synchronized")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin')")
+  @PutMapping("/inventory")
+  public Mono<CustomApiResponse<Boolean>> setLibraryBooksSynchronized(
+      @PathVariable("slid") Slid slid) {
+    return smartLibraryService.setBooksSynchronized(slid).map(CustomApiResponse::from);
+  }
+
+  @Operation(
+      summary = "library settings is synchronized",
+      description = "library settings is synchronized")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin')")
+  @PutMapping("/settings")
+  public Mono<CustomApiResponse<Boolean>> setLibrarySettingsSynchronized(
+      @PathVariable("slid") Slid slid) {
+    return smartLibraryService.setLibrarySettingsSynchronized(slid).map(CustomApiResponse::from);
+  }
+
+  @Operation(summary = "library is synchronized", description = "library is synchronized")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PreAuthorize("hasAnyRole('AGGREGATOR', 'super-admin')")
+  @PutMapping("/synchronized")
   public Mono<CustomApiResponse<Boolean>> setLibrarySynchronized(@PathVariable("slid") Slid slid) {
     return smartLibraryService.setSynchronized(slid).map(CustomApiResponse::from);
   }

@@ -8,6 +8,7 @@ import videReducer from "./features/vibeSlice";
 import checkoutReducer from "./features/checkoutSlice";
 import returnbooksReducer from "./features/returnbookSlice";
 import pageTransitionPayloadReducer from "./features/pageTransitionSlice";
+import bookExchangeReducer from "./features/bookExchangeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     settings: settingReducer,
     vide: videReducer,
     checkout: checkoutReducer,
+    bookExchange: bookExchangeReducer,
     returnbooks: returnbooksReducer,
     pageTransition: pageTransitionPayloadReducer,
     [userApi.reducerPath]: userApi.reducer,

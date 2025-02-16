@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { BookTransaction } from "@/core/domain/loan.model";
-import { fetchUserBookLoans } from "@/actions/book-transactions-actions";
+import { fetchUserTransactions } from "@/actions/book-transactions-actions";
 import { useAppSelector } from "@/redux/hooks";
 
 export default function useGetUserTransactions() {
@@ -16,9 +16,9 @@ export default function useGetUserTransactions() {
   // const { getImageByBookId } = useImagesIndexDb();
   const [isPending, setIsPending] = useState<boolean>(true);
 
-  const { data: transactions = [] } = useQuery({
+  const { data: transactions } = useQuery({
     queryKey: ["RETURN_BOOKS"],
-    queryFn: async () => await fetchUserBookLoans(),
+    queryFn: async () => await fetchUserTransactions(),
   });
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function useGetUserTransactions() {
       //   return transaction.items.length > 0;
       // });
 
-      setBookTransactions(transactions);
+      //setBookTransactions(transactions?.rent);
       setIsPending(false);
     })();
   }, [transactions]);

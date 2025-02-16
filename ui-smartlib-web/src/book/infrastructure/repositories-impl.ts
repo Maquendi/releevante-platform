@@ -38,22 +38,27 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async findAllBookCopiesAvailable(isbn: Isbn): Promise<BookCopy[]> {
-    const data = dbGetAll("bookCopieSchema", {
-      columns: {
-        id: true,
-        status: true,
-        at_position: true,
-        book_isbn: true,
-        usageCount: true,
-      },
-      where: and(
-        eq(bookCopieSchema.book_isbn, isbn.value),
-        eq(bookCopieSchema.status, BookCopyStatusEnum.AVAILABLE),
-        eq(bookCopieSchema.isAvailable, true)
-      ),
-    });
+    const bookCopies = await db
+      .select({
+        id: bookCopieSchema.id,
+        status: bookCopieSchema.status,
+        at_position: bookCopieSchema.at_position,
+        book_isbn: bookCopieSchema.book_isbn,
+        usageCount: bookCopieSchema.usageCount,
+        image: bookSchema.image,
+        title: bookSchema.bookTitle,
+      })
+      .from(bookCopieSchema)
+      .innerJoin(bookSchema, eq(bookCopieSchema.book_isbn, bookSchema.id))
+      .where(
+        and(
+          eq(bookCopieSchema.book_isbn, isbn.value),
+          eq(bookCopieSchema.status, BookCopyStatusEnum.AVAILABLE),
+          eq(bookCopieSchema.isAvailable, true)
+        )
+      );
 
-    return data.then((results) => results.map((res) => res as BookCopy));
+    return bookCopies as BookCopy[];
   }
 
   async getFtagsBy(tagName: FtagsEnum): Promise<FtagItem[]> {
@@ -508,6 +513,63 @@ class DefaultBookRepositoryImpl implements BookRepository {
       .where(
         and(
           eq(bookSchema.translationId, translationId),
+          eq(ftagsSchema.tagName, "category")
+        )
+      )
+      .orderBy(bookSchema.id);
+
+    const resultGroup = arrayGroupinBy(results, "isbn");
+
+    return Object.keys(resultGroup).map((isbn) => {
+      const categories = resultGroup[isbn].map(({ en, fr, es, tagId }) => ({
+        en,
+        fr,
+        es,
+        id: tagId,
+      }));
+
+      const bookDetail = this.buildBookDetail(resultGroup[isbn][0]);
+      bookDetail.categories = categories;
+      return bookDetail;
+    });
+  }
+
+  async findAllByIsbn(isbnList: string[]): Promise<IBookDetail[]> {
+    const results = await db
+      .select({
+        isbn: bookSchema.id,
+        bookTitle: bookSchema.bookTitle,
+        correlationId: bookSchema.correlationId,
+        translationId: bookSchema.translationId,
+        editionTitle: bookSchema.editionTitle,
+        language: bookSchema.language,
+        author: bookSchema.author,
+        descriptionEn: bookSchema.descriptionEn,
+        descriptionFr: bookSchema.descriptionFr,
+        descriptionEs: bookSchema.descriptionEs,
+        printLength: bookSchema.printLength,
+        publicationDate: bookSchema.publicationDate,
+        dimensions: bookSchema.dimensions,
+        price: bookSchema.price,
+        publicIsbn: bookSchema.publicIsbn,
+        qty: bookSchema.qty,
+        qtyForSale: bookSchema.qty_for_sale,
+        image: bookSchema.image,
+        imageId: bookSchema.imageId,
+        publisher: bookSchema.publisher,
+        bindingType: bookSchema.bindingType,
+        tagId: ftagsSchema.id,
+        tagName: ftagsSchema.tagName,
+        en: ftagsSchema.enTagValue,
+        fr: ftagsSchema.frTagValue,
+        es: ftagsSchema.esTagValue,
+      })
+      .from(bookSchema)
+      .leftJoin(bookFtagSchema, eq(bookFtagSchema.bookIsbn, bookSchema.id))
+      .leftJoin(ftagsSchema, eq(ftagsSchema.id, bookFtagSchema.ftagId))
+      .where(
+        and(
+          inArray(bookSchema.id, isbnList),
           eq(ftagsSchema.tagName, "category")
         )
       )

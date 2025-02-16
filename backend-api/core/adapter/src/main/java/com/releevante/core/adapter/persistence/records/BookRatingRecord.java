@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookRating;
+import com.releevante.core.domain.Client;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -30,11 +31,15 @@ public class BookRatingRecord extends PersistableEntity {
   private boolean isSynced;
 
   private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
+    return fromDomain(client.getId(), rating);
+  }
+
+  private static BookRatingRecord fromDomain(String clientId, BookRating rating) {
     var record = new BookRatingRecord();
     record.setId(rating.id());
     record.setRating(rating.rating());
     record.setIsbn(rating.isbn());
-    record.setClientId(client.getId());
+    record.setClientId(clientId);
     return record;
   }
 
@@ -66,5 +71,11 @@ public class BookRatingRecord extends PersistableEntity {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  public static List<BookRatingRecord> fromDomain(Client client) {
+    return client.bookRatings().stream()
+        .map(rating -> fromDomain(client.id().value(), rating))
+        .toList();
   }
 }

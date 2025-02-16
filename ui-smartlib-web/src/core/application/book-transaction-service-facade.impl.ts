@@ -48,8 +48,8 @@ export class DefaultBookTransactionServiceFacade
     });
   }
 
-  async getUserLoans(clientId: UserId): Promise<BookTransaction[]> {
-    return this.bookTransactionService.getUserLoans(clientId);
+  async getUserTransactions(clientId: UserId): Promise<BookTransactions> {
+    return this.bookTransactionService.getUserTransactions(clientId);
   }
 
   async cartFromDto(dto: CartDto): Promise<Cart> {

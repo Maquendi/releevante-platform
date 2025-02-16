@@ -8,7 +8,7 @@ import { formatDateByRegion } from "@/lib/utils";
 import { Link, useRouter } from "@/config/i18n/routing";
 import EmptyRentedBooks from "./EmptyRentedBooks";
 import { setCurrentBookForCheckin } from "@/redux/features/returnbookSlice";
-import useGetUserTransactions from "@/hooks/useGetReturnBooks";
+import useGetUserTransactions from "@/hooks/useGetReturnBooks_";
 import {
   TransactionItemStatusEnum,
   TransactionType,
@@ -119,7 +119,7 @@ export default function ReturnBookList() {
                         status: TransactionItemStatusEnum.CHECKIN_PENDING,
                       })
                     );
-                    router.push("/returnbook/deposit");
+                    router.push("/checkin/deposit");
                   }}
                 />
               ))}

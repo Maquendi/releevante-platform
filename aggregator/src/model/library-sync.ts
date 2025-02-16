@@ -1,4 +1,4 @@
-enum BookTransactionStatusValues {
+enum BookTransactionStatusEnum {
   RETURNED_ON_TIME,
   RETURNED_BEFORE_TIME,
   PARTIAL_RETURN,
@@ -7,7 +7,7 @@ enum BookTransactionStatusValues {
   OVERDUE,
 }
 
-enum TransactionItemStatuses {
+enum TransactionItemStatusEnum {
   REPORTED_LOST,
   LOST,
   RETURNED,
@@ -20,18 +20,21 @@ enum TransactionItemStatuses {
 
 export interface TransactionItemStatus {
   id: string;
-  status: TransactionItemStatuses;
+  externalId: string;
+  status: TransactionItemStatusEnum;
   createdAt: Date;
 }
 
 export interface TransactionStatus {
   id: string;
-  status: BookTransactionStatusValues;
+  externalId: string;
+  status: BookTransactionStatusEnum;
   createdAt: Date;
 }
 
 export interface TransactionItem {
   id: string;
+  externalId?: string;
   cpy: string;
   status?: TransactionItemStatus[];
 }
@@ -42,7 +45,7 @@ export interface TransactionDto {
   createdAt: Date;
   status?: TransactionStatus[];
   items: TransactionItem[];
-  transactionType: 'RENT' | 'PURCHASE'
+  transactionType: "RENT" | "PURCHASE";
 }
 
 export interface ClientSyncDto {

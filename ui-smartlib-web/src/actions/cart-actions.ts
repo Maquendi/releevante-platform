@@ -8,8 +8,13 @@ export const checkout = async (
   cartItems: CartItemDto[]
 ): Promise<BookTransactions> => {
   const { userId } = await getAuthToken();
-  return await bookTransactionServiceFacade.checkout({
-    userId: userId!,
-    items: cartItems,
-  });
+
+  if (userId) {
+    return await bookTransactionServiceFacade.checkout({
+      userId: userId!,
+      items: cartItems,
+    });
+  }
+
+  throw new Error("Unauthorized");
 };

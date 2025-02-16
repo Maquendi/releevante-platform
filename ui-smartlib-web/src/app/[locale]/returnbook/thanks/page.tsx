@@ -42,7 +42,7 @@ export default function ThanksDepositPage() {
         </h2>
         <p></p>
         <Link
-          href="/returnbook"
+          href="/checkin"
           className="rounded-full z-[999] m-auto px-5 py-3 text-sm font-medium bg-primary text-white w-fit"
         >
           {t("returnBookBtn")}

@@ -16,7 +16,7 @@ const tagNameMapper: any = {
 export const synchronizeBooks = async (token: string) => {
   let syncComplete = false;
   let page = 0;
-  let totalRecordsSynced = 0;
+  let totalTagsRecordsSynced = 0;
   let totalBookRecords = 0;
   let totalBookCopies = 0;
   while (syncComplete == false) {
@@ -32,7 +32,7 @@ export const synchronizeBooks = async (token: string) => {
       if (response.statusCode == 200) {
         if (books && books.length) {
           totalBookRecords += await insertBook(books);
-          totalRecordsSynced += await insertTags(books);
+          totalTagsRecordsSynced += await insertTags(books);
           totalBookCopies += await insertBookCopies(books);
         }
       } else {
@@ -49,7 +49,7 @@ export const synchronizeBooks = async (token: string) => {
 
   console.log("TOTAL BOOK COPIES SYNCHRONIZED: " + totalBookCopies);
 
-  return totalRecordsSynced + totalRecordsSynced + totalBookRecords;
+  return totalTagsRecordsSynced + totalBookCopies + totalBookRecords;
 };
 
 const insertCategories = async (books: Book[]): Promise<number> => {
@@ -308,7 +308,7 @@ const insertBookCopies = async (books: Book[]) => {
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE books_copies SET book_isbn=?, status=?, is_available=?, at_position=?, usage_count=?, updated_at=? WHERE id=?"
+    "UPDATE books_copies SET status=?, is_available=?, at_position=?, usage_count=?, updated_at=? WHERE id=?"
   );
 
   let dbChanges = 0;
@@ -318,6 +318,8 @@ const insertBookCopies = async (books: Book[]) => {
   books.forEach((book) => {
     bookCopies = [...bookCopies, ...book.copies];
   });
+
+  console.log(bookCopies);
 
   bookCopies.forEach((copy) => {
     try {
@@ -333,9 +335,8 @@ const insertBookCopies = async (books: Book[]) => {
     } catch (error: any) {
       console.log(error);
       dbChanges += update_stmt.run(
-        copy.isbn,
         copy.status,
-        copy.status == "AVAILABLE",
+        copy.status == "AVAILABLE" ? 1 : 0,
         copy.allocation,
         copy.usageCount,
         copy.updatedAt,

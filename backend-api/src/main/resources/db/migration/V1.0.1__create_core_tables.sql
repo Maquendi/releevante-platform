@@ -193,7 +193,8 @@ CREATE TABLE core.book_transactions (
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_transactions_pk PRIMARY KEY (id),
 	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
-	FOREIGN KEY (client_id) REFERENCES core.clients(id)
+	FOREIGN KEY (client_id) REFERENCES core.clients(id),
+	CONSTRAINT unique_transaction_by_slid UNIQUE(external_id, origin)
 );
 
 CREATE TABLE core.transaction_status (
@@ -210,6 +211,7 @@ CREATE TABLE core.transaction_status (
 
 CREATE TABLE core.transaction_items (
 	id varchar(36) NOT NULL,
+	external_id varchar(36) NOT NULL,
 	cpy varchar(36) NOT NULL,
 	price numeric NULL,
 	transaction_id varchar(36) NOT NULL,

@@ -1,5 +1,6 @@
 package com.releevante.core.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.Client;
@@ -11,10 +12,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.immutables.value.Value;
 
+@ImmutableExt
 @Value.Immutable()
 @JsonDeserialize(as = ClientDto.class)
 @JsonSerialize(as = ClientDto.class)
-@ImmutableExt
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AbstractClientDto {
   abstract String id();
 
@@ -43,6 +45,11 @@ public abstract class AbstractClientDto {
     return Collections.emptyList();
   }
 
+  @Value.Default
+  List<BookRatingDto> bookRatings() {
+    return Collections.emptyList();
+  }
+
   public Client toDomain(
       AccountPrincipal principal,
       SequentialGenerator<String> uuidGenerator,
@@ -59,11 +66,15 @@ public abstract class AbstractClientDto {
                 .collect(Collectors.toList()))
         .transactionStatus(
             transactionStatus().stream()
-                .map(status -> status.toDomain(principal))
+                .map(status -> status.toDomain(principal, uuidGenerator))
                 .collect(Collectors.toList()))
         .transactionItemStatus(
             transactionItemStatus().stream()
-                .map(status -> status.toDomain(principal))
+                .map(status -> status.toDomain(principal, uuidGenerator))
+                .collect(Collectors.toList()))
+        .bookRatings(
+            bookRatings().stream()
+                .map(rating -> rating.toDomain(principal, uuidGenerator))
                 .collect(Collectors.toList()))
         .build();
   }

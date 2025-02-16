@@ -108,6 +108,8 @@ export interface BookCopy {
   at_position: string;
   book_isbn: string;
   usageCount: number;
+  title: string;
+  image: string;
 }
 
 export interface BookCompartment {
