@@ -148,16 +148,16 @@
     "content": "Vos livres seront prêts pour vous dans votre chambre. Merci d'utiliser notre service",
     "goBackBtn": "Retour à l'accueil"
   },
-  "returnBook": {
-    "yourRentedBooks": "Vos livres loués",
-    "bookToReturn": "Quel livre voulez-vous retourner aujourd'hui ?",
-    "book": "livres",
-    "rentAnotherBook": "Louer un autre livre",
-    "back": "retour",
-    "return": "retourner",
-    "returnDate": "date de retour",
-    "noRentedBooks": "Vous n'avez pas encore de livre loué. Découvrez la meilleure option dans votre bibliothèque personnelle maintenant.",
-    "rentBook": "Louer un livre"
+  "reservedBooks": {
+    "moveToBuy": "Déplacer pour acheter",
+    "moveToReadInHotel": "Déplacer pour lire à l'hôtel",
+    "readInHotel": "Lire à l'hôtel",
+    "returnDate": "Date de retour",
+    "reservedBooks1": "Vos",
+    "reservedBooks2": "livres",
+    "reservedBooks3": "réservés",
+    "modifyReservation": "Modifiez votre réservation comme vous le souhaitez",
+    "reserveAnotherBook": "Réserver un autre livre"
   },
   "depositPage": {
     "depositBookTitle1": "Déposez ce livre sur",
@@ -183,13 +183,6 @@
   "ratingPage": {
     "title": "Faites-nous savoir votre niveau de satisfaction",
     "subTitle": "Veuillez nous évaluer pour améliorer nos produits. Nous sommes ravis de vous écouter et d'améliorer notre service.",
-    "feelUsingApp": "Comment vous sentez-vous en utilisant notre application ?",
-    "commentTitle": "Souhaitez-vous ajouter une suggestion ou un commentaire ?",
-    "commentPlaceHolder": "Écrivez un commentaire ici",
-    "optional": "Optionnel",
-    "submit": "Soumettre",
-    "closeSessionTime1": "La session",
-    "closeSessionTime2": "se fermera dans",
-    "closeSessionTime3": "minutes"
+    "feelUsingApp": "Comment vous sentez-vous en utilisant notre application ?"
   }
 }
