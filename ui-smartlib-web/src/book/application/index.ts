@@ -1,4 +1,3 @@
-
 import { defaultSettingsRepository } from "@/core/infrastructure/settings-repository.impl";
 import { defaultBookRepository } from "../infrastructure/repositories-impl";
 import { DefaultBookServiceImpl } from "./book-service-impl";
@@ -10,4 +9,7 @@ const bookService = new DefaultBookServiceImpl(
   defaultBookRepository,
   settingsFacade
 );
-export const bookServiceFacade = new BookServiceFacadeImpl(bookService);
+export const bookServiceFacade = new BookServiceFacadeImpl(
+  bookService,
+  settingsFacade
+);

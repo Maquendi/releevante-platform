@@ -20,7 +20,7 @@ import {
   SubCategory,
 } from "../domain/models";
 import { BookRepository } from "../domain/repositories";
-import { and, eq, inArray, like, or, sql, desc } from "drizzle-orm";
+import { and, eq, inArray, like, or, sql, desc, gte } from "drizzle-orm";
 import {
   bookCopieSchema,
   BookCopySchema,
@@ -31,6 +31,7 @@ import {
 import { db } from "@/config/drizzle/db";
 import { jsonAgg } from "@/lib/db/helpers";
 import { arrayGroupinBy } from "@/lib/utils";
+import { LibrarySettings } from "@/core/domain/settings.model";
 
 class DefaultBookRepositoryImpl implements BookRepository {
   findBookCompartments(books: BookCopy[]): Promise<BookCompartment[]> {
@@ -477,7 +478,10 @@ class DefaultBookRepositoryImpl implements BookRepository {
     return booksByCategory;
   }
 
-  async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
+  async findByTranslationId(
+    translationId: string,
+    setting: LibrarySettings
+  ): Promise<IBookDetail[]> {
     const results = await db
       .select({
         isbn: bookSchema.id,
@@ -495,8 +499,24 @@ class DefaultBookRepositoryImpl implements BookRepository {
         dimensions: bookSchema.dimensions,
         price: bookSchema.price,
         publicIsbn: bookSchema.publicIsbn,
-        qty: bookSchema.qty,
-        qtyForSale: bookSchema.qty_for_sale,
+        qty: db.$count(
+          bookCopieSchema,
+          and(
+            eq(bookCopieSchema.book_isbn, bookSchema.id),
+            eq(bookCopieSchema.isAvailable, true)
+          )
+        ),
+        qtyForSale: db.$count(
+          bookCopieSchema,
+          and(
+            eq(bookCopieSchema.book_isbn, bookSchema.id),
+            eq(bookCopieSchema.isAvailable, true),
+            gte(
+              bookCopieSchema.usageCount,
+              setting.bookUsageCountBeforeEnablingSale
+            )
+          )
+        ),
         image: bookSchema.image,
         imageId: bookSchema.imageId,
         publisher: bookSchema.publisher,
@@ -517,6 +537,35 @@ class DefaultBookRepositoryImpl implements BookRepository {
         )
       )
       .orderBy(bookSchema.id);
+
+    console.log(
+      "setting.bookUsageCountBeforeEnablingSale " +
+        setting.bookUsageCountBeforeEnablingSale
+    );
+
+    // const bookData = await results.map(async (res) => {
+    //   const data = await db
+    //     .select({
+    //       isbn: bookCopieSchema.book_isbn,
+    //       qty: sql<number>`count(${bookCopieSchema.id})`.mapWith(Number),
+    //       qtyForSale: sql<number>`count(${bookCopieSchema.id})`.mapWith(Number),
+    //       hello: db.$count(),
+    //     })
+    //     .from(bookCopieSchema)
+    //     .where(
+    //       and(
+    //         eq(bookCopieSchema.isAvailable, true),
+    //         eq(bookCopieSchema.status, BookCopyStatusEnum.AVAILABLE),
+    //         eq(bookCopieSchema.book_isbn, res.isbn)
+    //       )
+    //     );
+
+    //   db.$count(bookCopieSchema).console.log("BOOK DETAIL RESULTS ********");
+
+    //   console.log(data);
+
+    //   return (res.qty = data.qty);
+    // });
 
     const resultGroup = arrayGroupinBy(results, "isbn");
 
@@ -773,7 +822,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
   }
 
   async bookRecomendationsByTags(
-    params: BookRecomendationParams
+    params: BookRecomendationParams,
+    setting: LibrarySettings
   ): Promise<BookRecomendations> {
     const data = await db
       .select({
@@ -815,7 +865,8 @@ class DefaultBookRepositoryImpl implements BookRepository {
     const recommended: PartialBook = mostQualified[0];
 
     const recommendedDetails = await this.findByTranslationId(
-      recommended.translationId
+      recommended.translationId,
+      setting
     );
 
     const response = {

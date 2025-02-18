@@ -1,3 +1,4 @@
+import { LibrarySettings } from "@/core/domain/settings.model";
 import {
   Book,
   BookByFtagsVibes,
@@ -24,9 +25,13 @@ export interface BookRepository {
   findByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>;
   loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory>;
   loadLibraryInventory(): Promise<LibraryInventory>;
-  findByTranslationId(translationId: string): Promise<IBookDetail[]>;
+  findByTranslationId(
+    translationId: string,
+    setting: LibrarySettings
+  ): Promise<IBookDetail[]>;
   loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>;
   bookRecomendationsByTags(
-    params: BookRecomendationParams
+    params: BookRecomendationParams,
+    setting: LibrarySettings
   ): Promise<BookRecomendations>;
 }

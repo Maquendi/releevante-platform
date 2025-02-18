@@ -1,3 +1,4 @@
+import { SettingsFacade } from "@/core/application/settings.facade";
 import {
   Book,
   BookByFtagsVibes,
@@ -17,8 +18,10 @@ import { BookCopySearch } from "./dto";
 import { BookService, BookServiceFacade } from "./service.definitions";
 
 export class BookServiceFacadeImpl implements BookServiceFacade {
-  constructor(private bookService: BookService) {}
-
+  constructor(
+    private bookService: BookService,
+    private librarySettingFacade: SettingsFacade
+  ) {}
 
   async findAllBookCategory(): Promise<BookCategory[]> {
     return await this.bookService.findAllBookCategory();
@@ -26,7 +29,10 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
 
   async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
     console.log("loading book details: " + translationId);
-    return await this.bookService.findByTranslationId(translationId);
+
+    const setting = await this.librarySettingFacade.getLibrarySetting();
+
+    return await this.bookService.findByTranslationId(translationId, setting);
   }
 
   async getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]> {
@@ -61,9 +67,11 @@ export class BookServiceFacadeImpl implements BookServiceFacade {
     return this.bookService.loadPartialBooksPaginated(paging);
   }
 
-  bookRecomendationsByTags(
+  async bookRecomendationsByTags(
     params: BookRecomendationParams
   ): Promise<BookRecomendations> {
-    return this.bookService.bookRecomendationsByTags(params);
+    const setting = await this.librarySettingFacade.getLibrarySetting();
+
+    return this.bookService.bookRecomendationsByTags(params, setting);
   }
 }

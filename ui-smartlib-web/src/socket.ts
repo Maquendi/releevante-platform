@@ -75,8 +75,6 @@ function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
 
   socket.on("checkout_success", (data) => {
     const { transactionId } = data;
-    dispatch(onBookExchangeSuccess());
-    dispatch(clearCart());
     onNewTransactionStatus({
       transactionId: transactionId,
       status: TransactionStatusEnum.CURRENT,

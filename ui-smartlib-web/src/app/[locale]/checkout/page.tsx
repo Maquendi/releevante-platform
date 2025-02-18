@@ -8,6 +8,7 @@ import { useRouter } from "@/config/i18n/routing";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearBookExchangeState } from "@/redux/features/bookExchangeSlice";
+import { clearCart } from "@/redux/features/cartSlice";
 
 export default function CheckoutPage() {
   const t = useTranslations("checkout");
@@ -16,18 +17,23 @@ export default function CheckoutPage() {
 
   const dispatch = useDispatch();
 
-  const { transactionItems, currentItem, bookExchangeSuccess } = useAppSelector(
+  const { transactionItems, currentItem } = useAppSelector(
     (state) => state.bookExchange
   );
 
   useEffect(() => {
-    if (bookExchangeSuccess) {
+    const bookExchangeCompletedSuccessFully =
+      transactionItems.length &&
+      transactionItems.every((item) => item.exchangeCompleted);
+
+    if (bookExchangeCompletedSuccessFully) {
       setTimeout(() => {
         router.push("/");
+        dispatch(clearCart());
         dispatch(clearBookExchangeState());
       }, 3000);
     }
-  }, [currentItem, transactionItems, bookExchangeSuccess]);
+  }, [currentItem, transactionItems]);
 
   return (
     <div className=" overflow-hidden">

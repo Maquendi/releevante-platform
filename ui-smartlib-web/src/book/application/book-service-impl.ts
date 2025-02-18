@@ -61,8 +61,8 @@ export class DefaultBookServiceImpl implements BookService {
     return this.bookRepository.findByVibeTags(tagsValues);
   }
 
-  async findByTranslationId(translationId: string): Promise<IBookDetail[]> {
-    return this.bookRepository.findByTranslationId(translationId);
+  async findByTranslationId(translationId: string, setting: LibrarySettings): Promise<IBookDetail[]> {
+    return this.bookRepository.findByTranslationId(translationId, setting);
   }
 
   loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory> {
@@ -119,9 +119,9 @@ export class DefaultBookServiceImpl implements BookService {
   }
 
   bookRecomendationsByTags(
-    params: BookRecomendationParams
+    params: BookRecomendationParams, setting: LibrarySettings
   ): Promise<BookRecomendations> {
-    return this.bookRepository.bookRecomendationsByTags(params);
+    return this.bookRepository.bookRecomendationsByTags(params, setting);
   }
 
   loadLibraryInventory(): Promise<LibraryInventory> {

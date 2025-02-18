@@ -81,15 +81,14 @@ async def on_message(sid, data):
     print(f"checkout event from {sid}: {data}")
 
     try:
-        rent = data["rent"]
+        rent = data["purchase"]
         if rent is not None:
             await process(rent)
-    except RuntimeError as e:
-        print(e)
+    except:
         pass
 
     try:
-        purchase = data["purchase"]
+        purchase = data["rent"]
         if purchase is not None:
             await process(purchase)
     except:

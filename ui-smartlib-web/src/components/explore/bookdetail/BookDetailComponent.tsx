@@ -36,7 +36,12 @@ export default function BookDetailComponent({ isbn, translationId }) {
   const queryClient = new QueryClient();
   const { data: books = [] } = useQuery({
     queryKey: ["BOOK_BY_TRANSLATION_ID", translationId],
-    queryFn: async () => await loadBookDetail(translationId),
+    queryFn: async () => {
+      console.log("LOADING BOOK DETAILS ****************");
+      return await loadBookDetail(translationId);
+    },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const t = useTranslations("bookById");

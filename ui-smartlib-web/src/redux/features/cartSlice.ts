@@ -1,4 +1,4 @@
-import { CategoryTranslations, FtagItem } from "@/book/domain/models";
+import { FtagItem } from "@/book/domain/models";
 import { TransactionType } from "@/core/domain/loan.model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 

@@ -6,7 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 export default function useLibraryInventory() {
   const { data: libraryInventory, isPending } = useQuery({
     queryKey: ["BOOK_INVENTORY", "All"],
-    queryFn: async () => await loadLibraryInventory(),
+    queryFn: async () => {
+
+      console.log("LOADING BOOK INVENTORY* ********************")
+      return await loadLibraryInventory();
+    },
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });

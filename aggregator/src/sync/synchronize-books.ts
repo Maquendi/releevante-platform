@@ -199,7 +199,7 @@ const insertBook = async (books: Book[]) => {
     `UPDATE books SET book_title=?, correlation_id=?, edition_title=?, language=?, author=?, 
     description_en=?, description_fr=?, description_es=?, print_length=?, publicationDate=?, 
     dimensions=?, price=?, public_isbn=?, publisher=?, binding_type=?, rating=?, votes=?, updated_at=?, 
-    image=?, image_id=?, translation_id=?, qty=?, qty_for_sale=? WHERE id=?`
+    image=?, image_id=?, translation_id=? WHERE id=?`
   );
 
   let dbChanges = 0;
@@ -257,8 +257,6 @@ const insertBook = async (books: Book[]) => {
         book.images[0].url,
         book.images[0].id,
         book.translationId,
-        book.qty,
-        book.qtyForSale || 0,
         book.isbn
       ).changes;
     }

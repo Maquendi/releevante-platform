@@ -1,3 +1,4 @@
+import { LibrarySettings } from "@/core/domain/settings.model";
 import {
   Book,
   BookByFtagsVibes,
@@ -26,13 +27,17 @@ export interface BookService {
     search: BookCopySearch[]
   ): Promise<BookCopy[]>;
   markUnavailable(books: BookCopy[]): Promise<BookCopy[]>;
-  findByTranslationId(translationId: string): Promise<IBookDetail[]>;
+  findByTranslationId(
+    translationId: string,
+    setting: LibrarySettings
+  ): Promise<IBookDetail[]>;
   getFtagsByType(tagName: FtagsEnum): Promise<FtagItem[]>;
   findBooksByVibeTags(tagsValues: BookByFtagsVibes): Promise<Book[]>;
   loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory>;
   loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>;
   bookRecomendationsByTags(
-    params: BookRecomendationParams
+    params: BookRecomendationParams,
+    setting: LibrarySettings
   ): Promise<BookRecomendations>;
   loadLibraryInventory(): Promise<LibraryInventory>;
 }
@@ -50,7 +55,8 @@ export interface BookServiceFacade {
   loadBooksBySubcategory(subcategoryEnValue: string): Promise<SubCategory>;
   loadPartialBooksPaginated(paging?: Paging): Promise<PartialBook[]>;
   bookRecomendationsByTags(
-    params: BookRecomendationParams
+    params: BookRecomendationParams,
+    setting: LibrarySettings
   ): Promise<BookRecomendations>;
   loadLibraryInventory(): Promise<LibraryInventory>;
 }

@@ -7,10 +7,11 @@ export const fetchConfiguration = createAsyncThunk(
   "configuration/fetchConfiguration",
   async () => {
     const settings = await FetchLibrarySettings();
-    //const usersActiveLoanItemsCount = await getUsersActiveLoanItemsCount();
     const usersCurrentLoanItemsAcount = 0;
     settings.maxBooksPerLoan =
       settings.maxBooksPerLoan - usersCurrentLoanItemsAcount;
+      console.log("SETTING LOADED YEYEE ")
+      console.log(settings)
     return settings;
   }
 );

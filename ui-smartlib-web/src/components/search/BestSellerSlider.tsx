@@ -15,7 +15,11 @@ const SubCategoryComponent = dynamic(
 export default function BestSellerSlider() {
   const { data: bestSeller } = useQuery({
     queryKey: ["BEST_SELLER_SUB_CATEGORY"],
-    queryFn: async () => await loadBooksBySubcategory("Bestsellers"),
+    queryFn: async () => {
+
+      console.log("fetching bestsellers ****************")
+      return await loadBooksBySubcategory("Bestsellers");
+    },
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });

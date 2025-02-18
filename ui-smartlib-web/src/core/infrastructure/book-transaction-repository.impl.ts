@@ -6,14 +6,13 @@ import {
   BookTransactionStatus,
   TransactionItemStatusEnum,
   TransactionStatusEnum,
-  TransactionType,
 } from "../domain/loan.model";
 import { BookTransactionRepository } from "../domain/repositories";
-import { dbGetOne, executeTransaction } from "@/lib/db/drizzle-client";
+import { executeTransaction } from "@/lib/db/drizzle-client";
 import { ClientTransaction } from "@/lib/db/transaction-manager";
 import { SQLiteTransaction } from "drizzle-orm/sqlite-core";
 import { db } from "@/config/drizzle/db";
-import { eq, and, inArray, not } from "drizzle-orm";
+import { eq, and, inArray, not, sql } from "drizzle-orm";
 import {
   bookSchema,
   bookCopieSchema,
@@ -133,22 +132,67 @@ export class BookTransactionRepositoryImpl
   ): Promise<BookTransactionStatus> {
     console.log(status);
 
-    await db
-      .insert(bookTransactionStatusSchema)
-      .values({
-        id: status.id,
-        transactionId: status.transactionId,
-        status: status.status,
-        isSynced: false,
-        createdAt: status.createdAt,
-      })
-      .onConflictDoNothing({
-        target: [
-          bookTransactionStatusSchema.transactionId,
-          bookTransactionStatusSchema.status,
-        ],
-      });
+    await db.transaction(async (tx) => {
+      if (status.status === TransactionStatusEnum.RETURNED) {
+        // verify all items are properly returned, else throw an error
+        const results = await tx
+          .select({
+            itemsReturned:
+              sql<number>`count(${bookTransactionItemStatusSchema.id})`.mapWith(
+                Number
+              ),
+            totalItems:
+              sql<number>`count(${bookTransactionItemSchema.id})`.mapWith(
+                Number
+              ),
+          })
+          .from(bookTransactionItemStatusSchema)
+          .innerJoin(
+            bookTransactionItemSchema,
+            eq(
+              bookTransactionItemStatusSchema.itemId,
+              bookTransactionItemSchema.id
+            )
+          )
+          .where(
+            and(
+              eq(bookTransactionItemSchema.transactionId, status.transactionId),
+              eq(
+                bookTransactionItemStatusSchema.status,
+                TransactionItemStatusEnum.CHECKIN_SUCCESS
+              )
+            )
+          );
 
+        console.log("results ************************************************");
+        console.log(results);
+
+        if (results.length) {
+          const itemsReturned = results[0].itemsReturned;
+          const totalItems = results[0].totalItems;
+
+          if (itemsReturned < totalItems) {
+            throw new Error("All transaction items must be returned.");
+          }
+        }
+      }
+
+      await tx
+        .insert(bookTransactionStatusSchema)
+        .values({
+          id: status.id,
+          transactionId: status.transactionId,
+          status: status.status,
+          isSynced: false,
+          createdAt: status.createdAt,
+        })
+        .onConflictDoNothing({
+          target: [
+            bookTransactionStatusSchema.transactionId,
+            bookTransactionStatusSchema.status,
+          ],
+        });
+    });
     return status;
   }
 
@@ -275,12 +319,14 @@ export class BookTransactionRepositoryImpl
         ...transaction,
         clientId: { value: transaction.clientId },
         items: itemWithCateogories,
-        status: [] as any[],
+        status: [],
       };
     });
 
+    const activeUserTransactions = await Promise.all(transactionWithItems);
+
     const transactionsGrouped = arrayGroupinBy(
-      await Promise.all(transactionWithItems),
+      activeUserTransactions,
       "transactionType"
     );
 
