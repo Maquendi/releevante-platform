@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
-import NavbarV2 from "@/components/NavbarV2";
 import RentItemsReview from "@/components/RentItemsReview";
 import PurchaseItemsReview from "@/components/PurchaseItemsReview";
 
@@ -23,8 +22,7 @@ export default function ReviewCartPage() {
   }, [rentItems, purchaseItems, router]);
 
   return (
-    <section className="grid grid-rows-[auto_1fr_auto] h-screen ">
-      <NavbarV2 prevRouteIntl="myCart" pageIntl="reviewMyCart" />
+    <section className="grid grid-rows-[1fr_auto] h-[91.5dvh] ">
       <div
         suppressHydrationWarning
         className="overflow-y-auto px-4 py-4 space-y-6"

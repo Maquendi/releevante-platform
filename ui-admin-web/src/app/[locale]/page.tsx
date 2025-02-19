@@ -1,18 +1,43 @@
 import MainSliderBooks from "@/components/MainSlider";
-import Navbar from "@/components/Navbar";
 import SelectLanguage from "@/components/SelectLanguage";
 import { Link } from "@/config/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import React, { Suspense } from "react";
+import { getQueryClient } from "../getQueryClient";
+import {
+  FetchAllBookCategories,
+  FetchAllBooksByOrg,
+} from "@/actions/book-actions";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function HomePage() {
   const t = await getTranslations("HomePage");
+  const queryClient = getQueryClient();
+  queryClient.prefetchQuery({
+    queryKey: ["LIBRARY_INVENTORY"],
+    queryFn: async () => FetchAllBooksByOrg(),
+  });
+  queryClient.prefetchQuery({
+    queryKey: ["BOOK_CATEGORIES"],
+    queryFn: async () => FetchAllBookCategories(),
+  });
 
   return (
     <>
+      <nav className="md:hidden flex justify-between px-2 py-2 bg-white">
+        <SelectLanguage />
+        <figure className="relative w-[140px] h-[50px]">
+          <Image
+            fill
+            className="object-contain"
+            src="/images/releevante.svg"
+            alt="Releevante Logo"
+            sizes="160px"
+          />
+        </figure>
+      </nav>
       <Suspense>
-        <Navbar onlyMobile={true} />
         <div className="  md:grid place-content-center grid-cols-2 gap-2 overflow-hidden pb-4">
           <section className="relative flex flex-col md:min-h-screen bg-white">
             <div>
@@ -27,9 +52,11 @@ export default async function HomePage() {
               </figure>
             </div>
 
-            <div className="flex-grow-1 min-h-[50%]  relative z-10">
-              <MainSliderBooks />
-            </div>
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              <div className="flex-grow-1 min-h-[50%]  relative z-10">
+                <MainSliderBooks />
+              </div>
+            </HydrationBoundary>
 
             <div className="absolute bottom-0 -left-10 h-[300px] w-full z-0">
               <figure className="relative w-full h-full">

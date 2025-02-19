@@ -1,6 +1,7 @@
 import MaxWithWrapper from "@/components/MaxWithWrapper";
 import PurchaseItemsReview from "@/components/PurchaseItemsReview";
 import RentItemsReview from "@/components/RentItemsReview";
+import NotReservedBooksFound from "@/components/reserved/NotReservedBooksFound";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
@@ -32,6 +33,7 @@ export default async function ReservedBooksPage() {
         <MaxWithWrapper className="space-y-3 mt-7">
           <RentItemsReview isReservedBooks />
           <PurchaseItemsReview />
+          <NotReservedBooksFound/>
         </MaxWithWrapper>
       </section>
     </div>

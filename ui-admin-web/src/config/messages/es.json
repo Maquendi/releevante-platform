@@ -160,7 +160,7 @@
     "rentBook": "Alquilar un libro"
   },
   "reservedBooks": {
-    "moveToBuy": "Mover a compra",
+    "moveToBuy": "Mover a comprar",
     "moveToReadInHotel": "Mover para leer en el hotel",
     "readInHotel": "Leer en el hotel",
     "returnDate": "Fecha de devolución",
@@ -168,7 +168,9 @@
     "reservedBooks2": "libros",
     "reservedBooks3": "reservados",
     "modifyReservation": "Modifica tu reserva como quieras",
-    "reserveAnotherBook": "Reservar otro libro"
+    "reserveAnotherBook": "Reserva otro libro",
+    "reserveBookEmptyMsg": "Aún no tienes ningún libro reservado. Encuentra la mejor opción en tu biblioteca personal ahora.",
+    "reserveBookBtn": "Reservar un libro"
   },
   "returnThanksPage": {
     "thanksForReturn1": "Gracias por devolver",
@@ -182,5 +184,11 @@
     "title": "Déjanos saber tu nivel de satisfacción",
     "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
     "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?"
+  },
+  "navbarMobile": {
+    "cartRoute": "Mi Carrito",
+    "codeValidationRoute": "Validación de Código",
+    "catalogRoute": "Catálogo",
+    "booksRoute": "Mis Libros"
   }
 }
