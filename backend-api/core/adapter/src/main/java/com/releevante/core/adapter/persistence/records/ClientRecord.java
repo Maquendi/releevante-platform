@@ -45,7 +45,7 @@ public class ClientRecord extends PersistableEntity {
         .map(
             rating -> {
               var clientRecord = fromDomain(client);
-              var ratingRecord = ServiceRatingRecord.fromDomain(clientRecord, rating);
+              var ratingRecord = ServiceRatingRecord.fromDomain(rating);
               clientRecord.setServiceRating(ratingRecord);
               return clientRecord;
             });
@@ -82,7 +82,7 @@ public class ClientRecord extends PersistableEntity {
         .map(
             ratings -> {
               var clientRecord = fromDomain(client);
-              var ratingRecords = BookRatingRecord.fromDomain(clientRecord, ratings);
+              var ratingRecords = BookRatingRecord.fromDomain(ratings);
               clientRecord.getBookRatings().addAll(ratingRecords);
               return clientRecord;
             });

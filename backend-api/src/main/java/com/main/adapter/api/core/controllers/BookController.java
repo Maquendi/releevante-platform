@@ -2,11 +2,13 @@ package com.main.adapter.api.core.controllers;
 
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
+import com.releevante.core.application.dto.BookRatingDto;
 import com.releevante.core.application.dto.BookRecommendationDto;
 import com.releevante.core.application.dto.SyncStatus;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.BookCategories;
+import com.releevante.core.domain.Isbn;
 import com.releevante.core.domain.PartialBook;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.InvalidInputException;
@@ -30,6 +32,48 @@ public class BookController {
 
   public BookController(BookService bookService) {
     this.bookService = bookService;
+  }
+
+  @Operation(summary = "create a rating to a book", description = "A user rates a book")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Invalid data supplied",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Unauthorized",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "403",
+            description = "Forbidden access",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            }),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Internal server error",
+            content = {
+              @Content(
+                  mediaType = "application/json",
+                  schema = @Schema(implementation = HttpErrorResponse.class))
+            })
+      })
+  @PostMapping("books/rating")
+  public Mono<CustomApiResponse<Isbn>> rateBook(@RequestBody BookRatingDto ratingDto) {
+    return bookService.rate(ratingDto).map(CustomApiResponse::from);
   }
 
   @Operation(summary = "get books by slid", description = "get a list of books in the system db")

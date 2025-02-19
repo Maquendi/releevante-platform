@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.Auditable;
 import com.releevante.types.ImmutableExt;
-import java.time.ZonedDateTime;
 import org.immutables.value.Value;
 
 @ImmutableExt
@@ -19,6 +18,4 @@ public abstract class AbstractTransactionStatus implements Auditable {
   abstract TransactionId transactionId();
 
   abstract TransactionStatusEnum status();
-
-  abstract ZonedDateTime createdAt();
 }

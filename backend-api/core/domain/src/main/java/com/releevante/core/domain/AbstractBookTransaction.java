@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.types.Auditable;
 import com.releevante.types.ImmutableExt;
-import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import org.immutables.value.Value;
@@ -19,8 +18,6 @@ public abstract class AbstractBookTransaction implements Auditable {
   abstract TransactionId externalId();
 
   abstract BookTransactionType transactionType();
-
-  abstract ZonedDateTime createdAt();
 
   @Value.Default
   List<TransactionItem> items() {

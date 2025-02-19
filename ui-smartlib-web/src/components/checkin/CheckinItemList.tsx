@@ -78,7 +78,6 @@ export default function CheckinItemList() {
   const locale = useLocale();
   const { bookTransactions, isPending } = useGetUserTransactions();
 
-  //const {} = useAppSelector((state) => state.bookExchange);
   const router = useRouter();
 
   const dispatch = useDispatch();

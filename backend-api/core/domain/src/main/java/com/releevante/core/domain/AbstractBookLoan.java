@@ -22,13 +22,6 @@ public abstract class AbstractBookLoan implements Auditable {
   /** estimated time for book return */
   abstract Optional<ZonedDateTime> returnsAt();
 
-  abstract Optional<ZonedDateTime> createdAt();
-
-  @Value.Default
-  Boolean isNew() {
-    return true;
-  }
-
   @Value.Default
   List<LoanItem> items() {
     return Collections.emptyList();

@@ -74,7 +74,7 @@ public abstract class AbstractClientDto {
                 .collect(Collectors.toList()))
         .bookRatings(
             bookRatings().stream()
-                .map(rating -> rating.toDomain(principal, uuidGenerator))
+                .map(rating -> rating.toDomain(principal, uuidGenerator, dateTimeGenerator))
                 .collect(Collectors.toList()))
         .build();
   }

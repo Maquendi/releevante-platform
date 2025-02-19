@@ -315,15 +315,19 @@ export class BookTransactionRepositoryImpl
         return item;
       });
 
-      return {
-        ...transaction,
-        clientId: { value: transaction.clientId },
-        items: itemWithCateogories,
-        status: [],
-      };
+      if (itemWithCateogories?.length) {
+        return {
+          ...transaction,
+          clientId: { value: transaction.clientId },
+          items: itemWithCateogories,
+          status: [],
+        };
+      }
+
+      return undefined;
     });
 
-    const activeUserTransactions = await Promise.all(transactionWithItems);
+    const activeUserTransactions = (await Promise.all(transactionWithItems)).filter(t => t?.items);
 
     const transactionsGrouped = arrayGroupinBy(
       activeUserTransactions,
@@ -335,6 +339,9 @@ export class BookTransactionRepositoryImpl
       purchase: transactionsGrouped["PURCHASE"] || [],
     };
 
+    console.log(" **********************************************  ");
+
+    console.log(bookTransactions);
     return bookTransactions;
   }
 

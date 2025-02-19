@@ -84,14 +84,16 @@ async def on_message(sid, data):
         rent = data["purchase"]
         if rent is not None:
             await process(rent)
-    except:
+    except Exception as e:
+        print(e)
         pass
 
     try:
         purchase = data["rent"]
         if purchase is not None:
             await process(purchase)
-    except:
+    except Exception as e:
+        print(e)
         pass
 
 

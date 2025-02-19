@@ -1,1 +1,1 @@
-uvicorn chat_gpt_server_v2:socket_app --host 0.0.0.0 --port 7777 --reload
+uvicorn main_app:socket_app --host 0.0.0.0 --port 7777 --reload

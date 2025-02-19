@@ -4,12 +4,14 @@ import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.groupingBy;
 
 import com.releevante.core.application.dto.*;
+import com.releevante.core.application.service.AccountAuthorizationService;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.BookRepository;
 import com.releevante.core.domain.repository.BookTagRepository;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
+import com.releevante.core.domain.repository.ratings.BookRatingRepository;
 import com.releevante.core.domain.tags.TagTypes;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.Slid;
@@ -32,17 +34,25 @@ public class DefaultBookServiceImpl implements BookService {
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
   private final SequentialGenerator<ZonedDateTime> dateTimeGenerator =
       ZonedDateTimeGenerator.instance();
+
+  final AccountAuthorizationService authorizationService;
+
+  final BookRatingRepository bookRatingRepository;
   private static final int BATCH_SIZE = 100;
 
   public DefaultBookServiceImpl(
       BookRepository bookRepository,
       BookRegistrationService bookRegistrationService,
       BookTagRepository bookTagRepository,
-      SmartLibraryRepository smartLibraryRepository) {
+      SmartLibraryRepository smartLibraryRepository,
+      AccountAuthorizationService authorizationService,
+      BookRatingRepository bookRatingRepository) {
     this.bookRegistrationService = bookRegistrationService;
     this.bookRepository = bookRepository;
     this.bookTagRepository = bookTagRepository;
     this.smartLibraryRepository = smartLibraryRepository;
+    this.authorizationService = authorizationService;
+    this.bookRatingRepository = bookRatingRepository;
   }
 
   @Override
@@ -171,6 +181,16 @@ public class DefaultBookServiceImpl implements BookService {
   @Override
   public Flux<Book> getByTagValues(List<String> tagValues) {
     return bookRepository.getByTagValues(tagValues);
+  }
+
+  @Override
+  public Mono<Isbn> rate(BookRatingDto ratingDto) {
+    return authorizationService
+        .getCurrentPrincipal()
+        .flatMap(
+            principal ->
+                bookRatingRepository.rate(
+                    ratingDto.toDomain(principal, uuidGenerator, dateTimeGenerator)));
   }
 
   Flux<LibraryInventory> buildInventory(

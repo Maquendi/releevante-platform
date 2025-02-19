@@ -4,12 +4,10 @@ import com.main.adapter.api.core.jobs.BookScheduledUpdateJob;
 import com.releevante.core.adapter.service.books.DefaultBookRegistrationService;
 import com.releevante.core.adapter.service.google.GoogleSheetService;
 import com.releevante.core.application.service.*;
-import com.releevante.core.application.service.impl.DefaultBookServiceImpl;
-import com.releevante.core.application.service.impl.DefaultLibraryService;
-import com.releevante.core.application.service.impl.DefaultTaskExecutionService;
-import com.releevante.core.application.service.impl.SettingServiceImpl;
+import com.releevante.core.application.service.impl.*;
 import com.releevante.core.domain.repository.*;
 import com.releevante.core.domain.repository.ratings.BookRatingRepository;
+import com.releevante.core.domain.repository.ratings.ServiceRatingRepository;
 import com.releevante.core.domain.tasks.TaskRepository;
 import com.releevante.identity.application.service.auth.AuthorizationService;
 import java.time.Duration;
@@ -46,6 +44,8 @@ public class CoreServiceBeanFactory {
 
   @Autowired SmartLibraryInventoryRepository smartLibraryInventoryRepository;
 
+  @Autowired ServiceRatingRepository serviceRatingRepository;
+
   @Value("${spring.application.name}")
   String applicationName;
 
@@ -69,6 +69,13 @@ public class CoreServiceBeanFactory {
     return new SettingServiceImpl(
         settingsRepository, accountAuthorizationService, smartLibraryRepository);
   }
+  @Bean()
+  public ServiceRatingService serviceRatingService(AccountAuthorizationService accountAuthorizationService){
+    return new ServiceRatingServiceImpl(
+            serviceRatingRepository,
+            accountAuthorizationService
+    );
+  }
 
   @Bean
   public BookRegistrationService bookRegistrationService() {
@@ -82,9 +89,16 @@ public class CoreServiceBeanFactory {
   }
 
   @Bean
-  public BookService bookService(BookRegistrationService bookRegistrationService) {
+  public BookService bookService(
+      BookRegistrationService bookRegistrationService,
+      AccountAuthorizationService accountAuthorizationService) {
     return new DefaultBookServiceImpl(
-        bookRepository, bookRegistrationService, bookTagRepository, smartLibraryRepository);
+        bookRepository,
+        bookRegistrationService,
+        bookTagRepository,
+        smartLibraryRepository,
+        accountAuthorizationService,
+        bookRatingRepository);
   }
 
   @Bean

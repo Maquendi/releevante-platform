@@ -1,13 +1,7 @@
 package com.releevante.core.application.service;
 
-import com.releevante.core.application.dto.BookDto;
-import com.releevante.core.application.dto.BookRecommendationDto;
-import com.releevante.core.application.dto.SyncStatus;
-import com.releevante.core.application.dto.TagCreateDto;
-import com.releevante.core.domain.Book;
-import com.releevante.core.domain.BookCategories;
-import com.releevante.core.domain.PartialBook;
-import com.releevante.core.domain.Tag;
+import com.releevante.core.application.dto.*;
+import com.releevante.core.domain.*;
 import com.releevante.core.domain.tags.TagTypes;
 import com.releevante.types.Slid;
 import java.util.List;
@@ -45,4 +39,6 @@ public interface BookService {
   Flux<Book> getByIsbnList(List<String> isbnList);
 
   Flux<Book> getByTagValues(List<String> tagNameList);
+
+  Mono<Isbn> rate(BookRatingDto ratingDto);
 }

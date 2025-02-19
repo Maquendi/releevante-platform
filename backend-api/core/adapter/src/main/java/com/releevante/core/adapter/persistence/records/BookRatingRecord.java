@@ -16,43 +16,35 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookRatingRecord extends PersistableEntity {
-
+public class BookRatingRecord extends AuditableEntity {
   @Id private String id;
-
-  private String clientId;
-
   private String isbn;
-
   private int rating;
-
-  private String orgId;
-
   private boolean isSynced;
 
-  private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
-    return fromDomain(client.getId(), rating);
-  }
-
-  private static BookRatingRecord fromDomain(String clientId, BookRating rating) {
+  public static BookRatingRecord fromDomain(BookRating rating) {
     var record = new BookRatingRecord();
     record.setId(rating.id());
     record.setRating(rating.rating());
     record.setIsbn(rating.isbn());
-    record.setClientId(clientId);
+    record.setOrigin(rating.origin());
+    record.setSynced(false);
+    record.setCreatedAt(rating.createdAt());
     return record;
   }
 
-  protected static Set<BookRatingRecord> fromDomain(ClientRecord client, List<BookRating> ratings) {
-    return ratings.stream().map(rating -> fromDomain(client, rating)).collect(Collectors.toSet());
+  protected static Set<BookRatingRecord> fromDomain(List<BookRating> ratings) {
+    return ratings.stream().map(BookRatingRecord::fromDomain).collect(Collectors.toSet());
   }
 
   public BookRating toDomain() {
     return BookRating.builder()
         .id(id)
         .rating(rating)
+        .isbn(isbn)
         .createdAt(createdAt)
-        .updatedAt(updatedAt)
+        .audit(audit)
+        .origin(origin)
         .build();
   }
 
@@ -74,8 +66,6 @@ public class BookRatingRecord extends PersistableEntity {
   }
 
   public static List<BookRatingRecord> fromDomain(Client client) {
-    return client.bookRatings().stream()
-        .map(rating -> fromDomain(client.id().value(), rating))
-        .toList();
+    return client.bookRatings().stream().map(BookRatingRecord::fromDomain).toList();
   }
 }

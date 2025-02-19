@@ -17,6 +17,7 @@ import {
   setCurrentItem,
 } from "./redux/features/bookExchangeSlice";
 import { clearCart } from "./redux/features/cartSlice";
+import { addUserId } from "./redux/features/contactLessLoginSlice";
 
 let socketClientInitialized = false;
 
@@ -81,6 +82,19 @@ function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
     });
   });
 
+  socket.on("card_detected", (data) => {
+    const { atr } = data;
+
+    const decodedUtf8 = arrayBufferToString(atr);
+
+    const decodedAscii = arrayBufferToString(atr);
+
+    console.log("card_detected: decodedUtf8: " + decodedUtf8 + "   decodedAscii: " + decodedAscii);
+    console.log(data);
+
+    dispatch(addUserId({ userId: decodedUtf8 }));
+  });
+
   socket.on("item_checkin_started", (data: BookTransactionItemState) => {
     console.log("item_checkin_started");
     const { id: itemId, isbn, cpy, transactionType } = data;
@@ -124,6 +138,11 @@ export enum SocketEventType {
 
 function eventEmitter(event: SocketEventType, { payload }) {
   socket.emit(event, payload);
+}
+
+function arrayBufferToString(buffer, encoding = "utf-8") {
+  let decoder = new TextDecoder(encoding);
+  return decoder.decode(buffer);
 }
 
 export function initWebSocketServer(dispatch: Dispatch<AnyAction>) {

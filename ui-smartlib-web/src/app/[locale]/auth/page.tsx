@@ -1,11 +1,21 @@
+"use client";
+
 import { buttonVariants } from "@/components/ui/button";
 import VideoPlayer from "@/components/videoPlayer";
 import { Link } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
-const Signin = ({searchParams}:{searchParams:Record<string,string>}) => {
+const Signin = ({ searchParams }: { searchParams: Record<string, string> }) => {
   const t = useTranslations("wristbandScanAuth");
+
+  const { userId } = useAppSelector((state) => state.contactLessLogin);
+
+  useEffect(() => {
+    console.log("new userId " + userId);
+  }, [userId]);
 
   return (
     <>
@@ -27,14 +37,14 @@ const Signin = ({searchParams}:{searchParams:Record<string,string>}) => {
             "z-50 border-primary  py-5 px-5 m-auto text-primary font-medium rounded-3xl tracking-wide"
           )}
           href={{
-            pathname:"/auth/passcode",
-            query:searchParams
+            pathname: "/auth/passcode",
+            query: searchParams,
           }}
         >
           {t("footerBtn")}
         </Link>
       </div>
-      </>
+    </>
   );
 };
 
