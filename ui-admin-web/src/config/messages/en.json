@@ -168,7 +168,9 @@
       "reservedBooks2":"reserved",
       "reservedBooks3":"books",
       "modifyReservation":"Modify your reservation how ever you want",
-      "reserveAnotherBook":"Reserve another book"
+      "reserveAnotherBook":"Reserve another book",
+      "reserveBookEmptyMsg":"You don’t have any book reserved yet. Find out the best option in your personal library now.",
+      "reserveBookBtn":"Reserve a book"
     },
     "returnThanksPage":{
       "thanksForReturn1":"Thanks for return",
@@ -182,6 +184,12 @@
       "title":"Let us know your level of satisfaction",
       "subTitle":"Please, rate us to improve our products. We are super happy to hear you and improve our service.",
       "feelUsingApp":"How do you feel using our app?"
+    },
+    "navbarMobile":{
+      "cartRoute":"MyCart",
+      "codeValidationRoute":"Code Validation",
+      "catalogRoute":"Catalog",
+      "booksRoute":"My Books"
     }
     
   }

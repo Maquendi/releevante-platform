@@ -11,12 +11,12 @@ import ExploreComponent from "@/components/catalogByCategory/ExploreComponent";
 import {
   dehydrate,
   HydrationBoundary,
-  QueryClient,
 } from "@tanstack/react-query";
+import { getQueryClient } from "@/app/getQueryClient";
 
 export default async function CatalogPage() {
   const t = await getTranslations("catalogPage");
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient()
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: ["LIBRARY_INVENTORY"],

@@ -157,7 +157,9 @@
     "reservedBooks2": "livres",
     "reservedBooks3": "réservés",
     "modifyReservation": "Modifiez votre réservation comme vous le souhaitez",
-    "reserveAnotherBook": "Réserver un autre livre"
+    "reserveAnotherBook": "Réserver un autre livre",
+    "reserveBookEmptyMsg": "Vous n'avez pas encore réservé de livre. Trouvez dès maintenant la meilleure option dans votre bibliothèque personnelle.",
+    "reserveBookBtn": "Réserver un livre"
   },
   "depositPage": {
     "depositBookTitle1": "Déposez ce livre sur",
@@ -184,5 +186,11 @@
     "title": "Faites-nous savoir votre niveau de satisfaction",
     "subTitle": "Veuillez nous évaluer pour améliorer nos produits. Nous sommes ravis de vous écouter et d'améliorer notre service.",
     "feelUsingApp": "Comment vous sentez-vous en utilisant notre application ?"
+  },
+  "navbarMobile": {
+    "cartRoute": "Mon Panier",
+    "codeValidationRoute": "Validation du Code",
+    "catalogRoute": "Catalogue",
+    "booksRoute": "Mes Livres"
   }
 }

@@ -45,7 +45,7 @@ export default function AddBookToCartBanner({ book }: AddToCartProps) {
           <span>
             <Dot />
           </span>
-          <span>{book.price}</span>
+          <span>${book.price}</span>
         </p>
       </Button>
     </div>

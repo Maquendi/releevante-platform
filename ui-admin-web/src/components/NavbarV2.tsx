@@ -7,12 +7,12 @@ import React from "react";
 
 interface SimpleNavbarProps{
   prevRouteIntl:string
-  pageIntl:string
+  middleNameInt?:string
   href?:string
 }
 
-export default function NavbarV2({prevRouteIntl,pageIntl,href}:SimpleNavbarProps) {
-  const tReviewCart = useTranslations(pageIntl);
+export default function NavbarV2({prevRouteIntl,middleNameInt,href}:SimpleNavbarProps) {
+  const tReviewCart = useTranslations("navbarMobile");
   const router = useRouter()
 
   const handlePrev=()=>{
@@ -24,7 +24,7 @@ export default function NavbarV2({prevRouteIntl,pageIntl,href}:SimpleNavbarProps
   }
 
   return (
-    <nav className="flex justify-between items-center px-6 py-3 bg-white">
+    <nav className="flex justify-between items-center px-6 py-1 bg-white border-b border-gray-200">
       <button onClick={handlePrev}>
         <div className="flex gap-5 items-center">
           <ArrowLeft />
@@ -33,7 +33,13 @@ export default function NavbarV2({prevRouteIntl,pageIntl,href}:SimpleNavbarProps
           </p>
         </div>
       </button>
-
+      {
+        middleNameInt && (
+          <div>
+          <p className="font-medium">{tReviewCart(middleNameInt)}</p>
+        </div>
+        )
+      }
       <div>
         <figure>
           <Image
