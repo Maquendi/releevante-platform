@@ -19,12 +19,13 @@ export default function BookByIdBanner({ bookTranslations,selectedBook,setSelect
   const t = useTranslations("bookById");
   if (!bookTranslations) return;
 
+
   return (
     <div className="flex flex-col md:flex-row text-center md:text-left gap-5 p-3 rounded-md m-auto bg-white px-5 py-10 overflow-hidden">
       <div>
         <ImageWithSkeleton
           className="rounded-xl object-cover"
-          src={selectedBook?.image || ""}
+          src={selectedBook?.images?.[0].url}
           width={250}
           height={300}
           alt="image book"

@@ -35,6 +35,7 @@ export default function useLibraryInventory() {
     staleTime: 1000 * 60 * 5,
   });
 
+
   const { data: categoriesData } = useQuery({
     queryKey: ["BOOK_CATEGORIES"],
     queryFn: async()=>FetchAllBookCategories(),
@@ -50,9 +51,10 @@ export default function useLibraryInventory() {
 
   const subCategoryBooksFrom = (subCategoryRelation: SubCategoryRelation): SubCategoryBooks => {
     const {id,bookRelations}=subCategoryRelation || {}
-    const subCategoryBooks: Book[] = bookRelations?.map(
-      (isbn) => books?.[isbn]
-    );
+    const subCategoryBooks = bookRelations?.map(
+      (isbn) => books?.filter(items=>items.isbn === isbn)
+    ).flat() as Book[]
+
     const subCategory = categoriesData?.subCategoryMap?.[id] 
 
     return {

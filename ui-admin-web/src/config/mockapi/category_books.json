@@ -1,0 +1,822 @@
+{
+    "statusCode": 200,
+    "context": {
+      "data": {
+        "categories": [
+          {
+            "id": "All",
+            "en": "All",
+            "fr": "Tous",
+            "es": "Todas",
+            "subCategoryRelations": [
+              {
+                "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc",
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc",
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              },
+              {
+                "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "14683946-6076-4c3e-9ff0-cd707c6c7f55",
+                "bookRelations": [
+                  "2b69a8ef-23e6-496c-9810-f62f9a1d0170"
+                ]
+              },
+              {
+                "id": "4b2192cb-bfb3-4137-aabf-9e60730b075f",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+                  "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+                  "3e02500c-0fb2-4efc-80b4-fbb95f7ec493"
+                ]
+              },
+              {
+                "id": "c6ee3a24-84cd-4586-8227-33da77f545b7",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              },
+              {
+                "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110",
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc",
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "3420b4b2-d92a-4c9c-acb1-f9edcacaee1c",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "c6492261-c1a0-46f0-965f-40c78e019989",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "f36bb74f-be54-434a-a616-91e9beabbde1",
+            "en": "Romance",
+            "fr": "Romance",
+            "es": "Romance",
+            "subCategoryRelations": [
+              {
+                "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              },
+              {
+                "id": "14683946-6076-4c3e-9ff0-cd707c6c7f55",
+                "bookRelations": [
+                  "2b69a8ef-23e6-496c-9810-f62f9a1d0170"
+                ]
+              },
+              {
+                "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+                "bookRelations": [
+                  "3e02500c-0fb2-4efc-80b4-fbb95f7ec493"
+                ]
+              },
+              {
+                "id": "c6ee3a24-84cd-4586-8227-33da77f545b7",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "343818e2-1b9e-476d-be4f-17a0ea65bbd1",
+            "en": "Thriller",
+            "fr": "Thriller",
+            "es": "Suspenso",
+            "subCategoryRelations": [
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "f679fb67-e874-497f-b66c-7d7e3b2b8183",
+            "en": "Self-help",
+            "fr": "Développement personnel",
+            "es": "Autoayuda",
+            "subCategoryRelations": [
+              {
+                "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              },
+              {
+                "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "66d55f15-529b-4ad5-b3de-73c1347f919c",
+            "en": "Classics",
+            "fr": "Classiques",
+            "es": "Clásicos",
+            "subCategoryRelations": [
+              {
+                "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              },
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "c6ee3a24-84cd-4586-8227-33da77f545b7",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110"
+                ]
+              },
+              {
+                "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+                "bookRelations": [
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "126acc37-8fa9-441a-94cd-646ceb6f5004",
+                  "126acc37-8fa9-441a-94cd-646ceb6f5110",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "c6492261-c1a0-46f0-965f-40c78e019989",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1c551608-7f7b-4034-8cfb-916c79c0e360",
+            "en": "Adventure",
+            "fr": "Aventure",
+            "es": "Aventura",
+            "subCategoryRelations": [
+              {
+                "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+                "bookRelations": [
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+                "bookRelations": [
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd"
+                ]
+              },
+              {
+                "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59"
+                ]
+              },
+              {
+                "id": "c6492261-c1a0-46f0-965f-40c78e019989",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "4781318f-60b0-44f3-9db4-3dce3f83f4ff",
+            "en": "Psychology",
+            "fr": "Psychologie",
+            "es": "Psicología",
+            "subCategoryRelations": [
+              {
+                "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "4b2192cb-bfb3-4137-aabf-9e60730b075f",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              },
+              {
+                "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc",
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              },
+              {
+                "id": "3420b4b2-d92a-4c9c-acb1-f9edcacaee1c",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19",
+                  "5058ef07-c57d-4d54-bac4-3b26b92de409"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "474a5083-5fbd-4850-ac5c-2c762b2bb254",
+            "en": "Religion/Spirituality",
+            "fr": "Religion/Spiritualité",
+            "es": "Religión/Espiritualidad",
+            "subCategoryRelations": [
+              {
+                "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "4b2192cb-bfb3-4137-aabf-9e60730b075f",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              },
+              {
+                "id": "3420b4b2-d92a-4c9c-acb1-f9edcacaee1c",
+                "bookRelations": [
+                  "74bd4805-6866-4e15-9c57-af9114fd88cc"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "d30c10df-f586-4b8c-900a-5e4bdaad9198",
+            "en": "Children's Books",
+            "fr": "Livres pour enfants",
+            "es": "Libros para niños",
+            "subCategoryRelations": [
+              {
+                "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc",
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc",
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc"
+                ]
+              },
+              {
+                "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "dde12cd6-2da1-4a50-9aa2-0efd5abdb273"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ab5c7be2-248e-4b3f-a99f-0285c4f97c47",
+            "en": "Poetry",
+            "fr": "Poésie",
+            "es": "Poesía",
+            "subCategoryRelations": [
+              {
+                "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              },
+              {
+                "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              },
+              {
+                "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+                "bookRelations": [
+                  "48031b84-1ccc-43f7-9eee-6a9090562e19"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "a2b7189e-057c-4508-9355-7ae736867012",
+            "en": "Biography",
+            "fr": "Biographie",
+            "es": "Biografía",
+            "subCategoryRelations": [
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "1b4dacb8-6aff-4fb2-8efa-297b93cc0217"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "4a5b2e3b-f1e7-4692-a545-4f32969522a2",
+            "en": "Science Fiction",
+            "fr": "Science-fiction",
+            "es": "Ciencia ficción",
+            "subCategoryRelations": [
+              {
+                "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd"
+                ]
+              },
+              {
+                "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+                "bookRelations": [
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "5f5ecb9f-2254-4d4e-9262-ac885b2c050b"
+                ]
+              },
+              {
+                "id": "c6492261-c1a0-46f0-965f-40c78e019989",
+                "bookRelations": [
+                  "ffdeccc6-54d9-4501-bf22-40a59541e5fd"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "af5c87c0-9b71-4838-9e6a-fc49a36e1cb8",
+            "en": "Non-fiction",
+            "fr": "Non-fiction",
+            "es": "No ficción",
+            "subCategoryRelations": [
+              {
+                "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc"
+                ]
+              },
+              {
+                "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc"
+                ]
+              },
+              {
+                "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+                "bookRelations": [
+                  "40d669a3-8f30-4821-aa36-a72bf375fedc"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1ec9cc8c-22b0-4a89-a691-bd1e57b40498",
+            "en": "Mystery",
+            "fr": "Mystère",
+            "es": "Misterio",
+            "subCategoryRelations": [
+              {
+                "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+                "bookRelations": [
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+                "bookRelations": [
+                  "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+                  "3ebb43e4-303f-4e83-b0dd-1b790715daba"
+                ]
+              },
+              {
+                "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+                "bookRelations": [
+                  "4200e1e7-7d06-479e-bb2e-272d1664ae59"
+                ]
+              }
+            ]
+          }
+        ],
+        "subCategoryMap": {
+          "93e4d910-a4aa-4114-8afa-0366a0493203": {
+            "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+            "en": "For Teens",
+            "fr": "Pour adolescents",
+            "es": "Para adolescentes"
+          },
+          "0289736c-fede-47f7-ada9-5380d16a4ff8": {
+            "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+            "en": "Classic Favorites",
+            "fr": "Classiques préférés",
+            "es": "Favoritos clásicos"
+          },
+          "df91ca60-e2d6-4cb6-881c-833cf34ff9ef": {
+            "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+            "en": "For Kids",
+            "fr": "Pour enfants",
+            "es": "Para niños"
+          },
+          "3dc143b8-b227-474f-9fcd-af40a730edd4": {
+            "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+            "en": "Award Winners",
+            "fr": "Lauréats de prix",
+            "es": "Ganadores de premios"
+          },
+          "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8": {
+            "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+            "en": "Adventure Stories",
+            "fr": "Histoires d'aventure",
+            "es": "Historias de aventura"
+          },
+          "1904dfd3-94be-4bd9-b8e6-42a579a58918": {
+            "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+            "en": "Series",
+            "fr": "Séries",
+            "es": "Series"
+          },
+          "4b2192cb-bfb3-4137-aabf-9e60730b075f": {
+            "id": "4b2192cb-bfb3-4137-aabf-9e60730b075f",
+            "en": "E-books",
+            "fr": "Livres numériques",
+            "es": "Libros electrónicos"
+          },
+          "14683946-6076-4c3e-9ff0-cd707c6c7f55": {
+            "id": "14683946-6076-4c3e-9ff0-cd707c6c7f55",
+            "en": "Staff Recommendations",
+            "fr": "Recommandations du personnel",
+            "es": "Recomendaciones del personal"
+          },
+          "4035f12d-a45b-4b76-abed-a6848e27da5b": {
+            "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+            "en": "Trending Now",
+            "fr": "Tendances actuelles",
+            "es": "Tendencias actuales"
+          },
+          "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9": {
+            "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+            "en": "Critically Acclaimed",
+            "fr": "Acclamé par la critique",
+            "es": "Aclamado por la crítica"
+          },
+          "04e2d891-639b-4e32-9db3-e15adb6c0165": {
+            "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+            "en": "Top Rated",
+            "fr": "Les mieux notés",
+            "es": "Más valorados"
+          },
+          "c6ee3a24-84cd-4586-8227-33da77f545b7": {
+            "id": "c6ee3a24-84cd-4586-8227-33da77f545b7",
+            "en": "New Releases",
+            "fr": "Nouvelles sorties",
+            "es": "Nuevos lanzamientos"
+          },
+          "191f2957-45c1-4c45-a556-4a93f858b184": {
+            "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+            "en": "Limited Edition",
+            "fr": "Édition limitée",
+            "es": "Edición limitada"
+          },
+          "0e242ad9-0b32-4921-86ef-bed343040a96": {
+            "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+            "en": "Bestsellers",
+            "fr": "Meilleures ventes",
+            "es": "Más vendidos"
+          },
+          "3420b4b2-d92a-4c9c-acb1-f9edcacaee1c": {
+            "id": "3420b4b2-d92a-4c9c-acb1-f9edcacaee1c",
+            "en": "For Adults",
+            "fr": "Pour adultes",
+            "es": "Para adultos"
+          },
+          "c186a258-78fa-4007-a171-6f6cf5dc9714": {
+            "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+            "en": "For Beginners",
+            "fr": "Pour débutants",
+            "es": "Para principiantes"
+          },
+          "c6492261-c1a0-46f0-965f-40c78e019989": {
+            "id": "c6492261-c1a0-46f0-965f-40c78e019989",
+            "en": "Collector's Edition",
+            "fr": "Édition de collection",
+            "es": "Edición de coleccionista"
+          }
+        }
+      }
+    }
+  }

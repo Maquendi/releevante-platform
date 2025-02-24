@@ -63,7 +63,7 @@ export interface BookDetails {
   bindingType: string;
   rating: number;
   votes: number;
-  image: string;
+  images: {id:string,isbn:string,sourceUrl:string,url:string}[]
 }
 
 

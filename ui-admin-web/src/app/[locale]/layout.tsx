@@ -43,7 +43,9 @@ export default async function RootLayout({
               locale={locale}
               timeZone="America/Santo_Domingo"
             >
+             <div>
               {children}
+             </div>
             </NextIntlClientProvider>
           </AppReduxProvider>
         </QueryProvider>

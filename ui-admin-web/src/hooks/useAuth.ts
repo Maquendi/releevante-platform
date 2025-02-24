@@ -1,9 +1,10 @@
 "use client";
 import {  useMutation } from "@tanstack/react-query";
 import {  useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
-import { authSigninCode, authSignOut } from "@/actions/auth-actions";
+import { authSignIn, authSignOut } from "@/actions/auth-actions";
+import {  useSearchParams } from "next/navigation";
+import { useRouter } from "@/config/i18n/routing";
 
 interface Credential {
   code: string;
@@ -16,8 +17,9 @@ const useAuth = () => {
   const locale = useLocale();
 
   const loginMutation = useMutation({
-    mutationFn: (credentials: Credential) => authSigninCode(credentials.code),
+    mutationFn: (credentials: Credential) => authSignIn(credentials.code),
     onSuccess() {
+      console.log('success auth')
       const redirectUrl = searchParams?.get("redirect") || `/${locale}/selection`;
       router.push(redirectUrl);
     },

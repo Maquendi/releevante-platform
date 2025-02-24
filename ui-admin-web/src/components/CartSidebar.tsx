@@ -13,12 +13,17 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import useGetCartBooks from "@/hooks/useGetCartBooks";
-import { useRouter } from "@/config/i18n/routing";
+import { usePathname, useRouter } from "@/config/i18n/routing";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
+import { Menu } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
 
 interface CartEmptyProps {
   isPage?: boolean;
 }
+
+const HIDE_SIDEBAR_PAGES=['/cart','/rating','/reserved','/reviewcart','/auth/code'] as const
 export function CartEmpty({ isPage }: CartEmptyProps) {
   const t = useTranslations("cart");
 
@@ -41,12 +46,62 @@ export function CartEmpty({ isPage }: CartEmptyProps) {
   );
 }
 
+
+export  function CartSidebarTrigger() {
+  const { setOpen, open } = useSidebar();
+  const router = useRouter()
+ const {inCartItemsCount}=useGetCartBooks()
+    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 770px)" });
+    const path = usePathname()
+    if(isTabletOrMobile){
+      return(
+        <button suppressHydrationWarning className="relative" onClick={() => router.push('/cart')}>
+        <Menu/>
+      </button>
+      )
+    }
+
+    function handleOpenCart(){
+      const isProtectedRoute = HIDE_SIDEBAR_PAGES.includes(path as any)
+      if(isProtectedRoute){
+        router.push('/cart');
+        return
+      }
+      setOpen(!open)
+    }
+
+  return (
+    <button suppressHydrationWarning className="relative" onClick={handleOpenCart}>
+      <Image
+        src="/icons/cart.svg"
+        className="w-[40px] h-[40px]"
+        width={40}
+        height={40}
+        alt="cart icon"
+      />
+      {inCartItemsCount > 0 && (
+        <span suppressHydrationWarning className="grid place-content-center pt-[0.100rem] absolute -top-2 -right-2.5 font-medium text-xs text-white w-6 h-6 rounded-full  bg-[#FF2D55]">
+          {inCartItemsCount}
+        </span>
+      )}
+    </button>
+  );
+}
+
 export default function CartSidebar() {
   const settings = useAppSelector((state) => state.settings);
-  const { open } = useSidebar();
+  const { open,setOpen} = useSidebar();
   const t = useTranslations("cart");
   const { rentItems, purchaseItems } = useGetCartBooks();
   const router = useRouter();
+  const path = usePathname();
+
+  useEffect(()=>{
+    const isProtectedRoute = HIDE_SIDEBAR_PAGES.includes(path as any)
+    if(isProtectedRoute){
+      setOpen(false)
+    }
+  },[path,setOpen])
 
   return (
     <div className="relative right-0 left-0">

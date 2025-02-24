@@ -1,0 +1,2975 @@
+{
+    "statusCode": 200,
+    "context": {
+      "data": [
+        {
+          "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+          "correlationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "translationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "title": "100 years of solitude",
+          "price": 1450.00,
+          "qty": 6,
+          "qtyForSale": 0,
+          "description": {
+            "en": "One Hundred Years of Solitude is a 1967 novel by Colombian author Gabriel García Márquez that tells the multi-generational story of the Buendía family, whose patriarch, José Arcadio Buendía, founded the fictitious town of Macondo. The novel is often cited as one of the supreme achievements in world literature",
+            "fr": "Cent ans de solitude est un roman de 1967 de l'auteur colombien Gabriel García Márquez qui raconte l'histoire multigénérationnelle de la famille Buendía, dont le patriarche, José Arcadio Buendía, a fondé la ville fictive de Macondo. Le roman est souvent cité comme l'une des plus grandes réussites de la littérature mondiale.",
+            "es": "Cien años de soledad es una novela de 1967 del autor colombiano Gabriel García Márquez que cuenta la historia multigeneracional de la familia Buendía, cuyo patriarca, José Arcadio Buendía, fundó el pueblo ficticio de Macondo. La novela se cita a menudo como uno de los logros supremos de la literatura mundial."
+          },
+          "author": "Gabriel Garcia Marquez",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.589492-04:00",
+          "updatedAt": "2025-02-19T17:54:53.589492-04:00",
+          "printLength": 352,
+          "publishDate": "2024-02-24",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Editorial Diana S.A. De C.V",
+          "publicIsbn": "978344231000",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "f36bb74f-be54-434a-a616-91e9beabbde1",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "25e78cb2-2caa-4745-a7dd-fe5086ae39c0",
+              "name": "category",
+              "value": {
+                "en": "Romance",
+                "fr": "Romance",
+                "es": "Romance"
+              },
+              "createdAt": "2025-02-19T17:54:54.236035-04:00"
+            },
+            {
+              "id": "66d55f15-529b-4ad5-b3de-73c1347f919c",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "b88a0c6a-46a6-434b-a432-897a967c6627",
+              "name": "category",
+              "value": {
+                "en": "Classics",
+                "fr": "Classiques",
+                "es": "Clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:54.238035-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "23053c44-9787-4db8-be3b-29ecabb898a4",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.239326-04:00"
+            },
+            {
+              "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "cc6b80e7-50d6-44db-958d-6b6ab1789e73",
+              "name": "subcategory",
+              "value": {
+                "en": "Classic Favorites",
+                "fr": "Classiques préférés",
+                "es": "Favoritos clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:54.241348-04:00"
+            },
+            {
+              "id": "c6ee3a24-84cd-4586-8227-33da77f545b7",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "11f94359-c8d8-437a-a440-9408a57276ad",
+              "name": "subcategory",
+              "value": {
+                "en": "New Releases",
+                "fr": "Nouvelles sorties",
+                "es": "Nuevos lanzamientos"
+              },
+              "createdAt": "2025-02-19T17:54:54.242896-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "5827a2c0-338d-486d-89c1-fa0bc335fb7d",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.244904-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "26cf7f80-d203-4b18-97f5-1606161f12eb",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.246906-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "cb675fd6-a73b-4eb2-90bd-5c5df5389b3a",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:54.248906-04:00"
+            },
+            {
+              "id": "67cb3ad7-2b37-4f76-b511-222254a5adf0",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "999ffab6-53b5-4b31-a208-89881f83940b",
+              "name": "mood",
+              "value": {
+                "en": "😍 swoon-worthy",
+                "fr": "😍 à tomber par terre",
+                "es": "😍 digno de desmayarse"
+              },
+              "createdAt": "2025-02-19T17:54:54.250906-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "f46e1013-53eb-4832-8701-ab527d0ff7e3",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.255327-04:00"
+            },
+            {
+              "id": "a3d33392-6f93-437c-b887-1ab59daa97ac",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "546d570b-edcd-4ad4-a942-45b3ebb81294",
+              "name": "flavor",
+              "value": {
+                "en": "📜 Historical fiction: Step back in time",
+                "fr": "📜 Fiction historique : Retour dans le temps",
+                "es": "📜 Ficción histórica: Viaje al pasado"
+              },
+              "createdAt": "2025-02-19T17:54:54.256755-04:00"
+            },
+            {
+              "id": "b0c3d2f5-8cbb-4364-8e30-008eff39a383",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "bookTagId": "04cb9ea3-f88b-407c-b1df-f0cf1885e0a1",
+              "name": "keyword",
+              "value": {
+                "en": "Buendía",
+                "fr": "Buendía",
+                "es": "Buendía"
+              },
+              "createdAt": "2025-02-19T17:54:54.348637-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "0f6a4bd3-c912-4eab-af4b-dfe0d713efaf",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+              "url": "https://m.media-amazon.com/images/M/MV5BZDkwYmQzMTUtYWU4OC00NThmLTk3YzUtNzUxYzA4YWVkYTUxXkEyXkFqcGc@._V1_.jpg",
+              "sourceUrl": "https://m.media-amazon.com/images/M/MV5BZDkwYmQzMTUtYWU4OC00NThmLTk3YzUtNzUxYzA4YWVkYTUxXkEyXkFqcGc@._V1_.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+          "correlationId": "037db98e-1472-4aaf-8eb2-3534c3cc7b78",
+          "translationId": "037db98e-1472-4aaf-8eb2-3534c3cc7b78",
+          "title": "The Godfather (novel)",
+          "price": 25.23,
+          "qty": 76,
+          "qtyForSale": 0,
+          "description": {
+            "en": "A crime novel exploring the life and legacy of the Corleone mafia family.",
+            "fr": "Un roman policier explorant la vie et l'héritage de la famille mafieuse Corleone.",
+            "es": "Una novela de crimen que explora la vida y el legado de la familia mafiosa Corleone."
+          },
+          "author": "Mario Puzo",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.586984-04:00",
+          "updatedAt": "2025-02-19T17:54:53.586984-04:00",
+          "printLength": 1200,
+          "publishDate": "2021-03-20",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084652",
+          "bindingType": "Paperback",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "f679fb67-e874-497f-b66c-7d7e3b2b8183",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "0edba2a9-a8ca-484a-a8f2-8da31c3a1edc",
+              "name": "category",
+              "value": {
+                "en": "Self-help",
+                "fr": "Développement personnel",
+                "es": "Autoayuda"
+              },
+              "createdAt": "2025-02-19T17:54:54.068194-04:00"
+            },
+            {
+              "id": "a2b7189e-057c-4508-9355-7ae736867012",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "2c8b1c1e-0995-412f-ad9a-5b93a2c8710c",
+              "name": "category",
+              "value": {
+                "en": "Biography",
+                "fr": "Biographie",
+                "es": "Biografía"
+              },
+              "createdAt": "2025-02-19T17:54:54.069581-04:00"
+            },
+            {
+              "id": "4781318f-60b0-44f3-9db4-3dce3f83f4ff",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "d5e0bb71-5549-400e-a454-4e32e8c9cd91",
+              "name": "category",
+              "value": {
+                "en": "Psychology",
+                "fr": "Psychologie",
+                "es": "Psicología"
+              },
+              "createdAt": "2025-02-19T17:54:54.070987-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "1c52ccde-b608-4f69-9320-1869f36b82bd",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.0734-04:00"
+            },
+            {
+              "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "53ec2892-cdf1-445a-9e2d-f44cdd650b0d",
+              "name": "subcategory",
+              "value": {
+                "en": "Award Winners",
+                "fr": "Lauréats de prix",
+                "es": "Ganadores de premios"
+              },
+              "createdAt": "2025-02-19T17:54:54.074685-04:00"
+            },
+            {
+              "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "f767606d-b68c-45b6-adb4-b796fefbeed1",
+              "name": "subcategory",
+              "value": {
+                "en": "Critically Acclaimed",
+                "fr": "Acclamé par la critique",
+                "es": "Aclamado por la crítica"
+              },
+              "createdAt": "2025-02-19T17:54:54.076695-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "f70f383a-a591-4ee0-af6d-6b6abf47a04e",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.077697-04:00"
+            },
+            {
+              "id": "5e4c1670-e9d3-45e3-8567-84c7ecb0fb27",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "1b54239a-d756-4720-a61a-6addc115866b",
+              "name": "vibe",
+              "value": {
+                "en": "🧠 Teach me something new",
+                "fr": "🧠 Enseigne-moi quelque chose de nouveau",
+                "es": "🧠 Enséñame algo nuevo"
+              },
+              "createdAt": "2025-02-19T17:54:54.079825-04:00"
+            },
+            {
+              "id": "483b7f91-f638-4723-84b4-8acddb9f3276",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "1f9e1b96-6d04-4bd4-859c-2b86a6cc8f92",
+              "name": "mood",
+              "value": {
+                "en": "😱 spine-tingling and eerie",
+                "fr": "😱 frissonnant et étrange",
+                "es": "😱 escalofriante y espeluznante"
+              },
+              "createdAt": "2025-02-19T17:54:54.081019-04:00"
+            },
+            {
+              "id": "500a74de-3110-4155-bbcc-d7e40af9074f",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "27b6298a-35b1-4e52-9ed2-8371d51963f2",
+              "name": "mood",
+              "value": {
+                "en": "🤣 lighthearted and fun",
+                "fr": "🤣 léger et amusant",
+                "es": "🤣 ligero y divertido"
+              },
+              "createdAt": "2025-02-19T17:54:54.083025-04:00"
+            },
+            {
+              "id": "8d4cf711-dd03-4f10-aa54-b02326f31ea2",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "21ee67b6-3d48-45f0-90cd-714993c3ad4f",
+              "name": "flavor",
+              "value": {
+                "en": "🕵️\u200d♀️ Mystery/Thriller: Who did it? Need answers",
+                "fr": "🕵️\u200d♀️ Mystère/Thriller : Qui l'a fait ? Besoin de réponses",
+                "es": "🕵️\u200d♀️ Misterio/Suspense: ¿Quién lo hizo? Necesito respuestas"
+              },
+              "createdAt": "2025-02-19T17:54:54.084026-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "bookTagId": "d0ea74da-6173-4122-a227-1c594d0049ca",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.085027-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "50fbe584-340c-4f2f-a82c-40ea09269a54",
+              "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+              "url": "https://upload.wikimedia.org/wikipedia/en/f/f4/Godfather-Novel-Cover.png",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/en/f/f4/Godfather-Novel-Cover.png"
+            }
+          ]
+        },
+        {
+          "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+          "correlationId": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+          "translationId": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+          "title": "Rayuela",
+          "price": 30.00,
+          "qty": 39,
+          "qtyForSale": 0,
+          "description": {
+            "en": "An experimental novel that can be read in multiple sequences, following the intellectual and romantic adventures of Horacio Oliveira in Paris and Buenos Aires.",
+            "fr": "Un roman expérimental qui peut être lu dans plusieurs séquences, suivant les aventures intellectuelles et romantiques d'Horacio Oliveira à Paris et Buenos Aires.",
+            "es": "Una novela experimental que se puede leer en múltiples secuencias, siguiendo las aventuras intelectuales y románticas de Horacio Oliveira en París y Buenos Aires."
+          },
+          "author": "Julio Cortazar",
+          "language": "Spanish",
+          "createdAt": "2025-02-19T17:54:53.590586-04:00",
+          "updatedAt": "2025-02-19T17:54:53.590586-04:00",
+          "printLength": 736,
+          "publishDate": "1963-05-26",
+          "dimensions": "14 x 21 cm",
+          "publisher": "Editorial Sudamericana",
+          "publicIsbn": "9780593084600",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "f36bb74f-be54-434a-a616-91e9beabbde1",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "962a1203-cd3f-409d-90c3-198535d8c15c",
+              "name": "category",
+              "value": {
+                "en": "Romance",
+                "fr": "Romance",
+                "es": "Romance"
+              },
+              "createdAt": "2025-02-19T17:54:54.301472-04:00"
+            },
+            {
+              "id": "14683946-6076-4c3e-9ff0-cd707c6c7f55",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "ae949107-6db9-437e-9377-20b35492ae11",
+              "name": "subcategory",
+              "value": {
+                "en": "Staff Recommendations",
+                "fr": "Recommandations du personnel",
+                "es": "Recomendaciones del personal"
+              },
+              "createdAt": "2025-02-19T17:54:54.302627-04:00"
+            },
+            {
+              "id": "efa08a4a-2bdf-4d86-9f88-19038ee8dc2a",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "7b4ee4ca-bff6-4e2a-90c4-93f27f0a534e",
+              "name": "vibe",
+              "value": {
+                "en": "🧘\u200d♀️ Something relaxing",
+                "fr": "🧘\u200d♀️ Quelque chose de relaxant",
+                "es": "🧘\u200d♀️ Algo relajante"
+              },
+              "createdAt": "2025-02-19T17:54:54.304948-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "6c1b5f22-4cf2-4c9c-8e6f-cee79f7f3feb",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:54.306033-04:00"
+            },
+            {
+              "id": "500a74de-3110-4155-bbcc-d7e40af9074f",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "cd96bf16-a47d-4f26-9354-b844cf42a5be",
+              "name": "mood",
+              "value": {
+                "en": "🤣 lighthearted and fun",
+                "fr": "🤣 léger et amusant",
+                "es": "🤣 ligero y divertido"
+              },
+              "createdAt": "2025-02-19T17:54:54.30704-04:00"
+            },
+            {
+              "id": "244e85b8-3318-4030-8541-78d3e5a3890d",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "ea73c3cd-6f3d-48b6-8c0b-7b1e4bf8e2be",
+              "name": "flavor",
+              "value": {
+                "en": "❤️ Romance: Sparks flying!",
+                "fr": "❤️ Romance : Des étincelles dans l'air !",
+                "es": "❤️ Romance: ¡Chispas volando!"
+              },
+              "createdAt": "2025-02-19T17:54:54.316321-04:00"
+            },
+            {
+              "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "48adc599-b4c2-4e6f-83fe-6237c8d22331",
+              "name": "flavor",
+              "value": {
+                "en": "🎭 Drama: Deep emotions, please",
+                "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+                "es": "🎭 Drama: Emociones profundas, por favor"
+              },
+              "createdAt": "2025-02-19T17:54:54.318318-04:00"
+            },
+            {
+              "id": "d275b180-4014-43d7-8178-4f7e31e592b9",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "25c07097-3a12-4735-8673-7ca0c08cc524",
+              "name": "keyword",
+              "value": {
+                "en": "Experimental",
+                "fr": "Experimental",
+                "es": "Experimental"
+              },
+              "createdAt": "2025-02-19T17:54:54.358826-04:00"
+            },
+            {
+              "id": "d121ef24-3151-4ca5-8cae-49bde25794f4",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "1ca76973-6769-4780-b365-0f5c47a1b7fc",
+              "name": "keyword",
+              "value": {
+                "en": "París",
+                "fr": "París",
+                "es": "París"
+              },
+              "createdAt": "2025-02-19T17:54:54.359834-04:00"
+            },
+            {
+              "id": "b5f20f5f-4ad7-4ce7-a3e9-cef5b5bc786f",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "bookTagId": "b185e5d3-1034-4f08-888a-2bae002f2152",
+              "name": "keyword",
+              "value": {
+                "en": "búsqueda existencial",
+                "fr": "búsqueda existencial",
+                "es": "búsqueda existencial"
+              },
+              "createdAt": "2025-02-19T17:54:54.361324-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "cec939a9-41fe-4658-8033-15f6b3ffc798",
+              "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+              "url": "https://www.cuestalibros.com/content/images/thumbs/0043629_rayuela-bol_550.jpeg",
+              "sourceUrl": "https://www.cuestalibros.com/content/images/thumbs/0043629_rayuela-bol_550.jpeg"
+            }
+          ]
+        },
+        {
+          "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+          "correlationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "translationId": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+          "title": "El amor en los tiempos del cólera",
+          "price": 37.00,
+          "qty": 46,
+          "qtyForSale": 0,
+          "description": {
+            "en": "A tale of unrequited love spanning over fifty years, focusing on the lives of Florentino Ariza and Fermina Daza in a Caribbean town.",
+            "fr": "Une histoire d'amour non réciproque s'étendant sur plus de cinquante ans, centrée sur les vies de Florentino Ariza et Fermina Daza dans une ville des Caraïbes.",
+            "es": "Una historia de amor no correspondido que abarca más de cincuenta años, centrada en las vidas de Florentino Ariza y Fermina Daza en un pueblo caribeño."
+          },
+          "author": "Gabriel Garcia Marquez",
+          "language": "Spanish",
+          "createdAt": "2025-02-19T17:54:53.590586-04:00",
+          "updatedAt": "2025-02-19T17:54:53.590586-04:00",
+          "printLength": 368,
+          "publishDate": "1985-06-18",
+          "dimensions": "15 x 23 cm",
+          "publisher": "Editorial oveja negra",
+          "publicIsbn": "9780593084678",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "f36bb74f-be54-434a-a616-91e9beabbde1",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "b4ee1694-d85b-4bc3-87a0-079351156c53",
+              "name": "category",
+              "value": {
+                "en": "Romance",
+                "fr": "Romance",
+                "es": "Romance"
+              },
+              "createdAt": "2025-02-19T17:54:54.319326-04:00"
+            },
+            {
+              "id": "20e6fdf6-0ce3-4d92-a09c-544e152cb3f9",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "582c6e4d-cf35-457e-97b6-5f3ac298bed9",
+              "name": "subcategory",
+              "value": {
+                "en": "Critically Acclaimed",
+                "fr": "Acclamé par la critique",
+                "es": "Aclamado por la crítica"
+              },
+              "createdAt": "2025-02-19T17:54:54.321345-04:00"
+            },
+            {
+              "id": "a9898c47-5cb5-4cd5-a196-e675e31a462e",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "601b5673-e0f0-40dd-a474-fd532a7efcc5",
+              "name": "vibe",
+              "value": {
+                "en": "❤️ I’m here  for feels - romance, tears, all of it",
+                "fr": "❤️ Je suis là pour les émotions - romance, larmes, tout ça",
+                "es": "❤️ Estoy aquí para los sentimientos: romance, lágrimas, todo eso"
+              },
+              "createdAt": "2025-02-19T17:54:54.322345-04:00"
+            },
+            {
+              "id": "67cb3ad7-2b37-4f76-b511-222254a5adf0",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "cbb88e20-5cb6-4a54-917c-888c581a8387",
+              "name": "mood",
+              "value": {
+                "en": "😍 swoon-worthy",
+                "fr": "😍 à tomber par terre",
+                "es": "😍 digno de desmayarse"
+              },
+              "createdAt": "2025-02-19T17:54:54.324345-04:00"
+            },
+            {
+              "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "2aa84298-2875-4d86-bf14-78c0db8b0138",
+              "name": "flavor",
+              "value": {
+                "en": "🎭 Drama: Deep emotions, please",
+                "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+                "es": "🎭 Drama: Emociones profundas, por favor"
+              },
+              "createdAt": "2025-02-19T17:54:54.333351-04:00"
+            },
+            {
+              "id": "76273470-6b33-494a-be69-0d15dee518b8",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "865188e9-9a75-4a0d-b9dc-5ddf59f39f62",
+              "name": "keyword",
+              "value": {
+                "en": "Amor",
+                "fr": "Amor",
+                "es": "Amor"
+              },
+              "createdAt": "2025-02-19T17:54:54.363334-04:00"
+            },
+            {
+              "id": "9052187f-f2ce-4c6d-ab1b-51f6f84d9583",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "8658b0fa-0edb-45fe-b487-0e3e98ab7ea9",
+              "name": "keyword",
+              "value": {
+                "en": "espera",
+                "fr": "espera",
+                "es": "espera"
+              },
+              "createdAt": "2025-02-19T17:54:54.364438-04:00"
+            },
+            {
+              "id": "2df3caee-48a8-48f6-bc18-8c55632e1a98",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "bookTagId": "2f4ff303-50be-46be-98aa-291e72de612d",
+              "name": "keyword",
+              "value": {
+                "en": "vejez",
+                "fr": "vejez",
+                "es": "vejez"
+              },
+              "createdAt": "2025-02-19T17:54:54.366902-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "859aef55-692a-4f57-b428-3ec038e8f09a",
+              "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+              "url": "https://www.cuestalibros.com/content/images/thumbs/0108335_el-amor-en-los-tiempos-del-colera-bol_550.jpeg",
+              "sourceUrl": "https://www.cuestalibros.com/content/images/thumbs/0108335_el-amor-en-los-tiempos-del-colera-bol_550.jpeg"
+            }
+          ]
+        },
+        {
+          "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+          "correlationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651119a",
+          "translationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651119a",
+          "title": "The Anayst",
+          "price": 30.86,
+          "qty": 55,
+          "qtyForSale": 0,
+          "description": {
+            "en": "Happy fifty third birthday, Doctor. Welcome to the first day of your death. Dr. Frederick Starks, a New York psychoanalyst, has just received a mysterious, threatening letter. Now he finds himself in the middle of a horrific game designed by a man who calls himself Rumplestiltskin.",
+            "fr": "Joyeux cinquante-troisième anniversaire, Docteur. Bienvenue au premier jour de votre mort. Le Dr Frederick Starks, un psychanalyste new-yorkais, vient de recevoir une lettre mystérieuse et menaçante. Il se retrouve maintenant au milieu d'un jeu horrifique conçu par un homme qui se fait appeler Rumplestiltskin.",
+            "es": "Feliz quincuagésimo tercer cumpleaños, Doctor. Bienvenido al primer día de su muerte. El Dr. Frederick Starks, un psicoanalista de Nueva York, acaba de recibir una carta misteriosa y amenazante. Ahora se encuentra en medio de un juego horrífico diseñado por un hombre que se hace llamar Rumplestiltskin."
+          },
+          "author": "John Katzenbach",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.589492-04:00",
+          "updatedAt": "2025-02-19T17:54:53.589492-04:00",
+          "printLength": 633,
+          "publishDate": "2021-03-31",
+          "dimensions": "6.5 in x 8.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084633",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "4a5b2e3b-f1e7-4692-a545-4f32969522a2",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "13cb17cb-ab45-459b-96af-84d13840df9d",
+              "name": "category",
+              "value": {
+                "en": "Science Fiction",
+                "fr": "Science-fiction",
+                "es": "Ciencia ficción"
+              },
+              "createdAt": "2025-02-19T17:54:54.197865-04:00"
+            },
+            {
+              "id": "1ec9cc8c-22b0-4a89-a691-bd1e57b40498",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "4487c8af-d379-4d86-b0ea-48a0b3caaccd",
+              "name": "category",
+              "value": {
+                "en": "Mystery",
+                "fr": "Mystère",
+                "es": "Misterio"
+              },
+              "createdAt": "2025-02-19T17:54:54.200033-04:00"
+            },
+            {
+              "id": "1c551608-7f7b-4034-8cfb-916c79c0e360",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "28594ca9-4794-4365-8948-c34692ca14d2",
+              "name": "category",
+              "value": {
+                "en": "Adventure",
+                "fr": "Aventure",
+                "es": "Aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.20211-04:00"
+            },
+            {
+              "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "995a0ff1-75ca-47f4-9546-2419ec2307ba",
+              "name": "subcategory",
+              "value": {
+                "en": "Award Winners",
+                "fr": "Lauréats de prix",
+                "es": "Ganadores de premios"
+              },
+              "createdAt": "2025-02-19T17:54:54.204119-04:00"
+            },
+            {
+              "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "cdd5b225-01fe-4c17-b4d9-1e28c883da33",
+              "name": "subcategory",
+              "value": {
+                "en": "Trending Now",
+                "fr": "Tendances actuelles",
+                "es": "Tendencias actuales"
+              },
+              "createdAt": "2025-02-19T17:54:54.206119-04:00"
+            },
+            {
+              "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "c6ef1c81-2a24-48b1-b89b-d032c34626bd",
+              "name": "subcategory",
+              "value": {
+                "en": "Adventure Stories",
+                "fr": "Histoires d'aventure",
+                "es": "Historias de aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.20727-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "2157ce05-f37b-4f20-8863-9f32d8c6d264",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.209549-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "26ea8c43-c8ac-4fbe-8991-f1ad57ae24ea",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.212671-04:00"
+            },
+            {
+              "id": "57b45df1-8b2f-4dfb-b973-34b05e6105dd",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "6e883e5b-6c70-4bec-b062-c110e39db980",
+              "name": "vibe",
+              "value": {
+                "en": "🔍 I love a good mystery or some thrilling",
+                "fr": "🔍 J'adore un bon mystère ou un peu de suspense",
+                "es": "🔍 Me encanta un buen misterio o algo de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.214687-04:00"
+            },
+            {
+              "id": "500a74de-3110-4155-bbcc-d7e40af9074f",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "4de45e50-69ea-48ce-9263-4355363ccb46",
+              "name": "mood",
+              "value": {
+                "en": "🤣 lighthearted and fun",
+                "fr": "🤣 léger et amusant",
+                "es": "🤣 ligero y divertido"
+              },
+              "createdAt": "2025-02-19T17:54:54.216771-04:00"
+            },
+            {
+              "id": "2d2f76f9-8b44-47fa-ae05-4016f06d34bf",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "243dc34c-cd3c-4104-b49a-6bbb9d70add7",
+              "name": "mood",
+              "value": {
+                "en": "🕵️\u200d♀️ suspenseful",
+                "fr": "🕵️\u200d♀️ plein de suspense",
+                "es": "🕵️\u200d♀️ lleno de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.219286-04:00"
+            },
+            {
+              "id": "180c6747-016f-4d83-8287-19a00f553c61",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "4549af69-d8dc-445b-bbad-e45b032a7537",
+              "name": "mood",
+              "value": {
+                "en": "🧙\u200d♀️ magical and enchanting",
+                "fr": "🧙\u200d♀️ magique et enchanteur",
+                "es": "🧙\u200d♀️ mágico y encantador"
+              },
+              "createdAt": "2025-02-19T17:54:54.220295-04:00"
+            },
+            {
+              "id": "483b7f91-f638-4723-84b4-8acddb9f3276",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "be153b0b-7c55-43ae-8782-668eff74af19",
+              "name": "mood",
+              "value": {
+                "en": "😱 spine-tingling and eerie",
+                "fr": "😱 frissonnant et étrange",
+                "es": "😱 escalofriante y espeluznante"
+              },
+              "createdAt": "2025-02-19T17:54:54.222781-04:00"
+            },
+            {
+              "id": "23908972-873d-4602-ab05-591245ec3deb",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "04e87959-926a-4e11-967d-1a519aaea333",
+              "name": "flavor",
+              "value": {
+                "en": "🌌 Sci-fi: To the stars and beyond",
+                "fr": "🌌 Vers les étoiles et au-delà",
+                "es": "🌌 Hacia las estrellas y más allá"
+              },
+              "createdAt": "2025-02-19T17:54:54.227202-04:00"
+            },
+            {
+              "id": "f0663586-6a2e-41e9-bde7-d3d98eb25df3",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "c01f9c83-166f-43df-b5be-35d8858c5037",
+              "name": "flavor",
+              "value": {
+                "en": "💰 Non-fiction: Real stories, real facts, money",
+                "fr": "💰 Non-fiction : Histoires réelles, faits réels, argent",
+                "es": "💰 No ficción: Historias reales, hechos reales, dinero"
+              },
+              "createdAt": "2025-02-19T17:54:54.230304-04:00"
+            },
+            {
+              "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "d1c70d6d-2df3-4d5a-87ca-541d870de75d",
+              "name": "flavor",
+              "value": {
+                "en": "🎭 Drama: Deep emotions, please",
+                "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+                "es": "🎭 Drama: Emociones profundas, por favor"
+              },
+              "createdAt": "2025-02-19T17:54:54.232523-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "78cc2227-f867-4c6c-8e7d-3ba3b03b11dc",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.233518-04:00"
+            },
+            {
+              "id": "c356c738-eb66-4657-8c4a-d1caec6cf07a",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "bookTagId": "7631d227-b04a-4034-955e-ed88e177760e",
+              "name": "keyword",
+              "value": {
+                "en": "Rumplestiltskin",
+                "fr": "Rumplestiltskin",
+                "es": "Rumplestiltskin"
+              },
+              "createdAt": "2025-02-19T17:54:54.347261-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "4324b543-6f7d-4494-8521-9f75c73d2713",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+              "url": "https://m.media-amazon.com/images/I/71NynvTw10L.jpg",
+              "sourceUrl": "https://m.media-amazon.com/images/I/71NynvTw10L.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+          "correlationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651009d",
+          "translationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651009d",
+          "title": "Harry Potter and the Prisoner of Azkaban",
+          "price": 30.86,
+          "qty": 55,
+          "qtyForSale": 0,
+          "description": {
+            "en": "The third book in the Harry Potter series, introducing Sirius Black and time travel.",
+            "fr": "Le troisième livre de la série Harry Potter, introduisant Sirius Black et les voyages dans le temps.",
+            "es": "El tercer libro de la serie de Harry Potter, que presenta a Sirius Black y los viajes en el tiempo."
+          },
+          "author": "J.K. Rowling",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.589205-04:00",
+          "updatedAt": "2025-02-19T17:54:53.589205-04:00",
+          "printLength": 633,
+          "publishDate": "2021-03-31",
+          "dimensions": "6.5 in x 8.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084633",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "4a5b2e3b-f1e7-4692-a545-4f32969522a2",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "a7bff779-f187-4796-85d1-0186945ca68c",
+              "name": "category",
+              "value": {
+                "en": "Science Fiction",
+                "fr": "Science-fiction",
+                "es": "Ciencia ficción"
+              },
+              "createdAt": "2025-02-19T17:54:54.166128-04:00"
+            },
+            {
+              "id": "1ec9cc8c-22b0-4a89-a691-bd1e57b40498",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "da2dacd7-42cc-4cdc-a3fe-316bd8e7c89d",
+              "name": "category",
+              "value": {
+                "en": "Mystery",
+                "fr": "Mystère",
+                "es": "Misterio"
+              },
+              "createdAt": "2025-02-19T17:54:54.168144-04:00"
+            },
+            {
+              "id": "1c551608-7f7b-4034-8cfb-916c79c0e360",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "73ac5eab-c068-4869-9800-c3875f230201",
+              "name": "category",
+              "value": {
+                "en": "Adventure",
+                "fr": "Aventure",
+                "es": "Aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.170438-04:00"
+            },
+            {
+              "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "ad72efcf-a8e9-491e-b5a5-c6ded84383fe",
+              "name": "subcategory",
+              "value": {
+                "en": "Award Winners",
+                "fr": "Lauréats de prix",
+                "es": "Ganadores de premios"
+              },
+              "createdAt": "2025-02-19T17:54:54.172436-04:00"
+            },
+            {
+              "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "4bc204e4-0054-428e-8711-b6f8ef1a83f0",
+              "name": "subcategory",
+              "value": {
+                "en": "Trending Now",
+                "fr": "Tendances actuelles",
+                "es": "Tendencias actuales"
+              },
+              "createdAt": "2025-02-19T17:54:54.173624-04:00"
+            },
+            {
+              "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "721128b3-b1ed-49f6-99bc-83fb84b7f74e",
+              "name": "subcategory",
+              "value": {
+                "en": "Adventure Stories",
+                "fr": "Histoires d'aventure",
+                "es": "Historias de aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.175632-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "bd33cd7d-6fd2-4e86-8c0f-24d1acbd8850",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.177634-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "db9161e3-cc55-4840-8482-a7c055beac93",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.17976-04:00"
+            },
+            {
+              "id": "500a74de-3110-4155-bbcc-d7e40af9074f",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "0ce7294d-3f8f-409a-b255-02f60651ab8a",
+              "name": "mood",
+              "value": {
+                "en": "🤣 lighthearted and fun",
+                "fr": "🤣 léger et amusant",
+                "es": "🤣 ligero y divertido"
+              },
+              "createdAt": "2025-02-19T17:54:54.182767-04:00"
+            },
+            {
+              "id": "2d2f76f9-8b44-47fa-ae05-4016f06d34bf",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "09ba99b3-b2eb-4b8f-b770-71fa9373d93b",
+              "name": "mood",
+              "value": {
+                "en": "🕵️\u200d♀️ suspenseful",
+                "fr": "🕵️\u200d♀️ plein de suspense",
+                "es": "🕵️\u200d♀️ lleno de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.184762-04:00"
+            },
+            {
+              "id": "180c6747-016f-4d83-8287-19a00f553c61",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "a9159b0c-a1c1-4018-a216-22ffbe5b1c87",
+              "name": "mood",
+              "value": {
+                "en": "🧙\u200d♀️ magical and enchanting",
+                "fr": "🧙\u200d♀️ magique et enchanteur",
+                "es": "🧙\u200d♀️ mágico y encantador"
+              },
+              "createdAt": "2025-02-19T17:54:54.186282-04:00"
+            },
+            {
+              "id": "23908972-873d-4602-ab05-591245ec3deb",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "793fa8f9-70f1-4742-a171-73ab1699e91c",
+              "name": "flavor",
+              "value": {
+                "en": "🌌 Sci-fi: To the stars and beyond",
+                "fr": "🌌 Vers les étoiles et au-delà",
+                "es": "🌌 Hacia las estrellas y más allá"
+              },
+              "createdAt": "2025-02-19T17:54:54.194877-04:00"
+            },
+            {
+              "id": "f0663586-6a2e-41e9-bde7-d3d98eb25df3",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "a8cbafbb-a30c-4cc7-950c-efac77185814",
+              "name": "flavor",
+              "value": {
+                "en": "💰 Non-fiction: Real stories, real facts, money",
+                "fr": "💰 Non-fiction : Histoires réelles, faits réels, argent",
+                "es": "💰 No ficción: Historias reales, hechos reales, dinero"
+              },
+              "createdAt": "2025-02-19T17:54:54.196522-04:00"
+            },
+            {
+              "id": "afd7dc97-13dc-4c99-99fc-50f6c1183726",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "b7ddbea2-15ed-42c9-a946-86e32182780b",
+              "name": "keyword",
+              "value": {
+                "en": "voldemort",
+                "fr": "voldemort",
+                "es": "voldemort"
+              },
+              "createdAt": "2025-02-19T17:54:54.344655-04:00"
+            },
+            {
+              "id": "515dd17b-bd6a-4956-8c1c-0016e534900b",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "bookTagId": "691c36d3-8f05-43c1-9334-f2975a91bf65",
+              "name": "keyword",
+              "value": {
+                "en": "dumbledore",
+                "fr": "dumbledore",
+                "es": "dumbledore"
+              },
+              "createdAt": "2025-02-19T17:54:54.346035-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "f6b37ace-7cc6-4621-8695-403b4b348ec7",
+              "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+              "url": "https://upload.wikimedia.org/wikipedia/en/a/a0/Harry_Potter_and_the_Prisoner_of_Azkaban.jpg",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/en/a/a0/Harry_Potter_and_the_Prisoner_of_Azkaban.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+          "correlationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "translationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "title": "100 anos de soledad",
+          "price": 1450.00,
+          "qty": 10,
+          "qtyForSale": 0,
+          "description": {
+            "en": "One Hundred Years of Solitude is a 1967 novel by Colombian author Gabriel García Márquez that tells the multi-generational story of the Buendía family, whose patriarch, José Arcadio Buendía, founded the fictitious town of Macondo. The novel is often cited as one of the supreme achievements in world literature",
+            "fr": "Cent ans de solitude est un roman de 1967 de l'auteur colombien Gabriel García Márquez qui raconte l'histoire multigénérationnelle de la famille Buendía, dont le patriarche, José Arcadio Buendía, a fondé la ville fictive de Macondo. Le roman est souvent cité comme l'une des plus grandes réussites de la littérature mondiale.",
+            "es": "Cien años de soledad es una novela de 1967 del autor colombiano Gabriel García Márquez que cuenta la historia multigeneracional de la familia Buendía, cuyo patriarca, José Arcadio Buendía, fundó el pueblo ficticio de Macondo. La novela se cita a menudo como uno de los logros supremos de la literatura mundial."
+          },
+          "author": "Gabriel Garcia Marquez",
+          "language": "Spanish",
+          "createdAt": "2025-02-19T17:54:53.583395-04:00",
+          "updatedAt": "2025-02-19T17:54:53.583395-04:00",
+          "printLength": 352,
+          "publishDate": "2024-02-24",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Editorial Diana S.A. De C.V",
+          "publicIsbn": "978344231000",
+          "bindingType": "Paperback",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "f36bb74f-be54-434a-a616-91e9beabbde1",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "ca89e10f-26bd-45e4-bee9-1322624f405f",
+              "name": "category",
+              "value": {
+                "en": "Romance",
+                "fr": "Romance",
+                "es": "Romance"
+              },
+              "createdAt": "2025-02-19T17:54:53.954847-04:00"
+            },
+            {
+              "id": "66d55f15-529b-4ad5-b3de-73c1347f919c",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "dc5afbd3-c8c8-4d11-9562-97b5add854c0",
+              "name": "category",
+              "value": {
+                "en": "Classics",
+                "fr": "Classiques",
+                "es": "Clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:53.957881-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "ac056674-0bd6-454f-8922-ac60c66b89f2",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:53.96088-04:00"
+            },
+            {
+              "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "89eac40d-dac2-4c30-a239-6d503c3e88f7",
+              "name": "subcategory",
+              "value": {
+                "en": "Classic Favorites",
+                "fr": "Classiques préférés",
+                "es": "Favoritos clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:53.963429-04:00"
+            },
+            {
+              "id": "c6ee3a24-84cd-4586-8227-33da77f545b7",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "5454bf9a-7f3e-4e65-b458-cbc18c5a8d08",
+              "name": "subcategory",
+              "value": {
+                "en": "New Releases",
+                "fr": "Nouvelles sorties",
+                "es": "Nuevos lanzamientos"
+              },
+              "createdAt": "2025-02-19T17:54:53.965889-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "ea38ade9-97e4-4e4f-89e9-304dbede39d6",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:53.969338-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "0860d2ed-ebcc-4722-923c-7c6bf57d7756",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:53.972571-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "4d0eee80-392f-43d5-bba2-b0e6d9aeed25",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:53.974698-04:00"
+            },
+            {
+              "id": "67cb3ad7-2b37-4f76-b511-222254a5adf0",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "30e248cb-ba2e-4bf9-992f-a0eccbc54e34",
+              "name": "mood",
+              "value": {
+                "en": "😍 swoon-worthy",
+                "fr": "😍 à tomber par terre",
+                "es": "😍 digno de desmayarse"
+              },
+              "createdAt": "2025-02-19T17:54:53.976765-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "80883b06-a326-4d72-97fe-d4f4d8647091",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:53.983323-04:00"
+            },
+            {
+              "id": "a3d33392-6f93-437c-b887-1ab59daa97ac",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "0f8e8f6d-2c17-458f-b5f2-5b1a8f3c0a44",
+              "name": "flavor",
+              "value": {
+                "en": "📜 Historical fiction: Step back in time",
+                "fr": "📜 Fiction historique : Retour dans le temps",
+                "es": "📜 Ficción histórica: Viaje al pasado"
+              },
+              "createdAt": "2025-02-19T17:54:53.987127-04:00"
+            },
+            {
+              "id": "1bb8def7-0756-4492-b68d-a882db994d9d",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "bookTagId": "d3bd428e-22f8-49ef-81c3-a66c846810fb",
+              "name": "keyword",
+              "value": {
+                "en": "Buendía",
+                "fr": "Buendía",
+                "es": "Buendía"
+              },
+              "createdAt": "2025-02-19T17:54:54.337469-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "478192ba-d022-4209-8dd5-1f3ae4c1d3dd",
+              "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+              "url": "https://m.media-amazon.com/images/I/819vfB2BjyL._SL1500_.jpg",
+              "sourceUrl": "https://m.media-amazon.com/images/I/819vfB2BjyL._SL1500_.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+          "correlationId": "ab9ffdbe-649d-497c-af47-9b9fa73d7388",
+          "translationId": "ab9ffdbe-649d-497c-af47-9b9fa73d7388",
+          "title": "The Tale of Peter Rabbit",
+          "price": 42.62,
+          "qty": 99,
+          "qtyForSale": 0,
+          "description": {
+            "en": "The classic children's story of a mischievous rabbit and his adventures in Mr. McGregor's garden.",
+            "fr": "L'histoire classique pour enfants d'un lapin espiègle et de ses aventures dans le jardin de M. McGregor.",
+            "es": "La clásica historia infantil de un conejo travieso y sus aventuras en el jardín del señor McGregor."
+          },
+          "author": "Beatrix Potter",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.585974-04:00",
+          "updatedAt": "2025-02-19T17:54:53.585974-04:00",
+          "printLength": 410,
+          "publishDate": "2021-03-15",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084641",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "d30c10df-f586-4b8c-900a-5e4bdaad9198",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "0eefb4a4-4855-4367-a85b-e2e53196ef50",
+              "name": "category",
+              "value": {
+                "en": "Children's Books",
+                "fr": "Livres pour enfants",
+                "es": "Libros para niños"
+              },
+              "createdAt": "2025-02-19T17:54:54.045879-04:00"
+            },
+            {
+              "id": "af5c87c0-9b71-4838-9e6a-fc49a36e1cb8",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "1f10e99e-7a6f-4427-b755-543caccdfadd",
+              "name": "category",
+              "value": {
+                "en": "Non-fiction",
+                "fr": "Non-fiction",
+                "es": "No ficción"
+              },
+              "createdAt": "2025-02-19T17:54:54.049123-04:00"
+            },
+            {
+              "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "d82bf5de-2467-4eb6-ba7a-7fb9d5c4ec91",
+              "name": "subcategory",
+              "value": {
+                "en": "Limited Edition",
+                "fr": "Édition limitée",
+                "es": "Edición limitada"
+              },
+              "createdAt": "2025-02-19T17:54:54.05047-04:00"
+            },
+            {
+              "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "47ece32b-e0ae-4e0a-a5b1-30e1488d1dff",
+              "name": "subcategory",
+              "value": {
+                "en": "For Kids",
+                "fr": "Pour enfants",
+                "es": "Para niños"
+              },
+              "createdAt": "2025-02-19T17:54:54.052573-04:00"
+            },
+            {
+              "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "995866c7-82d5-4dcb-9b3b-638101f6244f",
+              "name": "subcategory",
+              "value": {
+                "en": "For Teens",
+                "fr": "Pour adolescents",
+                "es": "Para adolescentes"
+              },
+              "createdAt": "2025-02-19T17:54:54.053581-04:00"
+            },
+            {
+              "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "fb6921b5-70bd-4cfa-965d-da15114afbf6",
+              "name": "subcategory",
+              "value": {
+                "en": "Award Winners",
+                "fr": "Lauréats de prix",
+                "es": "Ganadores de premios"
+              },
+              "createdAt": "2025-02-19T17:54:54.056026-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "a67dc99c-19d5-46d8-a116-63c775cfab77",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.058064-04:00"
+            },
+            {
+              "id": "a9898c47-5cb5-4cd5-a196-e675e31a462e",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "bc060840-ccda-4e3b-93af-280f59890d4e",
+              "name": "vibe",
+              "value": {
+                "en": "❤️ I’m here  for feels - romance, tears, all of it",
+                "fr": "❤️ Je suis là pour les émotions - romance, larmes, tout ça",
+                "es": "❤️ Estoy aquí para los sentimientos: romance, lágrimas, todo eso"
+              },
+              "createdAt": "2025-02-19T17:54:54.060072-04:00"
+            },
+            {
+              "id": "180c6747-016f-4d83-8287-19a00f553c61",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "6a39c202-8f57-499b-adb3-f68b2c02f38f",
+              "name": "mood",
+              "value": {
+                "en": "🧙\u200d♀️ magical and enchanting",
+                "fr": "🧙\u200d♀️ magique et enchanteur",
+                "es": "🧙\u200d♀️ mágico y encantador"
+              },
+              "createdAt": "2025-02-19T17:54:54.061074-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "206776ea-d347-47c9-86b1-52408b919a0d",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:54.063074-04:00"
+            },
+            {
+              "id": "8d4cf711-dd03-4f10-aa54-b02326f31ea2",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "062f7d19-e770-4c52-9ae0-cacf1891f402",
+              "name": "flavor",
+              "value": {
+                "en": "🕵️\u200d♀️ Mystery/Thriller: Who did it? Need answers",
+                "fr": "🕵️\u200d♀️ Mystère/Thriller : Qui l'a fait ? Besoin de réponses",
+                "es": "🕵️\u200d♀️ Misterio/Suspense: ¿Quién lo hizo? Necesito respuestas"
+              },
+              "createdAt": "2025-02-19T17:54:54.065082-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "bookTagId": "4008f2f9-e131-4344-afdc-c4dfe6c69bd9",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.066186-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "eb0ebd83-3e3f-4d04-98db-db14d9ebd8bd",
+              "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Peter_Rabbit_first_edition_1902a.jpg",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Peter_Rabbit_first_edition_1902a.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+          "correlationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651009d",
+          "translationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651009e",
+          "title": "Harry Potter and the Chamber of Secrets",
+          "price": 39.37,
+          "qty": 85,
+          "qtyForSale": 0,
+          "description": {
+            "en": "The second book in the Harry Potter series, where Harry faces new challenges at Hogwarts.",
+            "fr": "Le deuxième livre de la série Harry Potter, où Harry fait face à de nouveaux défis à Poudlard.",
+            "es": "El segundo libro de la serie de Harry Potter, donde Harry enfrenta nuevos desafíos en Hogwarts."
+          },
+          "author": "J.K. Rowling",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.588196-04:00",
+          "updatedAt": "2025-02-19T17:54:53.588196-04:00",
+          "printLength": 450,
+          "publishDate": "2021-03-15",
+          "dimensions": "5.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084688",
+          "bindingType": "Paperback",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "4a5b2e3b-f1e7-4692-a545-4f32969522a2",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "8a0f4dd7-c0b3-47e7-969d-99a4b6a8dfd0",
+              "name": "category",
+              "value": {
+                "en": "Science Fiction",
+                "fr": "Science-fiction",
+                "es": "Ciencia ficción"
+              },
+              "createdAt": "2025-02-19T17:54:54.13904-04:00"
+            },
+            {
+              "id": "1c551608-7f7b-4034-8cfb-916c79c0e360",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "f4c756d3-5e18-48f7-b79f-045c692c3cf7",
+              "name": "category",
+              "value": {
+                "en": "Adventure",
+                "fr": "Aventure",
+                "es": "Aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.14005-04:00"
+            },
+            {
+              "id": "1ec9cc8c-22b0-4a89-a691-bd1e57b40498",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "9f0f8061-d32f-486c-a08c-922a57a42c6d",
+              "name": "category",
+              "value": {
+                "en": "Mystery",
+                "fr": "Mystère",
+                "es": "Misterio"
+              },
+              "createdAt": "2025-02-19T17:54:54.141049-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "ee6779f0-485a-436c-a207-94dab1d7d911",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.142048-04:00"
+            },
+            {
+              "id": "3dc143b8-b227-474f-9fcd-af40a730edd4",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "f7c9bb9b-e0cc-4297-9390-be23a6de45d2",
+              "name": "subcategory",
+              "value": {
+                "en": "Award Winners",
+                "fr": "Lauréats de prix",
+                "es": "Ganadores de premios"
+              },
+              "createdAt": "2025-02-19T17:54:54.144116-04:00"
+            },
+            {
+              "id": "7f78e041-8ec8-4c20-afc7-02e15c4ad7f8",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "344d612f-47ce-45ab-bf7c-3d60df9d9184",
+              "name": "subcategory",
+              "value": {
+                "en": "Adventure Stories",
+                "fr": "Histoires d'aventure",
+                "es": "Historias de aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.146112-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "28d755bf-73d9-4b2c-851f-66152e5511d5",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.148355-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "3117f6cf-4d6d-4d6a-9477-14e27a777276",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.149828-04:00"
+            },
+            {
+              "id": "2d2f76f9-8b44-47fa-ae05-4016f06d34bf",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "80ec7c46-e1f3-4ec5-8671-53e4b7e3a979",
+              "name": "mood",
+              "value": {
+                "en": "🕵️\u200d♀️ suspenseful",
+                "fr": "🕵️\u200d♀️ plein de suspense",
+                "es": "🕵️\u200d♀️ lleno de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.151267-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "6d63706e-aa3c-41be-a0f7-55ad26e3db04",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:54.153774-04:00"
+            },
+            {
+              "id": "23908972-873d-4602-ab05-591245ec3deb",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "4dd9ce2a-f1a8-4ef5-9aa6-d01c201c635c",
+              "name": "flavor",
+              "value": {
+                "en": "🌌 Sci-fi: To the stars and beyond",
+                "fr": "🌌 Vers les étoiles et au-delà",
+                "es": "🌌 Hacia las estrellas y más allá"
+              },
+              "createdAt": "2025-02-19T17:54:54.161974-04:00"
+            },
+            {
+              "id": "ecf01be1-2d8e-46c1-a683-2e78ec0d43b1",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "675fa4db-18e1-4b64-a471-d9ced81917a5",
+              "name": "flavor",
+              "value": {
+                "en": "🏰 Fantasy: Dragon, magi, etc",
+                "fr": "🏰 Dragon, mage, etc",
+                "es": "🏰 Dragón, mago, etc"
+              },
+              "createdAt": "2025-02-19T17:54:54.163982-04:00"
+            },
+            {
+              "id": "bcca20a6-b9ac-4c7c-ac9e-86080252cff9",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "2eb2cbb8-f1f1-4836-b874-1f8ab200abd5",
+              "name": "keyword",
+              "value": {
+                "en": "voldemort",
+                "fr": "voldemort",
+                "es": "voldemort"
+              },
+              "createdAt": "2025-02-19T17:54:54.34265-04:00"
+            },
+            {
+              "id": "a912ff7c-4f3e-46e3-aa16-e6592484e326",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "bookTagId": "1dbf80d2-1df8-4ac7-b2c7-088dbab77dfa",
+              "name": "keyword",
+              "value": {
+                "en": "dumbledore",
+                "fr": "dumbledore",
+                "es": "dumbledore"
+              },
+              "createdAt": "2025-02-19T17:54:54.343651-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "a832022e-740d-4e28-a808-ef20172261f8",
+              "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+              "url": "https://upload.wikimedia.org/wikipedia/en/5/5c/Harry_Potter_and_the_Chamber_of_Secrets.jpg",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/en/5/5c/Harry_Potter_and_the_Chamber_of_Secrets.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+          "correlationId": "2d5609bd-efa2-4f5f-8c80-b4df54b1a781",
+          "translationId": "2d5609bd-efa2-4f5f-8c80-b4df54b1a780",
+          "title": "Beyond Order",
+          "price": 2500.00,
+          "qty": 14,
+          "qtyForSale": 0,
+          "description": {
+            "en": "Beyond Order: 12 More Rules for Life is a 2021 self-help book by Canadian clinical psychologist, YouTube personality, and psychology professor Jordan Peterson, as a sequel to his 2018 book 12 Rules for Life.",
+            "fr": "Beyond Order: 12 More Rules for Life est un livre d'auto-assistance de 2021 du psychologue clinicien canadien, personnalité YouTube et professeur de psychologie Jordan Peterson, suite de son livre de 2018 12 Rules for Life.",
+            "es": "Beyond Order: 12 More Rules for Life es un libro de autoayuda de 2021 del psicólogo clínico canadiense, personalidad de YouTube y profesor de psicología Jordan Peterson, como secuela de su libro de 2018 12 Rules for Life."
+          },
+          "author": "Jordan Peterson",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.585974-04:00",
+          "updatedAt": "2025-02-19T17:54:53.585974-04:00",
+          "printLength": 454,
+          "publishDate": "2021-03-15",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084649",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "4781318f-60b0-44f3-9db4-3dce3f83f4ff",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "b45c3554-ff32-4444-9130-62a0d42237c8",
+              "name": "category",
+              "value": {
+                "en": "Psychology",
+                "fr": "Psychologie",
+                "es": "Psicología"
+              },
+              "createdAt": "2025-02-19T17:54:54.016366-04:00"
+            },
+            {
+              "id": "f679fb67-e874-497f-b66c-7d7e3b2b8183",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "d260771b-b277-43ce-9d2f-ee83c75a2b00",
+              "name": "category",
+              "value": {
+                "en": "Self-help",
+                "fr": "Développement personnel",
+                "es": "Autoayuda"
+              },
+              "createdAt": "2025-02-19T17:54:54.018368-04:00"
+            },
+            {
+              "id": "ab5c7be2-248e-4b3f-a99f-0285c4f97c47",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "f3452a85-267a-4691-b380-bb68cd073c38",
+              "name": "category",
+              "value": {
+                "en": "Poetry",
+                "fr": "Poésie",
+                "es": "Poesía"
+              },
+              "createdAt": "2025-02-19T17:54:54.020375-04:00"
+            },
+            {
+              "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "d4dffc3d-6f70-4dd2-8c82-62104bc5da4b",
+              "name": "subcategory",
+              "value": {
+                "en": "Top Rated",
+                "fr": "Les mieux notés",
+                "es": "Más valorados"
+              },
+              "createdAt": "2025-02-19T17:54:54.021745-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "f7542822-e0fa-45ee-a9ce-c8c53560de9a",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.024221-04:00"
+            },
+            {
+              "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "2beb7149-edd4-4027-b8e6-2242177abffe",
+              "name": "subcategory",
+              "value": {
+                "en": "Series",
+                "fr": "Séries",
+                "es": "Series"
+              },
+              "createdAt": "2025-02-19T17:54:54.026232-04:00"
+            },
+            {
+              "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "b09ed097-25e2-404c-99ab-0adca583fed3",
+              "name": "subcategory",
+              "value": {
+                "en": "For Beginners",
+                "fr": "Pour débutants",
+                "es": "Para principiantes"
+              },
+              "createdAt": "2025-02-19T17:54:54.027495-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "61620585-66ff-4414-b498-2d317133f692",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.029832-04:00"
+            },
+            {
+              "id": "efa08a4a-2bdf-4d86-9f88-19038ee8dc2a",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "f4e4c862-0292-4a7b-aa96-ba6bf2fc7ef9",
+              "name": "vibe",
+              "value": {
+                "en": "🧘\u200d♀️ Something relaxing",
+                "fr": "🧘\u200d♀️ Quelque chose de relaxant",
+                "es": "🧘\u200d♀️ Algo relajante"
+              },
+              "createdAt": "2025-02-19T17:54:54.032323-04:00"
+            },
+            {
+              "id": "6c527a76-2721-4acc-84e7-b21c7a5cdfd2",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "212f726a-6b27-4f83-bb6e-be6e8203c94c",
+              "name": "mood",
+              "value": {
+                "en": "🤩 thoughtful and inspiring",
+                "fr": "🤩 réfléchi et inspirant",
+                "es": "🤩 reflexivo e inspirador"
+              },
+              "createdAt": "2025-02-19T17:54:54.033322-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "fa71037b-a098-401d-83ed-01ed35f9cab3",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:54.035848-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "045a500c-4e20-4e00-9aee-a4416471ce3e",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.040329-04:00"
+            },
+            {
+              "id": "244e85b8-3318-4030-8541-78d3e5a3890d",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "4f3e2ea6-2099-4d21-b538-63b07b83d652",
+              "name": "flavor",
+              "value": {
+                "en": "❤️ Romance: Sparks flying!",
+                "fr": "❤️ Romance : Des étincelles dans l'air !",
+                "es": "❤️ Romance: ¡Chispas volando!"
+              },
+              "createdAt": "2025-02-19T17:54:54.042873-04:00"
+            },
+            {
+              "id": "ecf01be1-2d8e-46c1-a683-2e78ec0d43b1",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "f213b582-13eb-4f7c-a689-0df155bbb9f8",
+              "name": "flavor",
+              "value": {
+                "en": "🏰 Fantasy: Dragon, magi, etc",
+                "fr": "🏰 Dragon, mage, etc",
+                "es": "🏰 Dragón, mago, etc"
+              },
+              "createdAt": "2025-02-19T17:54:54.043879-04:00"
+            },
+            {
+              "id": "c2ff9f81-ac84-4ae3-bc82-13f9a19491a1",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "bookTagId": "76fb6bf5-3751-406c-8188-c80df104dd62",
+              "name": "keyword",
+              "value": {
+                "en": "dragon",
+                "fr": "dragon",
+                "es": "dragon"
+              },
+              "createdAt": "2025-02-19T17:54:54.341196-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "6ac3e040-2a37-497d-8d13-e2bc17b96a35",
+              "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+              "url": "https://gregory.ph/cdn/shop/products/BuyBeyondOrderinthePhilippines-2.jpg?v=1629037690",
+              "sourceUrl": "https://gregory.ph/cdn/shop/products/BuyBeyondOrderinthePhilippines-2.jpg?v=1629037690"
+            }
+          ]
+        },
+        {
+          "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+          "correlationId": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+          "translationId": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+          "title": "La casa de los espíritus",
+          "price": 17.00,
+          "qty": 25,
+          "qtyForSale": 0,
+          "description": {
+            "en": "The novel follows the lives of the Trueba family, exploring themes of love, politics, and the supernatural in post-colonial Chile.",
+            "fr": "Le roman suit la vie de la famille Trueba, explorant des thèmes d'amour, de politique et de surnaturel dans le Chili postcolonial.",
+            "es": "La novela sigue las vidas de la familia Trueba, explorando temas de amor, política y lo sobrenatural en el Chile postcolonial."
+          },
+          "author": "Isabel Allende",
+          "language": "Spanish",
+          "createdAt": "2025-02-19T17:54:53.589492-04:00",
+          "updatedAt": "2025-02-19T17:54:53.589492-04:00",
+          "printLength": 368,
+          "publishDate": "1982-03-25",
+          "dimensions": "14 x 21 cm",
+          "publisher": "Plaza & Janés",
+          "publicIsbn": "9780593084642",
+          "bindingType": "Paperback",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "343818e2-1b9e-476d-be4f-17a0ea65bbd1",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "4b4a46fb-7c47-4667-8d33-142ad3f0260d",
+              "name": "category",
+              "value": {
+                "en": "Thriller",
+                "fr": "Thriller",
+                "es": "Suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.258763-04:00"
+            },
+            {
+              "id": "4781318f-60b0-44f3-9db4-3dce3f83f4ff",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "2acbec22-b07f-49eb-9acf-6fc75325e8ae",
+              "name": "category",
+              "value": {
+                "en": "Psychology",
+                "fr": "Psychologie",
+                "es": "Psicología"
+              },
+              "createdAt": "2025-02-19T17:54:54.259762-04:00"
+            },
+            {
+              "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "705cffd3-8462-412f-815c-09a152162493",
+              "name": "subcategory",
+              "value": {
+                "en": "For Beginners",
+                "fr": "Pour débutants",
+                "es": "Para principiantes"
+              },
+              "createdAt": "2025-02-19T17:54:54.261764-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "ee58510a-e79a-49f6-b3c4-835cb7c73bb7",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.263948-04:00"
+            },
+            {
+              "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "038c7f71-f243-4d88-a863-eaaff6bcedc8",
+              "name": "subcategory",
+              "value": {
+                "en": "Trending Now",
+                "fr": "Tendances actuelles",
+                "es": "Tendencias actuales"
+              },
+              "createdAt": "2025-02-19T17:54:54.264954-04:00"
+            },
+            {
+              "id": "efa08a4a-2bdf-4d86-9f88-19038ee8dc2a",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "fc0fc4e2-8cbc-4b36-9d5b-acdb286b55ce",
+              "name": "vibe",
+              "value": {
+                "en": "🧘\u200d♀️ Something relaxing",
+                "fr": "🧘\u200d♀️ Quelque chose de relaxant",
+                "es": "🧘\u200d♀️ Algo relajante"
+              },
+              "createdAt": "2025-02-19T17:54:54.267289-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "b36ec92b-a0e3-4343-aef9-5763235748dd",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.269297-04:00"
+            },
+            {
+              "id": "67cb3ad7-2b37-4f76-b511-222254a5adf0",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "536125dd-9db4-4bf0-886e-3be0d18f0af3",
+              "name": "mood",
+              "value": {
+                "en": "😍 swoon-worthy",
+                "fr": "😍 à tomber par terre",
+                "es": "😍 digno de desmayarse"
+              },
+              "createdAt": "2025-02-19T17:54:54.270297-04:00"
+            },
+            {
+              "id": "6c527a76-2721-4acc-84e7-b21c7a5cdfd2",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "1900324a-2379-42d3-8548-9d7287ac9f9e",
+              "name": "mood",
+              "value": {
+                "en": "🤩 thoughtful and inspiring",
+                "fr": "🤩 réfléchi et inspirant",
+                "es": "🤩 reflexivo e inspirador"
+              },
+              "createdAt": "2025-02-19T17:54:54.272297-04:00"
+            },
+            {
+              "id": "ea49cf23-dc0c-4420-bd42-b4db181d74a7",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "83871b98-dd3c-41b7-acd9-84d7ed6fde57",
+              "name": "mood",
+              "value": {
+                "en": "🐻 cozy and nostalgic",
+                "fr": "🐻 chaleureux et nostalgique",
+                "es": "🐻 acogedor y nostálgico"
+              },
+              "createdAt": "2025-02-19T17:54:54.274298-04:00"
+            },
+            {
+              "id": "ecf01be1-2d8e-46c1-a683-2e78ec0d43b1",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "b1eb85b6-afed-475f-84f1-4f14a1825768",
+              "name": "flavor",
+              "value": {
+                "en": "🏰 Fantasy: Dragon, magi, etc",
+                "fr": "🏰 Dragon, mage, etc",
+                "es": "🏰 Dragón, mago, etc"
+              },
+              "createdAt": "2025-02-19T17:54:54.283584-04:00"
+            },
+            {
+              "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "b513e9f2-5e2b-4266-9e1b-4f5680cd42a2",
+              "name": "flavor",
+              "value": {
+                "en": "🎭 Drama: Deep emotions, please",
+                "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+                "es": "🎭 Drama: Emociones profundas, por favor"
+              },
+              "createdAt": "2025-02-19T17:54:54.285089-04:00"
+            },
+            {
+              "id": "106cda8a-34d4-4ca9-857a-a5adbaec4966",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "62055328-c96b-4143-815e-f46b5a57681e",
+              "name": "keyword",
+              "value": {
+                "en": "Saga familiar",
+                "fr": "Saga familiar",
+                "es": "Saga familiar"
+              },
+              "createdAt": "2025-02-19T17:54:54.349643-04:00"
+            },
+            {
+              "id": "c481a256-1fcc-4922-b41a-1b2ab68d58c8",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "e42eb85b-cfd6-415f-bb30-8c99b78f607b",
+              "name": "keyword",
+              "value": {
+                "en": "política",
+                "fr": "política",
+                "es": "política"
+              },
+              "createdAt": "2025-02-19T17:54:54.351874-04:00"
+            },
+            {
+              "id": "1ceaeeb9-bde6-4e7a-95f9-c1d13c182b8c",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "bookTagId": "521c4b71-8df5-4d15-adc4-542adf8a195e",
+              "name": "keyword",
+              "value": {
+                "en": "realismo mágico",
+                "fr": "realismo mágico",
+                "es": "realismo mágico"
+              },
+              "createdAt": "2025-02-19T17:54:54.353362-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "36f7c713-d576-40d4-ae88-635b5edd1285",
+              "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+              "url": "https://static.megustaleer.com/images/libros_650_x/P362085.jpg",
+              "sourceUrl": "https://static.megustaleer.com/images/libros_650_x/P362085.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+          "correlationId": "90823276-ec4e-4019-90e3-9215222acbbe",
+          "translationId": "90823276-ec4e-4019-90e3-9215222acbbe",
+          "title": "Cosmos (Sagan book)",
+          "price": 42.78,
+          "qty": 59,
+          "qtyForSale": 0,
+          "description": {
+            "en": "A landmark book that explores the universe, science, and humanity's place within it.",
+            "fr": "Un livre marquant qui explore l'univers, la science et la place de l'humanité en son sein.",
+            "es": "Un libro icónico que explora el universo, la ciencia y el lugar de la humanidad dentro de él."
+          },
+          "author": "Carl Sagan",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.588196-04:00",
+          "updatedAt": "2025-02-19T17:54:53.588196-04:00",
+          "printLength": 150,
+          "publishDate": "2020-03-15",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084677",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "66d55f15-529b-4ad5-b3de-73c1347f919c",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "b1e889d4-bfa5-460b-b120-e928a6a14d4e",
+              "name": "category",
+              "value": {
+                "en": "Classics",
+                "fr": "Classiques",
+                "es": "Clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:54.122392-04:00"
+            },
+            {
+              "id": "4a5b2e3b-f1e7-4692-a545-4f32969522a2",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "7b90fe70-b9af-4001-94b1-57acc767df8e",
+              "name": "category",
+              "value": {
+                "en": "Science Fiction",
+                "fr": "Science-fiction",
+                "es": "Ciencia ficción"
+              },
+              "createdAt": "2025-02-19T17:54:54.123472-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "220aec5f-f896-43bc-ae1b-dbde0d5fc8db",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.124915-04:00"
+            },
+            {
+              "id": "191f2957-45c1-4c45-a556-4a93f858b184",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "9c2f3960-b808-4d48-8b7b-625b3db96acc",
+              "name": "subcategory",
+              "value": {
+                "en": "Limited Edition",
+                "fr": "Édition limitée",
+                "es": "Edición limitada"
+              },
+              "createdAt": "2025-02-19T17:54:54.126377-04:00"
+            },
+            {
+              "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "a4d467b8-a694-44b8-ae68-b1c7cb81131e",
+              "name": "subcategory",
+              "value": {
+                "en": "Trending Now",
+                "fr": "Tendances actuelles",
+                "es": "Tendencias actuales"
+              },
+              "createdAt": "2025-02-19T17:54:54.128395-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "f38a49fc-5168-440d-aaea-08edc5a7b696",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.129488-04:00"
+            },
+            {
+              "id": "5e4c1670-e9d3-45e3-8567-84c7ecb0fb27",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "0d4cb2f2-8712-4d59-88c3-c547bb9fae40",
+              "name": "vibe",
+              "value": {
+                "en": "🧠 Teach me something new",
+                "fr": "🧠 Enseigne-moi quelque chose de nouveau",
+                "es": "🧠 Enséñame algo nuevo"
+              },
+              "createdAt": "2025-02-19T17:54:54.131623-04:00"
+            },
+            {
+              "id": "500a74de-3110-4155-bbcc-d7e40af9074f",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "acde6914-68a0-4134-a65b-63c85d1ed470",
+              "name": "mood",
+              "value": {
+                "en": "🤣 lighthearted and fun",
+                "fr": "🤣 léger et amusant",
+                "es": "🤣 ligero y divertido"
+              },
+              "createdAt": "2025-02-19T17:54:54.132626-04:00"
+            },
+            {
+              "id": "2d2f76f9-8b44-47fa-ae05-4016f06d34bf",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "c6964eff-c288-4cb1-b6ae-3478327a9f8a",
+              "name": "mood",
+              "value": {
+                "en": "🕵️\u200d♀️ suspenseful",
+                "fr": "🕵️\u200d♀️ plein de suspense",
+                "es": "🕵️\u200d♀️ lleno de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.13508-04:00"
+            },
+            {
+              "id": "244e85b8-3318-4030-8541-78d3e5a3890d",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "8c47e0f6-aac5-4679-925c-d293d41065cb",
+              "name": "flavor",
+              "value": {
+                "en": "❤️ Romance: Sparks flying!",
+                "fr": "❤️ Romance : Des étincelles dans l'air !",
+                "es": "❤️ Romance: ¡Chispas volando!"
+              },
+              "createdAt": "2025-02-19T17:54:54.136157-04:00"
+            },
+            {
+              "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "bookTagId": "dd4b533e-af8e-4981-9043-322bed85a8f3",
+              "name": "flavor",
+              "value": {
+                "en": "🎭 Drama: Deep emotions, please",
+                "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+                "es": "🎭 Drama: Emociones profundas, por favor"
+              },
+              "createdAt": "2025-02-19T17:54:54.138033-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "6c23d6b6-edd2-4869-a619-fc168673774e",
+              "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+              "url": "https://upload.wikimedia.org/wikipedia/en/9/91/Cosmos_book.gif",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/en/9/91/Cosmos_book.gif"
+            }
+          ]
+        },
+        {
+          "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+          "correlationId": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+          "translationId": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+          "title": "Pedro Páramo",
+          "price": 23.00,
+          "qty": 32,
+          "qtyForSale": 0,
+          "description": {
+            "en": "A man travels to the town of Comala to find his father, Pedro Páramo, only to discover a ghost town filled with spirits and secrets.",
+            "fr": "Un homme se rend dans la ville de Comala pour trouver son père, Pedro Páramo, et découvre une ville fantôme remplie d'esprits et de secrets.",
+            "es": "n hombre viaja al pueblo de Comala para encontrar a su padre, Pedro Páramo, solo para descubrir un pueblo fantasma lleno de espíritus y secretos."
+          },
+          "author": "Juan Rulfo",
+          "language": "Spanish",
+          "createdAt": "2025-02-19T17:54:53.590586-04:00",
+          "updatedAt": "2025-02-19T17:54:53.590586-04:00",
+          "printLength": 124,
+          "publishDate": "1955-03-25",
+          "dimensions": "13x20",
+          "publisher": "Fondo de Cultura Económica",
+          "publicIsbn": "9780593084611",
+          "bindingType": "Paperback",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "1ec9cc8c-22b0-4a89-a691-bd1e57b40498",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "2678255f-8793-4f2a-98b6-99c914229ef2",
+              "name": "category",
+              "value": {
+                "en": "Mystery",
+                "fr": "Mystère",
+                "es": "Misterio"
+              },
+              "createdAt": "2025-02-19T17:54:54.287403-04:00"
+            },
+            {
+              "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "3d2bbe91-0db3-4dfc-8a4c-396a0c8b692a",
+              "name": "subcategory",
+              "value": {
+                "en": "Trending Now",
+                "fr": "Tendances actuelles",
+                "es": "Tendencias actuales"
+              },
+              "createdAt": "2025-02-19T17:54:54.289402-04:00"
+            },
+            {
+              "id": "57b45df1-8b2f-4dfb-b973-34b05e6105dd",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "fb42de11-4ed6-4326-a5fa-6ee15211d81a",
+              "name": "vibe",
+              "value": {
+                "en": "🔍 I love a good mystery or some thrilling",
+                "fr": "🔍 J'adore un bon mystère ou un peu de suspense",
+                "es": "🔍 Me encanta un buen misterio o algo de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.290402-04:00"
+            },
+            {
+              "id": "2d2f76f9-8b44-47fa-ae05-4016f06d34bf",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "59cb4144-3afa-4e24-8cb6-d74396ded9ed",
+              "name": "mood",
+              "value": {
+                "en": "🕵️\u200d♀️ suspenseful",
+                "fr": "🕵️\u200d♀️ plein de suspense",
+                "es": "🕵️\u200d♀️ lleno de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.29241-04:00"
+            },
+            {
+              "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "b9e7bde0-6db9-4e80-b42b-0cdab804a208",
+              "name": "flavor",
+              "value": {
+                "en": "🎭 Drama: Deep emotions, please",
+                "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+                "es": "🎭 Drama: Emociones profundas, por favor"
+              },
+              "createdAt": "2025-02-19T17:54:54.300154-04:00"
+            },
+            {
+              "id": "d2b3dd33-3a38-4557-bbd6-3feb7f9d4bfc",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "e491963d-cdd8-4b58-88da-7b5458bd50ae",
+              "name": "keyword",
+              "value": {
+                "en": "Realismo mágico",
+                "fr": "Realismo mágico",
+                "es": "Realismo mágico"
+              },
+              "createdAt": "2025-02-19T17:54:54.354373-04:00"
+            },
+            {
+              "id": "78364c94-d311-4258-9bd3-497a0b2f3d60",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "7c4da50a-5d1c-4992-a4c7-fab58b96565d",
+              "name": "keyword",
+              "value": {
+                "en": "búsqueda",
+                "fr": "búsqueda",
+                "es": "búsqueda"
+              },
+              "createdAt": "2025-02-19T17:54:54.356373-04:00"
+            },
+            {
+              "id": "fc8f11be-7903-420f-8075-b2a3953e3c9b",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "bookTagId": "24925daf-5990-4ae7-b3e0-f3b837312484",
+              "name": "keyword",
+              "value": {
+                "en": "muerte",
+                "fr": "muerte",
+                "es": "muerte"
+              },
+              "createdAt": "2025-02-19T17:54:54.357432-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "2c5b9342-7b7e-40d9-bda8-ebef783a7117",
+              "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+              "url": "https://librosocultos.com/wp-content/uploads/2024/11/pedro-paramo.jpg",
+              "sourceUrl": "https://librosocultos.com/wp-content/uploads/2024/11/pedro-paramo.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+          "correlationId": "2d5609bd-efa2-4f5f-8c80-b4df54b1a781",
+          "translationId": "2d5609bd-efa2-4f5f-8c80-b4df54b1a781",
+          "title": "12 Rules for Life",
+          "price": 2400.00,
+          "qty": 15,
+          "qtyForSale": 0,
+          "description": {
+            "en": "12 Rules for Life: An Antidote to Chaos is a 2018 self-help book by the Canadian clinical psychologist Jordan Peterson. It provides life advice through essays in abstract ethical principles, psychology, mythology, religion, and personal anecdotes",
+            "fr": "12 règles pour la vie : un antidote au chaos est un livre de développement personnel publié en 2018 par le psychologue clinicien canadien Jordan Peterson. Il fournit des conseils de vie à travers des essais sur des principes éthiques abstraits, la psychologie, la mythologie, la religion et des anecdotes personnelles",
+            "es": "12 reglas para la vida: un antídoto contra el caos es un libro de autoayuda de 2018 del psicólogo clínico canadiense Jordan Peterson. Ofrece consejos de vida a través de ensayos sobre principios éticos abstractos, psicología, mitología, religión y anécdotas personales."
+          },
+          "author": "Jordan Peterson",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.584901-04:00",
+          "updatedAt": "2025-02-19T17:54:53.584901-04:00",
+          "printLength": 556,
+          "publishDate": "2014-04-21",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9783442315536",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "4781318f-60b0-44f3-9db4-3dce3f83f4ff",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "065014a8-b67b-4437-991f-aa937a1ca11d",
+              "name": "category",
+              "value": {
+                "en": "Psychology",
+                "fr": "Psychologie",
+                "es": "Psicología"
+              },
+              "createdAt": "2025-02-19T17:54:53.989157-04:00"
+            },
+            {
+              "id": "474a5083-5fbd-4850-ac5c-2c762b2bb254",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "66d5f717-ff21-4302-a37f-7eaf51f37460",
+              "name": "category",
+              "value": {
+                "en": "Religion/Spirituality",
+                "fr": "Religion/Spiritualité",
+                "es": "Religión/Espiritualidad"
+              },
+              "createdAt": "2025-02-19T17:54:53.992174-04:00"
+            },
+            {
+              "id": "1904dfd3-94be-4bd9-b8e6-42a579a58918",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "e0085433-6ae4-49a1-8127-891a11513f9d",
+              "name": "subcategory",
+              "value": {
+                "en": "Series",
+                "fr": "Séries",
+                "es": "Series"
+              },
+              "createdAt": "2025-02-19T17:54:53.994174-04:00"
+            },
+            {
+              "id": "04e2d891-639b-4e32-9db3-e15adb6c0165",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "1dfffd30-b40b-4c9e-9c38-28541dae04cd",
+              "name": "subcategory",
+              "value": {
+                "en": "Top Rated",
+                "fr": "Les mieux notés",
+                "es": "Más valorados"
+              },
+              "createdAt": "2025-02-19T17:54:53.995901-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "c3c4528e-5f1c-4c52-a165-e2375edd2d30",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:53.998126-04:00"
+            },
+            {
+              "id": "3420b4b2-d92a-4c9c-acb1-f9edcacaee1c",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "1eb7cd76-9985-40a4-8923-5e54c7792bb6",
+              "name": "subcategory",
+              "value": {
+                "en": "For Adults",
+                "fr": "Pour adultes",
+                "es": "Para adultos"
+              },
+              "createdAt": "2025-02-19T17:54:54.000137-04:00"
+            },
+            {
+              "id": "4b2192cb-bfb3-4137-aabf-9e60730b075f",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "a88856b3-7379-44cb-a0a3-4862e776f178",
+              "name": "subcategory",
+              "value": {
+                "en": "E-books",
+                "fr": "Livres numériques",
+                "es": "Libros electrónicos"
+              },
+              "createdAt": "2025-02-19T17:54:54.00319-04:00"
+            },
+            {
+              "id": "5e4c1670-e9d3-45e3-8567-84c7ecb0fb27",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "0a06301d-fc25-4771-a438-6832392749b9",
+              "name": "vibe",
+              "value": {
+                "en": "🧠 Teach me something new",
+                "fr": "🧠 Enseigne-moi quelque chose de nouveau",
+                "es": "🧠 Enséñame algo nuevo"
+              },
+              "createdAt": "2025-02-19T17:54:54.005273-04:00"
+            },
+            {
+              "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "575e444a-320b-491e-889c-ea3102d5fa16",
+              "name": "vibe",
+              "value": {
+                "en": "🚀 Take me on an adventure",
+                "fr": "🚀 Emmène-moi dans une aventure",
+                "es": "🚀 Llévame a una aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.007461-04:00"
+            },
+            {
+              "id": "6c527a76-2721-4acc-84e7-b21c7a5cdfd2",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "18ac73a6-1d29-4a74-b9a9-66a21b98fada",
+              "name": "mood",
+              "value": {
+                "en": "🤩 thoughtful and inspiring",
+                "fr": "🤩 réfléchi et inspirant",
+                "es": "🤩 reflexivo e inspirador"
+              },
+              "createdAt": "2025-02-19T17:54:54.0089-04:00"
+            },
+            {
+              "id": "244e85b8-3318-4030-8541-78d3e5a3890d",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "8e65e99d-a03b-418c-a844-e32dba0fa9df",
+              "name": "flavor",
+              "value": {
+                "en": "❤️ Romance: Sparks flying!",
+                "fr": "❤️ Romance : Des étincelles dans l'air !",
+                "es": "❤️ Romance: ¡Chispas volando!"
+              },
+              "createdAt": "2025-02-19T17:54:54.014367-04:00"
+            },
+            {
+              "id": "a1102b87-b662-46a7-8888-c9da2c920589",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "bookTagId": "c4c2238c-6d4f-463f-adb3-e100df7920a0",
+              "name": "keyword",
+              "value": {
+                "en": "monster",
+                "fr": "monster",
+                "es": "monster"
+              },
+              "createdAt": "2025-02-19T17:54:54.340063-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "8d59bda4-635b-4b45-bbc8-9ffb390824bd",
+              "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+              "url": "https://media-photos.depop.com/b1/48339405/1934705727_3d2faa34e20b49cdb927aef5e23b5fd6/P0.jpg",
+              "sourceUrl": "https://media-photos.depop.com/b1/48339405/1934705727_3d2faa34e20b49cdb927aef5e23b5fd6/P0.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+          "correlationId": "645c113e-f98e-440b-bcc3-fa5609d18f5e",
+          "translationId": "645c113e-f98e-440b-bcc3-fa5609d18f5e",
+          "title": "Gone with the Wind (novel)",
+          "price": 14.56,
+          "qty": 100,
+          "qtyForSale": 0,
+          "description": {
+            "en": "A historical novel set in the American South during the Civil War and Reconstruction Era.",
+            "fr": "Un roman historique situé dans le sud des États-Unis pendant la guerre civile et la reconstruction.",
+            "es": "Una novela histórica ambientada en el sur de los Estados Unidos durante la Guerra Civil y la Reconstrucción."
+          },
+          "author": "Margaret Mitchell",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.586984-04:00",
+          "updatedAt": "2025-02-19T17:54:53.586984-04:00",
+          "printLength": 852,
+          "publishDate": "2021-03-15",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084641",
+          "bindingType": "Hardcover",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "4a5b2e3b-f1e7-4692-a545-4f32969522a2",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "5a288dc3-e5ac-4c64-9d3f-50e9dc06541f",
+              "name": "category",
+              "value": {
+                "en": "Science Fiction",
+                "fr": "Science-fiction",
+                "es": "Ciencia ficción"
+              },
+              "createdAt": "2025-02-19T17:54:54.086309-04:00"
+            },
+            {
+              "id": "66d55f15-529b-4ad5-b3de-73c1347f919c",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "35463997-fb88-4beb-9c8e-5109a1a62c1b",
+              "name": "category",
+              "value": {
+                "en": "Classics",
+                "fr": "Classiques",
+                "es": "Clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:54.088856-04:00"
+            },
+            {
+              "id": "1c551608-7f7b-4034-8cfb-916c79c0e360",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "76e0c46f-ec18-4868-9668-8253ebb7baa1",
+              "name": "category",
+              "value": {
+                "en": "Adventure",
+                "fr": "Aventure",
+                "es": "Aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.090366-04:00"
+            },
+            {
+              "id": "c6492261-c1a0-46f0-965f-40c78e019989",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "4b44aa41-9b80-4c8b-b6f3-5c53206e245f",
+              "name": "subcategory",
+              "value": {
+                "en": "Collector's Edition",
+                "fr": "Édition de collection",
+                "es": "Edición de coleccionista"
+              },
+              "createdAt": "2025-02-19T17:54:54.091374-04:00"
+            },
+            {
+              "id": "4035f12d-a45b-4b76-abed-a6848e27da5b",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "35cfb216-1b66-49a1-afb0-6ac21bdab1e2",
+              "name": "subcategory",
+              "value": {
+                "en": "Trending Now",
+                "fr": "Tendances actuelles",
+                "es": "Tendencias actuales"
+              },
+              "createdAt": "2025-02-19T17:54:54.093382-04:00"
+            },
+            {
+              "id": "0289736c-fede-47f7-ada9-5380d16a4ff8",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "a6387bda-55dc-40d7-b8aa-42d69cdc47e0",
+              "name": "subcategory",
+              "value": {
+                "en": "Classic Favorites",
+                "fr": "Classiques préférés",
+                "es": "Favoritos clásicos"
+              },
+              "createdAt": "2025-02-19T17:54:54.094382-04:00"
+            },
+            {
+              "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "5014e2ab-4e18-4e75-a2b8-e0e878a62644",
+              "name": "vibe",
+              "value": {
+                "en": "🌟 I want to be entertained",
+                "fr": "🌟 Je veux être diverti",
+                "es": "🌟 Quiero ser entretenido"
+              },
+              "createdAt": "2025-02-19T17:54:54.095811-04:00"
+            },
+            {
+              "id": "57b45df1-8b2f-4dfb-b973-34b05e6105dd",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "1dab78c5-1e6f-4ad6-808c-8f2be712ce95",
+              "name": "vibe",
+              "value": {
+                "en": "🔍 I love a good mystery or some thrilling",
+                "fr": "🔍 J'adore un bon mystère ou un peu de suspense",
+                "es": "🔍 Me encanta un buen misterio o algo de suspenso"
+              },
+              "createdAt": "2025-02-19T17:54:54.096958-04:00"
+            },
+            {
+              "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "b062a9f4-6e54-4812-8441-35b07e21939a",
+              "name": "mood",
+              "value": {
+                "en": "✨ adventurous and daring",
+                "fr": "✨ aventureux et audacieux",
+                "es": "✨ aventurero y atrevido"
+              },
+              "createdAt": "2025-02-19T17:54:54.098964-04:00"
+            },
+            {
+              "id": "ea49cf23-dc0c-4420-bd42-b4db181d74a7",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "ee7a48cd-2e47-49a5-9a31-feb5f89af100",
+              "name": "mood",
+              "value": {
+                "en": "🐻 cozy and nostalgic",
+                "fr": "🐻 chaleureux et nostalgique",
+                "es": "🐻 acogedor y nostálgico"
+              },
+              "createdAt": "2025-02-19T17:54:54.099965-04:00"
+            },
+            {
+              "id": "23908972-873d-4602-ab05-591245ec3deb",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "a7554798-9213-46d4-8537-03ef506758e4",
+              "name": "flavor",
+              "value": {
+                "en": "🌌 Sci-fi: To the stars and beyond",
+                "fr": "🌌 Vers les étoiles et au-delà",
+                "es": "🌌 Hacia las estrellas y más allá"
+              },
+              "createdAt": "2025-02-19T17:54:54.101402-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "bookTagId": "3deafeae-df3a-4a3a-8a6d-299c34bc193f",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.102424-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "e0e30850-60e3-449b-8fc3-4fbe8eb804a4",
+              "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Gone_with_the_Wind_%281936%2C_first_edition_cover%29.jpg",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Gone_with_the_Wind_%281936%2C_first_edition_cover%29.jpg"
+            }
+          ]
+        },
+        {
+          "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+          "correlationId": "ab9ffdbe-649d-497c-af47-9b9fa73d7388",
+          "translationId": "ab9ffdbe-649d-497c-af47-9b9fa73d7380",
+          "title": "The Tale of Squirrel Nutkin",
+          "price": 34.22,
+          "qty": 60,
+          "qtyForSale": 0,
+          "description": {
+            "en": "A charming story about the mischievous squirrel, Nutkin, and his adventures on Owl Island.",
+            "fr": "Une charmante histoire sur l'espiègle écureuil Nutkin et ses aventures sur l'île du hibou.",
+            "es": "Una encantadora historia sobre la traviesa ardilla Nutkin y sus aventuras en la isla del búho."
+          },
+          "author": "Beatrix Potter",
+          "language": "English",
+          "createdAt": "2025-02-19T17:54:53.586984-04:00",
+          "updatedAt": "2025-02-19T17:54:53.586984-04:00",
+          "printLength": 140,
+          "publishDate": "2021-01-22",
+          "dimensions": "6.5 in x 9.5 in",
+          "publisher": "Random House Canada Penguin Allen Lane (UK)",
+          "publicIsbn": "9780593084600",
+          "bindingType": "Paperback",
+          "rating": 0.0,
+          "votes": 0,
+          "image": null,
+          "tags": [
+            {
+              "id": "d30c10df-f586-4b8c-900a-5e4bdaad9198",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "6b78c4c0-b4da-4b3b-a8f7-49a0c0da2a57",
+              "name": "category",
+              "value": {
+                "en": "Children's Books",
+                "fr": "Livres pour enfants",
+                "es": "Libros para niños"
+              },
+              "createdAt": "2025-02-19T17:54:54.104494-04:00"
+            },
+            {
+              "id": "1c551608-7f7b-4034-8cfb-916c79c0e360",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "dbf7263e-7de4-4754-a355-42c387a38c85",
+              "name": "category",
+              "value": {
+                "en": "Adventure",
+                "fr": "Aventure",
+                "es": "Aventura"
+              },
+              "createdAt": "2025-02-19T17:54:54.10613-04:00"
+            },
+            {
+              "id": "df91ca60-e2d6-4cb6-881c-833cf34ff9ef",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "61beca11-edd2-489b-95b3-d2db9e7647af",
+              "name": "subcategory",
+              "value": {
+                "en": "For Kids",
+                "fr": "Pour enfants",
+                "es": "Para niños"
+              },
+              "createdAt": "2025-02-19T17:54:54.107401-04:00"
+            },
+            {
+              "id": "93e4d910-a4aa-4114-8afa-0366a0493203",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "c6b470d1-dc7b-4f88-8b2d-db5a2fa9d9dc",
+              "name": "subcategory",
+              "value": {
+                "en": "For Teens",
+                "fr": "Pour adolescents",
+                "es": "Para adolescentes"
+              },
+              "createdAt": "2025-02-19T17:54:54.108558-04:00"
+            },
+            {
+              "id": "c186a258-78fa-4007-a171-6f6cf5dc9714",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "9ea49f7f-361e-43d9-b53e-8b23e297833b",
+              "name": "subcategory",
+              "value": {
+                "en": "For Beginners",
+                "fr": "Pour débutants",
+                "es": "Para principiantes"
+              },
+              "createdAt": "2025-02-19T17:54:54.109857-04:00"
+            },
+            {
+              "id": "0e242ad9-0b32-4921-86ef-bed343040a96",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "3063cba3-53c4-4ee6-a4b5-f2b54eabbbd5",
+              "name": "subcategory",
+              "value": {
+                "en": "Bestsellers",
+                "fr": "Meilleures ventes",
+                "es": "Más vendidos"
+              },
+              "createdAt": "2025-02-19T17:54:54.110874-04:00"
+            },
+            {
+              "id": "efa08a4a-2bdf-4d86-9f88-19038ee8dc2a",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "b21065e3-6e4a-4521-b080-aa7c9dc840fc",
+              "name": "vibe",
+              "value": {
+                "en": "🧘\u200d♀️ Something relaxing",
+                "fr": "🧘\u200d♀️ Quelque chose de relaxant",
+                "es": "🧘\u200d♀️ Algo relajante"
+              },
+              "createdAt": "2025-02-19T17:54:54.11287-04:00"
+            },
+            {
+              "id": "5e4c1670-e9d3-45e3-8567-84c7ecb0fb27",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "1d7b2570-f7fb-4abe-8198-6b3e256a4618",
+              "name": "vibe",
+              "value": {
+                "en": "🧠 Teach me something new",
+                "fr": "🧠 Enseigne-moi quelque chose de nouveau",
+                "es": "🧠 Enséñame algo nuevo"
+              },
+              "createdAt": "2025-02-19T17:54:54.114873-04:00"
+            },
+            {
+              "id": "6c527a76-2721-4acc-84e7-b21c7a5cdfd2",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "782ace38-5dc5-4a60-b853-45e8374c96b8",
+              "name": "mood",
+              "value": {
+                "en": "🤩 thoughtful and inspiring",
+                "fr": "🤩 réfléchi et inspirant",
+                "es": "🤩 reflexivo e inspirador"
+              },
+              "createdAt": "2025-02-19T17:54:54.11587-04:00"
+            },
+            {
+              "id": "483b7f91-f638-4723-84b4-8acddb9f3276",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "519bda3e-599d-4dc8-8a4c-7f127394605f",
+              "name": "mood",
+              "value": {
+                "en": "😱 spine-tingling and eerie",
+                "fr": "😱 frissonnant et étrange",
+                "es": "😱 escalofriante y espeluznante"
+              },
+              "createdAt": "2025-02-19T17:54:54.117094-04:00"
+            },
+            {
+              "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "be30b740-3282-4498-8a98-b499a21df355",
+              "name": "flavor",
+              "value": {
+                "en": "🤔 Surprise me",
+                "fr": "🤔 Surprends-moi",
+                "es": "🤔 Sorpréndeme"
+              },
+              "createdAt": "2025-02-19T17:54:54.119104-04:00"
+            },
+            {
+              "id": "f0663586-6a2e-41e9-bde7-d3d98eb25df3",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "bookTagId": "ec60d218-e3ec-4182-9a7c-b0bd2824f43f",
+              "name": "flavor",
+              "value": {
+                "en": "💰 Non-fiction: Real stories, real facts, money",
+                "fr": "💰 Non-fiction : Histoires réelles, faits réels, argent",
+                "es": "💰 No ficción: Historias reales, hechos reales, dinero"
+              },
+              "createdAt": "2025-02-19T17:54:54.120114-04:00"
+            }
+          ],
+          "images": [
+            {
+              "id": "78adede1-c61e-47e0-b9bf-1db72b9233aa",
+              "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+              "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/The_Tale_of_Squirrel_Nutkin_cover.jpg",
+              "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/12/The_Tale_of_Squirrel_Nutkin_cover.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  }

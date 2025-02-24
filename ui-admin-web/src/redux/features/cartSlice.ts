@@ -12,6 +12,7 @@ export interface CartItemState {
   categories: any[];
   qtyForSale:number;
   transactionType: TransaccionType;
+  state?:'IN_CART' | "RESERVED"
 }
 
 export type LanguageType = "English" | "Spanish" | "French" | null;
@@ -22,17 +23,31 @@ interface CartState {
   selectedBookTranslationId: string;
 }
 
-const initialState: CartState = {
-  items: [],
-  cartHistory: [],
-  selectedBookTranslationId: 'null',
+const defaultCartState={ items: [], cartHistory: [], selectedBookTranslationId: "null" }
+const loadState = (): CartState => {
+  if(typeof window === 'undefined')return defaultCartState
+  try {
+    const storedState = localStorage.getItem("cart");
+    return storedState ? JSON.parse(storedState) :defaultCartState
+  } catch (error) {
+    console.error("Error loading cart from localStorage:", error);
+    return  defaultCartState
+  }
 };
 
+const saveState = (state: CartState) => {
+  if(typeof window === 'undefined')return 
 
+  try {
+    localStorage.setItem("cart", JSON.stringify(state));
+  } catch (error) {
+    console.error("Error saving cart to localStorage:", error);
+  }
+};
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState:initialState,
+  initialState:loadState(),
   reducers: {
     addItem: (state, { payload }: PayloadAction<CartItemState>) => {
       const isBookExist = state.items.find(
@@ -43,20 +58,9 @@ const cartSlice = createSlice({
       if (isBookExist) {
         isBookExist.qty += payload.qty;
       } else {
-        state.items.push(payload);
+        state.items.push({...payload,state:'IN_CART'});
       }
-      state.cartHistory.push(payload);
-    },
-    updateItemQuantity: (state, { payload }: PayloadAction<CartItemState>) => {
-      const { qty, isbn } = payload;
-      const bookInCart = state.items.find((book) => book.isbn === isbn);
-
-      state.cartHistory.push(payload);
-
-      if (!bookInCart) return;
-      bookInCart.qty += qty;
-
-      state.items.push(bookInCart);
+      saveState(state)
     },
     updateItem: (state, { payload }: PayloadAction<Partial<CartItemState>>) => {
       const { isbn, ...fieldsToUpdate } = payload;
@@ -69,13 +73,21 @@ const cartSlice = createSlice({
         }
         return item;
       });
+      saveState(state)
+
     },
     removeItem: (state, { payload }: PayloadAction<Partial<CartItemState>>) => {
       const { isbn } = payload;
       state.items = state.items.filter((book) => book.isbn !== isbn);
+      saveState(state)
     },
     clearCart: (state) => {
       state.items = [];
+      saveState(state)
+    },
+    setItemsAsReserved:(state)=>{
+      const itemsUpdated=  state.items.map(book=>({...book,state:'RESERVED'}))
+      state.items = itemsUpdated as any
     },
     setSelectedBookTranslation(state, { payload }: PayloadAction<{ selectedBookTranslationId: string }>) {
       state.selectedBookTranslationId = payload.selectedBookTranslationId;
@@ -86,10 +98,13 @@ const cartSlice = createSlice({
 
 export const {
   addItem,
-  updateItemQuantity,
   removeItem,
   clearCart,
+  setItemsAsReserved,
   setSelectedBookTranslation,
   updateItem,
 } = cartSlice.actions;
 export default cartSlice.reducer;
+
+
+

@@ -32,6 +32,7 @@ interface RecommendationState {
         recomendationCopies: recomendations.recommended!,
       });
     }, [recomendations]);
+
   
     const setSelectedBookByIsbn = (isbn: string) => {
       const newState: any = recomendationState?.recomendationCopies.find(

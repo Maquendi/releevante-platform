@@ -6,8 +6,8 @@ import SelectLanguage from "./SelectLanguage";
 import { Link, usePathname } from "@/config/i18n/routing";
 import { Search } from "lucide-react";
 import { Button } from "./ui/button";
-import CartSidebarTrigger from "./CartSidebarTrigger";
 import NavbarV2 from "./NavbarV2";
+import { CartSidebarTrigger } from "./CartSidebar";
 
 
 

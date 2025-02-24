@@ -19,6 +19,9 @@ export default function BestSellerSlider() {
   const { data: bestSellerBooks } = useSuspenseQuery({
     queryKey: ["BEST_SELLER_SUB_CATEGORY"],
     queryFn: async () => await FetchBooksByTag("Bestsellers"),
+    select:(data)=>{
+      return data.map(book=>({...book,image:book.images?.[0].url}))
+    },
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });

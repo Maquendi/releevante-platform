@@ -1,0 +1,151 @@
+{
+    "statusCode": 200,
+    "context": {
+      "data": [
+        {
+          "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5110",
+          "translationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "title": "100 years of solitude",
+          "author": "Gabriel Garcia Marquez",
+          "image": "https://m.media-amazon.com/images/M/MV5BZDkwYmQzMTUtYWU4OC00NThmLTk3YzUtNzUxYzA4YWVkYTUxXkEyXkFqcGc@._V1_.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+          "translationId": "3e02500c-0fb2-4efc-80b4-fbb95f7ec493",
+          "title": "El amor en los tiempos del cólera",
+          "author": "Gabriel Garcia Marquez",
+          "image": "https://www.cuestalibros.com/content/images/thumbs/0108335_el-amor-en-los-tiempos-del-colera-bol_550.jpeg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "1b4dacb8-6aff-4fb2-8efa-297b93cc0217",
+          "translationId": "037db98e-1472-4aaf-8eb2-3534c3cc7b78",
+          "title": "The Godfather (novel)",
+          "author": "Mario Puzo",
+          "image": "https://upload.wikimedia.org/wikipedia/en/f/f4/Godfather-Novel-Cover.png",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "dde12cd6-2da1-4a50-9aa2-0efd5abdb273",
+          "translationId": "ab9ffdbe-649d-497c-af47-9b9fa73d7380",
+          "title": "The Tale of Squirrel Nutkin",
+          "author": "Beatrix Potter",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/1/12/The_Tale_of_Squirrel_Nutkin_cover.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+          "translationId": "2b69a8ef-23e6-496c-9810-f62f9a1d0170",
+          "title": "Rayuela",
+          "author": "Julio Cortazar",
+          "image": "https://www.cuestalibros.com/content/images/thumbs/0043629_rayuela-bol_550.jpeg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+          "translationId": "50d2cabb-77f5-47f5-90d4-c3fe12953539",
+          "title": "Pedro Páramo",
+          "author": "Juan Rulfo",
+          "image": "https://librosocultos.com/wp-content/uploads/2024/11/pedro-paramo.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "5f5ecb9f-2254-4d4e-9262-ac885b2c050b",
+          "translationId": "90823276-ec4e-4019-90e3-9215222acbbe",
+          "title": "Cosmos (Sagan book)",
+          "author": "Carl Sagan",
+          "image": "https://upload.wikimedia.org/wikipedia/en/9/91/Cosmos_book.gif",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "74bd4805-6866-4e15-9c57-af9114fd88cc",
+          "translationId": "2d5609bd-efa2-4f5f-8c80-b4df54b1a781",
+          "title": "12 Rules for Life",
+          "author": "Jordan Peterson",
+          "image": "https://media-photos.depop.com/b1/48339405/1934705727_3d2faa34e20b49cdb927aef5e23b5fd6/P0.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "4200e1e7-7d06-479e-bb2e-272d1664ae59",
+          "translationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651009e",
+          "title": "Harry Potter and the Chamber of Secrets",
+          "author": "J.K. Rowling",
+          "image": "https://upload.wikimedia.org/wikipedia/en/5/5c/Harry_Potter_and_the_Chamber_of_Secrets.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715daba",
+          "translationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651009d",
+          "title": "Harry Potter and the Prisoner of Azkaban",
+          "author": "J.K. Rowling",
+          "image": "https://upload.wikimedia.org/wikipedia/en/a/a0/Harry_Potter_and_the_Prisoner_of_Azkaban.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+          "translationId": "5058ef07-c57d-4d54-bac4-3b26b92de409",
+          "title": "La casa de los espíritus",
+          "author": "Isabel Allende",
+          "image": "https://static.megustaleer.com/images/libros_650_x/P362085.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "126acc37-8fa9-441a-94cd-646ceb6f5004",
+          "translationId": "2b97b187-ce0e-485a-9b69-b177cc65c677",
+          "title": "100 anos de soledad",
+          "author": "Gabriel Garcia Marquez",
+          "image": "https://m.media-amazon.com/images/I/819vfB2BjyL._SL1500_.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "3ebb43e4-303f-4e83-b0dd-1b790715bezo",
+          "translationId": "9b0c82f3-4afa-4ca0-98b2-fee3e651119a",
+          "title": "The Anayst",
+          "author": "John Katzenbach",
+          "image": "https://m.media-amazon.com/images/I/71NynvTw10L.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "40d669a3-8f30-4821-aa36-a72bf375fedc",
+          "translationId": "ab9ffdbe-649d-497c-af47-9b9fa73d7388",
+          "title": "The Tale of Peter Rabbit",
+          "author": "Beatrix Potter",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Peter_Rabbit_first_edition_1902a.jpg",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "48031b84-1ccc-43f7-9eee-6a9090562e19",
+          "translationId": "2d5609bd-efa2-4f5f-8c80-b4df54b1a780",
+          "title": "Beyond Order",
+          "author": "Jordan Peterson",
+          "image": "https://gregory.ph/cdn/shop/products/BuyBeyondOrderinthePhilippines-2.jpg?v=1629037690",
+          "votes": 0,
+          "rating": 0.0
+        },
+        {
+          "isbn": "ffdeccc6-54d9-4501-bf22-40a59541e5fd",
+          "translationId": "645c113e-f98e-440b-bcc3-fa5609d18f5e",
+          "title": "Gone with the Wind (novel)",
+          "author": "Margaret Mitchell",
+          "image": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Gone_with_the_Wind_%281936%2C_first_edition_cover%29.jpg",
+          "votes": 0,
+          "rating": 0.0
+        }
+      ]
+    }
+  }

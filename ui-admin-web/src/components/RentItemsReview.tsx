@@ -5,23 +5,23 @@ import { Link } from '@/config/i18n/routing'
 import { formatDateByRegion } from '@/lib/utils'
 import { useLocale, useTranslations } from 'next-intl';
 import { useAppSelector } from '@/redux/hooks';
-import useGetCartBooks from '@/hooks/useGetCartBooks';
+import { CartItemState } from '@/redux/features/cartSlice'
 
 interface RentItemsReviewProps{
     isReservedBooks?:boolean,
+    books:CartItemState[]
 
 }
-export default function RentItemsReview({isReservedBooks}:RentItemsReviewProps) {
+export default function RentItemsReview({isReservedBooks,books}:RentItemsReviewProps) {
 const translationPage = useMemo(()=>{
   return isReservedBooks ? 'reservedBooks':'reviewMyCart'
 },[isReservedBooks])
 const t = useTranslations(translationPage);
   const settings = useAppSelector((state) => state.settings);
-  const { rentItems } = useGetCartBooks();
 
   const locale = useLocale();  return (
     <div>
-        {rentItems?.length > 0 && (
+        {books?.length > 0 && (
           <div className="pt-7 grid bg-white rounded-xl space-y-5">
             <div className="px-4 space-y-1 md:flex justify-between">
               <h3 className="space-x-1 text-xl font-medium flex">
@@ -29,7 +29,7 @@ const t = useTranslations(translationPage);
                   <span className="text-black">{t("readInHotel")} </span>
                 </p>
                 <p className="space-x-1 text-secondary-foreground">
-                  (<span>{rentItems.length}</span>
+                  (<span>{books.length}</span>
                   {settings?.data && (
                     <>
                       <span>{t("of")}</span>
@@ -45,7 +45,7 @@ const t = useTranslations(translationPage);
               </h3>
             </div>
             <div className="px-4 space-y-4">
-              {rentItems.map((item) => (
+              {books.map((item) => (
                 <CartItem
                   key={item.isbn}
                   item={item}

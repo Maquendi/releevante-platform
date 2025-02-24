@@ -1,0 +1,227 @@
+{
+    "statusCode": 200,
+    "context": {
+      "data": [
+        {
+          "id": "23908972-873d-4602-ab05-591245ec3deb",
+          "name": "flavor",
+          "value": {
+            "en": "🌌 Sci-fi: To the stars and beyond",
+            "fr": "🌌 Vers les étoiles et au-delà",
+            "es": "🌌 Hacia las estrellas y más allá"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "ecf01be1-2d8e-46c1-a683-2e78ec0d43b1",
+          "name": "flavor",
+          "value": {
+            "en": "🏰 Fantasy: Dragon, magi, etc",
+            "fr": "🏰 Dragon, mage, etc",
+            "es": "🏰 Dragón, mago, etc"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "8d4cf711-dd03-4f10-aa54-b02326f31ea2",
+          "name": "flavor",
+          "value": {
+            "en": "🕵️\u200d♀️ Mystery/Thriller: Who did it? Need answers",
+            "fr": "🕵️\u200d♀️ Mystère/Thriller : Qui l'a fait ? Besoin de réponses",
+            "es": "🕵️\u200d♀️ Misterio/Suspense: ¿Quién lo hizo? Necesito respuestas"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "244e85b8-3318-4030-8541-78d3e5a3890d",
+          "name": "flavor",
+          "value": {
+            "en": "❤️ Romance: Sparks flying!",
+            "fr": "❤️ Romance : Des étincelles dans l'air !",
+            "es": "❤️ Romance: ¡Chispas volando!"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "d9f938e6-6407-416a-8225-8150a6690f6f",
+          "name": "flavor",
+          "value": {
+            "en": "🎭 Drama: Deep emotions, please",
+            "fr": "🎭 Drame : Des émotions profondes, s'il vous plaît",
+            "es": "🎭 Drama: Emociones profundas, por favor"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "a3d33392-6f93-437c-b887-1ab59daa97ac",
+          "name": "flavor",
+          "value": {
+            "en": "📜 Historical fiction: Step back in time",
+            "fr": "📜 Fiction historique : Retour dans le temps",
+            "es": "📜 Ficción histórica: Viaje al pasado"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "f0663586-6a2e-41e9-bde7-d3d98eb25df3",
+          "name": "flavor",
+          "value": {
+            "en": "💰 Non-fiction: Real stories, real facts, money",
+            "fr": "💰 Non-fiction : Histoires réelles, faits réels, argent",
+            "es": "💰 No ficción: Historias reales, hechos reales, dinero"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "a28a8de5-bbe0-4a40-a6de-d9086bf55080",
+          "name": "flavor",
+          "value": {
+            "en": "🤔 Surprise me",
+            "fr": "🤔 Surprends-moi",
+            "es": "🤔 Sorpréndeme"
+          },
+          "createdAt": "2024-12-09T00:46:35.474-04:00"
+        },
+        {
+          "id": "17064b9f-bec1-48d0-9fa2-2c013c1df5a8",
+          "name": "vibe",
+          "value": {
+            "en": "🌟 I want to be entertained",
+            "fr": "🌟 Je veux être diverti",
+            "es": "🌟 Quiero ser entretenido"
+          },
+          "createdAt": "2024-12-09T00:46:39.883-04:00"
+        },
+        {
+          "id": "57b45df1-8b2f-4dfb-b973-34b05e6105dd",
+          "name": "vibe",
+          "value": {
+            "en": "🔍 I love a good mystery or some thrilling",
+            "fr": "🔍 J'adore un bon mystère ou un peu de suspense",
+            "es": "🔍 Me encanta un buen misterio o algo de suspenso"
+          },
+          "createdAt": "2024-12-09T00:46:39.883-04:00"
+        },
+        {
+          "id": "efa08a4a-2bdf-4d86-9f88-19038ee8dc2a",
+          "name": "vibe",
+          "value": {
+            "en": "🧘\u200d♀️ Something relaxing",
+            "fr": "🧘\u200d♀️ Quelque chose de relaxant",
+            "es": "🧘\u200d♀️ Algo relajante"
+          },
+          "createdAt": "2024-12-09T00:46:39.883-04:00"
+        },
+        {
+          "id": "5e4c1670-e9d3-45e3-8567-84c7ecb0fb27",
+          "name": "vibe",
+          "value": {
+            "en": "🧠 Teach me something new",
+            "fr": "🧠 Enseigne-moi quelque chose de nouveau",
+            "es": "🧠 Enséñame algo nuevo"
+          },
+          "createdAt": "2024-12-09T00:46:39.883-04:00"
+        },
+        {
+          "id": "a86a2ac7-3fa4-4ef2-a13c-80749b00d0a2",
+          "name": "vibe",
+          "value": {
+            "en": "🚀 Take me on an adventure",
+            "fr": "🚀 Emmène-moi dans une aventure",
+            "es": "🚀 Llévame a una aventura"
+          },
+          "createdAt": "2024-12-09T00:46:39.883-04:00"
+        },
+        {
+          "id": "a9898c47-5cb5-4cd5-a196-e675e31a462e",
+          "name": "vibe",
+          "value": {
+            "en": "❤️ I’m here  for feels - romance, tears, all of it",
+            "fr": "❤️ Je suis là pour les émotions - romance, larmes, tout ça",
+            "es": "❤️ Estoy aquí para los sentimientos: romance, lágrimas, todo eso"
+          },
+          "createdAt": "2024-12-09T00:46:39.883-04:00"
+        },
+        {
+          "id": "500a74de-3110-4155-bbcc-d7e40af9074f",
+          "name": "mood",
+          "value": {
+            "en": "🤣 lighthearted and fun",
+            "fr": "🤣 léger et amusant",
+            "es": "🤣 ligero y divertido"
+          },
+          "createdAt": "2024-12-09T00:46:42.416-04:00"
+        },
+        {
+          "id": "67cb3ad7-2b37-4f76-b511-222254a5adf0",
+          "name": "mood",
+          "value": {
+            "en": "😍 swoon-worthy",
+            "fr": "😍 à tomber par terre",
+            "es": "😍 digno de desmayarse"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        },
+        {
+          "id": "2d2f76f9-8b44-47fa-ae05-4016f06d34bf",
+          "name": "mood",
+          "value": {
+            "en": "🕵️\u200d♀️ suspenseful",
+            "fr": "🕵️\u200d♀️ plein de suspense",
+            "es": "🕵️\u200d♀️ lleno de suspenso"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        },
+        {
+          "id": "180c6747-016f-4d83-8287-19a00f553c61",
+          "name": "mood",
+          "value": {
+            "en": "🧙\u200d♀️ magical and enchanting",
+            "fr": "🧙\u200d♀️ magique et enchanteur",
+            "es": "🧙\u200d♀️ mágico y encantador"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        },
+        {
+          "id": "a5793a66-6fbc-4473-ad98-34a2faf8c590",
+          "name": "mood",
+          "value": {
+            "en": "✨ adventurous and daring",
+            "fr": "✨ aventureux et audacieux",
+            "es": "✨ aventurero y atrevido"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        },
+        {
+          "id": "ea49cf23-dc0c-4420-bd42-b4db181d74a7",
+          "name": "mood",
+          "value": {
+            "en": "🐻 cozy and nostalgic",
+            "fr": "🐻 chaleureux et nostalgique",
+            "es": "🐻 acogedor y nostálgico"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        },
+        {
+          "id": "6c527a76-2721-4acc-84e7-b21c7a5cdfd2",
+          "name": "mood",
+          "value": {
+            "en": "🤩 thoughtful and inspiring",
+            "fr": "🤩 réfléchi et inspirant",
+            "es": "🤩 reflexivo e inspirador"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        },
+        {
+          "id": "483b7f91-f638-4723-84b4-8acddb9f3276",
+          "name": "mood",
+          "value": {
+            "en": "😱 spine-tingling and eerie",
+            "fr": "😱 frissonnant et étrange",
+            "es": "😱 escalofriante y espeluznante"
+          },
+          "createdAt": "2024-12-09T00:46:42.417-04:00"
+        }
+      ]
+    }
+  }

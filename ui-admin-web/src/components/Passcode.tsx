@@ -17,8 +17,8 @@ export default function Passcode() {
   };
 
 
-  const handleAuthSubmit = async () => {
-    await loginMutation.mutateAsync({ code: input });
+  const handleAuthSubmit =  () => {
+     loginMutation.mutate({ code: input });
   };
 
   return (
@@ -29,7 +29,7 @@ export default function Passcode() {
           onChange={handleInputChange}
           value={input}
           maxLength={4}
-          onComplete={handleAuthSubmit}
+          onComplete={()=>handleAuthSubmit()}
         >
           <InputOTPGroup className="space-x-1">
             {[0, 1, 2, 3].map((index) => (
