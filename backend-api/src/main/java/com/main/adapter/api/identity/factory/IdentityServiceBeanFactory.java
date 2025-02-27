@@ -1,16 +1,21 @@
 package com.main.adapter.api.identity.factory;
 
 import com.main.config.security.JwtAuthenticationToken;
-import com.releevante.identity.adapter.service.DefaultRsaKeyProvider;
-import com.releevante.identity.adapter.service.DefaultUserJtwTokenService;
-import com.releevante.identity.adapter.service.JwtRsaSigningKeyProvider;
-import com.releevante.identity.application.service.auth.*;
-import com.releevante.identity.application.service.user.DefaultUserServiceImpl;
-import com.releevante.identity.application.service.user.OrgService;
-import com.releevante.identity.application.service.user.OrgServiceImpl;
-import com.releevante.identity.application.service.user.UserService;
-import com.releevante.identity.domain.repository.*;
-import com.releevante.identity.domain.service.PasswordEncoder;
+import com.releevante.core.adapter.service.identity.service.DefaultRsaKeyProvider;
+import com.releevante.core.adapter.service.identity.service.DefaultUserJtwTokenService;
+import com.releevante.core.adapter.service.identity.service.JwtRsaSigningKeyProvider;
+import com.releevante.core.application.identity.service.auth.*;
+import com.releevante.core.application.identity.service.user.DefaultUserServiceImpl;
+import com.releevante.core.application.identity.service.user.OrgService;
+import com.releevante.core.application.identity.service.user.OrgServiceImpl;
+import com.releevante.core.application.identity.service.user.UserService;
+import com.releevante.core.application.service.SmartLibraryService;
+import com.releevante.core.application.service.impl.DefaultLibraryService;
+import com.releevante.core.domain.identity.repository.*;
+import com.releevante.core.domain.identity.service.PasswordEncoder;
+import com.releevante.core.domain.repository.BookReservationRepository;
+import com.releevante.core.domain.repository.BookTransactionRepository;
+import com.releevante.core.domain.repository.SmartLibraryRepository;
 import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +32,13 @@ public class IdentityServiceBeanFactory {
   @Autowired private PrivilegeRepository privilegeRepository;
   @Autowired private OrgRepository orgRepository;
   @Autowired protected SmartLibraryAccessControlRepository accessControlRepository;
-
   @Autowired private AuthorizedOriginRepository authorizedOriginRepository;
+
+  @Autowired SmartLibraryRepository smartLibraryRepository;
+
+  @Autowired BookTransactionRepository bookTransactionRepository;
+
+  @Autowired BookReservationRepository bookReservationRepository;
 
   @Value("${security.rsa.key-path.public}")
   private String rsaPublicKey;
@@ -38,7 +48,9 @@ public class IdentityServiceBeanFactory {
 
   @Bean("userAuthenticationService")
   public AuthenticationService userAuthenticationService(
-      JtwTokenService userJtwTokenService, PasswordEncoder passwordEncoder) {
+      JtwTokenService userJtwTokenService,
+      PasswordEncoder passwordEncoder,
+      AuthorizationService authorizationService) {
     return new DefaultUserAuthenticationService(
         accountRepository,
         userJtwTokenService,
@@ -47,7 +59,8 @@ public class IdentityServiceBeanFactory {
         orgRepository,
         accessControlRepository,
         userRepository,
-        authorizedOriginRepository);
+        authorizedOriginRepository,
+        authorizationService);
   }
 
   @Bean()
@@ -61,8 +74,15 @@ public class IdentityServiceBeanFactory {
   }
 
   @Bean()
+  public SmartLibraryService smartLibraryService(AuthorizationService authorizationService) {
+    return new DefaultLibraryService(smartLibraryRepository, authorizationService);
+  }
+
+  @Bean()
   public UserService userService(
-      PasswordEncoder passwordEncoder, AuthorizationService authorizationService) {
+      PasswordEncoder passwordEncoder,
+      AuthorizationService authorizationService,
+      SmartLibraryService smartLibraryService) {
     return new DefaultUserServiceImpl(
         userRepository,
         accountRepository,
@@ -70,7 +90,8 @@ public class IdentityServiceBeanFactory {
         UuidGenerator.instance(),
         ZonedDateTimeGenerator.instance(),
         authorizationService,
-        accessControlRepository);
+        accessControlRepository,
+        smartLibraryService);
   }
 
   @Bean()
@@ -89,7 +110,9 @@ public class IdentityServiceBeanFactory {
         passwordEncoder,
         UuidGenerator.instance(),
         ZonedDateTimeGenerator.instance(),
-        authorizationService);
+        authorizationService,
+        bookTransactionRepository,
+        bookReservationRepository);
   }
 
   @Bean

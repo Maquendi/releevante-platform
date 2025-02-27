@@ -1,7 +1,7 @@
 package com.releevante.core.application.service.impl;
 
-import com.releevante.core.application.dto.ServiceRatingDto;
-import com.releevante.core.application.service.AccountAuthorizationService;
+import com.releevante.core.application.dto.clients.reviews.ServiceReviewDto;
+import com.releevante.core.application.identity.service.auth.AuthorizationService;
 import com.releevante.core.application.service.ServiceRatingService;
 import com.releevante.core.domain.repository.ratings.ServiceRatingRepository;
 import com.releevante.types.SequentialGenerator;
@@ -14,23 +14,22 @@ public class ServiceRatingServiceImpl implements ServiceRatingService {
 
   final ServiceRatingRepository serviceRatingRepository;
 
-  final AccountAuthorizationService authorizationService;
+  final AuthorizationService authorizationService;
 
   final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
 
   final SequentialGenerator<ZonedDateTime> dateTimeGenerator = ZonedDateTimeGenerator.instance();
 
   public ServiceRatingServiceImpl(
-      ServiceRatingRepository serviceRatingRepository,
-      AccountAuthorizationService authorizationService) {
+      ServiceRatingRepository serviceRatingRepository, AuthorizationService authorizationService) {
     this.serviceRatingRepository = serviceRatingRepository;
     this.authorizationService = authorizationService;
   }
 
   @Override
-  public Mono<String> create(ServiceRatingDto ratingDto) {
+  public Mono<String> create(ServiceReviewDto ratingDto) {
     return authorizationService
-        .getCurrentPrincipal()
+        .getAccountPrincipal()
         .map(principal -> ratingDto.toDomain(principal, uuidGenerator, dateTimeGenerator))
         .flatMap(serviceRatingRepository::create);
   }

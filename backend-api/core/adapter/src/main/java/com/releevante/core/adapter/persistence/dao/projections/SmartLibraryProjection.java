@@ -1,6 +1,5 @@
 package com.releevante.core.adapter.persistence.dao.projections;
 
-import com.releevante.core.domain.OrgId;
 import com.releevante.core.domain.SmartLibrary;
 import com.releevante.core.domain.types.SmartLibraryState;
 import com.releevante.types.Slid;
@@ -30,7 +29,7 @@ public class SmartLibraryProjection {
         .updatedAt(createdAt)
         .createdAt(createdAt)
         .modelName(modelName)
-        .orgId(OrgId.of(orgId))
+        .orgId(orgId)
         .modules(modules)
         .moduleCapacity(moduleCapacity)
         .isActive(isActive)

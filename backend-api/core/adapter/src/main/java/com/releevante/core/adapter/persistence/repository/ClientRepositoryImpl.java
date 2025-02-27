@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Transactional
 @Component
 public class ClientRepositoryImpl implements ClientRepository {
 
@@ -36,11 +37,6 @@ public class ClientRepositoryImpl implements ClientRepository {
   final BookReservationHibernateDao bookReservationHibernateDao;
 
   final BookReservationItemHibernateDao bookReservationItemHibernateDao;
-
-  final CartHibernateDao cartHibernateDao;
-
-  final CartItemHibernateDao cartItemHibernateDao;
-
   final TransactionItemStatusRecordHibernateDao transactionItemStatusRecordHibernateDao;
 
   public ClientRepositoryImpl(
@@ -52,8 +48,6 @@ public class ClientRepositoryImpl implements ClientRepository {
       BookRatingHibernateDao bookRatingHibernateDao,
       BookReservationHibernateDao bookReservationHibernateDao,
       BookReservationItemHibernateDao bookReservationItemHibernateDao,
-      CartHibernateDao cartHibernateDao,
-      CartItemHibernateDao cartItemHibernateDao,
       TransactionItemStatusRecordHibernateDao transactionItemStatusRecordHibernateDao) {
     this.clientHibernateDao = clientHibernateDao;
     this.serviceRatingHibernateDao = serviceRatingHibernateDao;
@@ -63,8 +57,6 @@ public class ClientRepositoryImpl implements ClientRepository {
     this.bookRatingHibernateDao = bookRatingHibernateDao;
     this.bookReservationHibernateDao = bookReservationHibernateDao;
     this.bookReservationItemHibernateDao = bookReservationItemHibernateDao;
-    this.cartHibernateDao = cartHibernateDao;
-    this.cartItemHibernateDao = cartItemHibernateDao;
     this.transactionItemStatusRecordHibernateDao = transactionItemStatusRecordHibernateDao;
   }
 
@@ -74,12 +66,11 @@ public class ClientRepositoryImpl implements ClientRepository {
   }
 
   @Override
-  public Mono<Client> saveServiceRating(Client client) {
+  public Mono<Client> saveServiceReview(Client client) {
     return ClientRecord.serviceRating(client)
         .flatMap(
             clientRecord ->
-                clientHibernateDao
-                    .save(clientRecord)
+                saveClient(clientRecord)
                     .flatMap(
                         ignore -> serviceRatingHibernateDao.save(clientRecord.getServiceRating()))
                     .thenReturn(client))
@@ -172,7 +163,29 @@ public class ClientRepositoryImpl implements ClientRepository {
                         transactionItemStatusRecordHibernateDao::saveAll,
                         transactionItemStatusRecordHibernateDao::save));
 
-    return Mono.zip(transactionStatusCreate, transactionItemStatusCreate).thenReturn(client);
+    return transactionItemStatusCreate.flatMap(res -> transactionStatusCreate).thenReturn(client);
+  }
+
+  @Override
+  public Mono<Client> saveBookReview(Client client) {
+    return ClientRecord.bookRatings(client)
+        .flatMap(
+            clientRecord ->
+                saveClient(clientRecord)
+                    .flatMapMany(
+                        ignore ->
+                            saveRecords(
+                                clientRecord.getBookRatings(),
+                                bookRatingHibernateDao::saveAll,
+                                bookRatingHibernateDao::save))
+                    .collectList()
+                    .thenReturn(client))
+        .defaultIfEmpty(client);
+  }
+
+  @Override
+  public Flux<Client> saveBookReview(Iterable<Client> clients) {
+    return Flux.fromIterable(clients).flatMap(this::saveBookReview);
   }
 
   protected <E extends PersistableRecord> Mono<Collection<E>> saveRecords(
@@ -232,23 +245,6 @@ public class ClientRepositoryImpl implements ClientRepository {
   }
 
   @Override
-  public Mono<Client> saveBookRating(Client client) {
-    return ClientRecord.bookRatings(client)
-        .flatMap(
-            clientRecord ->
-                saveClient(clientRecord)
-                    .flatMapMany(
-                        ignore ->
-                            saveRecords(
-                                clientRecord.getBookRatings(),
-                                bookRatingHibernateDao::saveAll,
-                                bookRatingHibernateDao::save))
-                    .collectList()
-                    .thenReturn(client))
-        .defaultIfEmpty(client);
-  }
-
-  @Override
   public Mono<Client> saveReservations(Client client) {
     return ClientRecord.bookReservations(client)
         .flatMap(
@@ -276,36 +272,6 @@ public class ClientRepositoryImpl implements ClientRepository {
                               bookReservationItemHibernateDao::save))
                   .collectList()
                   .thenReturn(client);
-            })
-        .defaultIfEmpty(client);
-  }
-
-  @Override
-  public Mono<Client> saveCarts(Client client) {
-    return ClientRecord.carts(client)
-        .flatMap(
-            clientRecord -> {
-              var cartRecords = clientRecord.getCarts();
-              var cartItemsRecords =
-                  cartRecords.stream()
-                      .map(CartRecord::getCartItems)
-                      .flatMap(Set::stream)
-                      .collect(Collectors.toSet());
-              return saveClient(clientRecord)
-                  .flatMapMany(
-                      ignore ->
-                          saveRecords(
-                              cartRecords, cartHibernateDao::saveAll, cartHibernateDao::save))
-                  .collectList()
-                  .flatMapMany(
-                      ignore ->
-                          saveRecords(
-                              cartItemsRecords,
-                              cartItemHibernateDao::saveAll,
-                              cartItemHibernateDao::save))
-                  .collectList()
-                  .map(ignored -> client)
-                  .onErrorResume((error) -> Mono.just(client));
             })
         .defaultIfEmpty(client);
   }

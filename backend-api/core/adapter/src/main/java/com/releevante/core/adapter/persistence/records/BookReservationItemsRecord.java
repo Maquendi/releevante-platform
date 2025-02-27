@@ -2,6 +2,7 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.BookReservationItem;
+import com.releevante.core.domain.BookTransactionType;
 import com.releevante.core.domain.Isbn;
 import java.util.List;
 import java.util.Objects;
@@ -17,17 +18,19 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookReservationItemsRecord extends PersistableEntity {
+public class BookReservationItemsRecord extends PersistableRecord {
   @Id private String id;
   private Integer qty;
   private String isbn;
   private String reservationId;
+  BookTransactionType transactionType;
 
   private static BookReservationItemsRecord fromDomain(BookReservationItem item) {
     var record = new BookReservationItemsRecord();
     record.setId(item.id());
     record.setQty(item.qty());
     record.setIsbn(item.isbn().value());
+    record.setTransactionType(item.transactionType());
     return record;
   }
 
@@ -39,6 +42,13 @@ public class BookReservationItemsRecord extends PersistableEntity {
         .collect(Collectors.toSet());
   }
 
+  public static List<BookReservationItemsRecord> fromDomain(
+      String reservationRecordId, List<BookReservationItem> reservationItems) {
+    return reservationItems.stream()
+        .map(item -> fromDomain(item).with(reservationRecordId))
+        .toList();
+  }
+
   public static List<BookReservationItem> toDomain(
       Set<BookReservationItemsRecord> reservationItems) {
     return reservationItems.stream()
@@ -47,11 +57,21 @@ public class BookReservationItemsRecord extends PersistableEntity {
   }
 
   public BookReservationItem toDomain() {
-    return BookReservationItem.builder().id(getId()).qty(getQty()).isbn(Isbn.of(isbn)).build();
+    return BookReservationItem.builder()
+        .id(getId())
+        .qty(getQty())
+        .isbn(Isbn.of(isbn))
+        .transactionType(transactionType)
+        .build();
   }
 
   public BookReservationItemsRecord with(BookReservationRecord reservation) {
-    this.setReservationId(reservation.getId());
+    this.with(reservation.getId());
+    return this;
+  }
+
+  public BookReservationItemsRecord with(String reservationId) {
+    this.setReservationId(reservationId);
     return this;
   }
 

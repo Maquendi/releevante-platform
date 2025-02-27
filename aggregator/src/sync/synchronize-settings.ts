@@ -1,30 +1,39 @@
 import { dbConnection } from "../config/db";
-import { executeGet } from "../htttp-client/http-client";
+import { executeGet, executePatch } from "../htttp-client/http-client";
 import { ApiRequest } from "../htttp-client/model";
 import { LibrarySetting } from "../model/client";
 
 const slid = process.env.slid;
 
 export const synchronizeSettings = async (token: string) => {
-  let syncComplete = false;
-  let page = 0;
   let totalRecordsSynced = 0;
-
+  let completedNoError = false;
   const request: ApiRequest = {
     resource: `sl/${slid}/settings?status=not_synced`,
     token,
   };
 
   const response = await executeGet<LibrarySetting[]>(request);
-  const settings = response.context.data;
-  page++;
-  syncComplete = settings?.length == 0 || !settings;
+  const settings = response.context.data || [];
 
-  if (settings && settings.length) {
-    totalRecordsSynced += await insertSettings(settings);
+  if (settings.length) {
+    try {
+      totalRecordsSynced += await insertSettings(settings);
+      completedNoError = true;
+    } catch (error) {
+      completedNoError = false;
+    }
   }
 
   console.log("TOTAL SETTINGS RECORDS SYNCHRONIZED: " + totalRecordsSynced);
+
+  if (completedNoError) {
+    const request: ApiRequest = {
+      token,
+      resource: `sl/${slid}/settings`,
+    };
+    await executePatch<any>(request);
+  }
 
   return totalRecordsSynced;
 };

@@ -1,8 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.BookLoan;
-import com.releevante.core.domain.BookLoanId;
-import com.releevante.core.domain.BookTransaction;
+import com.releevante.core.domain.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -30,8 +28,14 @@ public class BookTransactionRecord extends AuditableEntity {
 
   @Transient private Set<TransactionStatusRecord> transactionStatus = new HashSet<>();
 
-  public BookLoan toDomain() {
-    return BookLoan.builder().id(BookLoanId.of(id)).origin(origin).createdAt(createdAt).build();
+  public BookTransaction toDomain() {
+    return BookTransaction.builder()
+        .transactionType(BookTransactionType.valueOf(transactionType))
+        .externalId(TransactionId.of(externalId))
+        .id(TransactionId.of(id))
+        .origin(origin)
+        .createdAt(createdAt)
+        .build();
   }
 
   protected static Set<BookTransactionRecord> fromDomain(

@@ -5,15 +5,14 @@ import com.releevante.core.adapter.persistence.dao.LibraryInventoryHibernateDao;
 import com.releevante.core.domain.BookCopyStatus;
 import com.releevante.core.domain.TransactionItemStatusEnum;
 import com.releevante.core.domain.repository.SmartLibraryInventoryRepository;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
 public class SmartLibraryInventoryRepositoryImpl implements SmartLibraryInventoryRepository {
-
   final LibraryInventoryHibernateDao libraryInventoryHibernateDao;
-
   final BookTransactionHibernateDao bookTransactionHibernateDao;
 
   public SmartLibraryInventoryRepositoryImpl(
@@ -41,5 +40,10 @@ public class SmartLibraryInventoryRepositoryImpl implements SmartLibraryInventor
   @Override
   public Mono<Void> updateLibraryInventories() {
     return libraryInventoryHibernateDao.callUpdateLibraryInventoryStoredProcedure();
+  }
+
+  @Override
+  public Mono<Void> updateInventoryIsSyncedFalseByIsbn(Set<String> isbnSet) {
+    return libraryInventoryHibernateDao.updateInventoryIsSyncedFalseByIsbn(isbnSet);
   }
 }

@@ -1,5 +1,5 @@
 import { dbConnection } from "../config/db.js";
-import { executeGet } from "../htttp-client/http-client.js";
+import { executeGet, executePatch } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { Book, BookCopy, BookImage, Tag } from "../model/client.js";
 import { arrayGroupinBy } from "../utils.js";
@@ -19,35 +19,49 @@ export const synchronizeBooks = async (token: string) => {
   let totalTagsRecordsSynced = 0;
   let totalBookRecords = 0;
   let totalBookCopies = 0;
+  let completedNoError = false;
   while (syncComplete == false) {
     try {
       const request: ApiRequest = {
         token,
-        resource: `slid/${slid}/books?page=${page}&size=2000&includeTags=true&status=not_synced&includeImages=true`,
+        resource: `sl/${slid}/books?page=${page}&size=2000&includeTags=true&status=not_synced&includeImages=true`,
       };
       const response = await executeGet<Book[]>(request);
-      const books = response.context.data;
+      const books = response.context.data || [];
       page++;
       syncComplete = books?.length == 0 || response.statusCode !== 200;
       if (response.statusCode == 200) {
-        if (books && books.length) {
+        if (books.length) {
           totalBookRecords += await insertBook(books);
           totalTagsRecordsSynced += await insertTags(books);
           totalBookCopies += await insertBookCopies(books);
+          completedNoError = true;
         }
       } else {
         console.log(
           `failed to load data from server error: ${JSON.stringify(response)}`
         );
+        completedNoError = false;
       }
     } catch (error) {
       syncComplete = true;
+      completedNoError = false;
     }
   }
 
   console.log("TOTAL BOOK RECORDS SYNCHRONIZED: " + totalBookRecords);
 
   console.log("TOTAL BOOK COPIES SYNCHRONIZED: " + totalBookCopies);
+
+  console.log("TOTAL BOOK TAGS SYNCHRONIZED: " + totalTagsRecordsSynced);
+
+  if (completedNoError) {
+    const request: ApiRequest = {
+      token,
+      resource: `sl/${slid}/inventories`,
+    };
+    await executePatch<any>(request);
+  }
 
   return totalTagsRecordsSynced + totalBookCopies + totalBookRecords;
 };

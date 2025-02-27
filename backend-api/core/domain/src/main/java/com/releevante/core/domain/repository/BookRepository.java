@@ -21,6 +21,8 @@ public interface BookRepository {
 
   Flux<PartialBook> findAllBy(String orgId);
 
+  Flux<PartialBook> findAllBy();
+
   Flux<Book> findAllBy(String isbn, String translationId);
 
   Flux<Book> getByTagIdList(List<String> tagIdList);

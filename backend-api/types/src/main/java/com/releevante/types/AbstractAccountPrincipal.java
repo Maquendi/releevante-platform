@@ -26,6 +26,10 @@ public abstract class AbstractAccountPrincipal {
     return roles().stream().anyMatch(role -> role.equals(AUTHORITIES.SUPER_ADMIN.getAuthority()));
   }
 
+  public boolean isAdmin() {
+    return roles().stream().anyMatch(role -> role.equals(AUTHORITIES.ADMIN.getAuthority()));
+  }
+
   public void checkHasAnyAuthority(String... authorities) {
     var privileges = new ArrayList<>(Arrays.asList(authorities));
     privileges.add(AUTHORITIES.SUPER_ADMIN.getAuthority());

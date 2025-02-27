@@ -1,5 +1,4 @@
 import { SettingsRepository } from "../domain/repositories";
-import { LibrarySettings } from "../domain/settings.model";
 import { unstable_cache } from "next/cache";
 
 export class SettingsFacade {

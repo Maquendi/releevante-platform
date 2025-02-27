@@ -7,6 +7,7 @@ import com.releevante.core.domain.tags.TagTypes;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.annotation.Nullable;
 
 public interface BookTagRepository {
   Mono<Tag> create(Tag tag);
@@ -19,5 +20,5 @@ public interface BookTagRepository {
 
   Flux<Tag> getTags(Isbn isbn);
 
-  Mono<BookCategories> getBookCategories(String slid);
+  Mono<BookCategories> getBookCategories(@Nullable String orgId);
 }

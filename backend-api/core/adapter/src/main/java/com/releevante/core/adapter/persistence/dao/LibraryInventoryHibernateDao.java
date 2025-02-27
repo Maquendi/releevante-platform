@@ -21,11 +21,15 @@ public interface LibraryInventoryHibernateDao
       @Param("status") String status, @Param("copies") Set<String> copies);
 
   @Modifying
+  @Query("update core.library_inventories set is_synced = false where cpy in (:isbnSet)")
+  Mono<Void> updateInventoryIsSyncedFalseByIsbn(@Param("isbnSet") Set<String> isbnSet);
+
+  @Modifying
   @Query("update core.library_inventories set status=:status, is_synced=false where cpy=:cpy")
   Mono<Void> updateInventoryStatusByCpy(@Param("status") String status, @Param("cpy") String cpy);
 
   @Modifying
-  Flux<LibraryInventoryRecord> findAllBySlidAndIsSyncFalse(String slid);
+  Flux<LibraryInventoryRecord> findAllBySlidAndIsSyncedFalse(String slid);
 
   @Query(
       "update core.library_inventories li \n"
@@ -79,7 +83,7 @@ public interface LibraryInventoryHibernateDao
           + "set\n"
           + "\tusage_count = (usage_count + subquery.usage_count_new),\n"
           + "\tstatus = subquery.status,\n"
-          + "\tis_sync = false\n"
+          + "\tis_synced = false\n"
           + "from\n"
           + "\tsubquery\n"
           + "where\n"
@@ -92,7 +96,7 @@ public interface LibraryInventoryHibernateDao
               + "\tli.cpy,\n"
               + "\tli.isbn,\n"
               + "\tli.slid,\n"
-              + "\tli.is_sync,\n"
+              + "\tli.is_synced,\n"
               + "\tli.usage_count,\n"
               + "\tli.status,\n"
               + "\tli.allocation,\n"
@@ -121,7 +125,7 @@ public interface LibraryInventoryHibernateDao
               + "\tb.isbn = li.isbn\n"
               + "where\n"
               + "\tli.slid=:slid\n"
-              + "\tand li.is_sync=:synced\n"
+              + "\tand li.is_synced=:synced\n"
               + "order by li.created_at asc \n"
               + "limit :size offset :offset")
   Flux<BookCopyProjection> findAllCopies(
@@ -136,7 +140,7 @@ public interface LibraryInventoryHibernateDao
               + "\tli.cpy,\n"
               + "\tli.isbn,\n"
               + "\tli.slid,\n"
-              + "\tli.is_sync,\n"
+              + "\tli.is_synced,\n"
               + "\tli.usage_count,\n"
               + "\tli.allocation,\n"
               + "\tli.status,\n"
@@ -170,7 +174,7 @@ public interface LibraryInventoryHibernateDao
   Flux<BookCopyProjection> findAllCopies(
       @Param("slid") String slid, @Param("offset") int offset, @Param("size") int size);
 
-  @Query("update core.library_inventories set is_sync = true where slid = :slid")
+  @Query("update core.library_inventories set is_synced = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);
 
   @Query(

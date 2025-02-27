@@ -29,6 +29,8 @@ public class BookRatingRecord extends AuditableEntity {
     record.setIsbn(rating.isbn());
     record.setOrigin(rating.origin());
     record.setSynced(false);
+    record.setAudit(rating.audit());
+    record.setOrigin(rating.origin());
     record.setCreatedAt(rating.createdAt());
     return record;
   }

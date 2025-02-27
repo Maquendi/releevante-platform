@@ -15,4 +15,6 @@ public abstract class AbstractBookReservationItem {
   abstract Integer qty();
 
   abstract Isbn isbn();
+
+  abstract BookTransactionType transactionType();
 }

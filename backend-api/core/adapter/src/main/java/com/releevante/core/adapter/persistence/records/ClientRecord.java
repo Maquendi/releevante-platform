@@ -27,8 +27,6 @@ public class ClientRecord extends PersistableEntity {
 
   @Transient Set<BookRatingRecord> bookRatings = new LinkedHashSet<>();
 
-  @Transient Set<CartRecord> carts = new LinkedHashSet<>();
-
   protected static ClientRecord fromDomain(Client client) {
     var record = new ClientRecord();
     record.setId(client.id().value());
@@ -69,8 +67,7 @@ public class ClientRecord extends PersistableEntity {
         .map(
             bookReservations -> {
               var clientRecord = fromDomain(client);
-              var reservationRecords =
-                  BookReservationRecord.fromDomain(clientRecord, bookReservations);
+              var reservationRecords = BookReservationRecord.fromDomain(bookReservations);
               clientRecord.getReservations().addAll(reservationRecords);
               return clientRecord;
             });
@@ -84,18 +81,6 @@ public class ClientRecord extends PersistableEntity {
               var clientRecord = fromDomain(client);
               var ratingRecords = BookRatingRecord.fromDomain(ratings);
               clientRecord.getBookRatings().addAll(ratingRecords);
-              return clientRecord;
-            });
-  }
-
-  public static Mono<ClientRecord> carts(Client client) {
-    return Mono.just(client.carts())
-        .filter(Predicate.not(List::isEmpty))
-        .map(
-            carts -> {
-              var clientRecord = fromDomain(client);
-              var bookSaleRecords = CartRecord.fromDomain(clientRecord, carts);
-              clientRecord.getCarts().addAll(bookSaleRecords);
               return clientRecord;
             });
   }

@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -79,7 +80,7 @@ public class BookTagRepositoryImpl implements BookTagRepository {
   }
 
   @Override
-  public Mono<BookCategories> getBookCategories(String orgId) {
+  public Mono<BookCategories> getBookCategories(@Nullable String orgId) {
     return Mono.justOrEmpty(orgId)
         .flatMapMany(tagHibernateDao::findBookCategories)
         .collectList()

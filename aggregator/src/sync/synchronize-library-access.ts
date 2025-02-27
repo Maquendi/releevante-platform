@@ -1,5 +1,5 @@
 import { dbConnection } from "../config/db.js";
-import { executeGet } from "../htttp-client/http-client.js";
+import { executeGet, executePatch } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { LibraryAccess } from "../model/client.js";
 
@@ -7,16 +7,31 @@ const slid = process.env.slid;
 
 export const synchronizeLibraryAccess = async (token: string) => {
   let totalRecordsSynced = 0;
+  let completedNoError = false;
   const request: ApiRequest = {
     resource: `sl/${slid}/accesses?status=not_synced`,
     token,
   };
   const response = await executeGet<LibraryAccess[]>(request);
-  const accesses = response.context.data;
-  if (accesses && accesses.length) {
-    totalRecordsSynced += await insertUsers(accesses);
+  const accesses = response.context.data || [];
+  if (accesses.length) {
+    try {
+      totalRecordsSynced += await insertUsers(accesses);
+      completedNoError = true;
+    } catch (error) {
+      completedNoError = false;
+    }
   }
+
   console.log("TOTAL USER RECORDS SYNCHRONIZED: " + totalRecordsSynced);
+
+  if (completedNoError) {
+    const request: ApiRequest = {
+      token,
+      resource: `sl/${slid}/accesses`,
+    };
+    await executePatch<any>(request);
+  }
   return totalRecordsSynced;
 };
 

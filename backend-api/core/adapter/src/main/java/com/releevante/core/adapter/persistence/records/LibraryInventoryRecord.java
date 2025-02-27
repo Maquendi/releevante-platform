@@ -22,7 +22,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
 
   private String isbn;
   private String slid;
-  private boolean isSync;
+  private boolean isSynced;
   private String status;
   private int usageCount;
   private String allocation;
@@ -48,7 +48,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
     record.setStatus(bookCopy.status().name());
     record.setCreatedAt(bookCopy.createdAt());
     record.setUpdatedAt(bookCopy.updatedAt());
-    record.setSync(bookCopy.isSync());
+    record.setSynced(bookCopy.isSync());
     record.setUsageCount(bookCopy.usageCount());
     record.setAllocation(bookCopy.allocation());
     return record;
@@ -62,7 +62,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
     record.setStatus(inventory.status().name());
     record.setCreatedAt(inventory.createdAt());
     record.setUpdatedAt(inventory.updatedAt());
-    record.setSync(inventory.isSync());
+    record.setSynced(inventory.isSync());
     record.setAllocation(inventory.allocation());
     record.setUsageCount(inventory.usageCount());
     return record;
@@ -81,7 +81,7 @@ public class LibraryInventoryRecord extends PersistableEntity {
         .language(projection.getLang())
         .correlationId(projection.getCorrelationId())
         .description(projection.getDescription())
-        .isSync(projection.isSync())
+        .isSync(projection.isSynced())
         .descriptionFr(projection.getDescriptionFr())
         .descriptionSp(projection.getDescriptionEs())
         .price(projection.getPrice())

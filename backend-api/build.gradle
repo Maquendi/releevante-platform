@@ -190,9 +190,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0"
 
-	implementation project(path: ':identity-management:application')
-    implementation project(path: ':identity-management:adapter')
-	implementation project(path: ':identity-management:domain')
+//	implementation project(path: ':identity-management:application')
+//    implementation project(path: ':identity-management:adapter')
+//	implementation project(path: ':identity-management:domain')
     implementation project(path: ':core:application')
 	implementation project(path: ':core:adapter')
     implementation project(path: ':core:domain')

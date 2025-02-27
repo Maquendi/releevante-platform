@@ -3,6 +3,7 @@ package com.releevante.core.adapter.persistence.repository;
 import com.releevante.core.adapter.persistence.dao.LibrarySettingsHibernateDao;
 import com.releevante.core.adapter.persistence.records.LibrarySettingsRecord;
 import com.releevante.core.domain.LibrarySetting;
+import com.releevante.core.domain.identity.model.OrgId;
 import com.releevante.core.domain.repository.SettingsRepository;
 import com.releevante.types.Slid;
 import java.util.List;
@@ -54,6 +55,11 @@ public class SettingsRepositoryImpl implements SettingsRepository {
         .filter(Predicate.not(List::isEmpty))
         .map(settings -> settings.get(0))
         .map(LibrarySettingsRecord::toDomain);
+  }
+
+  @Override
+  public Flux<LibrarySetting> findCurrentBy(OrgId orgId) {
+    return settingsHibernateDao.findCurrentByOrgId(orgId.value());
   }
 
   @Override

@@ -3,7 +3,7 @@ package com.releevante.core.adapter.service.books;
 import com.releevante.core.adapter.service.google.BookGSheetUtils;
 import com.releevante.core.adapter.service.google.GoogleSpreadSheetService;
 import com.releevante.core.adapter.service.google.LibraryInventoryGSheetUtils;
-import com.releevante.core.application.dto.LibraryInventoryDto;
+import com.releevante.core.application.dto.sl.LibraryInventoryDto;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.tags.TagTypes;

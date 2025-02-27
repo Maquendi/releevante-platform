@@ -20,14 +20,14 @@ enum TransactionItemStatusEnum {
 
 export interface TransactionItemStatus {
   id: string;
-  externalId: string;
+  itemId: string;
   status: TransactionItemStatusEnum;
   createdAt: Date;
 }
 
 export interface TransactionStatus {
   id: string;
-  externalId: string;
+  transactionId: string,
   status: BookTransactionStatusEnum;
   createdAt: Date;
 }
@@ -36,41 +36,64 @@ export interface TransactionItem {
   id: string;
   externalId?: string;
   cpy: string;
-  status?: TransactionItemStatus[];
 }
 
-export interface TransactionDto {
-  id: string;
+export interface TransactionSyncDto {
+  clientId: string;
+  transactionId: string;
   externalId?: string;
   createdAt: Date;
-  status?: TransactionStatus[];
   items: TransactionItem[];
   transactionType: "RENT" | "PURCHASE";
 }
 
-export interface ClientSyncDto {
-  id: string;
-  transactions?: TransactionDto[];
-  transactionStatus?: TransactionStatus[];
-  transactionItemStatus?: TransactionItemStatus[];
+export interface TransactionStatusSyncDto {
+  clientId: string;
+  transactionStatus: TransactionStatus[];
+  transactionItemStatus: TransactionItemStatus[];
 }
 
-export interface LibrarySyncDto {
-  slid?: string;
-  clients: ClientSyncDto[];
+
+export interface TransactionStatusSyncResponse {
+  transactionStatusIdSet: string[];
+  transactionItemStatusIdSet: string[];
 }
+
+export interface TransactionSyncResponse {
+  transaction: {
+    id: string;
+    externalId: string;
+  };
+
+  items: {
+    id: string;
+    externalId: string;
+  }[];
+}
+
+// export interface ClientSyncDto {
+//   id: string;
+//   transactions?: TransactionDto[];
+//   transactionStatus?: TransactionStatus[];
+//   transactionItemStatus?: TransactionItemStatus[];
+// }
+
+// export interface LibrarySyncDto {
+//   slid?: string;
+//   clients: ClientSyncDto[];
+// }
 
 export interface LoanCreateResponse {
   id: string;
   exteralId: string;
 }
 
-export interface ClientSyncReponse {
-  id: string;
-  loans: LoanCreateResponse[];
-}
+// export interface ClientSyncReponse {
+//   id: string;
+//   loans: LoanCreateResponse[];
+// }
 
-export interface LibrarySyncResponse {
-  id: string;
-  clients: ClientSyncDto[];
-}
+// export interface LibrarySyncResponse {
+//   id: string;
+//   clients: ClientSyncDto[];
+// }

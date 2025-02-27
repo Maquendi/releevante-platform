@@ -27,7 +27,7 @@ public abstract class AbstractSmartLibrary {
   abstract Slid id();
 
   @JsonIgnore
-  abstract OrgId orgId();
+  abstract String orgId();
 
   abstract String modelName();
 
@@ -84,7 +84,7 @@ public abstract class AbstractSmartLibrary {
   abstract ZonedDateTime updatedAt();
 
   public void validateIsAuthorized(AccountPrincipal principal) {
-    if (orgId().value().equals(principal.orgId()) || principal.isSuperAdmin()) {
+    if (orgId().equals(principal.orgId()) || principal.isSuperAdmin()) {
       return;
     }
     throw new ForbiddenException();

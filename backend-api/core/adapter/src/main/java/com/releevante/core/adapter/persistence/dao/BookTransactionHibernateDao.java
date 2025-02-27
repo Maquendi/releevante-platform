@@ -41,4 +41,6 @@ public interface BookTransactionHibernateDao
 
   @Query("UPDATE core.transaction_item_status SET is_synced=true;")
   Mono<Void> setLibraryInventoriesSynced();
+
+  Flux<BookTransactionRecord> findAllByClientId(String clientId);
 }

@@ -57,6 +57,26 @@ public interface BookHibernateDao extends ReactiveCrudRepository<BookRecord, Str
 
   @Query(
       "select\n"
+          + "\tb.isbn,\n"
+          + "\tb.translation_id,\n"
+          + "\tb.title,\n"
+          + "\tb.author,\n"
+          + "\tb.votes,\n"
+          + "\tb.rating,\n"
+          + "\t(\n"
+          + "\tselect\n"
+          + "\t\tbi.url\n"
+          + "\tfrom\n"
+          + "\t\tcore.book_image bi\n"
+          + "\twhere\n"
+          + "\t\tbi.isbn = b.isbn\n"
+          + "\tlimit 1) as image\n"
+          + "from\n"
+          + "\tcore.books b")
+  Flux<PartialBookProjection> findAllPartialBook();
+
+  @Query(
+      "select\n"
           + "\tb.*,\n"
           + "\t(\n"
           + "\tselect\n"

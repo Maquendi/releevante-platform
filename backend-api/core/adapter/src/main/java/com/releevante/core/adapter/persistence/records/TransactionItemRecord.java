@@ -53,4 +53,8 @@ public class TransactionItemRecord extends SimplePersistable {
     record.setTransactionItemStatuses(TransactionItemStatusRecord.from(item));
     return record;
   }
+
+  public TransactionItem toDomain() {
+    return TransactionItem.builder().id(id).externalId(externalId).cpy(cpy).build();
+  }
 }

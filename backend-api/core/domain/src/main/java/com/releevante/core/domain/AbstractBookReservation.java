@@ -26,4 +26,8 @@ public abstract class AbstractBookReservation {
   abstract ZonedDateTime endTime();
 
   abstract List<BookReservationItem> items();
+
+  public boolean isCurrent() {
+    return endTime().isBefore(ZonedDateTime.now());
+  }
 }

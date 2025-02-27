@@ -13,8 +13,8 @@ public interface SmartLibraryAccessControlDao
     extends ReactiveCrudRepository<SmartLibraryAccessControlRecord, String> {
   Flux<SmartLibraryAccessControlRecord> findByCredential(String credential);
 
-  Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSyncIsFalse(String slid);
+  Flux<SmartLibraryAccessControlRecord> findAllBySlidAndIsSyncedIsFalse(String slid);
 
-  @Query("update core.smart_library_access_ctrl set is_sync = true where slid = :slid")
+  @Query("update core.smart_library_access_ctrl set is_synced = true where slid = :slid")
   Mono<Integer> setSynchronized(@Param("slid") String slid);
 }

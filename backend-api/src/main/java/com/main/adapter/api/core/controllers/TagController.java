@@ -2,7 +2,7 @@ package com.main.adapter.api.core.controllers;
 
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
-import com.releevante.core.application.dto.TagCreateDto;
+import com.releevante.core.application.dto.books.TagCreateDto;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.Tag;
 import com.releevante.core.domain.tags.TagTypes;

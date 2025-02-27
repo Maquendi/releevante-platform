@@ -3,20 +3,14 @@ package com.main.application.identity;
 
 import com.main.config.security.CustomAuthenticationException;
 import com.main.config.security.JwtAuthenticationToken;
-import com.releevante.core.application.service.SmartLibraryService;
-import com.releevante.identity.application.dto.*;
-import com.releevante.identity.application.service.auth.AuthenticationService;
-import com.releevante.identity.application.service.auth.AuthorizationService;
-import com.releevante.identity.application.service.user.OrgService;
-import com.releevante.identity.application.service.user.UserService;
-import com.releevante.identity.domain.model.SmartLibraryAccess;
-import com.releevante.types.Slid;
+import com.releevante.core.application.identity.dto.*;
+import com.releevante.core.application.identity.service.auth.AuthenticationService;
+import com.releevante.core.application.identity.service.auth.AuthorizationService;
+import com.releevante.core.application.identity.service.user.OrgService;
+import com.releevante.core.application.identity.service.user.UserService;
 import com.releevante.types.exceptions.UserUnauthorizedException;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -25,19 +19,16 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   final UserService userService;
   final OrgService orgService;
   final AuthorizationService authorizationService;
-  private final SmartLibraryService smartLibraryService;
 
   public IdentityServiceFacadeImpl(
       AuthenticationService userAuthenticationService,
       UserService userService,
       OrgService orgService,
-      AuthorizationService authorizationService,
-      SmartLibraryService smartLibraryService) {
+      AuthorizationService authorizationService) {
     this.authenticationService = userAuthenticationService;
     this.orgService = orgService;
     this.userService = userService;
     this.authorizationService = authorizationService;
-    this.smartLibraryService = smartLibraryService;
   }
 
   @Override
@@ -51,41 +42,17 @@ public class IdentityServiceFacadeImpl implements IdentityServiceFacade {
   }
 
   @Override
-  public Mono<List<GrantedAccess>> create(UserAccessDto access) {
-    return authorizationService
-        .getAccountPrincipal()
-        .flatMap(
-            principal -> {
-              var slidSet = access.sLids().stream().map(Slid::of).collect(Collectors.toSet());
-              return smartLibraryService
-                  .smartLibrariesValidated(principal, slidSet)
-                  .collectList()
-                  .flatMap(ignored -> userService.create(access).collectList());
-            });
-  }
-
-  @Override
-  public Flux<SmartLibraryAccess> getAccesses(Slid slid, boolean synced) {
-    return userService.getAccesses(slid, synced);
-  }
-
-  @Override
-  public Flux<SmartLibraryAccess> getAccesses(Slid slid) {
-    return userService.getAccesses(slid);
-  }
-
-  @Override
-  public Mono<UserAuthenticationDto> authenticate(LoginDto loginDto) {
+  public Mono<UserAuthenticationDto> authenticate(UserLoginDto loginDto) {
     return authenticationService.authenticate(loginDto);
   }
 
   @Override
-  public Mono<PinAuthenticationDto> authenticate(PinLoginDto loginDto) {
+  public Mono<LoginTokenDto> authenticate(GuestLoginDto loginDto) {
     return authenticationService.authenticate(loginDto);
   }
 
   @Override
-  public Mono<AggregatorLoginResponse> authenticate(AggregatorLogin loginDto) {
+  public Mono<LoginTokenDto> authenticate(M2MLoginDto loginDto) {
     return authenticationService.authenticate(loginDto);
   }
 

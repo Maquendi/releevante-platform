@@ -149,7 +149,7 @@ public class BookRepositoryImpl implements BookRepository {
                     .updatedAt(projection.getUpdatedAt())
                     .id(copy.getCpy())
                     .allocation(projection.getAllocation())
-                    .isSync(copy.isSync())
+                    .isSync(copy.isSynced())
                     .status(BookCopyStatus.valueOf(copy.getStatus()))
                     .usageCount(copy.getUsageCount())
                     .build());
@@ -204,6 +204,11 @@ public class BookRepositoryImpl implements BookRepository {
   @Override
   public Flux<PartialBook> findAllBy(String orgId) {
     return bookHibernateDao.findAllByOrgId(orgId).map(PartialBookProjection::toDomain);
+  }
+
+  @Override
+  public Flux<PartialBook> findAllBy() {
+    return bookHibernateDao.findAllPartialBook().map(PartialBookProjection::toDomain);
   }
 
   @Override

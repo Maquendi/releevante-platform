@@ -33,6 +33,22 @@ export const executeGet = async function <T>(
   return (await data?.json()) as ApiResponse<T>;
 };
 
+
+export const executePatch = async function <T>(
+  request: ApiRequest
+): Promise<ApiResponse<T>> {
+  const requestUrl = buildRequestUrl(request);
+
+  const headers = buildHttpHeaders(request) as any;
+
+  const data = await fetch(requestUrl, {
+    method: "patch",
+    headers,
+  });
+
+  return (await data?.json()) as ApiResponse<T>;
+};
+
 export const executePut = async <T>(
   request: ApiRequest
 ): Promise<ApiResponse<T>> => {

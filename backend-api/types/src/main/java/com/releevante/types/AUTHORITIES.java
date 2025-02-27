@@ -1,7 +1,9 @@
 package com.releevante.types;
 
 public enum AUTHORITIES {
-  SUPER_ADMIN("super-admin");
+  SUPER_ADMIN("SYSADMIN"),
+
+  ADMIN("ADMIN");
   private final String authority;
 
   AUTHORITIES(String auth) {
