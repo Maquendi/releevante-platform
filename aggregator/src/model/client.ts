@@ -78,16 +78,11 @@ interface UserCredential {
 
 export interface LibraryAccess {
   id: string;
-  orgId: string;
-  slid: string;
-  userId: string;
-  accessDueDays: number;
+  accessId: string;
   isActive: boolean;
   expiresAt: Date;
-  isSync: boolean;
-  createdAt: Date;
-  credential: UserCredential;
-  credentialType: string;
+  credential: string;
+  contactless: string;
 }
 
 export interface ApiCredential {

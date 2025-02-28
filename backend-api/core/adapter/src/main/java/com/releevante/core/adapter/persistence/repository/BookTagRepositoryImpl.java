@@ -84,6 +84,7 @@ public class BookTagRepositoryImpl implements BookTagRepository {
     return Mono.justOrEmpty(orgId)
         .flatMapMany(tagHibernateDao::findBookCategories)
         .collectList()
+        .filter(Predicate.not(List::isEmpty))
         .switchIfEmpty(Flux.defer(tagHibernateDao::findBookCategories).collectList())
         .map(
             projections -> {

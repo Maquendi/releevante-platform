@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -15,7 +16,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @NoArgsConstructor
 public class TagRecord extends PersistableEntity {
-  private String id;
+  @Id private String id;
   private String name;
 
   @Column("value_en")

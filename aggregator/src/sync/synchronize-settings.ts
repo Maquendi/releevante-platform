@@ -1,5 +1,9 @@
 import { dbConnection } from "../config/db";
-import { executeGet, executePatch } from "../htttp-client/http-client";
+import {
+  executeGet,
+  executePatch,
+  executePut,
+} from "../htttp-client/http-client";
 import { ApiRequest } from "../htttp-client/model";
 import { LibrarySetting } from "../model/client";
 
@@ -32,7 +36,11 @@ export const synchronizeSettings = async (token: string) => {
       token,
       resource: `sl/${slid}/settings`,
     };
-    await executePatch<any>(request);
+    const response = await executePut<Boolean>(request);
+
+    console.log(
+      "Library Settings set synchronized " + response?.context?.data
+    );
   }
 
   return totalRecordsSynced;

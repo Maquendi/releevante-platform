@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.TransactionItem;
 import com.releevante.types.ImmutableExt;
-import com.releevante.types.SequentialGenerator;
 import org.immutables.value.Value;
 
 @ImmutableExt
@@ -18,8 +17,7 @@ public abstract class AbstractTransactionItemDto {
 
   abstract String cpy();
 
-  public TransactionItem toDomain(SequentialGenerator<String> uuidGenerator) {
-    var itemId = uuidGenerator.next();
-    return TransactionItem.builder().id(itemId).externalId(id()).cpy(cpy()).build();
+  public TransactionItem toDomain() {
+    return TransactionItem.builder().id(id()).cpy(cpy()).build();
   }
 }

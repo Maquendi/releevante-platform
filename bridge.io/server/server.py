@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import socketio
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-import chardet
+#import chardet
 # NFC Imports
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.util import toHexString
@@ -177,7 +177,7 @@ class NTAG215Observer(CardObserver):
                 cards_processed += 1
                 print(f"Total cards processed: {cards_processed}")
 
-                print(f"Card content: {chardet}")
+                #print(f"Card content: {chardet}")
 
                 print(f"Card: {card}")
 

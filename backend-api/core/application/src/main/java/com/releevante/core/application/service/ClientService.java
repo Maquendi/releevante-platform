@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ClientService {
-  Flux<TransactionSyncResponse> createTransactions(List<TransactionSyncDto> transactions);
+  Mono<TransactionSyncResponse> createTransactions(List<TransactionSyncDto> transactions);
 
   Mono<TransactionStatusSyncResponse> createTransactionStatus(
       List<TransactionStatusSyncDto> transactionStatus);

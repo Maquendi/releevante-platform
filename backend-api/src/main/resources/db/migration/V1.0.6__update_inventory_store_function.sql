@@ -31,7 +31,7 @@ BEGIN
                     status = 'SOLD'
                 WHERE cpy = current_record.cpy;
             END IF;
-        ELSIF current_record.status = 'CHECKIN_SUCCESS' THEN
+        ELSIF current_record.status = 'CHECK_IN_SUCCESS' THEN
             -- increase usage_count by 1
             UPDATE core.library_inventories
             SET is_synced = false,
@@ -49,7 +49,7 @@ $$ LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION update_library_inventory_on_transaction_status_changed(transaction_status_id varchar(36))
+CREATE OR REPLACE FUNCTION update_library_inventory_on_transaction_status_changed(tr_id varchar(36))
 RETURNS INTEGER AS $$
 DECLARE
     current_record RECORD;
@@ -57,21 +57,18 @@ DECLARE
 BEGIN
     FOR current_record IN
         SELECT
-            tis.item_id,
             tis.status,
             tr.transaction_type,
             ti.cpy
-        FROM core.transaction_status ts
+        FROM core.transaction_item_status tis
         LEFT JOIN core.transaction_items ti
             ON ti.id = tis.item_id
-        LEFT JOIN core.transaction_item_status tis
-            ON tis.item_id = ti.id
         LEFT JOIN core.book_transactions tr
             ON tr.id = ti.transaction_id
-        WHERE ts.id = transaction_status_id
+        WHERE ti.transaction_id = tr_id
     LOOP
         -- Process each record individually
-        IF current_record.status = 'CHECKOUT_SUCCESS' THEN
+        IF current_record.status = 'CHECK_OUT_SUCCESS' THEN
             IF current_record.transaction_type = 'RENT' THEN
                 UPDATE core.library_inventories
                 SET is_synced = false,
@@ -83,7 +80,7 @@ BEGIN
                     status = 'SOLD'
                 WHERE cpy = current_record.cpy;
             END IF;
-        ELSIF current_record.status = 'CHECKIN_SUCCESS' THEN
+        ELSIF current_record.status = 'CHECK_IN_SUCCESS' THEN
             -- Increase usage_count by 1
             UPDATE core.library_inventories
             SET is_synced = false,
@@ -115,7 +112,7 @@ end;
 $$ language plpgsql;
 
 
-DROP TRIGGER transaction_status_insert_trigger ON core.transaction_status;
+--DROP TRIGGER transaction_status_insert_trigger ON core.transaction_status;
 -- Create trigger
 create trigger transaction_status_insert_trigger
 after

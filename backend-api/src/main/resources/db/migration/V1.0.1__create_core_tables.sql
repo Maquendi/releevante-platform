@@ -169,7 +169,6 @@ CREATE TABLE core.book_image (
 
 CREATE TABLE core.book_transactions (
 	id varchar(36) NOT NULL,
-	external_id varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
 	transaction_type varchar(30) NOT NULL,
 	audit varchar(36) NOT NULL,
@@ -177,8 +176,7 @@ CREATE TABLE core.book_transactions (
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_transactions_pk PRIMARY KEY (id),
 	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
-	FOREIGN KEY (client_id) REFERENCES core.clients(id),
-	CONSTRAINT unique_transaction_by_slid UNIQUE(external_id, origin)
+	FOREIGN KEY (client_id) REFERENCES core.clients(id)
 );
 
 CREATE TABLE core.transaction_status (
@@ -191,12 +189,12 @@ CREATE TABLE core.transaction_status (
 	is_synced boolean NOT NULL DEFAULT false,
 	CONSTRAINT transaction_status_pk PRIMARY KEY (id),
 	FOREIGN KEY (transaction_id) REFERENCES core.book_transactions(id),
-	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id)
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
+	CONSTRAINT unique_transaction_id_status UNIQUE(transaction_id, status)
 );
 
 CREATE TABLE core.transaction_items (
 	id varchar(36) NOT NULL,
-	external_id varchar(36) NOT NULL,
 	cpy varchar(36) NOT NULL,
 	price numeric NULL,
 	transaction_id varchar(36) NOT NULL,
@@ -215,11 +213,9 @@ CREATE TABLE core.transaction_item_status (
     origin varchar(36) NOT NULL,
     is_synced boolean NOT NULL DEFAULT false,
 	CONSTRAINT transaction_item_status_pk PRIMARY KEY (id),
-	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id)
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
+	CONSTRAINT unique_transaction_item_id_status UNIQUE(item_id, status)
 );
-
-CREATE INDEX IF NOT EXISTS transaction_external_id_idx ON core.book_transactions USING btree(external_id);
-
 -- identity
 
 CREATE TABLE core.accounts (

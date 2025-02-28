@@ -130,13 +130,15 @@ public class DefaultBookServiceImpl implements BookService {
         .getAccountPrincipal()
         .flatMapMany(
             principal -> {
-              if (Objects.nonNull(orgId)) {
-                if (principal.isSuperAdmin()) {
-                  return bookRepository.findAllBy(orgId);
-                }
-                return bookRepository.findAllBy(principal.orgId());
+              if (principal.isM2M()) {
+                return bookRepository.findAllBy();
               }
-              return bookRepository.findAllBy();
+
+              if (principal.isSuperAdmin()) {
+                return orgId == null ? bookRepository.findAllBy() : bookRepository.findAllBy(orgId);
+              }
+
+              return bookRepository.findAllBy(principal.orgId());
             });
   }
 
@@ -164,7 +166,15 @@ public class DefaultBookServiceImpl implements BookService {
 
   @Override
   public Mono<BookCategories> getBookCategories(@Nullable String orgId) {
-    return bookTagRepository.getBookCategories(orgId);
+    return authorizationService
+        .getAccountPrincipal()
+        .flatMap(
+            principal -> {
+              if (principal.isM2M() || principal.isSuperAdmin()) {
+                return bookTagRepository.getBookCategories(orgId);
+              }
+              return bookTagRepository.getBookCategories(principal.orgId());
+            });
   }
 
   @Override

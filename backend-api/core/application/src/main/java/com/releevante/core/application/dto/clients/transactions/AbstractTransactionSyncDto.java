@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.releevante.core.domain.*;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
-import com.releevante.types.SequentialGenerator;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,25 +27,22 @@ public abstract class AbstractTransactionSyncDto {
 
   abstract List<TransactionItemDto> items();
 
-  public BookTransaction toDomain(
-      AccountPrincipal principal, SequentialGenerator<String> uuidGenerator) {
-    var transactionId = TransactionId.of(uuidGenerator.next());
+  public BookTransaction toDomain(AccountPrincipal principal) {
     return BookTransaction.builder()
-        .id(transactionId)
-        .externalId(TransactionId.of(transactionId()))
+        .id(TransactionId.of(transactionId()))
         .transactionType(transactionType())
         .createdAt(createdAt())
         .items(
-            items().stream().map(item -> item.toDomain(uuidGenerator)).collect(Collectors.toList()))
+            items().stream().map(AbstractTransactionItemDto::toDomain).collect(Collectors.toList()))
         .origin(principal.audience())
         .audit(clientId())
         .build();
   }
 
-  public Client toClient(AccountPrincipal principal, SequentialGenerator<String> uuidGenerator) {
+  public Client toClient(AccountPrincipal principal) {
     return Client.builder()
         .id(ClientId.of(clientId()))
-        .transactions(List.of(toDomain(principal, uuidGenerator)))
+        .transactions(List.of(toDomain(principal)))
         .build();
   }
 }

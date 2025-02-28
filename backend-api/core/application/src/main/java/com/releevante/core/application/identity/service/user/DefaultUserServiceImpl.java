@@ -106,13 +106,13 @@ public class DefaultUserServiceImpl extends AccountService implements UserServic
   }
 
   @Override
-  public Flux<SmartLibraryAccess> getAccesses(Slid slid, boolean synced) {
-    return this.accessControlRepository.findAllBy(slid, synced);
+  public Flux<SmartLibraryAccessDto> getAccesses(Slid slid, boolean synced) {
+    return this.accessControlRepository.findAllBy(slid, synced).map(SmartLibraryAccessDto::from);
   }
 
   @Override
-  public Flux<SmartLibraryAccess> getAccesses(Slid slid) {
-    return accessControlRepository.findAllBy(slid);
+  public Flux<SmartLibraryAccessDto> getAccesses(Slid slid) {
+    return accessControlRepository.findAllBy(slid).map(SmartLibraryAccessDto::from);
   }
 
   Mono<AccessCredential> validateCredentials(AccessCredential credential, String orgId) {

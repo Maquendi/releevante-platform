@@ -1,5 +1,9 @@
 import { dbConnection } from "../config/db.js";
-import { executeGet, executePatch } from "../htttp-client/http-client.js";
+import {
+  executeGet,
+  executePatch,
+  executePut,
+} from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { Book, BookCopy, BookImage, Tag } from "../model/client.js";
 import { arrayGroupinBy } from "../utils.js";
@@ -60,7 +64,11 @@ export const synchronizeBooks = async (token: string) => {
       token,
       resource: `sl/${slid}/inventories`,
     };
-    await executePatch<any>(request);
+    const response = await executePut<Boolean>(request);
+
+    console.log(
+      "Library inventory set synchronized " + response?.context?.data
+    );
   }
 
   return totalTagsRecordsSynced + totalBookCopies + totalBookRecords;
@@ -330,7 +338,7 @@ const insertBookCopies = async (books: Book[]) => {
     bookCopies = [...bookCopies, ...book.copies];
   });
 
-  console.log(bookCopies);
+  //console.log(bookCopies);
 
   bookCopies.forEach((copy) => {
     try {

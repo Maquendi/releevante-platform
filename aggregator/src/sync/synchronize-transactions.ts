@@ -10,7 +10,6 @@ import {
   TransactionStatus,
 } from "../model/library-sync";
 import { arrayGroupinBy } from "../utils";
-const slid = process.env.slid || "";
 
 export const synchronizeTransactions = async (token: string) => {
   const data = await createNewTransactions(token).then(
@@ -39,43 +38,37 @@ export const synchronizeTransactions = async (token: string) => {
 async function createNewTransactionStatuses(token: string): Promise<number> {
   const transactionStatusDto = dbConnection
     .prepare(
-      `select bts.*, bt.client_id, bt.external_id AS transaction_id from book_transaction_status bts join book_transactions bt on bt.id=bts.transaction_id where bts.is_synced=0`
+      `select bts.id, bts.status, 
+         bts.created_at as createdAt,
+         bt.client_id as clientId, 
+         bt.id AS transactionId 
+       from book_transaction_status bts 
+         join book_transactions bt 
+         on bt.id=bts.transaction_id 
+       where bts.is_synced=0 
+       and bt.is_synced=1`
     )
     .all()
-    .map((status: any) => {
-      return {
-        id: status.id,
-        clientId: status.client_id,
-        transactionId: status.transaction_id,
-        status: status.status,
-        createdAt: new Date(status.created_at),
-      } as TransactionStatus;
-    });
+    .map((status) => status as TransactionStatus);
 
   console.log("Transaction status to create " + transactionStatusDto.length);
 
   const transactionItemStatusDto = dbConnection
     .prepare(
-      `select btis.*, 
-      bt.client_id, 
-      bti.external_id 
+      `select btis.id, btis.status,
+        btis.created_at as createdAt, 
+        bt.client_id as clientId, 
+        bti.id as itemId
       from book_transaction_item_status btis 
-      join book_transaction_items bti 
+        join book_transaction_items bti 
         on bti.id = btis.item_id 
-      join book_transactions bt 
+        join book_transactions bt 
         on bt.id = bti.transaction_id 
-      where btis.is_synced = 0`
+      where btis.is_synced=0
+      and bti.is_synced=1`
     )
     .all()
-    .map((itemStatus: any) => {
-      return {
-        id: itemStatus.id,
-        itemId: itemStatus.external_id,
-        clientId: itemStatus.client_id,
-        status: itemStatus.status,
-        createdAt: new Date(itemStatus.created_at),
-      } as TransactionItemStatus;
-    });
+    .map((status) => status as TransactionItemStatus);
 
   console.log(
     "Transaction item status to create " + transactionItemStatusDto.length
@@ -103,18 +96,20 @@ async function createNewTransactionStatuses(token: string): Promise<number> {
     iterator = clientTransactionItemStatusesKeys;
   }
 
-  const transactionStatusSyncDto = iterator.map((clientId) => {
-    const transactionItemStatus: TransactionItemStatus[] =
-      clientTransactionItemStatuses[clientId];
-    const transactionStatus: TransactionStatus[] =
-      clientTransactionStatuses[clientId];
+  const transactionStatusSyncDto: TransactionStatusSyncDto[] = iterator.map(
+    (clientId) => {
+      const transactionItemStatus: TransactionItemStatus[] =
+        clientTransactionItemStatuses[clientId];
+      const transactionStatus: TransactionStatus[] =
+        clientTransactionStatuses[clientId];
 
-    return {
-      clientId,
-      transactionStatus,
-      transactionItemStatus,
-    };
-  });
+      return {
+        clientId,
+        transactionStatus,
+        transactionItemStatus,
+      };
+    }
+  );
 
   if (transactionStatusSyncDto.length == 0) {
     return 0;
@@ -124,29 +119,36 @@ async function createNewTransactionStatuses(token: string): Promise<number> {
     "POSTING Transaction/item status " + transactionStatusSyncDto.length
   );
 
+  console.log("transactionStatusSyncDto   *****************************");
+
+  console.log(JSON.stringify(transactionStatusSyncDto));
+
   const apiResponse = await createTransactionStatusApi(
     token,
     transactionStatusSyncDto
   );
 
-  return handleCreateTransactionStatusApiResponse(apiResponse);
+  return handleCreateTransactionStatusApiResponse(
+    apiResponse,
+    transactionStatusSyncDto
+  );
 }
 
 function handleCreateTransactionStatusApiResponse(
-  apiResponse: ApiResponse<TransactionStatusSyncResponse>
+  apiResponse: ApiResponse<TransactionStatusSyncResponse>,
+  data: TransactionStatusSyncDto[]
 ): number {
-  const {
-    statusCode: transactionCreateStatusCode,
-    context: { data },
-  } = apiResponse;
+  const { statusCode: transactionCreateStatusCode } = apiResponse;
 
   if (transactionCreateStatusCode === 200) {
-    const transactionStatusIdSet = data.transactionStatusIdSet
-      .map((str) => `'${str}'`)
+    const transactionStatusIdSet: string = data
+      .flatMap((t) => t.transactionStatus?.map((s) => s.id))
+      ?.map((str) => `'${str}'`)
       .join(",");
 
-    const transactionItemStatusIdSet = data.transactionItemStatusIdSet
-      .map((str) => `'${str}'`)
+    const transactionItemStatusIdSet: string = data
+      .flatMap((t) => t.transactionItemStatus?.map((s) => s.id))
+      ?.map((str) => `'${str}'`)
       .join(",");
 
     let changes = 0;
@@ -181,13 +183,18 @@ function handleCreateTransactionStatusApiResponse(
 async function createNewTransactions(token: string): Promise<number> {
   const transactions = dbConnection
     .prepare(
-      `select id as transactionId, clientId, transaction_type, created_at from book_transactions where external_id is NULL;`
+      `select id as transactionId,
+       client_id as clientId, 
+       transaction_type as transactionType, 
+       created_at as createdAt 
+       from book_transactions 
+       where is_synced=0;`
     )
     .all();
 
   console.log("Transactions to create " + transactions.length);
 
-  const transactionDtoList = transactions.map((transaction: any) => {
+  const transactionDto = transactions.map((transaction: any) => {
     const transactionItemsDto = dbConnection
       .prepare(
         `select id, book_copy_id as cpy from book_transaction_items where transaction_id = ?`
@@ -200,13 +207,17 @@ async function createNewTransactions(token: string): Promise<number> {
     } as TransactionSyncDto;
   });
 
-  if (transactionDtoList.length == 0) {
+  if (transactionDto.length == 0) {
     return 0;
   }
 
-  const apiResponse = await createTransactionApi(token, transactionDtoList);
+  console.log("transactionDtoList*********************************");
 
-  return handleCreateTransactionApiResponse(apiResponse);
+  console.log(JSON.stringify(transactionDto));
+
+  const apiResponse = await createTransactionApi(token, transactionDto);
+
+  return handleCreateTransactionApiResponse(apiResponse, transactionDto);
 }
 
 /**
@@ -215,32 +226,29 @@ async function createNewTransactions(token: string): Promise<number> {
  * @returns
  */
 function handleCreateTransactionApiResponse(
-  apiResponse: ApiResponse<TransactionSyncResponse[]>
+  apiResponse: ApiResponse<TransactionSyncResponse[]>,
+  transactions: TransactionSyncDto[]
 ): number {
-  const {
-    statusCode: transactionCreateStatusCode,
-    context: { data: createTransactionResponse },
-  } = apiResponse;
+  const { statusCode: transactionCreateStatusCode } = apiResponse;
 
   let changes = 0;
 
+  console.log(JSON.stringify(apiResponse))
+
   if (transactionCreateStatusCode === 200) {
     const updateTransaction = dbConnection.prepare(
-      `UPDATE book_transactions SET external_id=? where id=?`
+      `UPDATE book_transactions SET is_synced=1 where id=?`
     );
     const updateTransactionItem = dbConnection.prepare(
-      `UPDATE book_transaction_items SET external_id=? where id=?`
+      `UPDATE book_transaction_items SET is_synced=1 where id=?`
     );
 
-    createTransactionResponse.map((response) => {
+    transactions.map((transaction) => {
       const executeDbTransation = dbConnection.transaction(() => {
-        changes += updateTransaction.run(
-          response.transaction.externalId,
-          response.transaction.id
-        ).changes;
+        changes += updateTransaction.run(transaction.transactionId).changes;
 
-        response.items.map(
-          (item) => updateTransactionItem.run(item.externalId, item.id).changes
+        transaction.items.map(
+          (item) => updateTransactionItem.run(item.id).changes
         );
       });
 
@@ -248,7 +256,7 @@ function handleCreateTransactionApiResponse(
         executeDbTransation();
       } catch (error: any) {
         console.log(
-          `Update book transaction ${response.transaction.id} failed with error: ${error.message}`
+          `Update book transaction ${transaction.transactionId} failed with error: ${error.message}`
         );
       }
     });
@@ -269,7 +277,7 @@ async function createTransactionApi(
 ): Promise<ApiResponse<TransactionSyncResponse[]>> {
   const request: ApiRequest = {
     token,
-    resource: `sl/${slid}/transactions`,
+    resource: `clients/transactions`,
     body,
   };
 
@@ -282,7 +290,7 @@ async function createTransactionStatusApi(
 ): Promise<ApiResponse<TransactionStatusSyncResponse>> {
   const request: ApiRequest = {
     token,
-    resource: `sl/${slid}/transactionStatus`,
+    resource: `clients/transaction-status`,
     body,
   };
 

@@ -11,9 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.reactivestreams.Publisher;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -77,7 +75,6 @@ public class ClientRepositoryImpl implements ClientRepository {
         .thenReturn(client);
   }
 
-  @Transactional(propagation = Propagation.NOT_SUPPORTED)
   @Override
   public Mono<Client> saveBookTransactions(Client client) {
     return ClientRecord.createTransactions(client)
@@ -210,18 +207,12 @@ public class ClientRepositoryImpl implements ClientRepository {
         .flatMapMany(Flux::fromIterable)
         .flatMap(
             record -> {
-              record.setNew(false);
+              record.setNew(true);
               return Mono.from(publisher.apply(record))
                   .onErrorResume(
-                      DuplicateKeyException.class,
+                      Exception.class,
                       (exception) -> {
-                        record.setNew(true);
-                        return Mono.from(publisher.apply(record));
-                      })
-                  .onErrorResume(
-                      TransientDataAccessResourceException.class,
-                      (exception) -> {
-                        record.setNew(true);
+                        record.setNew(false);
                         return Mono.from(publisher.apply(record));
                       });
             })

@@ -27,21 +27,19 @@ export interface TransactionItemStatus {
 
 export interface TransactionStatus {
   id: string;
-  transactionId: string,
+  transactionId: string;
   status: BookTransactionStatusEnum;
   createdAt: Date;
 }
 
 export interface TransactionItem {
   id: string;
-  externalId?: string;
   cpy: string;
 }
 
 export interface TransactionSyncDto {
   clientId: string;
   transactionId: string;
-  externalId?: string;
   createdAt: Date;
   items: TransactionItem[];
   transactionType: "RENT" | "PURCHASE";
@@ -53,22 +51,12 @@ export interface TransactionStatusSyncDto {
   transactionItemStatus: TransactionItemStatus[];
 }
 
-
 export interface TransactionStatusSyncResponse {
-  transactionStatusIdSet: string[];
-  transactionItemStatusIdSet: string[];
+  success: boolean;
 }
 
 export interface TransactionSyncResponse {
-  transaction: {
-    id: string;
-    externalId: string;
-  };
-
-  items: {
-    id: string;
-    externalId: string;
-  }[];
+  success: boolean;
 }
 
 // export interface ClientSyncDto {

@@ -12,11 +12,11 @@ export class DefaultUserRepositoryImpl implements UserRepository {
       const userData = await dbGetOne("userSchema", {
         where: and(
           eq(userSchema.credential, credential),
-          eq(userSchema.is_active, true)
+          eq(userSchema.isActive, true)
         ),
         columns: {
           id: true,
-          is_active: true,
+          isActive: true,
           pin: true,
         },
       });

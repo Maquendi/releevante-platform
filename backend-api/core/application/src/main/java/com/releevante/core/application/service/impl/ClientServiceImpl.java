@@ -64,16 +64,15 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
-  public Flux<TransactionSyncResponse> createTransactions(List<TransactionSyncDto> transactions) {
+  public Mono<TransactionSyncResponse> createTransactions(List<TransactionSyncDto> transactions) {
     return authorizationService
         .getAccountPrincipal()
         .flatMapMany(
             principal ->
-                Flux.fromIterable(transactions)
-                    .map(transaction -> transaction.toClient(principal, uuidGenerator)))
+                Flux.fromIterable(transactions).map(transaction -> transaction.toClient(principal)))
         .flatMap(clientRepository::saveBookTransactions)
-        .map(TransactionSyncResponse::from)
-        .flatMap(Flux::fromIterable);
+        .collectList()
+        .map(TransactionSyncResponse::from);
   }
 
   @Override
@@ -84,7 +83,7 @@ public class ClientServiceImpl implements ClientService {
         .flatMapMany(
             principal ->
                 Flux.fromIterable(transactionStatuses)
-                    .map(transactionStatus -> transactionStatus.toClient(principal, uuidGenerator)))
+                    .map(transactionStatus -> transactionStatus.toClient(principal)))
         .flatMap(clientRepository::saveBookTransactionStatus)
         .collectList()
         .map(TransactionStatusSyncResponse::from);
@@ -94,7 +93,7 @@ public class ClientServiceImpl implements ClientService {
   public Mono<CreateTransactionResponse> createTransaction(TransactionSyncDto transaction) {
     return authorizationService
         .getAccountPrincipal()
-        .map(principal -> transaction.toClient(principal, uuidGenerator))
+        .map(transaction::toClient)
         .flatMap(clientRepository::saveBookTransactionStatus)
         .map(CreateTransactionResponse::from);
   }

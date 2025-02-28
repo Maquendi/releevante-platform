@@ -3,7 +3,13 @@ package com.releevante.types;
 public enum AUTHORITIES {
   SUPER_ADMIN("SYSADMIN"),
 
-  ADMIN("ADMIN");
+  ADMIN("ADMIN"),
+
+  CLIENT("CLIENT"),
+
+  UI_WEB_ADMIN("UI-WEB-ADMIN"),
+
+  UI_WEB_PUBLIC("UI-WEB-PUBLIC");
   private final String authority;
 
   AUTHORITIES(String auth) {
@@ -12,5 +18,9 @@ public enum AUTHORITIES {
 
   public String getAuthority() {
     return authority;
+  }
+
+  public boolean isM2M() {
+    return (UI_WEB_ADMIN == this) || (UI_WEB_PUBLIC == this);
   }
 }

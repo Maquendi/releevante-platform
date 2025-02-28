@@ -17,10 +17,13 @@ export class DefaultUserServiceImpl implements UserServices {
   }
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
+    console.log("login in with credential plain: " + credential.value);
     const hashedCredential = await createHashFromString(credential.value);
+
+    console.log("login in with credential HASHED: " + hashedCredential);
     const user = await this.repository.findBy(hashedCredential);
-    if(!user?.data?.id) throw new Error("User not found")
-    console.log(user)
+    if (!user?.data?.id) throw new Error("User not found");
+    console.log(user);
     const jwtToken = signToken({
       sub: user.data.id,
       org: user.data.org,
@@ -41,12 +44,6 @@ export class UserServiceFacadeImpl implements UserServiceFacade {
   ) {}
 
   async authenticate(credential: AuthCredential): Promise<UserAuthentication> {
-    try {
-      return this.defaultUserService.authenticate(credential);
-    } catch (error) {
-      const response = await this.userServiceApiClient.authenticate(credential);
-      await this.defaultUserService.register(response?.user);
-      return response;
-    }
+    return this.defaultUserService.authenticate(credential);
   }
 }

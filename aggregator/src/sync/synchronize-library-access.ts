@@ -1,5 +1,5 @@
 import { dbConnection } from "../config/db.js";
-import { executeGet, executePatch } from "../htttp-client/http-client.js";
+import { executeGet, executePut } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";
 import { LibraryAccess } from "../model/client.js";
 
@@ -18,7 +18,7 @@ export const synchronizeLibraryAccess = async (token: string) => {
     try {
       totalRecordsSynced += await insertUsers(accesses);
       completedNoError = true;
-    } catch (error) {
+    } catch (error: any) {
       completedNoError = false;
     }
   }
@@ -30,45 +30,44 @@ export const synchronizeLibraryAccess = async (token: string) => {
       token,
       resource: `sl/${slid}/accesses`,
     };
-    await executePatch<any>(request);
+    const response = await executePut<Boolean>(request);
+
+    console.log("Library users set synchronized " + response?.context?.data);
   }
   return totalRecordsSynced;
 };
 
 const insertUsers = async (accesses: LibraryAccess[]) => {
   const create_stmt = dbConnection.prepare(
-    "INSERT INTO user(id, access_id, credential, is_active, expires_at, created_at, updated_at) VALUES (@id, @access_id, @credential, @is_active, @expires_at, @created_at, @updated_at)"
+    "INSERT INTO user(id, access_id, credential, is_active, expires_at, contact_less) VALUES (@id, @access_id, @credential, @is_active, @expires_at, @contact_less)"
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE user SET access_id=?, credential=?, is_active=?, expires_at=?, updated_at=? WHERE id=?"
+    "UPDATE user SET access_id=?, credential=?, is_active=?, expires_at=?, contact_less=? WHERE id=?"
   );
   let dbChanges = 0;
 
-  accesses
-    .filter((item) => !item.isSync)
-    .forEach((access) => {
-      try {
-        dbChanges += create_stmt.run({
-          id: access.userId,
-          access_id: access.id,
-          credential: access.credential.value,
-          is_active: (access.isActive && 1) || 0,
-          expires_at: access.expiresAt,
-          created_at: access.createdAt,
-          updated_at: access.createdAt,
-        }).changes;
-      } catch (error: any) {
-        dbChanges += update_stmt.run(
-          access.id,
-          access.credential.value,
-          (access.isActive && 1) || 0,
-          access.expiresAt,
-          access.createdAt,
-          access.userId
-        ).changes;
-      }
-    });
+  accesses.forEach((access) => {
+    try {
+      dbChanges += create_stmt.run({
+        id: access.id,
+        access_id: access.accessId,
+        credential: access.credential,
+        is_active: (access.isActive && 1) || 0,
+        expires_at: access.expiresAt,
+        contact_less: access.contactless,
+      }).changes;
+    } catch (error) {
+      dbChanges += update_stmt.run(
+        access.accessId,
+        access.credential,
+        (access.isActive && 1) || 0,
+        access.expiresAt,
+        access.contactless,
+        access.id
+      ).changes;
+    }
+  });
 
   return dbChanges;
 };

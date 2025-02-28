@@ -15,8 +15,6 @@ import org.immutables.value.Value;
 public abstract class AbstractBookTransaction implements Auditable {
   abstract TransactionId id();
 
-  abstract TransactionId externalId();
-
   abstract BookTransactionType transactionType();
 
   @Value.Default

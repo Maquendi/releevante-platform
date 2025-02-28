@@ -30,6 +30,20 @@ public abstract class AbstractAccountPrincipal {
     return roles().stream().anyMatch(role -> role.equals(AUTHORITIES.ADMIN.getAuthority()));
   }
 
+  public boolean isClient() {
+    return roles().size() == 1
+        && roles().stream().anyMatch(role -> role.equals(AUTHORITIES.CLIENT.getAuthority()));
+  }
+
+  public boolean isM2M() {
+    return roles().size() == 1
+        && roles().stream()
+            .anyMatch(
+                role ->
+                    role.equals(AUTHORITIES.UI_WEB_ADMIN.getAuthority())
+                        || role.equals(AUTHORITIES.UI_WEB_PUBLIC.getAuthority()));
+  }
+
   public void checkHasAnyAuthority(String... authorities) {
     var privileges = new ArrayList<>(Arrays.asList(authorities));
     privileges.add(AUTHORITIES.SUPER_ADMIN.getAuthority());

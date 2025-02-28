@@ -6,13 +6,13 @@ import com.releevante.core.application.dto.sl.SyncStatus;
 import com.releevante.core.application.dto.sl.settings.LibrarySettingsDto;
 import com.releevante.core.application.dto.sl.settings.PartialSettingDto;
 import com.releevante.core.application.identity.dto.GrantedAccess;
+import com.releevante.core.application.identity.dto.SmartLibraryAccessDto;
 import com.releevante.core.application.identity.dto.UserAccessDto;
 import com.releevante.core.application.identity.service.user.UserService;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.application.service.SettingService;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.LibrarySetting;
-import com.releevante.core.domain.identity.model.SmartLibraryAccess;
 import com.releevante.types.Slid;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -44,7 +44,7 @@ public class SmartLibrarySyncController {
       summary = "set library accesses synced",
       description = "all library accesses synchronized")
   @PreAuthorize("hasRole('AGGREGATOR')")
-  @PatchMapping("/accesses")
+  @PutMapping("/accesses")
   public Mono<CustomApiResponse<Boolean>> setLibraryAccessesIsSynchronized(
       @PathVariable("slid") Slid slid) {
     return smartLibraryService.setAccessSynchronized(slid).map(CustomApiResponse::from);
@@ -54,14 +54,14 @@ public class SmartLibrarySyncController {
       summary = "set library inventory synced",
       description = "library inventory is synchronized")
   @PreAuthorize("hasRole('AGGREGATOR')")
-  @PatchMapping("/inventories")
+  @PutMapping("/inventories")
   public Mono<CustomApiResponse<Boolean>> setLibraryBooksSynchronized(
       @PathVariable("slid") Slid slid) {
     return smartLibraryService.setBooksSynchronized(slid).map(CustomApiResponse::from);
   }
 
   @PreAuthorize("hasRole('AGGREGATOR')")
-  @PatchMapping("/settings")
+  @PutMapping("/settings")
   public Mono<CustomApiResponse<Boolean>> setLibrarySettingsSynchronized(
       @PathVariable("slid") Slid slid) {
     return smartLibraryService.setLibrarySettingsSynchronized(slid).map(CustomApiResponse::from);
@@ -121,7 +121,7 @@ public class SmartLibrarySyncController {
 
   @PreAuthorize("hasRole('AGGREGATOR')")
   @GetMapping("/accesses")
-  public Mono<CustomApiResponse<List<SmartLibraryAccess>>> getSmartLibraryAccesses(
+  public Mono<CustomApiResponse<List<SmartLibraryAccessDto>>> getSmartLibraryAccesses(
       @PathVariable String slid, @RequestParam(required = false) SyncStatus status) {
     return Mono.justOrEmpty(status)
         .flatMap(
@@ -133,7 +133,7 @@ public class SmartLibrarySyncController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/accesses")
-  public Mono<CustomApiResponse<GrantedAccess>> register(
+  public Mono<CustomApiResponse<GrantedAccess>> createLibraryAccess(
       @PathVariable() Slid slid, @RequestBody UserAccessDto access) {
     return userService.create(slid, access).map(CustomApiResponse::from);
   }

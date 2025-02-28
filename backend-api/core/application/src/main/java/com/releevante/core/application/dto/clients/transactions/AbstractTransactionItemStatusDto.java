@@ -8,7 +8,6 @@ import com.releevante.types.AccountPrincipal;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.SequentialGenerator;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import org.immutables.value.Value;
 
 @ImmutableExt
@@ -18,7 +17,7 @@ import org.immutables.value.Value;
 public abstract class AbstractTransactionItemStatusDto {
   abstract String id();
 
-  abstract Optional<String> itemId();
+  abstract String itemId();
 
   abstract TransactionItemStatusEnum status();
 
@@ -28,7 +27,6 @@ public abstract class AbstractTransactionItemStatusDto {
       AccountPrincipal principal, String itemId, SequentialGenerator<String> uuidGenerator) {
     return TransactionItemStatus.builder()
         .id(uuidGenerator.next())
-        .externalId(id())
         .itemId(itemId)
         .status(status())
         .createdAt(createdAt())
@@ -37,12 +35,10 @@ public abstract class AbstractTransactionItemStatusDto {
         .build();
   }
 
-  public TransactionItemStatus toDomain(
-      AccountPrincipal principal, SequentialGenerator<String> uuidGenerator) {
+  public TransactionItemStatus toDomain(AccountPrincipal principal) {
     return TransactionItemStatus.builder()
-        .id(uuidGenerator.next())
-        .externalId(id())
-        .itemId(itemId().orElseThrow(() -> new RuntimeException("item is is required")))
+        .id(id())
+        .itemId(itemId())
         .status(status())
         .createdAt(createdAt())
         .origin(principal.audience())

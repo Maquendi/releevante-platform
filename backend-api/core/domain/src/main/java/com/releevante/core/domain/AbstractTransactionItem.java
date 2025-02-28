@@ -13,8 +13,6 @@ import org.immutables.value.Value;
 public abstract class AbstractTransactionItem {
   abstract String id();
 
-  abstract String externalId();
-
   abstract String cpy();
 
   abstract List<TransactionItemStatus> status();

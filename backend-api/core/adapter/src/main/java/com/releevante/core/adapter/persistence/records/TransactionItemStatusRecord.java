@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "transaction_item_status", schema = "core")
@@ -13,7 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @NoArgsConstructor
 public class TransactionItemStatusRecord extends AuditableEntity {
-  String id;
+  @Id String id;
   String itemId;
   TransactionItemStatusEnum status;
   boolean isSynced;

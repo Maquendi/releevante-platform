@@ -18,8 +18,6 @@ public class BookTransactionRecord extends AuditableEntity {
 
   @Id private String id;
 
-  private String externalId;
-
   private String clientId;
 
   private String transactionType;
@@ -31,7 +29,6 @@ public class BookTransactionRecord extends AuditableEntity {
   public BookTransaction toDomain() {
     return BookTransaction.builder()
         .transactionType(BookTransactionType.valueOf(transactionType))
-        .externalId(TransactionId.of(externalId))
         .id(TransactionId.of(id))
         .origin(origin)
         .createdAt(createdAt)
@@ -49,7 +46,6 @@ public class BookTransactionRecord extends AuditableEntity {
       ClientRecord client, BookTransaction transaction) {
     var record = new BookTransactionRecord();
     record.setId(transaction.id().value());
-    record.setExternalId(transaction.externalId().value());
     record.setOrigin(transaction.origin());
     record.setCreatedAt(transaction.createdAt());
     record.setClientId(client.getId());

@@ -14,8 +14,6 @@ public abstract class AbstractTransactionItemStatus implements Auditable {
 
   abstract String id();
 
-  abstract String externalId();
-
   abstract String itemId();
 
   abstract TransactionItemStatusEnum status();

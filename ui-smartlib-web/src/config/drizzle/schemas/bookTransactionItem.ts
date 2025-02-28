@@ -1,11 +1,11 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { bookCopieSchema } from "./bookCopies";
 import { bookTransactionSchema } from "./bookTransaction";
 
 export const bookTransactionItemSchema = sqliteTable("book_transaction_items", {
   id: text("id").primaryKey().notNull(),
-  extenalId: text("external_id"),
+  isSynced: integer("is_synced", { mode: "boolean" }).default(false),
   transactionId: text("transaction_id")
     .notNull()
     .references(() => bookTransactionSchema.id),

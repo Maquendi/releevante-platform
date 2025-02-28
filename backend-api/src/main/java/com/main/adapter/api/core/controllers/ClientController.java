@@ -94,18 +94,15 @@ public class ClientController {
 
   @PreAuthorize("hasRole('AGGREGATOR')")
   @PostMapping("/transactions")
-  public Mono<CustomApiResponse<List<TransactionSyncResponse>>> SyncClientTransactions(
-      List<TransactionSyncDto> transactions) {
-    return clientService
-        .createTransactions(transactions)
-        .collectList()
-        .map(CustomApiResponse::from);
+  public Mono<CustomApiResponse<TransactionSyncResponse>> SyncClientTransactions(
+      @RequestBody List<TransactionSyncDto> transactions) {
+    return clientService.createTransactions(transactions).map(CustomApiResponse::from);
   }
 
   @PreAuthorize("hasRole('AGGREGATOR')")
   @PostMapping("/transaction-status")
   public Mono<CustomApiResponse<TransactionStatusSyncResponse>> SyncClientTransactionStatus(
-      List<TransactionStatusSyncDto> transactionStatus) {
+      @RequestBody List<TransactionStatusSyncDto> transactionStatus) {
     return clientService.createTransactionStatus(transactionStatus).map(CustomApiResponse::from);
   }
 

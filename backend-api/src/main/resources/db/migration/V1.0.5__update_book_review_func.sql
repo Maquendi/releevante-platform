@@ -24,7 +24,7 @@ end;
 $$ language plpgsql;
 
 
-DROP TRIGGER book_rating_insert_trigger ON core.book_ratings;
+--DROP TRIGGER book_rating_insert_trigger ON core.book_ratings;
 -- Create trigger
 create trigger book_rating_insert_trigger
 after

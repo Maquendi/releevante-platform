@@ -17,20 +17,28 @@ const loadFromFile = async (): Promise<ApiCredential> => {
 const loadFromServer = async (): Promise<ApiCredential> => {
   console.log("loading credentials from server .... ");
   const request = {
-    resource: `auth/aggregator`,
-    body: { slid },
+    resource: `auth/m2m/token`,
+    body: { clientId: slid },
   };
 
   try {
-    const response = await executePost<ApiCredential>(request);
+    
+    const response = await executePost<string>(request);
+
+    const now = new Date();
+
+    now.setHours(now.getHours() + 24)
+
     const credentials = {
       slid,
-      ...response?.context?.data,
+      token: response?.context?.data,
+      expiresAt: now.toISOString(),
     };
     await writeCredentialFile(credentials);
 
     return credentials;
-  } catch (error) {
+  } catch (error: any) {
+    console.log("error loading credentials from server " + error.message);
     return null as any;
   }
 };

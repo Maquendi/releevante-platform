@@ -55,16 +55,16 @@ public class DefaultLibraryService implements SmartLibraryService {
 
   @Override
   public Mono<Boolean> setBooksSynchronized(Slid slid) {
-    return null;
+    return smartLibraryRepository.setBooksSynchronized(slid);
   }
 
   @Override
   public Mono<Boolean> setLibrarySettingsSynchronized(Slid slid) {
-    return null;
+    return smartLibraryRepository.setLibrarySettingsSynchronized(slid);
   }
 
   @Override
   public Mono<Boolean> setAccessSynchronized(Slid slid) {
-    return null;
+    return smartLibraryRepository.setAccessSynchronized(slid);
   }
 }

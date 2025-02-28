@@ -42,18 +42,18 @@ public interface TagHibernateDao extends ReactiveCrudRepository<TagRecord, Strin
       "select\n"
           + "\tbt.tag_id,\n"
           + "\tbt.isbn,\n"
-          + "\tt.\"name\",\n"
+          + "\tt.name,\n"
           + "\tt.value_en,\n"
           + "\tt.value_fr,\n"
           + "\tt.value_sp\n"
           + "from\n"
           + "\tcore.tags t\n"
-          + "inner join core.book_tags bt \n"
-          + "on\n"
+          + "inner join core.book_tags bt\n"
+          + "          on\n"
           + "\tbt.tag_id = t.id\n"
           + "where\n"
-          + "\tt.\"name\" = 'category'\n"
-          + "\tor t.\"name\" = 'subcategory'")
+          + "\tt.name = 'category'\n"
+          + "\tor t.name = 'subcategory'")
   Flux<BookCategoryProjection> findBookCategories();
 
   @Query(

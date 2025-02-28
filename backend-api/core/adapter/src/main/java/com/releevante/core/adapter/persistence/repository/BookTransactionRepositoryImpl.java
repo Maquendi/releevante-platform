@@ -6,13 +6,10 @@ import com.releevante.core.adapter.persistence.dao.TransactionItemStatusRecordHi
 import com.releevante.core.adapter.persistence.dao.TransactionStatusHibernateDao;
 import com.releevante.core.adapter.persistence.records.BookTransactionRecord;
 import com.releevante.core.adapter.persistence.records.TransactionItemRecord;
-import com.releevante.core.domain.BookLoan;
 import com.releevante.core.domain.BookTransaction;
 import com.releevante.core.domain.ClientId;
 import com.releevante.core.domain.identity.model.OrgId;
 import com.releevante.core.domain.repository.BookTransactionRepository;
-import com.releevante.types.Slid;
-import java.time.ZonedDateTime;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -35,21 +32,6 @@ public class BookTransactionRepositoryImpl implements BookTransactionRepository 
     this.bookTransactionItemHibernateDao = bookTransactionItemHibernateDao;
     this.transactionItemStatusRecordHibernateDao = transactionItemStatusRecordHibernateDao;
     this.transactionStatusHibernateDao = transactionStatusHibernateDao;
-  }
-
-  @Override
-  public Flux<BookLoan> findActiveLoans(Slid slid) {
-    return null;
-  }
-
-  @Override
-  public Flux<BookLoan> findCreatedInRange(ZonedDateTime start, ZonedDateTime end) {
-    return null;
-  }
-
-  @Override
-  public Flux<BookLoan> getByAllUnSynchronized() {
-    return null;
   }
 
   @Override

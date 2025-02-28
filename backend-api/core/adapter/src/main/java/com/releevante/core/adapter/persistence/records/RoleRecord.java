@@ -6,6 +6,7 @@ import com.releevante.core.domain.identity.model.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "roles", schema = "core")
@@ -13,7 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @NoArgsConstructor
 public class RoleRecord extends PersistableEntity {
-  private String id;
+  @Id private String id;
   private String role;
   private String privilege;
 
