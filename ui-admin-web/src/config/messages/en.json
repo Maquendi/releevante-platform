@@ -180,7 +180,16 @@
       "closeSessionTime2":"will close in",
       "closeSessionTime3":"minutes"
     },
-    "ratingPage":{
+    "serviceRatingPage":{
+      "title":"Let us know your level of satisfaction",
+      "subTitle":"Please, rate us to improve our products. We are super happy to hear you and improve our service.",
+      "feelUsingApp":"How do you feel using our app?",
+      "commentTitle":"Would you like to add a suggestion or comment?",
+      "optional":"Optional",
+      "commentPlaceHolder":"Write a comment here",
+      "submit":"Submit"
+    },
+    "bookRatingPage":{
       "title":"Let us know your level of satisfaction",
       "subTitle":"Please, rate us to improve our products. We are super happy to hear you and improve our service.",
       "feelUsingApp":"How do you feel using our app?"

@@ -29,7 +29,7 @@ const navbarv2MobileRoutes = [
   },
   {
     prevRouteIntName: "codeValidationRoute",
-    path: "/rating",
+    path: "/rating/service",
     prevRoutePath: "/code",
   },
   {
@@ -42,7 +42,6 @@ const navbarv2MobileRoutes = [
 export default function Navbar() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 770px)" });
   const path = usePathname();
-  
   const pathInfo = navbarv2MobileRoutes.find((route) => route.path === path);
   const isReservedDesktop = path === "/reserved" && !isTabletOrMobile;
 
