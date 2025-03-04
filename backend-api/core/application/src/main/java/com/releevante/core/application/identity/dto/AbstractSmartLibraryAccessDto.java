@@ -13,8 +13,6 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = SmartLibraryAccessDto.class)
 @JsonSerialize(as = SmartLibraryAccessDto.class)
 public abstract class AbstractSmartLibraryAccessDto {
-  abstract String id();
-
   abstract String accessId();
 
   abstract Optional<String> contactless();
@@ -27,8 +25,7 @@ public abstract class AbstractSmartLibraryAccessDto {
 
   public static SmartLibraryAccessDto from(SmartLibraryAccess access) {
     return SmartLibraryAccessDto.builder()
-        .id(access.id())
-        .accessId(access.accessId())
+        .accessId(access.id())
         .contactless(access.contactLessId())
         .isActive(access.isActive())
         .expiresAt(access.expiresAt())

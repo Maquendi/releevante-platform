@@ -77,7 +77,6 @@ interface UserCredential {
 }
 
 export interface LibraryAccess {
-  id: string;
   accessId: string;
   isActive: boolean;
   expiresAt: Date;

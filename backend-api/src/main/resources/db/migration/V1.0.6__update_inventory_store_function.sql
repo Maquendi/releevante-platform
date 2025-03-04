@@ -1,123 +1,43 @@
-CREATE OR REPLACE FUNCTION update_library_inventory_on_transaction_items_status_changed(item_status_id_list TEXT[])
-RETURNS INTEGER AS $$
+-- Create function
+CREATE OR REPLACE FUNCTION update_library_inventory_on_new_transaction_item_status()
+RETURNS trigger AS $$
 DECLARE
-    status_id varchar(36);
-    current_record RECORD;
-    updated_count INTEGER := array_length(item_status_id_list, 1);
+   current_record RECORD;
 BEGIN
-    FOREACH status_id IN ARRAY item_status_id_list LOOP
-        SELECT
-            tis.item_id,
-            tis.status,
-            tr.transaction_type,
-            ti.cpy
-        INTO current_record
-        FROM core.transaction_item_status tis
-        LEFT JOIN core.transaction_items ti
-            ON ti.id = tis.item_id
-        LEFT JOIN core.book_transactions tr
+    IF NEW.status IN ('CHECK_OUT_SUCCESS', 'CHECK_IN_SUCCESS') THEN
+       SELECT
+          tr.transaction_type,
+          ti.cpy
+       INTO current_record
+       FROM core.transaction_items ti
+       LEFT JOIN core.book_transactions tr
             ON tr.id = ti.transaction_id
-        WHERE tis.id = status_id;
+       WHERE ti.id = NEW.item_id;
 
-        IF current_record.status = 'CHECKOUT_SUCCESS' THEN
-            IF current_record.transaction_type = 'RENT' THEN
-                UPDATE core.library_inventories
-                SET is_synced = false,
-                    status = 'BORROWED'
-                WHERE cpy = current_record.cpy;
-            ELSE
-                UPDATE core.library_inventories
-                SET is_synced = false,
-                    status = 'SOLD'
-                WHERE cpy = current_record.cpy;
-            END IF;
-        ELSIF current_record.status = 'CHECK_IN_SUCCESS' THEN
-            -- increase usage_count by 1
-            UPDATE core.library_inventories
-            SET is_synced = false,
-                usage_count = usage_count + 1,
-                status = 'AVAILABLE'
-            WHERE cpy = current_record.cpy;
-        END IF;
-
-    END LOOP;
-    RETURN updated_count;
+       IF NEW.status = 'CHECK_OUT_SUCCESS' THEN
+           IF current_record.transaction_type = 'RENT' THEN
+               UPDATE core.library_inventories
+               SET status = 'BORROWED'
+               WHERE cpy = current_record.cpy;
+           ELSE
+               UPDATE core.library_inventories
+               SET status = 'SOLD'
+               WHERE cpy = current_record.cpy;
+           END IF;
+       ELSE -- This corresponds to CHECK_IN_SUCCESS
+           UPDATE core.library_inventories
+           SET usage_count = usage_count + 1, status = 'AVAILABLE'
+           WHERE cpy = current_record.cpy;
+       END IF;
+    END IF;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 
-
-
-
-CREATE OR REPLACE FUNCTION update_library_inventory_on_transaction_status_changed(tr_id varchar(36))
-RETURNS INTEGER AS $$
-DECLARE
-    current_record RECORD;
-    updated_count INTEGER := 0;
-BEGIN
-    FOR current_record IN
-        SELECT
-            tis.status,
-            tr.transaction_type,
-            ti.cpy
-        FROM core.transaction_item_status tis
-        LEFT JOIN core.transaction_items ti
-            ON ti.id = tis.item_id
-        LEFT JOIN core.book_transactions tr
-            ON tr.id = ti.transaction_id
-        WHERE ti.transaction_id = tr_id
-    LOOP
-        -- Process each record individually
-        IF current_record.status = 'CHECK_OUT_SUCCESS' THEN
-            IF current_record.transaction_type = 'RENT' THEN
-                UPDATE core.library_inventories
-                SET is_synced = false,
-                    status = 'BORROWED'
-                WHERE cpy = current_record.cpy;
-            ELSE
-                UPDATE core.library_inventories
-                SET is_synced = false,
-                    status = 'SOLD'
-                WHERE cpy = current_record.cpy;
-            END IF;
-        ELSIF current_record.status = 'CHECK_IN_SUCCESS' THEN
-            -- Increase usage_count by 1
-            UPDATE core.library_inventories
-            SET is_synced = false,
-                usage_count = usage_count + 1,
-                status = 'AVAILABLE'
-            WHERE cpy = current_record.cpy;
-        END IF;
-
-        -- Track the number of records updated
-        updated_count := updated_count + 1;
-    END LOOP;
-
-    RETURN updated_count;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create trigger function
-create or replace
-function trigger_update_library_inventory_on_insert()
-returns trigger as $$
-begin
-    if NEW.status in ('RETURNED', 'CURRENT', 'PARTIAL') then
-        perform update_library_inventory_on_transaction_status_changed(NEW.transaction_id);
-end if;
-
-return new;
-end;
-
-$$ language plpgsql;
-
-
---DROP TRIGGER transaction_status_insert_trigger ON core.transaction_status;
--- Create trigger
-create trigger transaction_status_insert_trigger
-after
-insert
-	on
-	core.transaction_status
-for each row
-execute function trigger_update_library_inventory_on_insert();
+DROP TRIGGER transaction_item_status_insert_trigger ON core.transaction_item_status;
+CREATE TRIGGER transaction_item_status_insert_trigger
+AFTER INSERT
+ON core.transaction_item_status
+FOR EACH ROW
+EXECUTE FUNCTION update_library_inventory_on_new_transaction_item_status();

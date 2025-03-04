@@ -9,7 +9,9 @@ public enum AUTHORITIES {
 
   UI_WEB_ADMIN("UI-WEB-ADMIN"),
 
-  UI_WEB_PUBLIC("UI-WEB-PUBLIC");
+  UI_WEB_PUBLIC("UI-WEB-PUBLIC"),
+
+  AGGREGATOR("AGGREGATOR");
   private final String authority;
 
   AUTHORITIES(String auth) {

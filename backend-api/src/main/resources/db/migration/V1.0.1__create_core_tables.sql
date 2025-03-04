@@ -255,25 +255,33 @@ CREATE TABLE core.roles (
 	CONSTRAINT role_p_k PRIMARY KEY (id)
 );
 
-CREATE TABLE core.smart_library_access_ctrl (
+CREATE TABLE core.granted_access (
 	id varchar(36) NOT NULL,
-	slid varchar(36) NOT NULL,
-	org_id varchar(36) NOT NULL,
 	contact_less_id varchar(100) NULL,
 	credential varchar(100) NULL,
-	access_id varchar(36) NOT NULL,
-	is_synced BOOLEAN NOT NULL DEFAULT false,
+	org_id varchar(36) NOT NULL,
 	is_active BOOLEAN NOT NULL DEFAULT false,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expires_at timestamp NOT NULL,
     audit varchar(36) NOT NULL,
     origin varchar(36) NOT NULL,
-	CONSTRAINT access_id_pk PRIMARY KEY (id),
+	CONSTRAINT granted_access_pk PRIMARY KEY (id),
 	FOREIGN KEY (audit) REFERENCES core.users(id),
-	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid),
 	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
 	FOREIGN KEY (org_id) REFERENCES core.org(id)
+);
+
+CREATE TABLE core.smart_library_granted_access (
+	id varchar(36) NOT NULL,
+	slid varchar(36) NOT NULL,
+	is_synced BOOLEAN NOT NULL DEFAULT false,
+	access_id varchar(36) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT smart_library_granted_access_id_pk PRIMARY KEY (id),
+	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid),
+    FOREIGN KEY (access_id) REFERENCES core.granted_access(id)
 );
 
 CREATE TABLE core.tasks (

@@ -29,7 +29,7 @@ public abstract class AbstractUserAccessDto {
     }
     return AccessCredential.builder()
         .credential(credential().map(HashUtils::createSHAHash))
-        .contactLess(contactLess().map(HashUtils::createSHAHash))
+        .contactLess(contactLess())
         .build();
   }
 }

@@ -30,11 +30,11 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   final BookImageHibernateDao bookImageHibernateDao;
 
-  final SmartLibraryAccessControlDao smartLibraryAccessControlDao;
-
   final AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao;
 
   final BookRatingHibernateDao bookRatingHibernateDao;
+
+  final SmartLibraryGrantedAccessHibernateDao smartLibraryGrantedAccessHibernateDao;
 
   public SmartLibraryRepositoryImpl(
       SmartLibraryHibernateDao smartLibraryDao,
@@ -43,18 +43,18 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
       LibraryInventoryHibernateDao libraryInventoryHibernateDao,
       SettingsRepository settingsRepository,
       BookImageHibernateDao bookImageHibernateDao,
-      SmartLibraryAccessControlDao smartLibraryAccessControlDao,
       AuthorizedOriginRecordHibernateDao authorizedOriginRecordHibernateDao,
-      BookRatingHibernateDao bookRatingHibernateDao) {
+      BookRatingHibernateDao bookRatingHibernateDao,
+      SmartLibraryGrantedAccessHibernateDao smartLibraryGrantedAccessHibernateDao) {
     this.smartLibraryDao = smartLibraryDao;
     this.smartLibraryEventsHibernateDao = smartLibraryEventsHibernateDao;
     this.clientRepository = clientRepository;
     this.libraryInventoryHibernateDao = libraryInventoryHibernateDao;
     this.settingsRepository = settingsRepository;
     this.bookImageHibernateDao = bookImageHibernateDao;
-    this.smartLibraryAccessControlDao = smartLibraryAccessControlDao;
     this.authorizedOriginRecordHibernateDao = authorizedOriginRecordHibernateDao;
     this.bookRatingHibernateDao = bookRatingHibernateDao;
+    this.smartLibraryGrantedAccessHibernateDao = smartLibraryGrantedAccessHibernateDao;
   }
 
   @Override
@@ -138,7 +138,7 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
   @Override
   public Mono<Boolean> setSynchronized(Slid slid) {
     return Mono.zip(
-            smartLibraryAccessControlDao.setSynchronized(slid.value()).defaultIfEmpty(0),
+            smartLibraryGrantedAccessHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0),
             libraryInventoryHibernateDao.setSynchronized(slid.value()).defaultIfEmpty(0),
             settingsRepository.setSynchronized(slid))
         .map(data -> true)
@@ -157,6 +157,6 @@ public class SmartLibraryRepositoryImpl implements SmartLibraryRepository {
 
   @Override
   public Mono<Boolean> setAccessSynchronized(Slid slid) {
-    return smartLibraryAccessControlDao.setSynchronized(slid.value()).thenReturn(true);
+    return smartLibraryGrantedAccessHibernateDao.setSynchronized(slid.value()).thenReturn(true);
   }
 }

@@ -11,7 +11,7 @@ import { useLocale } from "next-intl";
 import { fetchUserTransactions } from "@/actions/book-transactions-actions";
 
 interface Credential {
-  code: string;
+  value: string;
 }
 
 const useAuth = () => {
@@ -23,7 +23,7 @@ const useAuth = () => {
   const [isUserSignin, setIsUserSignin] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const loginMutation = useMutation({
-    mutationFn: (credentials: Credential) => authSignIn(credentials.code),
+    mutationFn: (credentials: Credential) => authSignIn(credentials.value),
     onSuccess() {
       setIsUserSignin(true);
       const redirectUrl =

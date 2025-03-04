@@ -1,12 +1,12 @@
-create or replace function update_book_review(book_isbn varchar(36), new_rating numeric) RETURNS VOID AS $$
+create or replace function update_book_review(book_isbn varchar(36), new_rating numeric, origin varchar(36)) RETURNS VOID AS $$
 BEGIN
     UPDATE core.books
      SET rating = ((rating * votes) + new_rating) / (votes + 1),
      votes = votes + 1
     WHERE isbn = book_isbn;
 
-    UPDATE core.library_inventories SET is_synced= false
-    WHERE isbn=book_isbn;
+    UPDATE core.library_inventories SET is_synced=false
+    WHERE isbn=book_isbn AND slid != origin;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -18,7 +18,7 @@ create or replace
 function trigger_update_book_review_on_insert()
 returns trigger as $$
 begin
-   perform update_book_review(NEW.isbn, NEW.rating);
+   perform update_book_review(NEW.isbn, NEW.rating, NEW.origin);
 return new;
 end;
 $$ language plpgsql;

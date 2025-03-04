@@ -6,6 +6,7 @@ import {
   BookTransactionStatus,
   TransactionItemStatusEnum,
   TransactionStatusEnum,
+  TransactionType,
 } from "../domain/loan.model";
 import { BookTransactionRepository } from "../domain/repositories";
 import { executeTransaction } from "@/lib/db/drizzle-client";
@@ -25,6 +26,7 @@ import { bookTransactionItemStatusSchema } from "@/config/drizzle/schemas/bookTr
 import { bookTransactionSchema } from "@/config/drizzle/schemas/bookTransaction";
 import { bookTransactionItemSchema } from "@/config/drizzle/schemas/bookTransactionItem";
 import { arrayGroupinBy } from "@/lib/utils";
+import { BookCopyStatusEnum } from "@/book/domain/models";
 
 export class BookTransactionRepositoryImpl
   implements BookTransactionRepository
@@ -114,11 +116,33 @@ export class BookTransactionRepositoryImpl
         (status.status == TransactionItemStatusEnum.CHECKOUT_SUCCESS ||
           status.status == TransactionItemStatusEnum.CHECKIN_SUCCESS)
       ) {
+        if (status.status == TransactionItemStatusEnum.CHECKIN_SUCCESS) {
+          const usageCount = tx
+            .select({
+              usageCount: bookCopieSchema.usageCount,
+            })
+            .from(bookCopieSchema)
+            .where(eq(bookCopieSchema.id, status.cpy))
+            .get({ usageCount: 0 });
+
+          return tx
+            .update(bookCopieSchema)
+            .set({
+              isAvailable: true,
+              status: BookCopyStatusEnum.AVAILABLE,
+              usageCount: +usageCount!.usageCount + 1,
+            })
+            .where(eq(bookCopieSchema.id, status.cpy));
+        }
+
         return tx
           .update(bookCopieSchema)
           .set({
-            isAvailable:
-              status.status == TransactionItemStatusEnum.CHECKIN_SUCCESS,
+            isAvailable: false,
+            status:
+              status.transactionType == TransactionType.RENT
+                ? BookCopyStatusEnum.BORROWED
+                : BookCopyStatusEnum.SOLD,
           })
           .where(eq(bookCopieSchema.id, status.cpy));
       }
@@ -327,7 +351,9 @@ export class BookTransactionRepositoryImpl
       return undefined;
     });
 
-    const activeUserTransactions = (await Promise.all(transactionWithItems)).filter(t => t?.items);
+    const activeUserTransactions = (
+      await Promise.all(transactionWithItems)
+    ).filter((t) => t?.items);
 
     const transactionsGrouped = arrayGroupinBy(
       activeUserTransactions,

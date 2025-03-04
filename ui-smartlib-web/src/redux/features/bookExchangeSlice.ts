@@ -31,7 +31,7 @@ export const bookExchangeSlice = createSlice({
   reducers: {
     setCurrentItem(state, action: PayloadAction<BookTransactionItemState>) {
       const currentItem = action.payload;
-
+      console.log("setCurrentItem action: " + JSON.stringify(action));
       const itemIndex = state.transactionItems.findIndex(
         (item) => item.id === currentItem.id
       );
@@ -40,6 +40,7 @@ export const bookExchangeSlice = createSlice({
         state.transactionItems[itemIndex] = currentItem;
       }
 
+      console.log("setCurrentItem: " + JSON.stringify(currentItem));
       state.currentItem = {
         ...currentItem,
       };

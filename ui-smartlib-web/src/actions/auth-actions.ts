@@ -5,29 +5,31 @@ import { extractPayload } from "@/lib/jwt-parser";
 import { revalidateTag } from "next/cache";
 
 export async function getAuthToken() {
-  const cookieStore =await cookies();
+  const cookieStore = await cookies();
 
   const authCookie = cookieStore.get(process.env.AUTH_COOKIE!);
-  if(!authCookie?.value)return {
-    userId:null,
-    payload:null
-  }
+  if (!authCookie?.value)
+    return {
+      userId: null,
+      payload: null,
+    };
   const payload = extractPayload(authCookie!.value!);
   const userId = {
     value: payload.sub,
   };
   return {
     userId,
-    payload
-  }
+    payload,
+  };
 }
 
-
-export const authSignIn = async (passcode: string) => {
+export const authSignIn = async (crendential: string) => {
   const cookieStore = await cookies();
 
   try {
-    const { token } = await userServiceFacade.authenticate({ value: passcode });
+    const { token } = await userServiceFacade.authenticate({
+      value: crendential,
+    });
 
     cookieStore.set({
       name: process.env.AUTH_COOKIE!,
@@ -35,9 +37,9 @@ export const authSignIn = async (passcode: string) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7,
-    })
+    });
 
-    revalidateTag('library_inventory')
+    revalidateTag("library_inventory");
   } catch (error) {
     throw new Error("Error signing in: " + error);
   }

@@ -1,7 +1,6 @@
 import { dbConnection } from "../config/db.js";
 import {
   executeGet,
-  executePatch,
   executePut,
 } from "../htttp-client/http-client.js";
 import { ApiRequest } from "../htttp-client/model.js";

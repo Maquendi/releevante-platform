@@ -82,17 +82,15 @@ function susbcribeOnServerEvents(dispatch: Dispatch<AnyAction>) {
     });
   });
 
-  socket.on("card_detected", (data) => {
-    const { atr } = data;
-
-    const decodedUtf8 = arrayBufferToString(atr);
-
-    const decodedAscii = arrayBufferToString(atr);
-
-    console.log("card_detected: decodedUtf8: " + decodedUtf8 + "   decodedAscii: " + decodedAscii);
-    console.log(data);
-
-    dispatch(addUserId({ userId: decodedUtf8 }));
+  socket.on("card_detected", (payload) => {
+    console.log(payload);
+    dispatch(
+      addUserId({
+        user: {
+          id: payload.data,
+        },
+      })
+    );
   });
 
   socket.on("item_checkin_started", (data: BookTransactionItemState) => {

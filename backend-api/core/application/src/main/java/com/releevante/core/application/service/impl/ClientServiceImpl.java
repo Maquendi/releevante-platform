@@ -277,10 +277,7 @@ public class ClientServiceImpl implements ClientService {
                     .findActiveByAccessId(clientId)
                     .switchIfEmpty(
                         Mono.error(
-                            new RuntimeException("Client with " + clientId + " does not exist")))
-                    .collectList()
-                    .map(accessList -> accessList.stream().findFirst()))
-        .map(Optional::get);
+                            new RuntimeException("Client with " + clientId + " does not exist"))));
   }
 
   Mono<Boolean> validateCurrentReservations(

@@ -39,32 +39,31 @@ export const synchronizeLibraryAccess = async (token: string) => {
 
 const insertUsers = async (accesses: LibraryAccess[]) => {
   const create_stmt = dbConnection.prepare(
-    "INSERT INTO user(id, access_id, credential, is_active, expires_at, contact_less) VALUES (@id, @access_id, @credential, @is_active, @expires_at, @contact_less)"
+    "INSERT INTO user(id, credential, is_active, expires_at, contact_less) VALUES (@id, @credential, @is_active, @expires_at, @contact_less)"
   );
 
   const update_stmt = dbConnection.prepare(
-    "UPDATE user SET access_id=?, credential=?, is_active=?, expires_at=?, contact_less=? WHERE id=?"
+    "UPDATE user SET credential=?, is_active=?, expires_at=?, contact_less=? WHERE id=?"
   );
   let dbChanges = 0;
 
   accesses.forEach((access) => {
     try {
       dbChanges += create_stmt.run({
-        id: access.id,
-        access_id: access.accessId,
+        id: access.accessId,
         credential: access.credential,
         is_active: (access.isActive && 1) || 0,
         expires_at: access.expiresAt,
         contact_less: access.contactless,
       }).changes;
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error.message)
       dbChanges += update_stmt.run(
-        access.accessId,
         access.credential,
         (access.isActive && 1) || 0,
         access.expiresAt,
         access.contactless,
-        access.id
+        access.accessId
       ).changes;
     }
   });

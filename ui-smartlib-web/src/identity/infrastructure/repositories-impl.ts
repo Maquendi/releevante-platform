@@ -7,11 +7,12 @@ import { userSchema } from "@/config/drizzle/schemas";
 // uses drizzle as dal
 export class DefaultUserRepositoryImpl implements UserRepository {
   constructor() {}
-  async findBy(credential: string): Promise<User> {
+  async findBy(credential: string, useContactless: boolean): Promise<User> {
     try {
       const userData = await dbGetOne("userSchema", {
         where: and(
-          eq(userSchema.credential, credential),
+          (useContactless && eq(userSchema.contactless, credential)) ||
+            eq(userSchema.credential, credential),
           eq(userSchema.isActive, true)
         ),
         columns: {

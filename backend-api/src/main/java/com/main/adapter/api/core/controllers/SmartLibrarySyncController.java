@@ -13,6 +13,7 @@ import com.releevante.core.application.service.BookService;
 import com.releevante.core.application.service.SettingService;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.LibrarySetting;
+import com.releevante.core.domain.identity.model.OrgId;
 import com.releevante.types.Slid;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -26,7 +27,6 @@ public class SmartLibrarySyncController {
   private final SmartLibraryServiceFacade smartLibraryService;
   final BookService bookService;
   final UserService userService;
-
   final SettingService settingService;
 
   public SmartLibrarySyncController(
@@ -134,7 +134,9 @@ public class SmartLibrarySyncController {
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/accesses")
   public Mono<CustomApiResponse<GrantedAccess>> createLibraryAccess(
-      @PathVariable() Slid slid, @RequestBody UserAccessDto access) {
-    return userService.create(slid, access).map(CustomApiResponse::from);
+      @PathVariable() Slid slid,
+      @RequestParam(required = false) OrgId orgId,
+      @RequestBody UserAccessDto access) {
+    return userService.create(slid, orgId, access).map(CustomApiResponse::from);
   }
 }

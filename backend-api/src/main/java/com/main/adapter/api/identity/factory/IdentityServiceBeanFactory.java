@@ -103,7 +103,9 @@ public class IdentityServiceBeanFactory {
 
   @Bean
   public OrgService orgService(
-      PasswordEncoder passwordEncoder, AuthorizationService authorizationService) {
+      PasswordEncoder passwordEncoder,
+      AuthorizationService authorizationService,
+      UserService userService) {
     return new OrgServiceImpl(
         orgRepository,
         accountRepository,
@@ -112,7 +114,9 @@ public class IdentityServiceBeanFactory {
         ZonedDateTimeGenerator.instance(),
         authorizationService,
         bookTransactionRepository,
-        bookReservationRepository);
+        bookReservationRepository,
+        userService,
+        authorizedOriginRepository);
   }
 
   @Bean

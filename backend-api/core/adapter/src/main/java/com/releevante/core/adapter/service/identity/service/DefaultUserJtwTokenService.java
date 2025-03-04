@@ -80,7 +80,7 @@ public class DefaultUserJtwTokenService implements JtwTokenService {
                   .withAudience(audience)
                   .withClaim(ORG_ID, payload.orgId())
                   .withClaim(ROLES, List.of(CLIENT_ACCESS))
-                  .withSubject(payload.accessId())
+                  .withSubject(payload.id())
                   .withExpiresAt(Instant.now().plusSeconds(ONE_HOURS_IN_SECOND))
                   .sign(algorithm);
             })

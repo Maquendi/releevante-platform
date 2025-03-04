@@ -8,7 +8,6 @@ import com.releevante.core.domain.identity.service.PasswordEncoder;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import com.releevante.types.utils.HashUtils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class DefaultUserAuthenticationService implements AuthenticationService {
@@ -93,23 +92,16 @@ public class DefaultUserAuthenticationService implements AuthenticationService {
         .flatMap(
             principal ->
                 Mono.just(loginDto.accessId())
-                    .flatMapMany(this::findAllBy)
+                    .flatMap(this::findBy)
                     .switchIfEmpty(Mono.error(new UserUnauthorizedException()))
-                    .single()
                     .filterWhen(access -> this.validAudience(principal.audience()))
-                    .flatMap(
-                        access ->
-                            orgRepository
-                                .findBy(OrgId.of(access.orgId()))
-                                .map(Organization::checkIsActive)
-                                .thenReturn(access))
                     .flatMap(
                         smartLibraryAccess ->
                             tokenService.generateToken(principal.audience(), smartLibraryAccess))
                     .switchIfEmpty(Mono.error(new UserUnauthorizedException())));
   }
 
-  Flux<SmartLibraryAccess> findAllBy(String value) {
+  Mono<SmartLibraryAccess> findBy(String value) {
     if (value.length() == 4) {
       return accessControlRepository.findActiveByCredential(HashUtils.createSHAHash(value));
     }

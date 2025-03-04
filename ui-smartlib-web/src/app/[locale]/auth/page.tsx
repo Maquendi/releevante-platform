@@ -3,7 +3,9 @@
 import { buttonVariants } from "@/components/ui/button";
 import VideoPlayer from "@/components/videoPlayer";
 import { Link } from "@/config/i18n/routing";
+import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { clearUserId } from "@/redux/features/contactLessLoginSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
@@ -11,11 +13,17 @@ import { useEffect } from "react";
 const Signin = ({ searchParams }: { searchParams: Record<string, string> }) => {
   const t = useTranslations("wristbandScanAuth");
 
-  const { userId } = useAppSelector((state) => state.contactLessLogin);
-
+  const { user } = useAppSelector((state) => state.contactLessLogin);
+  const { loginMutation, error, clearError } = useAuth();
   useEffect(() => {
-    console.log("new userId " + userId);
-  }, [userId]);
+    console.log("new userId " + user.id);
+    if (user.id) {
+      loginMutation.mutateAsync({ value: user.id! });
+    }
+    return () => {
+      clearUserId();
+    };
+  }, [user]);
 
   return (
     <>

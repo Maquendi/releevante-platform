@@ -7,7 +7,6 @@ import VirtualKeyboard from "../VirtualKeyboard";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/useAuth";
 
-
 export default function Passcode() {
   const [input, setInput] = useState<string>("");
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
@@ -33,7 +32,7 @@ export default function Passcode() {
 
   const handleAuthSubmit = async () => {
     setIsKeyboardVisible(false);
-    await loginMutation.mutateAsync({ code: input });
+    await loginMutation.mutateAsync({ value: input });
   };
 
   return (
@@ -52,9 +51,9 @@ export default function Passcode() {
                 key={index}
                 className={cn(
                   "bg-white text-black py-[1.30rem] border otp-slot px-6 border-gray-500 rounded-md",
-                  input[index] && 
-                    "bg-[#FDF3E7]  border-black",
-                    error && 'bg-[#FFE9F0] border-2 border-[#E60C51] text-[#E60C51]'
+                  input[index] && "bg-[#FDF3E7]  border-black",
+                  error &&
+                    "bg-[#FFE9F0] border-2 border-[#E60C51] text-[#E60C51]"
                 )}
                 index={index}
                 tabIndex={0}

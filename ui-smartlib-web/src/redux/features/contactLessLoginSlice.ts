@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface LoginInfo {
-  userId?: string;
+  user: {
+    id?: string;
+  };
 }
 
 const initialState: LoginInfo = {
-  userId: undefined,
+  user: {},
 };
 
 export const contactLessLoginSlice = createSlice({
@@ -13,10 +15,10 @@ export const contactLessLoginSlice = createSlice({
   initialState,
   reducers: {
     addUserId: (state, action: PayloadAction<LoginInfo>) => {
-      state.userId = action.payload.userId;
+      state.user = { ...action.payload.user };
     },
     clearUserId: (state) => {
-      state.userId = undefined;
+      state.user = {};
     },
   },
 });

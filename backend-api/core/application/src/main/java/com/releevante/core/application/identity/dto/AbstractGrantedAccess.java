@@ -14,6 +14,6 @@ public abstract class AbstractGrantedAccess {
   abstract String accessId();
 
   public static GrantedAccess from(SmartLibraryAccess access) {
-    return GrantedAccess.builder().accessId(access.accessId()).build();
+    return GrantedAccess.builder().accessId(access.id()).build();
   }
 }

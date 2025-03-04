@@ -1,4 +1,3 @@
-
 from typing import Dict, List
 from dotenv import load_dotenv
 from smartcard.CardMonitoring import CardMonitor, CardObserver
@@ -12,8 +11,11 @@ import ndef
 # Load environment variables from .env file
 load_dotenv()
 # Access variables
-NFC_URL: str = os.getenv('NFC_URL', 'https://www.facebook.com/groups/394873260721477/?hoisted_section_header_type=recently_seen&multi_permalinks=2604819756393472')
-PASSPHRASE: str = os.getenv('NFC_PASSPHRASE', 'Summer01')
+NFC_URL: str = os.getenv(
+    "NFC_URL",
+    "https://www.facebook.com/groups/394873260721477/?hoisted_section_header_type=recently_seen&multi_permalinks=2604819756393472",
+)
+PASSPHRASE: str = os.getenv("NFC_PASSPHRASE", "Summer01")
 
 
 def decode_atr(atr: str) -> Dict[str, str]:
@@ -45,18 +47,15 @@ def decode_atr(atr: str) -> Dict[str, str]:
         "00 36": "MIFARE Plus® SL1 2K",
         "FF[SAK]": "undefined tags",
         "00 37": "MIFARE Plus® SL1 4K",
-        "00 07": "SRIX"
+        "00 07": "SRIX",
     }
 
-    standards = {
-        "03": "ISO 14443A, Part 3",
-        "11": "FeliCa"
-    }
+    standards = {"03": "ISO 14443A, Part 3", "11": "FeliCa"}
 
     return {
         "RID": " ".join(rid),
         "Standard": standards.get(standard, "Unknown"),
-        "Card Name": card_names.get(" ".join(card_name), "Unknown")
+        "Card Name": card_names.get(" ".join(card_name), "Unknown"),
     }
 
 
@@ -83,8 +82,10 @@ def authenticate_with_password(connection: CardConnection, passphrase: str) -> b
         if len(response) >= 5:  # Ensuring the response is long enough
             # Adjust this based on where PACK actually appears
             pack = response[3:5]
-            print("Authentication successful, PACK received:",
-                  ' '.join(f'{byte:02X}' for byte in pack))
+            print(
+                "Authentication successful, PACK received:",
+                " ".join(f"{byte:02X}" for byte in pack),
+            )
             return True
         else:
             print("PACK not received or incorrectly formatted")
@@ -103,20 +104,22 @@ def create_ndef_record(url: str) -> bytes:
         bytes: The complete NDEF message as bytes, ready to be written to an NFC tag.
     """
 
-    uri_record = ndef.UriRecord(url)
+    uri_record = ndef.TextRecord(url)
 
     # Encode the NDEF message
-    encoded_message = b''.join(ndef.message_encoder([uri_record]))
+    encoded_message = b"".join(ndef.message_encoder([uri_record]))
 
     # Calculate total length of the NDEF message (excluding start byte and terminator)
     message_length = len(encoded_message)
 
     # Create the initial part of the message with start byte, length, encoded message, and terminator
-    initial_message = b'\x03' + message_length.to_bytes(1, 'big') + encoded_message + b'\xFE'
+    initial_message = (
+        b"\x03" + message_length.to_bytes(1, "big") + encoded_message + b"\xFE"
+    )
 
     # Calculate padding to align to the nearest block size (assuming 4 bytes per block)
     padding_length = -len(initial_message) % 4
-    complete_message = initial_message + (b'\x00' * padding_length)
+    complete_message = initial_message + (b"\x00" * padding_length)
     return complete_message
 
 
@@ -138,8 +141,10 @@ def write_ndef_message(connection: CardConnection, ndef_message: bytes) -> bool:
         WRITE_COMMAND = [0xFF, 0xD6, 0x00, page, 0x04] + list(block_data)
         response, sw1, sw2 = connection.transmit(WRITE_COMMAND)
         if sw1 != 0x90 or sw2 != 0x00:
-            print(f"Failed to write to page {
-                  page}, SW1: {sw1:02X}, SW2: {sw2:02X}")
+            print(
+                f"Failed to write to page {
+                  page}, SW1: {sw1:02X}, SW2: {sw2:02X}"
+            )
             return False
         print(f"Successfully wrote to page {page}")
         page += 1
@@ -218,8 +223,7 @@ def remove_password(connection: CardConnection, passphrase: str) -> None:
 
     # Disable password protection by setting AUTH0 beyond the tag's storage
     # Example: set AUTH0 to 0xFF to disable all protections
-    disable_auth0_command = [0xFF, 0xD6, 0x00,
-                             0x83, 0x04, 0x00, 0x00, 0x00, 0xFF]
+    disable_auth0_command = [0xFF, 0xD6, 0x00, 0x83, 0x04, 0x00, 0x00, 0x00, 0xFF]
     response, sw1, sw2 = connection.transmit(disable_auth0_command)
     if sw1 == 0x90 and sw2 == 0x00:
         print("Password protection successfully removed.")
@@ -285,8 +289,10 @@ class NTAG215Observer(CardObserver):
                 if is_password_set(connection):
                     authenticate_with_password(connection, PASSPHRASE)
 
+                
+                card_data = input("Enter card data\n")
                 # Write NDEF message to tag
-                #write_ndef_message(connection, create_ndef_record(NFC_URL))
+                write_ndef_message(connection, create_ndef_record(card_data))
 
                 # if password is not set, set password
                 # if not is_password_set(connection):
@@ -326,8 +332,10 @@ def main():
         input("Press Enter to stop...\n")
     finally:
         cardmonitor.deleteObserver(cardobserver)
-        print(f"Stopped NFC card processing. Total cards processed: {
-              cards_processed}")
+        print(
+            f"Stopped NFC card processing. Total cards processed: {
+              cards_processed}"
+        )
 
 
 if __name__ == "__main__":
@@ -336,7 +344,6 @@ if __name__ == "__main__":
     # print(sc_readers)
     cards_processed: int = 0
     main()
-
 
 
 # data: [4, -107, 62, -97, -69, 42, -127]

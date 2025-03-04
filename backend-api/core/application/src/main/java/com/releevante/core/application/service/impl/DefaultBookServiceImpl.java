@@ -252,7 +252,6 @@ public class DefaultBookServiceImpl implements BookService {
                                     Mono.error(
                                         new RuntimeException(
                                             "Client with " + clientId + " does not exist")))
-                                .collectList()
                                 .thenReturn(clientId))
                     .defaultIfEmpty(principal.subject())
                     .map(

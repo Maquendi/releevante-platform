@@ -7,6 +7,7 @@ import com.releevante.types.Auditable;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.exceptions.UserUnauthorizedException;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.immutables.value.Value;
 
@@ -19,15 +20,11 @@ public abstract class AbstractSmartLibraryAccess implements Auditable {
   abstract String id();
 
   /** smart library identifier */
-  abstract String slid();
+  abstract List<String> slid();
 
   abstract String orgId();
 
-  abstract String accessId();
-
   abstract Optional<String> contactLessId();
-
-  abstract Boolean isSync();
 
   abstract Boolean isActive();
 
