@@ -3,7 +3,7 @@ import {  useMutation } from "@tanstack/react-query";
 import {  useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
-import { authSigninCode, authSignOut } from "@/actions/auth-actions";
+import { authClientAcessId, authSignOut } from "@/actions/auth-actions";
 
 interface Credential {
   code: string;
@@ -15,10 +15,22 @@ const useAuth = () => {
   const searchParams = useSearchParams();
   const locale = useLocale();
 
-  const loginMutation = useMutation({
-    mutationFn: (credentials: Credential) => authSigninCode(credentials.code),
+  const loginClientId = useMutation({
+    mutationFn: (clientId:string) =>authClientAcessId(clientId),
     onSuccess() {
-      const redirectUrl = searchParams?.get("redirect") || `/${locale}/selection`;
+      const redirectUrl = searchParams?.get("redirect_url") || `/${locale}/`;
+      router.push(redirectUrl);
+    },
+    onError() {
+      setError(true);
+    },
+  });
+
+
+  const loginMutation = useMutation({
+    mutationFn: (credentials: Credential) => authClientAcessId(credentials.code),
+    onSuccess() {
+      const redirectUrl = searchParams?.get("redirect_url") || `/${locale}/`;
       router.push(redirectUrl);
     },
     onError() {
@@ -42,6 +54,7 @@ const useAuth = () => {
     logoutMutation,
     error,
     clearError,
+    loginClientId
   };
 };
 
