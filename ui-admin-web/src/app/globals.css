@@ -95,6 +95,22 @@ body {
   .scroll-hidden::-webkit-scrollbar {
     display: none;
   }
+
+  .otp-slot {
+    font-size: 40px;
+    -webkit-text-security: disc;
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 
