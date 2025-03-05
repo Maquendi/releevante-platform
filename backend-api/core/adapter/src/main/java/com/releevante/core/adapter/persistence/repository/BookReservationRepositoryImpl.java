@@ -8,6 +8,7 @@ import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.BookReservationItem;
 import com.releevante.core.domain.identity.model.OrgId;
 import com.releevante.core.domain.repository.BookReservationRepository;
+import com.releevante.types.exceptions.ResourceNotFoundException;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,23 @@ public class BookReservationRepositoryImpl implements BookReservationRepository 
   public Mono<BookReservation> getCurrentByClient(String clientId) {
     return bookReservationHibernateDao
         .findFirstByClientIdOrderByCreatedAtDesc(clientId)
+        .flatMap(
+            reservationRecord ->
+                bookReservationItemHibernateDao
+                    .findAllByReservationId(reservationRecord.getId())
+                    .collectList()
+                    .map(
+                        items -> {
+                          reservationRecord.getReservationItems().addAll(items);
+                          return reservationRecord.toDomain();
+                        }))
+        .switchIfEmpty(Mono.error(new ResourceNotFoundException()));
+  }
+
+  @Override
+  public Flux<BookReservation> getALLByClient(String clientId) {
+    return bookReservationHibernateDao
+        .findAllByClientIdOrderByCreatedAtDesc(clientId)
         .flatMap(
             reservationRecord ->
                 bookReservationItemHibernateDao

@@ -350,6 +350,11 @@ public class ClientServiceImpl implements ClientService {
   }
 
   @Override
+  public Flux<ReservationDto> getReservations(ClientId clientId) {
+    return bookReservationRepository.getALLByClient(clientId.value()).map(ReservationDto::from);
+  }
+
+  @Override
   public Flux<ReservationDto> getReservations(OrgId orgId) {
     return authorizationService
         .getAccountPrincipal()

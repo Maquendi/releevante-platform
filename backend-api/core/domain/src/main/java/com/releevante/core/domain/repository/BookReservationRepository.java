@@ -13,6 +13,8 @@ public interface BookReservationRepository {
 
   Mono<BookReservation> getCurrentByClient(String clientId);
 
+  Flux<BookReservation> getALLByClient(String clientId);
+
   Mono<String> addNewItems(String reservationId, List<BookReservationItem> items);
 
   Mono<Boolean> removeItems(String reservationId, List<String> items);

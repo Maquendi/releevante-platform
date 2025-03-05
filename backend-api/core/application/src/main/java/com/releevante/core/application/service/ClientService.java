@@ -41,6 +41,8 @@ public interface ClientService {
 
   Mono<ReservationDto> getReservation(ClientId clientId);
 
+  Flux<ReservationDto> getReservations(ClientId clientId);
+
   Flux<ReservationDto> getReservations(OrgId orgId);
 
   Flux<ReservationDto> getReservations();

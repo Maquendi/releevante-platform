@@ -8,7 +8,6 @@ def decodeNdefMessage(message: bytes) -> str:
         dataHex = data1.hex()
         octets = bytearray.fromhex(dataHex)
         card_data = list(ndef.message_decoder(octets))
-        print(card_data)
         card_content = card_data[0].text
         return card_content
     except Exception as e:

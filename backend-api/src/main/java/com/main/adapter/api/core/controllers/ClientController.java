@@ -50,7 +50,14 @@ public class ClientController {
 
   @PreAuthorize("hasRole('CLIENT')")
   @GetMapping("/{clientId}/reservations")
-  public Mono<CustomApiResponse<ReservationDto>> getClientReservation(
+  public Mono<CustomApiResponse<List<ReservationDto>>> getClientReservation(
+      @PathVariable() ClientId clientId) {
+    return clientService.getReservations(clientId).collectList().map(CustomApiResponse::from);
+  }
+
+  @PreAuthorize("hasRole('CLIENT')")
+  @GetMapping("/{clientId}/reservations/current")
+  public Mono<CustomApiResponse<ReservationDto>> getClientReservationCurrent(
       @PathVariable() ClientId clientId) {
     return clientService.getReservation(clientId).map(CustomApiResponse::from);
   }
