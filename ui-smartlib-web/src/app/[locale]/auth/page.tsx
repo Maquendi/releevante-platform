@@ -5,7 +5,6 @@ import VideoPlayer from "@/components/videoPlayer";
 import { Link } from "@/config/i18n/routing";
 import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
-import { clearUserId } from "@/redux/features/contactLessLoginSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
@@ -20,9 +19,6 @@ const Signin = ({ searchParams }: { searchParams: Record<string, string> }) => {
     if (user.id) {
       loginMutation.mutateAsync({ value: user.id! });
     }
-    return () => {
-      clearUserId();
-    };
   }, [user]);
 
   return (

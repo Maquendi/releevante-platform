@@ -2,7 +2,6 @@ import asyncio
 
 from appserver.sever_init import socket_app
 import contactless.cardReaderSetup as contactlessReaderSetup
-import contactless.cardWriterSetup as contactlessWriterSetup
 import appserver.fastApiRouteSetup as fastApiRoutes
 import appserver.socketioRouteSetup as socketioRoutes
 
@@ -14,7 +13,6 @@ async def main():
     fastApiRoutes.initialize()
     socketioRoutes.initialize()
     contactlessReaderSetup.setupNtag215Reader()
-    #contactlessWriterSetup.setupNtag215Writer()
 
     config = uvicorn.Config(
         socket_app,

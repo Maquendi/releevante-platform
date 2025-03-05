@@ -9,6 +9,7 @@ import { clearCheckout } from "@/redux/features/checkoutSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { fetchUserTransactions } from "@/actions/book-transactions-actions";
+import { clearUserId } from "@/redux/features/contactLessLoginSlice";
 
 interface Credential {
   value: string;
@@ -25,6 +26,7 @@ const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: Credential) => authSignIn(credentials.value),
     onSuccess() {
+      dispatch(clearUserId());
       setIsUserSignin(true);
       const redirectUrl =
         searchParams?.get("redirect") || `/${locale}/selection`;
@@ -34,6 +36,7 @@ const useAuth = () => {
       });
     },
     onError() {
+      dispatch(clearUserId());
       setError(true);
     },
   });

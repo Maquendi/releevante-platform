@@ -1,5 +1,9 @@
 import asyncio
-
+from bookexchange.backendCommunicationService import (
+    BackendCommService,
+    BackendCommand,
+    BackendPayload,
+)
 
 from bookexchange import messageSender
 from bookexchange.models import (
@@ -10,8 +14,13 @@ from bookexchange.models import (
 
 
 class MessageHandler:
-    def __init__(self, message_sender: messageSender.MessageSender):
+    def __init__(
+        self,
+        message_sender: messageSender.MessageSender,
+        backendService: BackendCommService,
+    ):
         self.sender = message_sender
+        self.backendService = backendService
 
     async def handleCheckout(self, data: BookTransactions):
 
@@ -44,9 +53,17 @@ class MessageHandler:
                 currentlyExchanging=True,
                 exchangeWithError=False,
             )
-            await self.sender.onItemCheckoutStarted(status)
 
-            await asyncio.sleep(5)
+            position = item["position"].split("-")
+            door = position[0]
+            slot = position[1]
+
+            await self.sender.onItemCheckoutStarted(status)
+            
+            await self.backendService.sendCommand(
+                BackendCommand.OPEN, BackendPayload(door=door, slot=slot)
+            )
+
             status = dict(
                 item,
                 transactionType=transactionType,

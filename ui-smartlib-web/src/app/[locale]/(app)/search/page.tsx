@@ -23,7 +23,7 @@ export default function SearchBooksPage() {
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["BOOK_INVENTORY_BOOKS", "All"],
+    queryKey: ["BOOK_INVENTORY", "All"],
     queryFn: async () => {
       const inventory = await loadLibraryInventory();
       return Object.values(inventory.books);
