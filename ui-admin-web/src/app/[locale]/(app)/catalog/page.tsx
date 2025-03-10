@@ -17,16 +17,15 @@ import { getQueryClient } from "@/app/getQueryClient";
 export default async function CatalogPage() {
   const t = await getTranslations("catalogPage");
   const queryClient = getQueryClient()
-  await Promise.all([
-    queryClient.prefetchQuery({
-      queryKey: ["LIBRARY_INVENTORY"],
-      queryFn: FetchAllBooksByOrg,
-    }),
-    queryClient.prefetchQuery({
-      queryKey: ["BOOK_CATEGORIES"],
-      queryFn: FetchAllBookCategories,
-    }),
-  ]);
+  queryClient.ensureQueryData({
+    queryKey: ["LIBRARY_INVENTORY"],
+    queryFn: FetchAllBooksByOrg,
+  })
+
+  queryClient.ensureQueryData({
+    queryKey: ["BOOK_CATEGORIES"],
+    queryFn: FetchAllBookCategories,
+  })
 
   return (
     <div className="pb-5">

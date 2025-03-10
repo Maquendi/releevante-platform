@@ -4,17 +4,19 @@ import { Info } from "lucide-react"
 import { CartItem } from "./Cartitem"
 import { useAppSelector } from "@/redux/hooks";
 import { useTranslations } from "next-intl";
-import useGetCartBooks from "@/hooks/useGetCartBooks";
+import { CartItemState } from "@/redux/features/cartSlice";
 
+interface PurchaseItemsReviewProps{
+  books:CartItemState[]
+}
 
-export default function PurchaseItemsReview() {
+export default function PurchaseItemsReview({books}:PurchaseItemsReviewProps) {
       const settings = useAppSelector((state) => state.settings);
     const t = useTranslations("reviewMyCart");
-      const { purchaseItems } = useGetCartBooks();
     
   return (
     <div>
-         {purchaseItems?.length > 0 && (
+         {books?.length > 0 && (
           <div className="pt-7 pb-5 px-5 bg-white rounded-xl space-y-5">
             <div className="md:flex space-y-1 justify-between items-center">
               <h3 className="space-x-1 text-xl font-medium flex text-secondary-foreground">
@@ -22,7 +24,7 @@ export default function PurchaseItemsReview() {
                   <span className="text-black">{t("toBuy")}</span>
                 </p>
                 <p className="space-x-1">
-                  (<span>{purchaseItems?.length}</span>
+                  (<span>{books?.length}</span>
                   {settings?.data && (
                     <>
                       <span>{t("of")}</span>
@@ -38,7 +40,7 @@ export default function PurchaseItemsReview() {
               </p>
             </div>
             <div className="space-y-4">
-              {purchaseItems.map((item) => (
+              {books.map((item) => (
                 <CartItem
                   key={item.isbn}
                   item={item}
