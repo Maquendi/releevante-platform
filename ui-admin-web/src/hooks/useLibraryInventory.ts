@@ -52,8 +52,8 @@ export default function useLibraryInventory() {
   const subCategoryBooksFrom = (subCategoryRelation: SubCategoryRelation): SubCategoryBooks => {
     const {id,bookRelations}=subCategoryRelation || {}
     const subCategoryBooks: Book[] = bookRelations?.map(
-      (isbn) => books?.[isbn]
-    );
+      (isbn) => books?.[isbn as keyof Book]
+    ) as any
     const subCategory = categoriesData?.subCategoryMap?.[id] 
 
     return {
