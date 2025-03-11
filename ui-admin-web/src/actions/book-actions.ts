@@ -131,14 +131,15 @@ export async function SaveReservationBooks(items: ReservationItem[]): Promise<vo
   }
 }
 
-export async function FetchReservedBooks():Promise<ReservationBooksResponse> {
+export async function FetchReservedBooks():Promise<ReservationBooksResponse[]> {
   const accessId = API_COOKIE.CLIENT_ACCESS_ID();
   
   if(!accessId){
     throw new Error('UNAUTHORIZED')
   }
+  
   try {
-    const data = await executeGet<ReservationBooksResponse>({ resource: `/clients/${accessId}/reservations`})
+    const data = await executeGet<ReservationBooksResponse[]>({ resource: `/clients/${accessId}/reservations`})
     return data?.context?.data 
   } catch (error) {
     throw new Error("Error saving servide request" + error);

@@ -22,7 +22,9 @@ export default function ReservedBooksContent() {
     <MaxWithWrapper className="space-y-3 mt-7">
       <RentItemsReview isReservedBooks books={rentItems as any} />
       <PurchaseItemsReview books={purchaseItems as any[]} />
-      <NotReservedBooksFound/>
+      {!isPending && (!rentItems?.length && !purchaseItems?.length) ? (
+        <NotReservedBooksFound/>
+      ):null}
     </MaxWithWrapper>
   </section>
   )
