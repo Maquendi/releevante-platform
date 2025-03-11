@@ -1,8 +1,6 @@
 import { resolve } from "path";
 
-const dbPath = resolve(__dirname, "../../../ui-smartlib-web/sqlite-dev.db");
-
-console.log("dbpath:  " + dbPath);
+const dbPath = resolve(__dirname, "../../../sqlite-dev.db");
 
 import Database from "better-sqlite3";
 

@@ -1,12 +1,10 @@
 package com.releevante.core.application.service.impl;
 
 import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.toMap;
 
 import com.releevante.core.application.dto.books.BookRecommendationDto;
-import com.releevante.core.application.dto.clients.reservations.CreateReservationDto;
-import com.releevante.core.application.dto.clients.reservations.RemoveReservationItemsDto;
-import com.releevante.core.application.dto.clients.reservations.ReservationDto;
-import com.releevante.core.application.dto.clients.reservations.ReservationItemDto;
+import com.releevante.core.application.dto.clients.reservations.*;
 import com.releevante.core.application.dto.clients.reviews.BookReviewDto;
 import com.releevante.core.application.dto.clients.reviews.ServiceReviewDto;
 import com.releevante.core.application.dto.clients.transactions.*;
@@ -22,11 +20,10 @@ import com.releevante.types.AccountPrincipal;
 import com.releevante.types.SequentialGenerator;
 import com.releevante.types.UuidGenerator;
 import com.releevante.types.ZonedDateTimeGenerator;
+import com.releevante.types.exceptions.ResourceNotFoundException;
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
@@ -181,59 +178,73 @@ public class ClientServiceImpl implements ClientService {
 
               var clientOrg = OrgId.of(principals.orgId());
 
-              var maxBooksPerLoanPublisher =
-                  librarySettingRepository
-                      .findCurrentBy(clientOrg)
-                      .collectList()
-                      .filter(Predicate.not(List::isEmpty))
-                      .map(
-                          settings ->
-                              settings.stream()
-                                  .max(comparingInt(LibrarySetting::maxBooksPerLoan))
-                                  .orElseThrow())
-                      .map(LibrarySetting::maxBooksPerLoan)
-                      .switchIfEmpty(
-                          Mono.error(
-                              new RuntimeException(
-                                  "Failed due to misconfiguration [miss library settings]")));
+              final var maxBooksPerLoanPublisher =
+                  fetchMaxBooksAllowedPerLoan(librarySettingRepository.findCurrentBy(clientOrg));
 
               var reservationItemsCount =
                   reservationDto.items().stream()
                       .filter(item -> item.transactionType() == BookTransactionType.RENT)
+                      .map(ReservationItemDto::qty)
                       .toList()
-                      .size();
+                      .stream()
+                      .reduce(Integer::sum)
+                      .orElse(0);
 
               return maxBooksPerLoanPublisher.flatMap(
                   maxBooksPerLoan ->
                       bookReservationRepository
                           .getCurrentByClient(clientId.value())
                           .flatMap(
-                              reservation -> {
-                                var currentReservationCount =
-                                    reservation.items().stream()
+                              existingReservation -> {
+                                var existingReservationItemsCount =
+                                    existingReservation.items().stream()
                                         .filter(
                                             item ->
                                                 item.transactionType() == BookTransactionType.RENT)
-                                        .toList()
-                                        .size();
+                                        .map(BookReservationItem::qty)
+                                        .reduce(Integer::sum)
+                                        .orElse(0);
                                 var totalLoanItems =
-                                    currentReservationCount + reservationItemsCount;
-                                if (totalLoanItems >= maxBooksPerLoan) {
+                                    existingReservationItemsCount + reservationItemsCount;
+                                if (totalLoanItems > maxBooksPerLoan) {
                                   throw new RuntimeException("Max items exceeded");
                                 }
 
                                 // just add new items and return this existing reservation id.
-                                var bookReservationItems =
-                                    reservationDto.items().stream()
-                                        .map(item -> item.toDomain(uuidGenerator))
+                                var bookReservationNewItems =
+                                    new ArrayList<>(
+                                        reservationDto.items().stream()
+                                            .map(item -> item.toDomain(uuidGenerator))
+                                            .toList());
+
+                                // should we allow the client to reserve more than one copy of a
+                                // given book ?
+
+                                bookReservationNewItems.addAll(existingReservation.items());
+
+                                var updatedReservationItems =
+                                    bookReservationNewItems.stream()
+                                        .collect(
+                                            toMap(
+                                                Function.identity(),
+                                                Function.identity(),
+                                                (item1, item2) ->
+                                                    BookReservationItem.builder()
+                                                        .isbn(item1.isbn())
+                                                        .qty(item1.qty() + item2.qty())
+                                                        .transactionType(item1.transactionType())
+                                                        .build()))
+                                        .values()
+                                        .stream()
                                         .toList();
+
                                 return bookReservationRepository.addNewItems(
-                                    reservation.id(), bookReservationItems);
+                                    existingReservation.id(), updatedReservationItems);
                               })
                           .switchIfEmpty(
                               Mono.defer(
                                   () -> {
-                                    if (reservationItemsCount >= maxBooksPerLoan) {
+                                    if (reservationItemsCount > maxBooksPerLoan) {
                                       throw new RuntimeException("Max items exceeded");
                                     }
 
@@ -269,6 +280,63 @@ public class ClientServiceImpl implements ClientService {
             });
   }
 
+  @Override
+  public Mono<String> updateReservation(
+      String reservationId, UpdateReservationDto updateReservationDto) {
+    return authorizationService
+        .getAccountPrincipal()
+        .flatMap(
+            accountPrincipal ->
+                bookReservationRepository
+                    .findById(reservationId)
+                    .flatMap(
+                        reservation -> {
+                          var itemsForUpdate = updateReservationDto.toDomain(uuidGenerator);
+
+                          var itemsCountForRent =
+                              reservation.items().stream()
+                                  .filter(BookReservationItem::isRent)
+                                  .map(BookReservationItem::qty)
+                                  .reduce(Integer::sum)
+                                  .orElse(0);
+
+                          var newItemsCountForRent =
+                              itemsForUpdate.stream()
+                                  .filter(BookReservationItem::isRent)
+                                  .map(BookReservationItem::qty)
+                                  .reduce(Integer::sum)
+                                  .orElse(0);
+
+                          var totalItemsCountForRent = itemsCountForRent + newItemsCountForRent;
+
+                          final var maxBooksPerLoanPublisher =
+                              fetchMaxBooksAllowedPerLoan(
+                                  librarySettingRepository.findCurrentBy(
+                                      OrgId.of(accountPrincipal.orgId())));
+
+                          return maxBooksPerLoanPublisher.flatMap(
+                              maxBooksPerLoan -> {
+                                if (totalItemsCountForRent > maxBooksPerLoan) {
+                                  throw new RuntimeException("Max items exceeded");
+                                }
+                                return bookReservationRepository.addNewItems(
+                                    reservationId, itemsForUpdate);
+                              });
+                        }));
+  }
+
+  private Mono<Integer> fetchMaxBooksAllowedPerLoan(Flux<LibrarySetting> librarySettingRepository) {
+    return librarySettingRepository
+        .collectList()
+        .map(
+            settings ->
+                settings.stream().max(comparingInt(LibrarySetting::maxBooksPerLoan)).orElseThrow())
+        .map(LibrarySetting::maxBooksPerLoan)
+        .switchIfEmpty(
+            Mono.error(
+                new RuntimeException("Failed due to misconfiguration [miss library settings]")));
+  }
+
   Mono<SmartLibraryAccess> getUserAccess(String accessId) {
     return Mono.justOrEmpty(accessId)
         .flatMap(
@@ -282,19 +350,9 @@ public class ClientServiceImpl implements ClientService {
 
   Mono<Boolean> validateCurrentReservations(
       AccountPrincipal principal, ClientId clientId, List<ReservationItemDto> reservationItems) {
-    var maxBooksPerLoanPublisher =
-        librarySettingRepository
-            .findCurrentBy(OrgId.of(principal.orgId()))
-            .collectList()
-            .map(
-                settings ->
-                    settings.stream()
-                        .max(comparingInt(LibrarySetting::maxBooksPerLoan))
-                        .orElseThrow())
-            .map(LibrarySetting::maxBooksPerLoan)
-            .switchIfEmpty(
-                Mono.defer(
-                    () -> Mono.error(new RuntimeException("Failed due to misconfiguration"))));
+    final var maxBooksPerLoanPublisher =
+        fetchMaxBooksAllowedPerLoan(
+            librarySettingRepository.findCurrentBy(OrgId.of(principal.orgId())));
 
     return maxBooksPerLoanPublisher
         .flatMap(
@@ -346,7 +404,10 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public Mono<ReservationDto> getReservation(ClientId clientId) {
-    return bookReservationRepository.getCurrentByClient(clientId.value()).map(ReservationDto::from);
+    return bookReservationRepository
+        .getCurrentByClient(clientId.value())
+        .map(ReservationDto::from)
+        .switchIfEmpty(Mono.error(new ResourceNotFoundException()));
   }
 
   @Override

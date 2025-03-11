@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import fs from "fs";
-import path from "path";
 export interface JwtPayload {
   sub: string;
   iat: number;

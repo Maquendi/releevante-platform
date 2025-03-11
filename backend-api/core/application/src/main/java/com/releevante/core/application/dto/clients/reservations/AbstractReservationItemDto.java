@@ -7,6 +7,7 @@ import com.releevante.core.domain.BookTransactionType;
 import com.releevante.core.domain.Isbn;
 import com.releevante.types.ImmutableExt;
 import com.releevante.types.SequentialGenerator;
+import java.util.Optional;
 import org.immutables.value.Value;
 
 @Value.Immutable()
@@ -14,6 +15,9 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ReservationItemDto.class)
 @ImmutableExt
 public abstract class AbstractReservationItemDto {
+
+  abstract Optional<String> id();
+
   abstract Integer qty();
 
   abstract String isbn();
@@ -21,8 +25,21 @@ public abstract class AbstractReservationItemDto {
   abstract BookTransactionType transactionType();
 
   public BookReservationItem toDomain(SequentialGenerator<String> uuidGenerator) {
+    return toDomain(id().orElse(uuidGenerator.next()));
+  }
+
+  public BookReservationItem toDomain(String id) {
     return BookReservationItem.builder()
-        .id(uuidGenerator.next())
+        .id(id)
+        .transactionType(transactionType())
+        .isbn(Isbn.of(isbn()))
+        .qty(qty())
+        .build();
+  }
+
+  public BookReservationItem toDomain() {
+    return BookReservationItem.builder()
+        .id(id().orElseThrow())
         .transactionType(transactionType())
         .isbn(Isbn.of(isbn()))
         .qty(qty())
@@ -35,5 +52,12 @@ public abstract class AbstractReservationItemDto {
         .isbn(item.isbn().value())
         .qty(item.qty())
         .build();
+  }
+
+  @Value.Check
+  protected void check() {
+    if (qty() < 1) {
+      throw new IllegalArgumentException("Quantity must be greater than 0");
+    }
   }
 }

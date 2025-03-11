@@ -20,4 +20,6 @@ public interface BookReservationRepository {
   Mono<Boolean> removeItems(String reservationId, List<String> items);
 
   Flux<BookReservation> findAll(OrgId orgId);
+
+  Mono<BookReservation> findById(String reservationId);
 }

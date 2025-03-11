@@ -1,10 +1,7 @@
 package com.releevante.core.application.service;
 
 import com.releevante.core.application.dto.books.BookRecommendationDto;
-import com.releevante.core.application.dto.clients.reservations.CreateReservationDto;
-import com.releevante.core.application.dto.clients.reservations.RemoveReservationItemsDto;
-import com.releevante.core.application.dto.clients.reservations.ReservationDto;
-import com.releevante.core.application.dto.clients.reservations.ReservationItemDto;
+import com.releevante.core.application.dto.clients.reservations.*;
 import com.releevante.core.application.dto.clients.reviews.BookReviewDto;
 import com.releevante.core.application.dto.clients.reviews.ServiceReviewDto;
 import com.releevante.core.application.dto.clients.transactions.*;
@@ -33,6 +30,8 @@ public interface ClientService {
   Mono<String> createServiceReview(ServiceReviewDto review);
 
   Mono<String> createReservation(CreateReservationDto reservation);
+
+  Mono<String> updateReservation(String reservationId, UpdateReservationDto updateReservationDto);
 
   Mono<String> addReservationItems(
       String reservationId, ClientId clientId, List<ReservationItemDto> newItems);

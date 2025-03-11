@@ -8,7 +8,6 @@ import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.BookReservationItem;
 import com.releevante.core.domain.identity.model.OrgId;
 import com.releevante.core.domain.repository.BookReservationRepository;
-import com.releevante.types.exceptions.ResourceNotFoundException;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,8 +49,7 @@ public class BookReservationRepositoryImpl implements BookReservationRepository 
                         items -> {
                           reservationRecord.getReservationItems().addAll(items);
                           return reservationRecord.toDomain();
-                        }))
-        .switchIfEmpty(Mono.error(new ResourceNotFoundException()));
+                        }));
   }
 
   @Override
@@ -75,6 +73,24 @@ public class BookReservationRepositoryImpl implements BookReservationRepository 
     return bookReservationItemHibernateDao
         .saveAll(BookReservationItemsRecord.fromDomain(reservationId, items))
         .collectList()
+        .thenReturn(reservationId)
+        .onErrorResume(e -> upsert(reservationId, items));
+  }
+
+  public Mono<String> upsert(String reservationId, List<BookReservationItem> items) {
+    return Flux.fromIterable(BookReservationItemsRecord.fromDomain(reservationId, items))
+        .map(
+            item -> {
+              item.setNew(false);
+              return bookReservationItemHibernateDao
+                  .save(item)
+                  .onErrorResume(
+                      e -> {
+                        item.setNew(true);
+                        return bookReservationItemHibernateDao.save(item);
+                      });
+            })
+        .collectList()
         .thenReturn(reservationId);
   }
 
@@ -86,5 +102,10 @@ public class BookReservationRepositoryImpl implements BookReservationRepository 
   @Override
   public Flux<BookReservation> findAll(OrgId orgId) {
     return null;
+  }
+
+  @Override
+  public Mono<BookReservation> findById(String reservationId) {
+    return bookReservationHibernateDao.findById(reservationId).map(BookReservationRecord::toDomain);
   }
 }

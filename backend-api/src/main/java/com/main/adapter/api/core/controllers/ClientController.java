@@ -5,6 +5,7 @@ import com.releevante.core.application.dto.books.BookRecommendationDto;
 import com.releevante.core.application.dto.clients.ClientDto;
 import com.releevante.core.application.dto.clients.reservations.CreateReservationDto;
 import com.releevante.core.application.dto.clients.reservations.ReservationDto;
+import com.releevante.core.application.dto.clients.reservations.UpdateReservationDto;
 import com.releevante.core.application.dto.clients.reviews.BookReviewDto;
 import com.releevante.core.application.dto.clients.reviews.ServiceReviewDto;
 import com.releevante.core.application.dto.clients.transactions.*;
@@ -44,8 +45,20 @@ public class ClientController {
   @PreAuthorize("hasRole('CLIENT')")
   @PostMapping("/{clientId}/reservations")
   public Mono<CustomApiResponse<String>> createReservation(
-      @PathVariable() ClientId clientId, @RequestBody CreateReservationDto reservationDto) {
+          @PathVariable() ClientId clientId,
+      @RequestBody CreateReservationDto reservationDto) {
     return clientService.createReservation(reservationDto).map(CustomApiResponse::from);
+  }
+
+  @PreAuthorize("hasRole('CLIENT')")
+  @PutMapping("/{clientId}/reservations/{reservationId}")
+  public Mono<CustomApiResponse<String>> createReservation(
+          @PathVariable() ClientId clientId,
+      @PathVariable() String reservationId,
+      @RequestBody UpdateReservationDto updateReservationDto) {
+    return clientService
+        .updateReservation(reservationId, updateReservationDto)
+        .map(CustomApiResponse::from);
   }
 
   @PreAuthorize("hasRole('CLIENT')")
