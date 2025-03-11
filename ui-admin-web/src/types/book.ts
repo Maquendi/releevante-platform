@@ -167,4 +167,13 @@ export interface RecommendedBookResponse {
   others: OtherRecommendedBook[];
 }
 
+export interface ReservationItem{
+  qty:number;
+  isbn:string;
+  transactionType:'RENT' |'PURCHASE'
+}
 
+export interface ReservationBooksResponse{
+  clientId:string;
+  items:ReservationItem[]
+}

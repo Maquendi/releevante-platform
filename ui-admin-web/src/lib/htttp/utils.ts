@@ -30,6 +30,7 @@ export const API_COOKIE = {
   }
 };
 
+
 export function buildHttpHeaders(request: ApiRequest): Record<string, string> {
   const headers: Record<string, string> = { ...API_CONFIG.DEFAULT_HEADERS };
 
