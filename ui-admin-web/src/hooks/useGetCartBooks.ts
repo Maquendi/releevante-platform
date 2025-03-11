@@ -1,8 +1,7 @@
-import { useAppSelector } from "@/redux/hooks";
+import { ReservationItem } from "@/types/api";
 import { useMemo } from "react";
 
-export default function useGetCartBooks() {
-  const cartItems = useAppSelector((state) => state.cart.items);
+export default function useGetCartBooks<T extends ReservationItem>(cartItems:T[]) {
 
   const rentItems = useMemo(() => {
     return cartItems.filter((item) => item.transactionType === "RENT") || [];
@@ -14,5 +13,5 @@ export default function useGetCartBooks() {
     );
   }, [cartItems]);
 
-  return { purchaseItems, rentItems };
+  return { purchaseItems, rentItems,allItems:cartItems };
 }

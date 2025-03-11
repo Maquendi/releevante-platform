@@ -1,5 +1,7 @@
 "use server";
 import { executeGet,executePost } from "@/lib/htttp/http-client";
+import { API_COOKIE } from "@/lib/htttp/utils";
+import { ReservationBooksResponse, ReservationItem } from "@/types/api";
 import {
   Book,
   BookDetails,
@@ -22,6 +24,7 @@ export async function FetchAllBooksByOrg(): Promise<Book> {
       resource: "/books",
       queryParams:{asMap:true}as any
     });
+
     return res.context.data;
    
   } catch (error) {
@@ -113,3 +116,31 @@ export async function SaveBookReview(data: BookReview): Promise<void> {
     throw new Error("Error saving servide request" + error);
   }
 }
+
+export async function SaveReservationBooks(items: ReservationItem[]): Promise<void> {
+  const clientId = API_COOKIE.CLIENT_ACCESS_ID();
+  if(!clientId){
+    throw new Error('UNAUTHORIZED')
+  }
+  try {
+    await executePost({ resource: `/clients/${clientId}/reservations`, body: {clientId,items} })
+  } catch (error) {
+    throw new Error("Error saving servide request" + error);
+  }
+}
+
+export async function FetchReservedBooks():Promise<ReservationBooksResponse> {
+  const accessId = API_COOKIE.CLIENT_ACCESS_ID();
+  
+  if(!accessId){
+    throw new Error('UNAUTHORIZED')
+  }
+  try {
+    const data = await executeGet<ReservationBooksResponse>({ resource: `/clients/${accessId}/reservations`})
+    return data?.context?.data 
+  } catch (error) {
+    throw new Error("Error saving servide request" + error);
+  }
+}
+
+
