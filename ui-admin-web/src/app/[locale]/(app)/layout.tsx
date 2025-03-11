@@ -6,7 +6,7 @@ import React, { ReactNode } from "react";
 export default function layout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider defaultOpen={false}>
-      <div className="relative w-[100vw] overflow-x-auto">
+      <div className="relative w-[100vw] h-svh overflow-x-auto">
       <Navbar />
        <div>
         {children}

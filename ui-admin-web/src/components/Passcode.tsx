@@ -10,9 +10,12 @@ export default function Passcode() {
   const [input, setInput] = useState<string>("");
   const otpContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { loginMutation, error } = useAuth();
+  const { loginMutation, error,clearError } = useAuth();
 
   const handleInputChange = (val: string) => {
+    if(error){
+      clearError()
+    }
     setInput(() => val);
   };
 

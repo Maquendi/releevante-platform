@@ -38,8 +38,8 @@ export default async function HomePage() {
         </figure>
       </nav>
       <Suspense>
-        <div className="  md:grid place-content-center grid-cols-2 gap-2 overflow-hidden pb-4">
-          <section className="relative flex flex-col md:min-h-screen bg-white">
+        <div className="md:grid place-content-center min-h-svh grid-cols-2 gap-2 overflow-hidden ">
+          <section className="relative flex flex-col md:min-h-svh bg-white">
             <div>
               <figure className="relative hidden custom:block w-[220px] h-[142px] m-auto">
                 <Image
@@ -71,7 +71,7 @@ export default async function HomePage() {
             </div>
           </section>
 
-          <section className="grid grid-rows-[auto_auto_1fr] mt-5 px-5">
+          <section className="grid grid-rows-[auto_auto_1fr] mt-5 px-5 mb-2">
             <div className=" hidden custom:flex  justify-end items-end w-full pb-2">
               <SelectLanguage />
             </div>

@@ -45,7 +45,8 @@ export default function CartSidebar() {
   const settings = useAppSelector((state) => state.settings);
   const { open } = useSidebar();
   const t = useTranslations("cart");
-  const { rentItems, purchaseItems } = useGetCartBooks();
+  const cartItems = useAppSelector(state=>state.cart.items)
+  const { rentItems, purchaseItems } = useGetCartBooks(cartItems);
   const router = useRouter();
 
   return (
