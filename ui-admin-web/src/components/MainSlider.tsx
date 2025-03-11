@@ -57,7 +57,7 @@ export default function MainSliderBooks() {
   const items:Book[] | any[] = useMemo(()=>(
     isPending
     ? Array.from({ length: 10 }, (_, index) => ({ id: index }))
-    : Object.values(books)
+    : Object.values(books || {})
   ),[books,isPending])
 
   return (

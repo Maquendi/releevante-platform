@@ -6,9 +6,8 @@ import SelectLanguage from "./SelectLanguage";
 import { Link, usePathname } from "@/config/i18n/routing";
 import { Search } from "lucide-react";
 import { Button } from "./ui/button";
-import CartSidebarTrigger from "./CartSidebarTrigger";
 import NavbarV2 from "./NavbarV2";
-
+import { CartSidebarTrigger,CartTrigger } from "./CartSidebarTrigger";
 
 
 const navbarv2MobileRoutes = [
@@ -39,7 +38,11 @@ const navbarv2MobileRoutes = [
   },
 ] as const;
 
-export default function Navbar() {
+interface NavbarProps{
+  cartTriggerType?:'SIDEBAR' | 'PAGE'
+}
+
+export default function Navbar({cartTriggerType = 'SIDEBAR'}:NavbarProps) {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 770px)" });
   const path = usePathname();
   const pathInfo = navbarv2MobileRoutes.find((route) => route.path === path);
@@ -68,7 +71,7 @@ export default function Navbar() {
             sizes="160px"
           />
         </figure>
-        <CartSidebarTrigger />
+        {cartTriggerType === 'SIDEBAR'?<CartSidebarTrigger/> :<CartTrigger/>}
       </nav>
     );
   }
@@ -109,7 +112,7 @@ export default function Navbar() {
         </Button>
         <SelectLanguage />
       </div>
-      <CartSidebarTrigger />
-    </nav>
+      {cartTriggerType === 'SIDEBAR'?<CartSidebarTrigger/> :<CartTrigger/>}
+      </nav>
   );
 }

@@ -14,7 +14,8 @@ import BookItem from "@/components/catalogByCategory/BookItem";
 export default function CartSidebar() {
   const settings = useAppSelector((state) => state.settings);
   const t = useTranslations("cart");
-  const { rentItems, purchaseItems } = useGetCartBooks();
+  const cartItems = useAppSelector(state=>state.cart.items)
+  const { rentItems, purchaseItems } = useGetCartBooks(cartItems);
   const router = useRouter();
   const { open, setOpen } = useSidebar();
 

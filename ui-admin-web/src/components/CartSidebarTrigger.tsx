@@ -2,31 +2,16 @@
 import {
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useRouter } from "@/config/i18n/routing";
 import { useAppSelector } from "@/redux/hooks";
-import { Menu } from "lucide-react";
 import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
+import Link from "next/link";
 
-
-export default function CartSidebarTrigger() {
-  const { setOpen, open } = useSidebar();
-  const router = useRouter()
+function CartIndicator(){
   const numItemsInCart =
-    useAppSelector((store) => store.cart.items?.length) || 0;
-    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 770px)" });
-
-    if(isTabletOrMobile){
-      return(
-        <button suppressHydrationWarning className="relative" onClick={() => router.push('/cart')}>
-        <Menu/>
-      </button>
-      )
-    }
-
+  useAppSelector((store) => store.cart.items?.length) || 0;
   return (
-    <button suppressHydrationWarning className="relative" onClick={() => setOpen(!open)}>
-      <Image
+    <div>
+        <Image
         src="/icons/cart.svg"
         className="w-[40px] h-[40px]"
         width={40}
@@ -38,6 +23,23 @@ export default function CartSidebarTrigger() {
           {numItemsInCart}
         </span>
       )}
+    </div>
+  )
+}
+
+ export function CartSidebarTrigger() {
+  const { setOpen, open } = useSidebar();
+  return (
+    <button suppressHydrationWarning className="relative" onClick={() => setOpen(!open)}>
+     <CartIndicator/>
     </button>
+  );
+}
+
+ export function CartTrigger() {
+  return (
+    <Link href="/cart" suppressHydrationWarning className="relative">
+      <CartIndicator/>
+    </Link>
   );
 }

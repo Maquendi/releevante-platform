@@ -1,12 +1,12 @@
+'use server'
 import MaxWithWrapper from "@/components/MaxWithWrapper";
-import PurchaseItemsReview from "@/components/PurchaseItemsReview";
-import RentItemsReview from "@/components/RentItemsReview";
-import NotReservedBooksFound from "@/components/reserved/NotReservedBooksFound";
+import ReservedBooksContent from "@/components/reserved/ReservedBooksContent";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
 export default async function ReservedBooksPage() {
-    const t= await getTranslations('reservedBooks')
+    const t= await getTranslations('reservedBooks');
+    
   return (
     <div className="pb-5">
       <header className=" bg-white py-5">
@@ -29,13 +29,7 @@ export default async function ReservedBooksPage() {
     
         </MaxWithWrapper>
       </header>
-      <section>
-        <MaxWithWrapper className="space-y-3 mt-7">
-          <RentItemsReview isReservedBooks />
-          <PurchaseItemsReview />
-          <NotReservedBooksFound/>
-        </MaxWithWrapper>
-      </section>
+      <ReservedBooksContent/>
     </div>
   );
 }
