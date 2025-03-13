@@ -1,27 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "@/config/i18n/routing";
-import useGetBooks from "@/hooks/useGetCartBooks";
-
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
-
 import RentItemsReview from "@/components/RentItemsReview";
 import PurchaseItemsReview from "@/components/PurchaseItemsReview";
-import { useAppSelector } from "@/redux/hooks";
 import useSaveBookReservation from "@/hooks/useSaveBookReservation";
+import { CartItem } from "@/components/Cartitem";
+import useGetReviewCartBooks from "@/hooks/useGetReviewCartBooks";
 
 export default function ReviewCartPage() {
-  const cartItems = useAppSelector(store=>store.cart.items)
-  const { rentItems, purchaseItems, allItems } = useGetBooks(cartItems);
   const t = useTranslations("reviewMyCart");
-  const router = useRouter();
-  const saveBookReservationMutation = useSaveBookReservation()
-  useEffect(() => {
-    if (rentItems.length || purchaseItems.length) return;
-    router.push("/catalog");
-  }, [rentItems, purchaseItems, router]);
+  const {
+    rentItems,
+    purchaseItems,
+    allItems,
+    handleMoveBook,
+    handleRemoveItem,
+  } = useGetReviewCartBooks();
+  const saveBookReservationMutation = useSaveBookReservation();
+
 
   return (
     <section className="grid grid-rows-[1fr_auto] h-[91.5dvh] ">
@@ -29,8 +26,32 @@ export default function ReviewCartPage() {
         suppressHydrationWarning
         className="overflow-y-auto px-4 py-4 space-y-6"
       >
-        <RentItemsReview books={rentItems} />
-        <PurchaseItemsReview books={purchaseItems} />
+        <RentItemsReview bookCount={rentItems?.length || 0}>
+          {rentItems.map((item) => {
+            return (
+              <CartItem
+                key={item.isbn}
+                item={item as any}
+                itemType="RENT"
+                moveItem={handleMoveBook}
+                removeItem={handleRemoveItem}
+              />
+            );
+          })}
+        </RentItemsReview>
+        <PurchaseItemsReview bookCount={purchaseItems?.length || 0}>
+          {purchaseItems.map((item) => {
+            return (
+              <CartItem
+                key={item.isbn}
+                item={item as any}
+                itemType="PURCHASE"
+                moveItem={handleMoveBook}
+                removeItem={handleRemoveItem}
+              />
+            );
+          })}
+        </PurchaseItemsReview>
       </div>
       <div className="flex justify-center items-center h-[80px]  bottom-0 right-0 left-0  py-1 px-5 bg-white">
         <Button
