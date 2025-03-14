@@ -25,5 +25,9 @@ public abstract class AbstractBookReservation {
 
   abstract ZonedDateTime endTime();
 
-  abstract LazyLoaderInit<List<BookReservationItem>> items();
+  abstract List<BookReservationItem> items();
+
+  public boolean isCurrent() {
+    return endTime().isBefore(ZonedDateTime.now());
+  }
 }

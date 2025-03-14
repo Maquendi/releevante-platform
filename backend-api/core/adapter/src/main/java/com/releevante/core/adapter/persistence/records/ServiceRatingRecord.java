@@ -6,27 +6,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "service_ratings", schema = "core")
 @Getter
 @Setter
 @NoArgsConstructor
-public class ServiceRatingRecord extends PersistableEntity {
-  @Id
-  @Column("client_id")
-  private String id;
-
-  private String orgId;
+public class ServiceRatingRecord extends AuditableEntity {
+  @Id private String id;
   private int rating;
 
-  protected static ServiceRatingRecord fromDomain(ClientRecord client, ServiceRating rating) {
+  public static ServiceRatingRecord fromDomain(ServiceRating rating) {
     var record = new ServiceRatingRecord();
-    record.setId(client.getId());
+    record.setId(rating.audit());
     record.setRating(rating.rating());
     record.setCreatedAt(rating.createdAt());
-    record.setUpdatedAt(rating.updatedAt());
+    record.setAudit(rating.audit());
+    record.setOrigin(rating.origin());
     return record;
   }
 
@@ -34,7 +30,8 @@ public class ServiceRatingRecord extends PersistableEntity {
     return ServiceRating.builder()
         .id(id)
         .createdAt(createdAt)
-        .updatedAt(updatedAt)
+        .audit(audit)
+        .origin(origin)
         .rating(rating)
         .build();
   }

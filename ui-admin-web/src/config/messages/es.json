@@ -60,8 +60,10 @@
     "dimensions": "Dimensiones",
     "language": "Idioma",
     "publisher": "Editorial",
-    "rentBannerBtn": "Alquilar gratis",
-    "buyBannerBtn": "Comprar libro"
+    "rentBtn": "Alquilar gratis",
+    "buyBannerBtn": "Comprar",
+    "readInHotelBtn": "Leer en el hotel",
+    "buyBtn": "Comprar libro"
   },
   "cart": {
     "rent": "alquilar",
@@ -113,12 +115,17 @@
     "otherRecomendations": "Otras recomendaciones"
   },
   "reviewMyCart": {
-    "myCart": "mi carrito",
+    "readInHotel": "Leer en el hotel",
+    "returnDate": "Fecha de devolución",
+    "toBuy": "Para comprar",
+    "myCart": "Mi carrito",
     "moveToBuy": "Mover a compra",
-    "moveToRent": "Mover a renta",
-    "rentAnotherBook": "Rentar otro libro",
+    "moveToReadInHotel": "Mover a leer en el hotel",
+    "rentAnotherBook": "Tomar otro libro",
     "confirmWithdrawal": "Confirmar retiro",
-    "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel"
+    "purchaseMsg": "El libro se pagará cuando realices el check-out en el hotel",
+    "continue": "Continuar",
+    "delete": "Eliminar"
   },
   "checkout": {
     "readInstructions": "Lea las instrucciones a continuación",
@@ -138,10 +145,8 @@
   },
   "thanksPage": {
     "title": "¡Feliz lectura!",
-    "content": "Gracias por usar nuestro servicio. Por favor, recuerde devolver los libros antes de su salida del hotel",
-    "closeSessionTime1": "La sesión",
-    "closeSessionTime2": "se cerrará en",
-    "closeSessionTime3": "minutos"
+    "content": "Tus libros estarán listos para ti en tu habitación. Gracias por usar nuestro servicio",
+    "goBackBtn": "Volver al inicio"
   },
   "returnBook": {
     "yourRentedBooks": "Tus libros alquilados",
@@ -154,18 +159,18 @@
     "noRentedBooks": "Aún no tienes ningún libro alquilado. Descubre la mejor opción en tu biblioteca personal ahora.",
     "rentBook": "Alquilar un libro"
   },
-  "depositPage": {
-    "depositBookTitle1": "Deposita este libro en",
-    "depositBookTitle2": "la puerta",
-    "firstStepTitle": "Primer paso",
-    "firstStepContent1": "Dirígete a la",
-    "firstStepContent2": "puerta",
-    "firstStepContent3": "después de introducir el libro, la puerta se cerrará automáticamente. Por favor, asegúrate de insertar el libro correctamente.",
-    "nextStepTitle": "Siguiente paso",
-    "nextStepContent": "Por favor, regresa para devolver tu próximo libro.",
-    "closeDoorTime1": "La puerta",
-    "closeDoorTime2": "se cerrará en",
-    "closeDoorTime3": "minutos"
+  "reservedBooks": {
+    "moveToBuy": "Mover a comprar",
+    "moveToReadInHotel": "Mover para leer en el hotel",
+    "readInHotel": "Leer en el hotel",
+    "returnDate": "Fecha de devolución",
+    "reservedBooks1": "Tus",
+    "reservedBooks2": "libros",
+    "reservedBooks3": "reservados",
+    "modifyReservation": "Modifica tu reserva como quieras",
+    "reserveAnotherBook": "Reserva otro libro",
+    "reserveBookEmptyMsg": "Aún no tienes ningún libro reservado. Encuentra la mejor opción en tu biblioteca personal ahora.",
+    "reserveBookBtn": "Reservar un libro"
   },
   "returnThanksPage": {
     "thanksForReturn1": "Gracias por devolver",
@@ -178,13 +183,12 @@
   "ratingPage": {
     "title": "Déjanos saber tu nivel de satisfacción",
     "subTitle": "Por favor, califícanos para mejorar nuestros productos. Estamos muy contentos de escucharte y mejorar nuestro servicio.",
-    "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?",
-    "commentTitle": "¿Te gustaría añadir una sugerencia o comentario?",
-    "commentPlaceHolder": "Escribe un comentario aquí",
-    "optional": "Opcional",
-    "submit": "Enviar",
-    "closeSessionTime1": "La sesión",
-    "closeSessionTime2": "se cerrará en",
-    "closeSessionTime3": "minutos"
+    "feelUsingApp": "¿Cómo te sientes usando nuestra aplicación?"
+  },
+  "navbarMobile": {
+    "cartRoute": "Mi Carrito",
+    "codeValidationRoute": "Validación de Código",
+    "catalogRoute": "Catálogo",
+    "booksRoute": "Mis Libros"
   }
 }

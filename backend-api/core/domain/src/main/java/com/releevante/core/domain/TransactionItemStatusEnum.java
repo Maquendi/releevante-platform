@@ -1,0 +1,16 @@
+package com.releevante.core.domain;
+
+public enum TransactionItemStatusEnum {
+  LOST,
+  DAMAGED,
+  SOLD,
+  DOOR_OPENING,
+  DOOR_OPENED,
+  CHECK_OUT_STARTED,
+  CHECK_OUT_PENDING,
+  CHECK_OUT_FAILED,
+  CHECK_OUT_SUCCESS,
+  CHECK_IN_STARTED,
+  CHECK_IN_PENDING,
+  CHECK_IN_SUCCESS,
+}

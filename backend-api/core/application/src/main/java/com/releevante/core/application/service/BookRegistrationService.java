@@ -1,6 +1,6 @@
 package com.releevante.core.application.service;
 
-import com.releevante.core.application.dto.LibraryInventoryDto;
+import com.releevante.core.application.dto.sl.LibraryInventoryDto;
 import com.releevante.core.domain.Book;
 import reactor.core.publisher.Flux;
 

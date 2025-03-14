@@ -1,9 +1,6 @@
 package com.main.adapter.api.response;
 
-import com.releevante.types.exceptions.ConfigurationException;
-import com.releevante.types.exceptions.ForbiddenException;
-import com.releevante.types.exceptions.InvalidInputException;
-import com.releevante.types.exceptions.UserUnauthorizedException;
+import com.releevante.types.exceptions.*;
 import java.util.Map;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -48,6 +45,12 @@ public class CustomRestControllerAdvice {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public CustomApiResponse<Map<String, Object>> exceptions(Throwable e) {
     return wrapResponse(HttpStatus.INTERNAL_SERVER_ERROR, e);
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public CustomApiResponse<Map<String, Object>> exceptions(ResourceNotFoundException e) {
+    return wrapResponse(HttpStatus.NOT_FOUND, e);
   }
 
   private CustomApiResponse<Map<String, Object>> wrapResponse(HttpStatus status, Throwable ex) {

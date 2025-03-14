@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -70,6 +71,7 @@ public class AsyncTaskInitiatorController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasRole('SYSADMIN')")
   @PostMapping("/register-books")
   public Mono<CustomApiResponse<String>> startRegisterBooksTask() {
 
@@ -122,6 +124,7 @@ public class AsyncTaskInitiatorController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
+  @PreAuthorize("hasRole('SYSADMIN')")
   @PostMapping("/register-books-inventory/{slid}")
   public Mono<CustomApiResponse<String>> registerLibraryInventory(
       @PathVariable String slid, @RequestParam() String source) {

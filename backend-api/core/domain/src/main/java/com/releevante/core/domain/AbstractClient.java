@@ -27,16 +27,6 @@ public abstract class AbstractClient {
   }
 
   @Value.Default
-  List<BookSale> purchases() {
-    return Collections.emptyList();
-  }
-
-  @Value.Default
-  List<BookLoan> loans() {
-    return Collections.emptyList();
-  }
-
-  @Value.Default
   List<BookReservation> reservations() {
     return Collections.emptyList();
   }
@@ -50,6 +40,21 @@ public abstract class AbstractClient {
 
   @Value.Default
   List<Cart> carts() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
+  List<BookTransaction> transactions() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
+  List<TransactionItemStatus> transactionItemStatus() {
+    return Collections.emptyList();
+  }
+
+  @Value.Default
+  List<TransactionStatus> transactionStatus() {
     return Collections.emptyList();
   }
 }

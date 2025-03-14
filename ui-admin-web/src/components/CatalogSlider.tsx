@@ -1,17 +1,18 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/config/i18n/routing";
-import { useSearchParams } from "next/navigation";
 import BookItem from "./catalogByCategory/BookItem";
 import { Skeleton } from "./ui/skeleton";
 
 type SliderProps = {
   books: any[];
-  slidesToShow?: number;
+  categoryId: string;
   subCategoryId?: string;
+  tags?:Record<string,any>
+  slidesToShow?: number;
 };
 
 export function CatalogSliderSkeleton() {
@@ -28,11 +29,12 @@ export function CatalogSliderSkeleton() {
 
 const Slider: React.FC<SliderProps> = ({
   books,
+  categoryId,
   subCategoryId,
+  tags,
   slidesToShow = 3,
 }) => {
   const t = useTranslations("catalogPage");
-  const searchParams = useSearchParams();
   const ref = useRef<HTMLDivElement | null>(null);
 
   const nextSlide = () => {
@@ -48,6 +50,14 @@ const Slider: React.FC<SliderProps> = ({
       ref.current.scrollLeft -= slideWidth;
     }
   };
+
+  const URLSeeAll=useMemo(()=>{
+    if(tags){
+      const params = new URLSearchParams(tags)
+      return `/catalog/${categoryId}/?${params.toString()}`
+    }
+    return`/catalog/${categoryId}/?subCategoryId=${subCategoryId}`
+  },[tags,categoryId,subCategoryId])
 
   return (
     <div className="flex gap-y-3 flex-col-reverse w-full overflow-hidden">
@@ -68,11 +78,9 @@ const Slider: React.FC<SliderProps> = ({
             </button>
           </div>
           <Link
-            href={`/catalog/${
-              searchParams?.get("categoryId") || "n"
-            }/?subCategoryId=${subCategoryId}`}
+            href={URLSeeAll}
             className="w-full md:w-fit border cursor-pointer border-[#827F7F] py-3 px-4 rounded-full text-xs font-medium text-center"
-            >
+          >
             {t("seeAll")}
           </Link>
         </div>
@@ -83,7 +91,7 @@ const Slider: React.FC<SliderProps> = ({
         className="grid grid-cols-2  gap-2 place-items-center sm:flex  sm:overflow-x-scroll scrollbar-hide snap-x snap-mandatory scroll-smooth ml-2 mr-4 sm:mr-2 space-x-3 no-scrollbar"
       >
         {books?.map((book) => (
-          <BookItem key={book.isbn} book={book} />
+          <BookItem key={book?.isbn} book={book} />
         ))}
       </div>
     </div>

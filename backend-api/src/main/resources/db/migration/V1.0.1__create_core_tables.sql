@@ -1,12 +1,7 @@
 CREATE SCHEMA core AUTHORIZATION coex;
 
 
-CREATE TABLE core.clients (
-	id varchar(36) NOT NULL,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT clients_pk PRIMARY KEY (id)
-);
+
 
 CREATE TABLE core.books (
   isbn varchar(36) NOT NULL,
@@ -14,7 +9,6 @@ CREATE TABLE core.books (
   translation_id varchar(36) NOT NULL,
   title varchar(250) NULL,
   qty numeric NOT NULL,
-  qty_for_sale numeric NOT NULL DEFAULT 0,
   price numeric NOT NULL,
   author varchar(120) NOT NULL,
   description varchar(1080) NOT NULL,
@@ -34,25 +28,12 @@ CREATE TABLE core.books (
   CONSTRAINT books_pk PRIMARY KEY(isbn)
 );
 
-CREATE TABLE core.carts (
-	id varchar(36) NOT NULL,
-	user_id varchar(36) NULL,
-	slid varchar(36) NULL,
-	state varchar(50) NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT carts_pk PRIMARY KEY (id)
-);
 
-CREATE TABLE core.cart_items (
+CREATE TABLE core.clients (
 	id varchar(36) NOT NULL,
-	isbn varchar(36) NULL,
-	qty numeric NOT NULL,
-	cart_id varchar(36) NOT NULL,
-	for_purchase boolean NOT NULL DEFAULT false,
-	CONSTRAINT cart_items_pk PRIMARY KEY (id),
-	FOREIGN KEY(cart_id) REFERENCES core.carts(id),
-	FOREIGN KEY(isbn) REFERENCES core.books(isbn)
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT clients_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE core.book_reservations (
@@ -71,9 +52,10 @@ CREATE TABLE core.book_reservation_items (
 	qty numeric NOT NULL,
 	isbn varchar(36) NOT NULL,
 	reservation_id varchar(36) NOT NULL,
+	transaction_type varchar(20) NOT NULL,
 	CONSTRAINT book_reservation_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn),
-	FOREIGN KEY (isbn) REFERENCES core.book_reservations(id)
+	FOREIGN KEY (reservation_id) REFERENCES core.book_reservations(id)
 );
 
 
@@ -92,6 +74,8 @@ CREATE TABLE core.smart_libraries (
 	model_name varchar(100) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modules numeric NOT NULL DEFAULT 4,
+    module_capacity numeric NOT NULL DEFAULT 80,
 	CONSTRAINT slid_pk PRIMARY KEY (slid)
 );
 
@@ -99,9 +83,10 @@ CREATE TABLE core.library_inventories (
 	cpy varchar(36) NOT NULL,
 	isbn varchar(36) NOT NULL,
 	slid varchar(36) NOT NULL,
-	is_sync BOOLEAN NOT NULL DEFAULT false,
+	is_synced BOOLEAN NOT NULL DEFAULT false,
 	status varchar(30) NOT NULL,
 	usage_count numeric NOT NULL DEFAULT 0,
+	allocation varchar(20) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT book_copy_pk PRIMARY KEY (cpy),
@@ -120,7 +105,7 @@ CREATE TABLE core.library_settings (
 	book_price_reduction_rate_on_threshold_reached numeric NOT NULL,
 	book_usage_count_before_enabling_sale numeric NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    is_sync BOOLEAN NOT NULL DEFAULT false,
+    is_synced BOOLEAN NOT NULL DEFAULT false,
 	CONSTRAINT setting_id_pk PRIMARY KEY (id),
 	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid)
 );
@@ -134,29 +119,41 @@ CREATE TABLE core.library_events (
 	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid)
 );
 
-CREATE TABLE core.service_ratings (
-	client_id varchar(36) NOT NULL,
+CREATE TABLE core.authorized_origins (
+	id varchar(36) NOT NULL,
+	type varchar(36) NULL,
 	org_id varchar(36) NOT NULL,
-	rating numeric NOT NULL,
+    is_active boolean NOT NULL DEFAULT false,
+    role varchar(36) NOT NULL,
+    session_ttl_hours numeric NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT service_ratings_pk PRIMARY KEY (client_id),
-	FOREIGN KEY (org_id) REFERENCES core.org(id),
-	FOREIGN KEY (client_id) REFERENCES core.clients(id)
+	CONSTRAINT authorized_origin_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE core.service_ratings (
+	id varchar(36) NOT NULL,
+	rating numeric NOT NULL,
+	audit varchar(36) NOT NULL,
+	origin varchar(36) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT service_ratings_pk PRIMARY KEY (id),
+	FOREIGN KEY (audit) REFERENCES core.clients(id),
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id)
 );
 
 CREATE TABLE core.book_ratings (
 	id varchar(36) NOT NULL,
-	client_id varchar(36) NOT NULL,
-	org_id varchar(36) NOT NULL,
 	isbn varchar(36) NOT NULL,
-	rating numeric NOT NULL,
+    rating numeric NOT NULL,
+	audit varchar(36) NOT NULL,
+	origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_synced boolean NOT NULL DEFAULT false,
 	CONSTRAINT book_rating_pk PRIMARY KEY (id),
-	FOREIGN KEY (org_id) REFERENCES core.org(id),
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn),
-	FOREIGN KEY (client_id) REFERENCES core.clients(id)
+	FOREIGN KEY (audit) REFERENCES core.clients(id),
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id)
 );
 
 CREATE TABLE core.book_image (
@@ -170,85 +167,55 @@ CREATE TABLE core.book_image (
 	FOREIGN KEY (isbn) REFERENCES core.books(isbn)
 );
 
-CREATE TABLE core.authorized_origins (
+CREATE TABLE core.book_transactions (
 	id varchar(36) NOT NULL,
-	type varchar(36) NULL,
-	org_id varchar(36) NOT NULL,
-    is_active boolean NOT NULL DEFAULT false,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT authorized_origin_pk PRIMARY KEY (id)
-);
-
-CREATE TABLE core.book_loans (
-	id varchar(36) NOT NULL,
-	external_id varchar(36) NOT NULL,
 	client_id varchar(36) NOT NULL,
-	returns_at timestamp NOT NULL,
+	transaction_type varchar(30) NOT NULL,
 	audit varchar(36) NOT NULL,
 	origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT book_loans_pk PRIMARY KEY (id),
+	CONSTRAINT book_transactions_pk PRIMARY KEY (id),
 	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
 	FOREIGN KEY (client_id) REFERENCES core.clients(id)
 );
 
-CREATE INDEX IF NOT EXISTS loan_external_id_idx ON core.book_loans USING btree(external_id);
-
-CREATE TABLE core.loan_items (
+CREATE TABLE core.transaction_status (
 	id varchar(36) NOT NULL,
-	cpy varchar(36) NOT NULL,
-	loan_id varchar(36) NOT NULL,
-	CONSTRAINT loan_items_pk PRIMARY KEY (id),
-	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
-	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
-);
-
-CREATE TABLE core.loan_item_status (
-	id varchar(36) NOT NULL,
-	item_id varchar(36) NOT NULL,
-	status varchar(50) NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		audit varchar(36) NOT NULL,
-    	origin varchar(36) NOT NULL,
-	CONSTRAINT loan_item_status_pk PRIMARY KEY (id),
-	FOREIGN KEY (item_id) REFERENCES core.loan_items(id)
-);
-
-CREATE TABLE core.loan_status (
-	id varchar(36) NOT NULL,
-	loan_id varchar(36) NOT NULL,
+	transaction_id varchar(36) NOT NULL,
 	status varchar(50),
 	audit varchar(36) NOT NULL,
     origin varchar(36) NOT NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT loan_status_pk PRIMARY KEY (id),
-	FOREIGN KEY (loan_id) REFERENCES core.book_loans(id)
+	is_synced boolean NOT NULL DEFAULT false,
+	CONSTRAINT transaction_status_pk PRIMARY KEY (id),
+	FOREIGN KEY (transaction_id) REFERENCES core.book_transactions(id),
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
+	CONSTRAINT unique_transaction_id_status UNIQUE(transaction_id, status)
 );
 
-CREATE TABLE core.book_sales (
+CREATE TABLE core.transaction_items (
 	id varchar(36) NOT NULL,
-	client_id varchar(36) NOT NULL,
-	total numeric NOT NULL,
-	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT book_sales_pk PRIMARY KEY (id),
-	FOREIGN KEY (client_id) REFERENCES core.clients(id)
-);
-
-CREATE TABLE core.sale_items (
-	id varchar(36) NOT NULL,
-	isbn varchar(36) NOT NULL,
-	sale_id varchar(36) NOT NULL,
-	cpy varchar(36) NULL,
-	price numeric NOT NULL,
-	CONSTRAINT sale_items_pk PRIMARY KEY (id),
+	cpy varchar(36) NOT NULL,
+	price numeric NULL,
+	transaction_id varchar(36) NOT NULL,
+	CONSTRAINT transaction_items_pk PRIMARY KEY (id),
 	FOREIGN KEY (cpy) REFERENCES core.library_inventories(cpy),
-	FOREIGN KEY (sale_id) REFERENCES core.book_sales(id),
-	FOREIGN KEY (isbn) REFERENCES core.books(isbn)
+	FOREIGN KEY (transaction_id) REFERENCES core.book_transactions(id)
 );
 
 
+CREATE TABLE core.transaction_item_status (
+	id varchar(36) NOT NULL,
+	item_id varchar(36) NOT NULL,
+	status varchar(50) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	audit varchar(36) NOT NULL,
+    origin varchar(36) NOT NULL,
+    is_synced boolean NOT NULL DEFAULT false,
+	CONSTRAINT transaction_item_status_pk PRIMARY KEY (id),
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
+	CONSTRAINT unique_transaction_item_id_status UNIQUE(item_id, status)
+);
 -- identity
 
 CREATE TABLE core.accounts (
@@ -270,17 +237,14 @@ CREATE INDEX account_user_name_index ON core.accounts USING btree (user_name);
 
 CREATE TABLE core.users (
 	id varchar(36) NOT NULL,
-	account_id varchar(36) NOT NULL,
 	full_name varchar(250) NULL,
 	email varchar NULL,
 	phone_number varchar NULL,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT id_pk PRIMARY KEY (id),
-	FOREIGN KEY (account_id) REFERENCES core.accounts(id)
+	CONSTRAINT user_id_pk PRIMARY KEY (id),
+	FOREIGN KEY (id) REFERENCES core.accounts(id)
 );
-
-CREATE INDEX user_account_id_index ON core.users USING btree (account_id);
 
 CREATE TABLE core.roles (
     id varchar(36) NOT NULL,
@@ -291,21 +255,33 @@ CREATE TABLE core.roles (
 	CONSTRAINT role_p_k PRIMARY KEY (id)
 );
 
-CREATE TABLE core.smart_library_access_ctrl (
+CREATE TABLE core.granted_access (
 	id varchar(36) NOT NULL,
-	org_id varchar(36) NOT NULL,
-	slid varchar(36) NOT NULL,
+	contact_less_id varchar(100) NULL,
 	credential varchar(100) NULL,
-	credential_type varchar(100) NULL,
-	user_id varchar(36) NOT NULL,
-	access_due_days numeric NULL,
-	expires_at timestamp NOT NULL,
-	is_sync BOOLEAN NOT NULL DEFAULT false,
+	org_id varchar(36) NOT NULL,
 	is_active BOOLEAN NOT NULL DEFAULT false,
 	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT slid_acc_id PRIMARY KEY (id),
+    expires_at timestamp NOT NULL,
+    audit varchar(36) NOT NULL,
+    origin varchar(36) NOT NULL,
+	CONSTRAINT granted_access_pk PRIMARY KEY (id),
+	FOREIGN KEY (audit) REFERENCES core.users(id),
+	FOREIGN KEY (origin) REFERENCES core.authorized_origins(id),
 	FOREIGN KEY (org_id) REFERENCES core.org(id)
+);
+
+CREATE TABLE core.smart_library_granted_access (
+	id varchar(36) NOT NULL,
+	slid varchar(36) NOT NULL,
+	is_synced BOOLEAN NOT NULL DEFAULT false,
+	access_id varchar(36) NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT smart_library_granted_access_id_pk PRIMARY KEY (id),
+	FOREIGN KEY (slid) REFERENCES core.smart_libraries(slid),
+    FOREIGN KEY (access_id) REFERENCES core.granted_access(id)
 );
 
 CREATE TABLE core.tasks (

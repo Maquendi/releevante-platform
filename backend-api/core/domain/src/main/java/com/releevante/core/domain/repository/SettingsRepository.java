@@ -1,6 +1,7 @@
 package com.releevante.core.domain.repository;
 
 import com.releevante.core.domain.LibrarySetting;
+import com.releevante.core.domain.identity.model.OrgId;
 import com.releevante.types.Slid;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +18,8 @@ public interface SettingsRepository {
   Flux<LibrarySetting> findBy(Slid slid);
 
   Mono<LibrarySetting> findCurrentBy(Slid slid);
+
+  Flux<LibrarySetting> findCurrentBy(OrgId orgId);
 
   Mono<Integer> setSynchronized(Slid slid);
 }

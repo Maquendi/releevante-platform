@@ -1,8 +1,8 @@
 package com.releevante.core.application.service.impl;
 
-import com.releevante.core.application.dto.LibrarySettingsDto;
-import com.releevante.core.application.dto.PartialSettingDto;
-import com.releevante.core.application.service.AccountAuthorizationService;
+import com.releevante.core.application.dto.sl.settings.LibrarySettingsDto;
+import com.releevante.core.application.dto.sl.settings.PartialSettingDto;
+import com.releevante.core.application.identity.service.auth.AuthorizationService;
 import com.releevante.core.application.service.SettingService;
 import com.releevante.core.domain.LibrarySetting;
 import com.releevante.core.domain.repository.SettingsRepository;
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 
 public class SettingServiceImpl implements SettingService {
   final SettingsRepository settingsRepository;
-  final AccountAuthorizationService authorizationService;
+  final AuthorizationService authorizationService;
 
   final SmartLibraryRepository smartLibraryRepository;
   final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
@@ -25,7 +25,7 @@ public class SettingServiceImpl implements SettingService {
 
   public SettingServiceImpl(
       SettingsRepository settingsRepository,
-      AccountAuthorizationService authorizationService,
+      AuthorizationService authorizationService,
       SmartLibraryRepository smartLibraryRepository) {
     this.settingsRepository = settingsRepository;
     this.authorizationService = authorizationService;
@@ -57,7 +57,7 @@ public class SettingServiceImpl implements SettingService {
         .flatMap(
             librarySetting ->
                 authorizationService
-                    .getCurrentPrincipal()
+                    .getAccountPrincipal()
                     .flatMap(
                         principal -> {
                           if (principal.isSuperAdmin()) {

@@ -3,25 +3,32 @@ package com.releevante.core.application.service.impl;
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.groupingBy;
 
-import com.releevante.core.application.dto.*;
+import com.releevante.core.application.dto.books.BookDto;
+import com.releevante.core.application.dto.books.BookRecommendationDto;
+import com.releevante.core.application.dto.books.TagCreateDto;
+import com.releevante.core.application.dto.clients.reservations.CreateReservationDto;
+import com.releevante.core.application.dto.clients.reviews.BookReviewDto;
+import com.releevante.core.application.dto.sl.LibraryInventoryDto;
+import com.releevante.core.application.dto.sl.SyncStatus;
+import com.releevante.core.application.identity.service.auth.AuthorizationService;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.*;
-import com.releevante.core.domain.repository.BookRepository;
-import com.releevante.core.domain.repository.BookTagRepository;
-import com.releevante.core.domain.repository.SmartLibraryRepository;
+import com.releevante.core.domain.identity.model.OrgId;
+import com.releevante.core.domain.identity.repository.SmartLibraryAccessControlRepository;
+import com.releevante.core.domain.repository.*;
+import com.releevante.core.domain.repository.ratings.BookRatingRepository;
 import com.releevante.core.domain.tags.TagTypes;
-import com.releevante.types.SequentialGenerator;
-import com.releevante.types.Slid;
-import com.releevante.types.UuidGenerator;
-import com.releevante.types.ZonedDateTimeGenerator;
+import com.releevante.types.*;
 import com.releevante.types.exceptions.InvalidInputException;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.annotation.Nullable;
 
 public class DefaultBookServiceImpl implements BookService {
   private final BookRepository bookRepository;
@@ -29,20 +36,38 @@ public class DefaultBookServiceImpl implements BookService {
   private final BookTagRepository bookTagRepository;
   private final SmartLibraryRepository smartLibraryRepository;
   private final SequentialGenerator<String> uuidGenerator = UuidGenerator.instance();
-
   private final SequentialGenerator<ZonedDateTime> dateTimeGenerator =
       ZonedDateTimeGenerator.instance();
+  final AuthorizationService authorizationService;
+  final BookRatingRepository bookRatingRepository;
+  final BookReservationRepository reservationRepository;
+  final SettingsRepository librarySettingRepository;
+  final SmartLibraryAccessControlRepository smartLibraryAccessControlRepository;
   private static final int BATCH_SIZE = 100;
+
+  final ClientRepository clientRepository;
 
   public DefaultBookServiceImpl(
       BookRepository bookRepository,
       BookRegistrationService bookRegistrationService,
       BookTagRepository bookTagRepository,
-      SmartLibraryRepository smartLibraryRepository) {
+      SmartLibraryRepository smartLibraryRepository,
+      AuthorizationService authorizationService,
+      BookRatingRepository bookRatingRepository,
+      BookReservationRepository reservationRepository,
+      SettingsRepository librarySettingRepository,
+      SmartLibraryAccessControlRepository smartLibraryAccessControlRepository,
+      ClientRepository clientRepository) {
     this.bookRegistrationService = bookRegistrationService;
     this.bookRepository = bookRepository;
     this.bookTagRepository = bookTagRepository;
     this.smartLibraryRepository = smartLibraryRepository;
+    this.authorizationService = authorizationService;
+    this.bookRatingRepository = bookRatingRepository;
+    this.reservationRepository = reservationRepository;
+    this.librarySettingRepository = librarySettingRepository;
+    this.smartLibraryAccessControlRepository = smartLibraryAccessControlRepository;
+    this.clientRepository = clientRepository;
   }
 
   @Override
@@ -58,22 +83,18 @@ public class DefaultBookServiceImpl implements BookService {
   @Override
   public Mono<Long> executeLoadInventory(Slid slid, String source) {
     return smartLibraryRepository
-        .findBy(slid)
-        .map(
-            smartLibrary -> {
-              smartLibrary.validateIsActive();
-              return smartLibrary;
-            })
-        .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")))
+        .findWithAllocations(slid)
+        .doOnNext(AbstractSmartLibrary::validateIsActive)
         .flatMap(
             smartLibrary ->
                 bookRegistrationService
                     .getLibraryInventory(source)
-                    .buffer(BATCH_SIZE)
-                    .flatMap(inventories -> buildInventory(inventories, smartLibrary))
+                    .collectList()
+                    .flatMapMany(inventories -> buildInventory(inventories, smartLibrary))
                     .buffer(BATCH_SIZE)
                     .flatMap(bookRepository::saveInventory)
-                    .count());
+                    .count())
+        .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")));
   }
 
   @Override
@@ -104,13 +125,38 @@ public class DefaultBookServiceImpl implements BookService {
   }
 
   @Override
-  public Flux<PartialBook> getBooksByOrg(String orgId) {
-    return bookRepository.findAllBy(orgId);
+  public Flux<PartialBook> getBooks(@Nullable String orgId) {
+    return authorizationService
+        .getAccountPrincipal()
+        .flatMapMany(
+            principal -> {
+              if (principal.isM2M()) {
+                return bookRepository.findAllBy();
+              }
+
+              if (principal.isSuperAdmin()) {
+                return orgId == null ? bookRepository.findAllBy() : bookRepository.findAllBy(orgId);
+              }
+
+              return bookRepository.findAllBy(principal.orgId());
+            });
   }
 
   @Override
-  public Flux<Tag> getTags(TagTypes name) {
+  public Flux<PartialBook> getBooksByOrg() {
+    return authorizationService
+        .getAccountPrincipal()
+        .flatMapMany(principal -> bookRepository.findAllBy(principal.orgId()));
+  }
+
+  @Override
+  public Flux<Tag> getTags(List<TagTypes> name) {
     return bookTagRepository.get(name);
+  }
+
+  @Override
+  public Mono<Tag> getTag(TagTypes name, String value) {
+    return bookTagRepository.get(name, value);
   }
 
   @Override
@@ -119,8 +165,16 @@ public class DefaultBookServiceImpl implements BookService {
   }
 
   @Override
-  public Mono<BookCategories> getBookCategories(String orgId) {
-    return bookTagRepository.getBookCategories(orgId);
+  public Mono<BookCategories> getBookCategories(@Nullable String orgId) {
+    return authorizationService
+        .getAccountPrincipal()
+        .flatMap(
+            principal -> {
+              if (principal.isM2M() || principal.isSuperAdmin()) {
+                return bookTagRepository.getBookCategories(orgId);
+              }
+              return bookTagRepository.getBookCategories(principal.orgId());
+            });
   }
 
   @Override
@@ -172,18 +226,136 @@ public class DefaultBookServiceImpl implements BookService {
     return bookRepository.getByTagValues(tagValues);
   }
 
-  Flux<LibraryInventory> buildInventory(
-      List<LibraryInventoryDto> bookInventory, SmartLibrary slid) {
-    return Flux.fromStream(bookInventory.stream())
+  @Override
+  public Mono<Isbn> rate(BookReviewDto ratingDto) {
+    return authorizationService
+        .getAccountPrincipal()
         .flatMap(
-            inventory -> {
-              var createdAt = ZonedDateTimeGenerator.instance().next();
-              return mapToInventory(inventory, slid, createdAt);
+            principal ->
+                bookRatingRepository.rate(
+                    ratingDto.toDomain(principal, uuidGenerator, dateTimeGenerator)));
+  }
+
+  @Override
+  public Mono<String> reserve(CreateReservationDto reservationDto) {
+    return authorizationService
+        .getAccountPrincipal()
+        .filterWhen(principal -> validateCurrentReservations(principal, reservationDto))
+        .flatMap(
+            principal ->
+                Mono.justOrEmpty(reservationDto.clientId())
+                    .flatMap(
+                        clientId ->
+                            smartLibraryAccessControlRepository
+                                .findActiveByAccessId(clientId)
+                                .switchIfEmpty(
+                                    Mono.error(
+                                        new RuntimeException(
+                                            "Client with " + clientId + " does not exist")))
+                                .thenReturn(clientId))
+                    .defaultIfEmpty(principal.subject())
+                    .map(
+                        accessId ->
+                            reservationDto.toDomain(
+                                accessId,
+                                dateTimeGenerator.next(),
+                                dateTimeGenerator.next().plusDays(10),
+                                uuidGenerator,
+                                dateTimeGenerator)))
+        .flatMap(
+            reservation ->
+                clientRepository
+                    .find(reservation.clientId())
+                    .switchIfEmpty(
+                        Mono.fromCallable(
+                            () ->
+                                Client.builder()
+                                    .id(reservation.clientId())
+                                    .reservations(List.of(reservation))
+                                    .createdAt(dateTimeGenerator.next())
+                                    .updatedAt(dateTimeGenerator.next())
+                                    .build()))
+                    .flatMap(clientRepository::saveReservations)
+                    .map(client -> client.reservations().get(0).id()));
+  }
+
+  Mono<Boolean> validateCurrentReservations(
+      AccountPrincipal principal, CreateReservationDto reservationDto) {
+
+    var maxBooksPerLoanPublisher =
+        librarySettingRepository
+            .findCurrentBy(OrgId.of(principal.orgId()))
+            .collectList()
+            .map(
+                settings ->
+                    settings.stream()
+                        .max(comparingInt(LibrarySetting::maxBooksPerLoan))
+                        .orElseThrow())
+            .map(LibrarySetting::maxBooksPerLoan)
+            .switchIfEmpty(
+                Mono.defer(
+                    () -> Mono.error(new RuntimeException("Failed due to misconfiguration"))));
+
+    return maxBooksPerLoanPublisher
+        .flatMap(
+            maxBooksPerLoan ->
+                reservationRepository
+                    .getCurrentByClient(principal.subject())
+                    .map(
+                        reservation -> {
+                          var totalLoanItems =
+                              reservation.items().stream()
+                                      .filter(
+                                          item ->
+                                              item.transactionType() == BookTransactionType.RENT)
+                                      .toList()
+                                      .size()
+                                  + reservationDto.items().stream()
+                                      .filter(
+                                          item ->
+                                              item.transactionType() == BookTransactionType.RENT)
+                                      .toList()
+                                      .size();
+
+                          if (totalLoanItems >= maxBooksPerLoan) {
+                            throw new RuntimeException("Max items exceeded");
+                          }
+
+                          return true;
+                        }))
+        .defaultIfEmpty(true);
+  }
+
+  Flux<LibraryInventory> buildInventory(
+      List<LibraryInventoryDto> inventories, SmartLibrary library) {
+    return Mono.fromCallable(
+            () -> {
+              var availablePositions = library.availablePositions();
+              var copyCount = inventories.stream().mapToInt(LibraryInventoryDto::qty).sum();
+              if (availablePositions.size() < copyCount) {
+                throw new RuntimeException("Insufficient positions available for allocations");
+              }
+              return availablePositions;
+            })
+        .flatMapMany(
+            availablePositions -> {
+              var index = new AtomicInteger(0);
+              return Flux.fromStream(inventories.stream())
+                  .flatMap(
+                      inventory -> {
+                        var createdAt = ZonedDateTimeGenerator.instance().next();
+                        return mapToInventory(
+                            inventory, library, createdAt, availablePositions, index);
+                      });
             });
   }
 
   Flux<LibraryInventory> mapToInventory(
-      LibraryInventoryDto inventory, SmartLibrary library, ZonedDateTime createdAt) {
+      LibraryInventoryDto inventory,
+      SmartLibrary library,
+      ZonedDateTime createdAt,
+      List<String> availablePositions,
+      AtomicInteger startIndex) {
     return Flux.range(0, inventory.qty())
         .map(
             index ->
@@ -195,8 +367,13 @@ public class DefaultBookServiceImpl implements BookService {
                     .slid(library.id().value())
                     .updatedAt(createdAt)
                     .usageCount(0)
+                    .allocation(availablePositions.get(startIndex.getAndIncrement()))
                     .createdAt(createdAt)
                     .build());
+  }
+
+  String allocateInventoryPosition(List<String> availablePositions) {
+    return availablePositions.remove(0);
   }
 
   private Flux<Book> aggregateBooks(

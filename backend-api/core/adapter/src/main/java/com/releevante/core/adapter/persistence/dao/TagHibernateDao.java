@@ -4,6 +4,7 @@ import com.releevante.core.adapter.persistence.dao.projections.BookCategoryProje
 import com.releevante.core.adapter.persistence.dao.projections.BookTagProjection;
 import com.releevante.core.adapter.persistence.records.TagRecord;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
@@ -17,7 +18,7 @@ public interface TagHibernateDao extends ReactiveCrudRepository<TagRecord, Strin
 
   Mono<TagRecord> findFirstByValueIgnoreCase(String value);
 
-  Flux<TagRecord> findAllByName(String name);
+  Flux<TagRecord> findAllByNameIn(Set<String> names);
 
   @Query(
       "select\n"
@@ -41,18 +42,18 @@ public interface TagHibernateDao extends ReactiveCrudRepository<TagRecord, Strin
       "select\n"
           + "\tbt.tag_id,\n"
           + "\tbt.isbn,\n"
-          + "\tt.\"name\",\n"
+          + "\tt.name,\n"
           + "\tt.value_en,\n"
           + "\tt.value_fr,\n"
           + "\tt.value_sp\n"
           + "from\n"
           + "\tcore.tags t\n"
-          + "inner join core.book_tags bt \n"
-          + "on\n"
+          + "inner join core.book_tags bt\n"
+          + "          on\n"
           + "\tbt.tag_id = t.id\n"
           + "where\n"
-          + "\tt.\"name\" = 'category'\n"
-          + "\tor t.\"name\" = 'subcategory'")
+          + "\tt.name = 'category'\n"
+          + "\tor t.name = 'subcategory'")
   Flux<BookCategoryProjection> findBookCategories();
 
   @Query(

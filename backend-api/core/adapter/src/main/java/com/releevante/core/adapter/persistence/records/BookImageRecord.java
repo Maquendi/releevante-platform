@@ -4,6 +4,7 @@ import com.releevante.core.domain.BookImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "book_image", schema = "core")
@@ -11,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @NoArgsConstructor
 public class BookImageRecord extends PersistableEntity {
-  String id;
+  @Id String id;
   String isbn;
   String url;
   String sourceUrl;

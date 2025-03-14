@@ -37,7 +37,7 @@ public class LibrarySettingsRecord extends SimplePersistable {
   int sessionDurationMinutes;
 
   /** if this setting is synced with the actual smart library it belongs to. */
-  boolean isSync;
+  boolean isSynced;
 
   /** how many times a book should be used before enabling sales option */
   int bookUsageCountBeforeEnablingSale;
@@ -53,7 +53,7 @@ public class LibrarySettingsRecord extends SimplePersistable {
         .bookPriceReductionRateOnThresholdReached(bookPriceReductionRateOnThresholdReached)
         .createdAt(createdAt)
         .sessionDurationMinutes(sessionDurationMinutes)
-        .isSync(isSync)
+        .isSync(isSynced)
         .bookUsageCountBeforeEnablingSale(bookUsageCountBeforeEnablingSale)
         .build();
   }
@@ -62,7 +62,7 @@ public class LibrarySettingsRecord extends SimplePersistable {
     var record = new LibrarySettingsRecord();
     record.setId(domain.id());
     record.setNew(true);
-    record.setSync(domain.isSync());
+    record.setSynced(domain.isSync());
     record.setMaxBooksPerLoan(domain.maxBooksPerLoan());
     record.setBookPriceDiscountPercentage(domain.bookPriceDiscountPercentage());
     record.setBookPriceSurchargePercentage(domain.bookPriceSurchargePercentage());

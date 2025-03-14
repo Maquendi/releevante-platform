@@ -1,91 +1,119 @@
 "use client";
+
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 import SelectLanguage from "./SelectLanguage";
-import { Link } from "@/config/i18n/routing";
-import { Input } from "./ui/input";
-import { useState } from "react";
+import { Link, usePathname } from "@/config/i18n/routing";
 import { Search } from "lucide-react";
-import { Button } from "./ui/button";
+import {  buttonVariants } from "./ui/button";
+import NavbarV2 from "./NavbarV2";
+import { CartSidebarTrigger,CartTrigger } from "./CartSidebarTrigger";
+import { cn } from "@/lib/utils";
 
-interface NavbarProps {
-  onlyMobile?: boolean;
+
+const navbarv2MobileRoutes = [
+  {
+    prevRouteIntName: "cartRoute",
+    path: "/reviewcart",
+    prevRoutePath: "/cart",
+  },
+  {
+    prevRouteIntName: "codeValidationRoute",
+    path: "/code",
+    prevRoutePath: "/",
+  },
+  {
+    prevRouteIntName: "codeValidationRoute",
+    path: "/thanks",
+    prevRoutePath: "/code",
+  },
+  {
+    prevRouteIntName: "codeValidationRoute",
+    path: "/rating/service",
+    prevRoutePath: "/code",
+  },
+  {
+    prevRouteIntName: "catalogRoute",
+    path: "/reserved",
+    prevRoutePath: "/catalog",
+  },
+] as const;
+
+interface NavbarProps{
+  cartTriggerType?:'SIDEBAR' | 'PAGE'
 }
 
-export default function Navbar({ onlyMobile }: NavbarProps) {
+export default function Navbar({cartTriggerType = 'SIDEBAR'}:NavbarProps) {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 770px)" });
-  const [searchQuery, setSearchQuery] = useState("");
+  const path = usePathname();
+  const pathInfo = navbarv2MobileRoutes.find((route) => route.path === path);
+  const isReservedDesktop = path === "/reserved" && !isTabletOrMobile;
 
-  const handleInputFocus = () => {};
+  if (pathInfo && (isTabletOrMobile || isReservedDesktop)) {
+    return (
+      <NavbarV2
+        prevRouteIntl={pathInfo.prevRouteIntName}
+        middleNameInt={isReservedDesktop ? "booksRoute" : undefined}
+        href={pathInfo.prevRoutePath}
+      />
+    );
+  }
 
   if (isTabletOrMobile) {
     return (
-      <nav className="flex justify-between  px-2 py-2 bg-white">
+      <nav className="flex justify-between px-2 py-2 bg-white">
         <SelectLanguage />
-        <figure className="relative w-[160px] h-[50px">
+        <figure className="relative w-[160px] h-[50px]">
           <Image
             fill
             className="object-contain"
             src="/images/releevante.svg"
-            alt="relevant title image"
+            alt="Releevante Logo"
             sizes="160px"
           />
         </figure>
+        {cartTriggerType === 'SIDEBAR'?<CartSidebarTrigger/> :<CartTrigger/>}
       </nav>
     );
   }
 
-  if (onlyMobile) return;
 
   return (
     <nav className="flex gap-5 px-4 justify-between items-center py-1 border-b border-gray-300 bg-white">
-      <figure className="relative w-[100px] h-[50px]">
+      <figure className="relative w-[170px] h-[50px]">
         <Image
           fill
           className="object-contain"
           src="/images/releevante.svg"
-          alt="relevant title image"
+          alt="Releevante Logo"
           sizes="160px"
         />
       </figure>
-      <Link href={"/"}>
+      <Link href="/">
         <Image
           width={40}
           height={40}
-          className="w-[30px] h-[30px]"
+          className="w-[40px] h-[40px]"
           src="/icons/home.svg"
-          alt="home icon"
+          alt="Home Icon"
         />
       </Link>
-      <div onClick={handleInputFocus} className="relative flex-grow">
-        <Input
-          placeholder="Buscar..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pr-10 py-5 w-full px-5 rounded-md transition duration-500"
-        />
-        <div className="absolute  text-white rounded-full px-0.5 py-0.5 right-3 top-1/2 -translate-y-1/2">
-          <Search name="search" size={15} className=" text-black" />
+      <Link
+        href="/search"
+        className="relative flex-grow py-3 text-sm text-gray-400 w-full px-5 border border-gray-300 rounded-md transition duration-500"
+      >
+        <span>Search...</span>
+        <div className="absolute text-white rounded-full px-0.5 py-0.5 right-3 top-1/2 -translate-y-1/2">
+          <Search name="search" size={15} className="text-black" />
         </div>
-      </div>
+      </Link>
       <div className="flex gap-2 items-center">
-        <Button
-          variant="outline"
-          className="rounded-3xl px-4 py-2 bg-inherit  border-gray-500"
-        >
+        <Link href="/auth/code" className={cn(buttonVariants({className:"rounded-3xl px-4 py-2 bg-inherit border-gray-500",variant:'outline'}))}>
           <span className="text-xs">Login</span>
-        </Button>
+        </Link>
         <SelectLanguage />
       </div>
-      <Link href={"/home"}>
-        <Image
-          width={40}
-          height={40}
-          className="w-[30px] h-[30px]"
-          src="/icons/cart.svg"
-          alt="cart icon"
-        />
-      </Link>
-    </nav>
+      {cartTriggerType === 'SIDEBAR'?<CartSidebarTrigger/> :<CartTrigger/>}
+      </nav>
   );
 }

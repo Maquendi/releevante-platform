@@ -1,8 +1,7 @@
 package com.releevante.core.application.service;
 
-import com.releevante.core.application.dto.*;
+import com.releevante.core.application.dto.sl.SmartLibraryDto;
 import com.releevante.core.domain.LibrarySetting;
-import com.releevante.core.domain.SmartLibrary;
 import com.releevante.types.AccountPrincipal;
 import com.releevante.types.Slid;
 import java.util.Set;
@@ -10,9 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface SmartLibraryService {
-  Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto syncDto);
-
-  Flux<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Set<Slid> sLids);
+  Mono<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Slid sLid);
 
   Flux<SmartLibraryDto> findAll(Set<Slid> sLids);
 
@@ -21,4 +18,10 @@ public interface SmartLibraryService {
   Flux<LibrarySetting> getSetting(Slid slid);
 
   Mono<Boolean> setSynchronized(Slid slid);
+
+  Mono<Boolean> setBooksSynchronized(Slid slid);
+
+  Mono<Boolean> setLibrarySettingsSynchronized(Slid slid);
+
+  Mono<Boolean> setAccessSynchronized(Slid slid);
 }

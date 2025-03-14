@@ -26,7 +26,7 @@ public class WebFluxSecurityConfig {
     return http.authorizeExchange(
             exchanges ->
                 exchanges
-                    .pathMatchers("/auth/**", "/webjars/swagger-ui/**", "/v3/api-docs/**")
+                    .pathMatchers("/auth/m2m/token", "/webjars/swagger-ui/**", "/v3/api-docs/**")
                     .permitAll()
                     .anyExchange()
                     .authenticated())

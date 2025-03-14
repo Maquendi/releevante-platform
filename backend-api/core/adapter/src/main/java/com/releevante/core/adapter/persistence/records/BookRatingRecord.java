@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookRating;
+import com.releevante.core.domain.Client;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -15,37 +16,37 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookRatingRecord extends PersistableEntity {
-
+public class BookRatingRecord extends AuditableEntity {
   @Id private String id;
-
-  private String clientId;
-
   private String isbn;
-
   private int rating;
+  private boolean isSynced;
 
-  private String orgId;
-
-  private static BookRatingRecord fromDomain(ClientRecord client, BookRating rating) {
+  public static BookRatingRecord fromDomain(BookRating rating) {
     var record = new BookRatingRecord();
     record.setId(rating.id());
     record.setRating(rating.rating());
     record.setIsbn(rating.isbn());
-    record.setClientId(client.getId());
+    record.setOrigin(rating.origin());
+    record.setSynced(false);
+    record.setAudit(rating.audit());
+    record.setOrigin(rating.origin());
+    record.setCreatedAt(rating.createdAt());
     return record;
   }
 
-  protected static Set<BookRatingRecord> fromDomain(ClientRecord client, List<BookRating> ratings) {
-    return ratings.stream().map(rating -> fromDomain(client, rating)).collect(Collectors.toSet());
+  protected static Set<BookRatingRecord> fromDomain(List<BookRating> ratings) {
+    return ratings.stream().map(BookRatingRecord::fromDomain).collect(Collectors.toSet());
   }
 
   public BookRating toDomain() {
     return BookRating.builder()
         .id(id)
         .rating(rating)
+        .isbn(isbn)
         .createdAt(createdAt)
-        .updatedAt(updatedAt)
+        .audit(audit)
+        .origin(origin)
         .build();
   }
 
@@ -64,5 +65,9 @@ public class BookRatingRecord extends PersistableEntity {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  public static List<BookRatingRecord> fromDomain(Client client) {
+    return client.bookRatings().stream().map(BookRatingRecord::fromDomain).toList();
   }
 }

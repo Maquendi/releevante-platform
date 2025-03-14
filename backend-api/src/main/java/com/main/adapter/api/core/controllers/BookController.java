@@ -2,13 +2,10 @@ package com.main.adapter.api.core.controllers;
 
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
-import com.releevante.core.application.dto.BookRecommendationDto;
-import com.releevante.core.application.dto.SyncStatus;
 import com.releevante.core.application.service.BookService;
 import com.releevante.core.domain.Book;
 import com.releevante.core.domain.BookCategories;
 import com.releevante.core.domain.PartialBook;
-import com.releevante.types.Slid;
 import com.releevante.types.exceptions.InvalidInputException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,11 +16,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/books")
 public class BookController {
 
   final BookService bookService;
@@ -32,200 +30,17 @@ public class BookController {
     this.bookService = bookService;
   }
 
-  @Operation(summary = "get books by slid", description = "get a list of books in the system db")
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid data supplied",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden access",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal server error",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            })
-      })
-  @GetMapping("slid/{id}/books")
-  public Mono<CustomApiResponse<List<Book>>> getBooksBySlid(
-      @PathVariable(name = "id") String slid,
-      @RequestParam() int page,
-      @RequestParam() int size,
-      @RequestParam() boolean includeTags,
-      @RequestParam() boolean includeImages,
-      @RequestParam(required = false) SyncStatus status) {
-
-    return bookService
-        .getBooks(Slid.of(slid), page, size, status, includeImages, includeTags)
-        .collectList()
-        .map(CustomApiResponse::from);
-  }
-
-  @Operation(summary = "get books", description = "get a list of books in the system db")
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid data supplied",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden access",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal server error",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            })
-      })
-  @GetMapping("books")
-  public Mono<CustomApiResponse<List<Book>>> getBooks(
-      @RequestParam() int page,
-      @RequestParam() int size,
-      @RequestParam() boolean includeTags,
-      @RequestParam() boolean includeImages) {
-    return bookService
-        .getBooks(page, size, includeImages, includeTags)
-        .collectList()
-        .map(CustomApiResponse::from);
-  }
-
-  @Operation(summary = "get books by org", description = "get a list of books in the system db")
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid data supplied",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden access",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal server error",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            })
-      })
-  @GetMapping("org/{id}/books")
-  public Mono<CustomApiResponse<Object>> getBooksByOrg(
-      @PathVariable(name = "id") String orgId, @RequestParam(required = false) boolean asMap) {
-
+  @PreAuthorize("hasAnyRole('UI-WEB-PUBLIC', 'UI-WEB-ADMIN', 'ADMIN', 'CLIENT')")
+  @GetMapping()
+  public Mono<CustomApiResponse<Object>> getBooks(
+      @RequestParam(required = false) String orgId, @RequestParam(required = false) boolean asMap) {
     if (asMap) {
       return bookService
-          .getBooksByOrg(orgId)
+          .getBooks(orgId)
           .collect(Collectors.toMap(PartialBook::isbn, Function.identity()))
           .map(CustomApiResponse::from);
     }
-    return bookService.getBooksByOrg(orgId).collectList().map(CustomApiResponse::from);
-  }
-
-  @Operation(
-      summary = "get books categories",
-      description = "get a list of book category in the system db")
-  @ApiResponses(
-      value = {
-        @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
-        @ApiResponse(
-            responseCode = "400",
-            description = "Invalid data supplied",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "401",
-            description = "Unauthorized",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "403",
-            description = "Forbidden access",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            }),
-        @ApiResponse(
-            responseCode = "500",
-            description = "Internal server error",
-            content = {
-              @Content(
-                  mediaType = "application/json",
-                  schema = @Schema(implementation = HttpErrorResponse.class))
-            })
-      })
-  @GetMapping("org/{id}/categories")
-  public Mono<CustomApiResponse<BookCategories>> getBookCategories(
-      @PathVariable(name = "id") String orgId) {
-    return bookService.getBookCategories(orgId).map(CustomApiResponse::from);
+    return bookService.getBooks(orgId).collectList().map(CustomApiResponse::from);
   }
 
   @Operation(
@@ -268,7 +83,7 @@ public class BookController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @GetMapping("books/{isbn}")
+  @GetMapping("/{isbn}")
   public Mono<CustomApiResponse<List<Book>>> getBookById(
       @PathVariable(name = "isbn") String isbn,
       @RequestParam("translationId") String translationId) {
@@ -314,7 +129,7 @@ public class BookController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @GetMapping("books/search")
+  @GetMapping("/search")
   public Mono<CustomApiResponse<List<Book>>> getBooksByTags(
       @RequestParam(required = false) List<String> isbn,
       @RequestParam(required = false) List<String> tagId,
@@ -331,8 +146,8 @@ public class BookController {
   }
 
   @Operation(
-      summary = "get books by isbn's or tag id's or tag values",
-      description = "returns a list of books having specified isbn, or tagId, or tagValue")
+      summary = "get books categories",
+      description = "get a list of book category in the system db")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -369,9 +184,9 @@ public class BookController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @GetMapping("books/recommendation")
-  public Mono<CustomApiResponse<BookRecommendationDto>> getBookRecommendations(
-      @RequestParam() List<String> preferences) {
-    return bookService.getBookRecommendation(preferences).map(CustomApiResponse::from);
+  @GetMapping("/categories")
+  public Mono<CustomApiResponse<BookCategories>> getBookCategories(
+      @RequestParam(name = "orgId", required = false) String orgId) {
+    return bookService.getBookCategories(orgId).map(CustomApiResponse::from);
   }
 }

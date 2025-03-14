@@ -21,15 +21,11 @@ public class ClientRecord extends PersistableEntity {
 
   @Transient ServiceRatingRecord serviceRating;
 
-  @Transient Set<BookLoanRecord> bookLoans = new LinkedHashSet<>();
+  @Transient Set<BookTransactionRecord> transactions = new LinkedHashSet<>();
 
   @Transient Set<BookReservationRecord> reservations = new LinkedHashSet<>();
 
   @Transient Set<BookRatingRecord> bookRatings = new LinkedHashSet<>();
-
-  @Transient Set<BookSaleRecord> purchases = new LinkedHashSet<>();
-
-  @Transient Set<CartRecord> carts = new LinkedHashSet<>();
 
   protected static ClientRecord fromDomain(Client client) {
     var record = new ClientRecord();
@@ -47,33 +43,21 @@ public class ClientRecord extends PersistableEntity {
         .map(
             rating -> {
               var clientRecord = fromDomain(client);
-              var ratingRecord = ServiceRatingRecord.fromDomain(clientRecord, rating);
+              var ratingRecord = ServiceRatingRecord.fromDomain(rating);
               clientRecord.setServiceRating(ratingRecord);
               return clientRecord;
             });
   }
 
-  public static Mono<ClientRecord> bookLoans(Client client) {
-    return Mono.just(client.loans())
+  public static Mono<ClientRecord> createTransactions(Client client) {
+    return Mono.just(client.transactions())
         .filter(Predicate.not(List::isEmpty))
         .map(
-            loans -> {
+            transactions -> {
               var clientRecord = fromDomain(client);
-              var loanRecords = BookLoanRecord.fromDomain(clientRecord, loans);
-              clientRecord.getBookLoans().addAll(loanRecords);
+              var transactionRecords = BookTransactionRecord.fromDomain(clientRecord, transactions);
+              clientRecord.getTransactions().addAll(transactionRecords);
               return clientRecord;
-            });
-  }
-
-  public Mono<ClientRecord> merge(Client client) {
-    return Mono.just(client.loans())
-        .filter(Predicate.not(List::isEmpty))
-        .map(
-            loans -> {
-              var loanRecords = BookLoanRecord.fromDomain(this, loans);
-              this.getBookLoans().addAll(loanRecords);
-              this.setNew(false);
-              return this;
             });
   }
 
@@ -83,8 +67,7 @@ public class ClientRecord extends PersistableEntity {
         .map(
             bookReservations -> {
               var clientRecord = fromDomain(client);
-              var reservationRecords =
-                  BookReservationRecord.fromDomain(clientRecord, bookReservations);
+              var reservationRecords = BookReservationRecord.fromDomain(bookReservations);
               clientRecord.getReservations().addAll(reservationRecords);
               return clientRecord;
             });
@@ -96,32 +79,8 @@ public class ClientRecord extends PersistableEntity {
         .map(
             ratings -> {
               var clientRecord = fromDomain(client);
-              var ratingRecords = BookRatingRecord.fromDomain(clientRecord, ratings);
+              var ratingRecords = BookRatingRecord.fromDomain(ratings);
               clientRecord.getBookRatings().addAll(ratingRecords);
-              return clientRecord;
-            });
-  }
-
-  public static Mono<ClientRecord> bookPurchases(Client client) {
-    return Mono.just(client.purchases())
-        .filter(Predicate.not(List::isEmpty))
-        .map(
-            sales -> {
-              var clientRecord = fromDomain(client);
-              var bookSaleRecords = BookSaleRecord.fromDomain(clientRecord, sales);
-              clientRecord.getPurchases().addAll(bookSaleRecords);
-              return clientRecord;
-            });
-  }
-
-  public static Mono<ClientRecord> carts(Client client) {
-    return Mono.just(client.carts())
-        .filter(Predicate.not(List::isEmpty))
-        .map(
-            carts -> {
-              var clientRecord = fromDomain(client);
-              var bookSaleRecords = CartRecord.fromDomain(clientRecord, carts);
-              clientRecord.getCarts().addAll(bookSaleRecords);
               return clientRecord;
             });
   }

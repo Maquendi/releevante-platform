@@ -29,7 +29,7 @@ public class BookCopyProjection {
   private int usageCount;
   private ZonedDateTime createdAt;
   private ZonedDateTime updatedAt;
-  private boolean isSync;
+  private boolean isSynced;
   private int printLength;
   private LocalDate publishDate;
   public String dimensions;
@@ -38,4 +38,5 @@ public class BookCopyProjection {
   public String bindingType;
   public float rating;
   public int votes;
+  public String allocation;
 }

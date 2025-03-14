@@ -7,15 +7,18 @@ import com.releevante.core.domain.tags.TagTypes;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.annotation.Nullable;
 
 public interface BookTagRepository {
   Mono<Tag> create(Tag tag);
 
   Flux<Tag> create(List<Tag> tags);
 
-  Flux<Tag> get(TagTypes name);
+  Flux<Tag> get(List<TagTypes> name);
+
+  Mono<Tag> get(TagTypes name, String value);
 
   Flux<Tag> getTags(Isbn isbn);
 
-  Mono<BookCategories> getBookCategories(String slid);
+  Mono<BookCategories> getBookCategories(@Nullable String orgId);
 }

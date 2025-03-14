@@ -103,7 +103,7 @@ public class BookRepositoryImpl implements BookRepository {
 
   private Mono<TagRecord> getTagOrSave(Tag tag) {
     return tagHibernateDao
-        .findFirstByValueIgnoreCase(tag.value())
+        .findFirstByValueIgnoreCase(tag.value().en())
         .switchIfEmpty(Mono.defer(() -> tagHibernateDao.save(TagRecord.from(tag))));
   }
 
@@ -148,7 +148,8 @@ public class BookRepositoryImpl implements BookRepository {
                     .createdAt(projection.getCreatedAt())
                     .updatedAt(projection.getUpdatedAt())
                     .id(copy.getCpy())
-                    .isSync(copy.isSync())
+                    .allocation(projection.getAllocation())
+                    .isSync(copy.isSynced())
                     .status(BookCopyStatus.valueOf(copy.getStatus()))
                     .usageCount(copy.getUsageCount())
                     .build());
@@ -203,6 +204,11 @@ public class BookRepositoryImpl implements BookRepository {
   @Override
   public Flux<PartialBook> findAllBy(String orgId) {
     return bookHibernateDao.findAllByOrgId(orgId).map(PartialBookProjection::toDomain);
+  }
+
+  @Override
+  public Flux<PartialBook> findAllBy() {
+    return bookHibernateDao.findAllPartialBook().map(PartialBookProjection::toDomain);
   }
 
   @Override
@@ -261,5 +267,12 @@ public class BookRepositoryImpl implements BookRepository {
   @Override
   public Mono<Book> findByIsbn(String isbn) {
     return null;
+  }
+
+  @Override
+  public Mono<Book> updateRating(Book book) {
+    return bookHibernateDao
+        .updateBookRatingAndVotes(book.isbn().value(), book.rating(), book.votes())
+        .thenReturn(book);
   }
 }

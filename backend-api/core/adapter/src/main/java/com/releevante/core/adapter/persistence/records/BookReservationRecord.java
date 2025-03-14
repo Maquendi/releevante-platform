@@ -2,7 +2,6 @@ package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.BookReservation;
 import com.releevante.core.domain.ClientId;
-import com.releevante.core.domain.LazyLoaderInit;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -22,23 +21,17 @@ import org.springframework.data.relational.core.mapping.Table;
 @NoArgsConstructor
 public class BookReservationRecord extends PersistableEntity {
   @Id private String id;
-
   private String clientId;
-
   private ZonedDateTime startTime;
   private ZonedDateTime endTime;
 
   @Transient private Set<BookReservationItemsRecord> reservationItems = new HashSet<>();
 
-  protected static Set<BookReservationRecord> fromDomain(
-      ClientRecord client, List<BookReservation> reservations) {
-    return reservations.stream()
-        .map(reservation -> fromDomain(client, reservation))
-        .collect(Collectors.toSet());
+  protected static Set<BookReservationRecord> fromDomain(List<BookReservation> reservations) {
+    return reservations.stream().map(BookReservationRecord::fromDomain).collect(Collectors.toSet());
   }
 
-  private static BookReservationRecord fromDomain(
-      ClientRecord client, BookReservation reservation) {
+  public static BookReservationRecord fromDomain(BookReservation reservation) {
     var record = new BookReservationRecord();
     record.setId(reservation.id());
     record.setStartTime(reservation.startTime());
@@ -46,7 +39,7 @@ public class BookReservationRecord extends PersistableEntity {
     record.setCreatedAt(reservation.createdAt());
     record.setUpdatedAt(reservation.updateAt());
     record.setReservationItems(BookReservationItemsRecord.fromDomain(record, reservation));
-    record.setClientId(client.getId());
+    record.setClientId(reservation.clientId().value());
     return record;
   }
 
@@ -58,8 +51,7 @@ public class BookReservationRecord extends PersistableEntity {
         .endTime(endTime)
         .createdAt(createdAt)
         .updateAt(updatedAt)
-        .items(
-            new LazyLoaderInit<>(() -> BookReservationItemsRecord.toDomain(getReservationItems())))
+        .items(BookReservationItemsRecord.toDomain(getReservationItems()))
         .build();
   }
 

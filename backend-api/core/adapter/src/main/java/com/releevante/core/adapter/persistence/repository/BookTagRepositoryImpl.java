@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -46,8 +47,15 @@ public class BookTagRepositoryImpl implements BookTagRepository {
   }
 
   @Override
-  public Flux<Tag> get(TagTypes name) {
-    return tagHibernateDao.findAllByName(name.name()).map(TagRecord::toDomain);
+  public Flux<Tag> get(List<TagTypes> names) {
+    return tagHibernateDao
+        .findAllByNameIn(names.stream().map(Enum::name).collect(toSet()))
+        .map(TagRecord::toDomain);
+  }
+
+  @Override
+  public Mono<Tag> get(TagTypes name, String value) {
+    return tagHibernateDao.findFirstByValueIgnoreCase(value).map(TagRecord::toDomain);
   }
 
   @Override
@@ -61,18 +69,22 @@ public class BookTagRepositoryImpl implements BookTagRepository {
                     .isbn(isbn.value())
                     .bookTagId(projection.getBookTagId())
                     .name(projection.getName())
-                    .value(projection.getValueEn())
-                    .valueFr(Optional.ofNullable(projection.getValueFr()))
-                    .valueSp(Optional.ofNullable(projection.getValueSp()))
+                    .value(
+                        TagValue.builder()
+                            .en(projection.getValueEn())
+                            .fr(Optional.ofNullable(projection.getValueFr()))
+                            .es(Optional.ofNullable(projection.getValueSp()))
+                            .build())
                     .createdAt(projection.getCreatedAt())
                     .build());
   }
 
   @Override
-  public Mono<BookCategories> getBookCategories(String orgId) {
+  public Mono<BookCategories> getBookCategories(@Nullable String orgId) {
     return Mono.justOrEmpty(orgId)
         .flatMapMany(tagHibernateDao::findBookCategories)
         .collectList()
+        .filter(Predicate.not(List::isEmpty))
         .switchIfEmpty(Flux.defer(tagHibernateDao::findBookCategories).collectList())
         .map(
             projections -> {

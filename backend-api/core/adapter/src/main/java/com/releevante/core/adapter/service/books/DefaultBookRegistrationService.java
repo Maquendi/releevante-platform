@@ -3,7 +3,7 @@ package com.releevante.core.adapter.service.books;
 import com.releevante.core.adapter.service.google.BookGSheetUtils;
 import com.releevante.core.adapter.service.google.GoogleSpreadSheetService;
 import com.releevante.core.adapter.service.google.LibraryInventoryGSheetUtils;
-import com.releevante.core.application.dto.LibraryInventoryDto;
+import com.releevante.core.application.dto.sl.LibraryInventoryDto;
 import com.releevante.core.application.service.BookRegistrationService;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.tags.TagTypes;
@@ -312,9 +312,7 @@ public class DefaultBookRegistrationService implements BookRegistrationService {
   private Tag buildTag(TagTypes name, String value) {
     return Tag.builder()
         .name(name.name())
-        .value(value)
-        .valueSp(value)
-        .valueFr(value)
+        .value(TagValue.builder().es(value).fr(value).en(value).build())
         .id(uuidGenerator.next())
         .createdAt(dateTimeGenerator.next())
         .build();

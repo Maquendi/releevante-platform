@@ -1,63 +1,35 @@
 package com.releevante.core.application.service.impl;
 
-import com.releevante.core.application.dto.*;
-import com.releevante.core.application.service.AccountAuthorizationService;
+import com.releevante.core.application.dto.sl.SmartLibraryDto;
+import com.releevante.core.application.identity.service.auth.AuthorizationService;
 import com.releevante.core.application.service.SmartLibraryService;
 import com.releevante.core.domain.*;
 import com.releevante.core.domain.repository.SmartLibraryRepository;
-import com.releevante.types.AccountPrincipal;
-import com.releevante.types.Slid;
+import com.releevante.types.*;
 import com.releevante.types.exceptions.InvalidInputException;
 import java.util.Set;
-import java.util.function.Predicate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class DefaultLibraryService implements SmartLibraryService {
   final SmartLibraryRepository smartLibraryRepository;
-  final AccountAuthorizationService accountAuthorizationService;
+  final AuthorizationService authorizationService;
 
   public DefaultLibraryService(
-      SmartLibraryRepository smartLibraryRepository,
-      AccountAuthorizationService accountAuthorizationService) {
+      SmartLibraryRepository smartLibraryRepository, AuthorizationService authorizationService) {
     this.smartLibraryRepository = smartLibraryRepository;
-    this.accountAuthorizationService = accountAuthorizationService;
+    this.authorizationService = authorizationService;
   }
 
   @Override
-  public Mono<SmartLibrary> synchronizeClientsLoans(SmartLibrarySyncDto syncDto) {
-    return accountAuthorizationService
-        .getCurrentPrincipal()
-        .flatMap(
-            principal ->
-                smartLibraryRepository
-                    .findBy(Slid.of(syncDto.slid()))
-                    .switchIfEmpty(Mono.error(new InvalidInputException("Smart library not exist")))
-                    .flatMap(
-                        smartLibrary -> {
-                          smartLibrary.validateIsActive();
-                          var clients = syncDto.domainClients(principal);
-                          return smartLibraryRepository.synchronizeClientsLoans(
-                              smartLibrary.withClients(clients));
-                        }));
-  }
-
-  @Override
-  public Flux<SmartLibraryDto> smartLibrariesValidated(
-      AccountPrincipal principal, Set<Slid> sLids) {
-
-    return Mono.just(sLids)
-        .filter(Predicate.not(Set::isEmpty))
-        .switchIfEmpty(Mono.error(new InvalidInputException("no slid")))
-        .flatMapMany(
-            slidSet ->
-                smartLibraryRepository
-                    .findById(slidSet)
-                    .map(
-                        smartLibrary -> {
-                          smartLibrary.validateCanAccess(principal);
-                          return SmartLibraryDto.from(smartLibrary);
-                        }))
+  public Mono<SmartLibraryDto> smartLibrariesValidated(AccountPrincipal principal, Slid sLid) {
+    return smartLibraryRepository
+        .findBy(sLid)
+        .map(
+            smartLibrary -> {
+              smartLibrary.validateCanAccess(principal);
+              return SmartLibraryDto.from(smartLibrary);
+            })
         .switchIfEmpty(Mono.error(new InvalidInputException("no slid with provided input")));
   }
 
@@ -79,5 +51,20 @@ public class DefaultLibraryService implements SmartLibraryService {
   @Override
   public Mono<Boolean> setSynchronized(Slid slid) {
     return smartLibraryRepository.setSynchronized(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setBooksSynchronized(Slid slid) {
+    return smartLibraryRepository.setBooksSynchronized(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setLibrarySettingsSynchronized(Slid slid) {
+    return smartLibraryRepository.setLibrarySettingsSynchronized(slid);
+  }
+
+  @Override
+  public Mono<Boolean> setAccessSynchronized(Slid slid) {
+    return smartLibraryRepository.setAccessSynchronized(slid);
   }
 }

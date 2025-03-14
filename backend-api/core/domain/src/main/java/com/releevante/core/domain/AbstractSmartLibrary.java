@@ -10,29 +10,65 @@ import com.releevante.types.ImmutableExt;
 import com.releevante.types.Slid;
 import com.releevante.types.exceptions.ConfigurationException;
 import com.releevante.types.exceptions.ForbiddenException;
+import java.text.MessageFormat;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
 import org.immutables.value.Value;
 
 @Value.Immutable()
 @JsonDeserialize(as = SmartLibrary.class)
 @JsonSerialize(as = SmartLibrary.class)
 @ImmutableExt
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public abstract class AbstractSmartLibrary {
+  private static final String NAMING_PREFIX = "M{0}-P{1}";
+
   abstract Slid id();
 
   @JsonIgnore
-  abstract OrgId orgId();
+  abstract String orgId();
 
   abstract String modelName();
+
+  abstract int modules();
+
+  abstract int moduleCapacity();
+
+  abstract boolean isActive();
+
+  abstract SmartLibraryState currentStatus();
 
   @JsonIgnore
   @Value.Default
   List<SmartLibraryStatus> statuses() {
     return Collections.emptyList();
+  }
+
+  @Value.Default
+  Set<String> allocations() {
+    return Collections.emptySet();
+  }
+
+  @Value.Default
+  Set<String> allPositions() {
+    var collection =
+        IntStream.range(1, modules() + 1)
+            .mapToObj(
+                mod ->
+                    IntStream.range(1, moduleCapacity() + 1)
+                        .mapToObj(pos -> MessageFormat.format(NAMING_PREFIX, mod, pos))
+                        .toList())
+            .flatMap(Collection::stream)
+            .toList();
+    return new LinkedHashSet<>(collection);
+  }
+
+  public List<String> availablePositions() {
+    var availablePositions = new LinkedHashSet<>(this.allPositions());
+    var allocations = this.allocations();
+    availablePositions.removeAll(allocations);
+    return new ArrayList<>(availablePositions);
   }
 
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -47,28 +83,17 @@ public abstract class AbstractSmartLibrary {
   @JsonIgnore
   abstract ZonedDateTime updatedAt();
 
-  public SmartLibraryStatus currentStatus() {
-    var data = new ArrayList<>(statuses());
-    data.sort(Comparator.comparing(SmartLibraryStatus::createdAt));
-
-    if (data.isEmpty()) {
-      throw new ConfigurationException("library invalid status");
-    }
-
-    return data.get(data.size() - 1);
-  }
-
   public void validateIsAuthorized(AccountPrincipal principal) {
-    if (orgId().value().equals(principal.orgId()) || principal.isSuperAdmin()) {
+    if (orgId().equals(principal.orgId()) || principal.isSuperAdmin()) {
       return;
     }
     throw new ForbiddenException();
   }
 
   public void validateIsActive() {
-    var status = currentStatus();
-    if (status.state().equals(SmartLibraryState.never)
-        || status.state().equals(SmartLibraryState.disconnected)) {
+    if (!isActive()
+        || currentStatus() == SmartLibraryState.never
+        || currentStatus() == SmartLibraryState.disconnected) {
       throw new ConfigurationException("library not configured");
     }
   }

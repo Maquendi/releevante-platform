@@ -4,12 +4,13 @@ package com.main.adapter.api.identity.controller;
 import com.main.adapter.api.response.CustomApiResponse;
 import com.main.adapter.api.response.HttpErrorResponse;
 import com.main.application.identity.IdentityServiceFacade;
-import com.releevante.identity.application.dto.*;
+import com.releevante.core.application.identity.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +25,7 @@ public class AuthenticationController {
 
   @Operation(
       summary = "User login",
-      description = "authentication for users with username and password")
+      description = "Authenticate a user with a valid username and password")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -61,14 +62,15 @@ public class AuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/users")
-  Mono<CustomApiResponse<UserAuthenticationDto>> login(@RequestBody LoginDto login) {
+  @PreAuthorize("hasAnyRole('UI-WEB-ADMIN')")
+  @PostMapping("/user/token")
+  Mono<CustomApiResponse<UserAuthenticationDto>> login(@RequestBody UserLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 
   @Operation(
-      summary = "User authentication with pin/nfc/qr_code",
-      description = "Authenticate user using pin, nfg uuid or QR code")
+      summary = "CLIENT login",
+      description = "Authenticate a client user using a valid access id")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -105,14 +107,13 @@ public class AuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/pin")
-  Mono<CustomApiResponse<PinAuthenticationDto>> login(@RequestBody PinLoginDto login) {
+  @PreAuthorize("hasRole('UI-WEB-PUBLIC')")
+  @PostMapping("/client/token")
+  Mono<CustomApiResponse<LoginTokenDto>> login(@RequestBody GuestLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 
-  @Operation(
-      summary = "aggregator login with slid",
-      description = "generate an aggregator login token for aggregator synchronization")
+  @Operation(summary = "m2m login", description = "exchange an api key for an m2m token")
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Ok", useReturnTypeSchema = true),
@@ -149,9 +150,8 @@ public class AuthenticationController {
                   schema = @Schema(implementation = HttpErrorResponse.class))
             })
       })
-  @PostMapping("/aggregator")
-  Mono<CustomApiResponse<AggregatorLoginResponse>> aggregatorLogin(
-      @RequestBody AggregatorLogin login) {
+  @PostMapping("/m2m/token")
+  Mono<CustomApiResponse<LoginTokenDto>> login(@RequestBody M2MLoginDto login) {
     return identityServiceFacade.authenticate(login).map(CustomApiResponse::from);
   }
 }

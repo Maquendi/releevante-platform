@@ -24,4 +24,6 @@ public abstract class AbstractBookCpy {
   abstract ZonedDateTime createdAt();
 
   abstract ZonedDateTime updatedAt();
+
+  abstract String allocation();
 }

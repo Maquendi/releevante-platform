@@ -1,9 +1,6 @@
 package com.releevante.core.adapter.persistence.records;
 
-import com.releevante.core.domain.OrgId;
-import com.releevante.core.domain.SmartLibrary;
-import com.releevante.types.Slid;
-import java.util.Collections;
+import com.releevante.core.domain.identity.model.AuthorizedOrigin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,21 +12,21 @@ import org.springframework.data.relational.core.mapping.Table;
 @Setter
 @NoArgsConstructor
 public class AuthorizedOriginRecord extends PersistableEntity {
-
   @Id String id;
   String type;
   String orgId;
+  String role;
+  int sessionTtlHours;
   boolean isActive;
 
-  public SmartLibrary toLibrary() {
-    return SmartLibrary.builder()
-        .id(Slid.of(id))
-        .createdAt(createdAt)
-        .modelName(type)
-        .updatedAt(updatedAt)
-        .orgId(OrgId.of(orgId))
-        .statuses(Collections.emptyList())
-        .clients(Collections.emptyList())
+  public AuthorizedOrigin toDomain() {
+    return AuthorizedOrigin.builder()
+        .id(id)
+        .isActive(isActive)
+        .orgId(orgId)
+        .type(type)
+        .sessionTTlHour(sessionTtlHours)
+        .role(role)
         .build();
   }
 }

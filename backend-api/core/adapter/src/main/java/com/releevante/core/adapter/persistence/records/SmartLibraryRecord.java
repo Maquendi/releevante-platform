@@ -1,6 +1,7 @@
 package com.releevante.core.adapter.persistence.records;
 
 import com.releevante.core.domain.SmartLibrary;
+import com.releevante.types.Slid;
 import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ public class SmartLibraryRecord extends PersistableEntity {
   private String id;
 
   private String modelName;
+  private int modules;
+  private int moduleCapacity;
 
   @Transient private Set<SmartLibraryEventRecord> libraryEvents = new HashSet<>();
 
@@ -29,7 +32,20 @@ public class SmartLibraryRecord extends PersistableEntity {
     record.setCreatedAt(smartLibrary.createdAt());
     record.setUpdatedAt(smartLibrary.updatedAt());
     record.setModelName(smartLibrary.modelName());
+    record.setModules(smartLibrary.modules());
+    record.setModuleCapacity(smartLibrary.moduleCapacity());
     return record;
+  }
+
+  public SmartLibrary toDomain() {
+    return SmartLibrary.builder()
+        .modules(modules)
+        .modelName(modelName)
+        .moduleCapacity(moduleCapacity)
+        .id(Slid.of(id))
+        .createdAt(createdAt)
+        .updatedAt(updatedAt)
+        .build();
   }
 
   public static SmartLibraryRecord events(SmartLibrary smartLibrary) {

@@ -9,12 +9,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 public interface BookHibernateDao extends ReactiveCrudRepository<BookRecord, String> {
 
   @Query("select * from core.books b \n" + "order by b.isbn \n" + "limit :size offset :offset")
   Flux<BookRecord> findPaginated(int offset, int size);
+
+  @Query("update core.books set rating=:rating, votes=:votes where isbn=:isbn")
+  Mono<Void> updateBookRatingAndVotes(
+      @Param("isbn") String isbn, @Param("rating") float rating, @Param("votes") int votes);
 
   @Query(
       "select\n"
@@ -49,6 +54,26 @@ public interface BookHibernateDao extends ReactiveCrudRepository<BookRecord, Str
           + "\t\twhere\n"
           + "\t\t\tao.org_id=:orgId))")
   Flux<PartialBookProjection> findAllByOrgId(@Param("orgId") String orgId);
+
+  @Query(
+      "select\n"
+          + "\tb.isbn,\n"
+          + "\tb.translation_id,\n"
+          + "\tb.title,\n"
+          + "\tb.author,\n"
+          + "\tb.votes,\n"
+          + "\tb.rating,\n"
+          + "\t(\n"
+          + "\tselect\n"
+          + "\t\tbi.url\n"
+          + "\tfrom\n"
+          + "\t\tcore.book_image bi\n"
+          + "\twhere\n"
+          + "\t\tbi.isbn = b.isbn\n"
+          + "\tlimit 1) as image\n"
+          + "from\n"
+          + "\tcore.books b")
+  Flux<PartialBookProjection> findAllPartialBook();
 
   @Query(
       "select\n"

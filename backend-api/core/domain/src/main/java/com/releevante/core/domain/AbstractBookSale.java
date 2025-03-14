@@ -14,8 +14,6 @@ import org.immutables.value.Value;
 public abstract class AbstractBookSale {
   abstract SaleId id();
 
-  abstract LazyLoaderInit<Client> client();
-
   abstract BigDecimal total();
 
   abstract ZonedDateTime createdAt();

@@ -12,6 +12,7 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = Tag.class)
 @JsonSerialize(as = Tag.class)
 @ImmutableExt
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 public abstract class AbstractTag {
   abstract String id();
 
@@ -21,13 +22,7 @@ public abstract class AbstractTag {
 
   abstract String name();
 
-  abstract String value();
-
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  abstract Optional<String> valueFr();
-
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  abstract Optional<String> valueSp();
+  abstract TagValue value();
 
   abstract ZonedDateTime createdAt();
 }

@@ -1,11 +1,18 @@
-import Navbar from '@/components/Navbar'
-import React, { ReactNode } from 'react'
+import CartSidebar from "@/components/CartSidebar";
+import Navbar from "@/components/Navbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import React, { ReactNode } from "react";
 
-export default function layout({children}:{children:ReactNode}) {
+export default function layout({ children }: { children: ReactNode }) {
   return (
-    <div>
-        <Navbar/>
+    <SidebarProvider defaultOpen={false}>
+      <div className="relative w-[100vw] h-svh overflow-x-auto">
+      <Navbar />
+       <div>
         {children}
-    </div>
-  )
+       </div>
+      </div>
+      <CartSidebar />
+    </SidebarProvider>
+  );
 }
