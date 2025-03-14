@@ -39,7 +39,8 @@
     "findRightBook": "Trouvez le livre qui vous convient",
     "helpMessage": "Vous n'avez pas encore trouvé de livre ? Nous sommes là pour vous aider. Trouvons le livre parfait à louer gratuitement.",
     "startNow": "Commencez maintenant",
-    "books": "livres"
+    "books": "livres",
+    "recommendBookBtn": "Recommandez-moi un livre"
   },
   "SeeAllPage": {
     "subTitleBanner": "Excellent choix, sélectionnez jusqu'à 4 livres à emprunter gratuitement",
@@ -159,7 +160,9 @@
     "modifyReservation": "Modifiez votre réservation comme vous le souhaitez",
     "reserveAnotherBook": "Réserver un autre livre",
     "reserveBookEmptyMsg": "Vous n'avez pas encore réservé de livre. Trouvez dès maintenant la meilleure option dans votre bibliothèque personnelle.",
-    "reserveBookBtn": "Réserver un livre"
+    "reserveBookBtn": "Réserver un livre",
+    "saveChangesBtn": "Enregistrer les modifications",
+    "resetBtn": "Réinitialiser"
   },
   "depositPage": {
     "depositBookTitle1": "Déposez ce livre sur",

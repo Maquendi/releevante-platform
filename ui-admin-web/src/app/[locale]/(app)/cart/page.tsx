@@ -26,7 +26,7 @@ export default function CartSidebar() {
   }, [open, setOpen]);
 
   return (
-    <section className="h-[92vh] grid grid-rows-[1fr_auto]">
+    <section className="h-[92vh] gap-2 grid grid-rows-[1fr_auto]">
       <div className="overflow-y-auto">
         <MaxWithWrapper className="w-full h-full py-4">
           <div className=" w-full h-full">

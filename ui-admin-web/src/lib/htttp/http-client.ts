@@ -31,13 +31,24 @@ export async function fetchHelper<T>(
 
   try {
     const response = await fetch(requestUrl, options);
-    if(!response.ok){
-      console.log('error')
-      throw new Error(`Error with request = ${requestUrl}`)
+    if (!response.ok) {
+      let errorBody: any;
+      try {
+        errorBody = await response.json();
+      } catch (parseError) {
+        try {
+          errorBody = await response.text();
+        } catch (textError) {
+          errorBody = "No se pudo obtener el cuerpo de la respuesta";
+        }
+      }
+      
+      throw new Error(
+        `Error con la solicitud a ${requestUrl}, status: ${response.status}, error: ${JSON.stringify(errorBody)}`
+      );
     }
     return (await response.json()) as ApiResponse<T>;
   } catch (error) {
-    console.error(`API request failed for ${requestUrl}:`, error);
     throw error;
   }
 }

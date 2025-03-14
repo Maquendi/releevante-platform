@@ -39,7 +39,8 @@
       "findRightBook": "Find the right book for you",
       "helpMessage": "Didn’t find a book yet? We are here to help you. Let’s find the perfect book for rent for free.",
       "startNow": "Start now",
-      "books":"books"
+      "books":"books",
+      "recommendBookBtn":"Recommend me a book"
     },
     "SeeAllPage": {
       "subTitleBanner": "Excellent choice, select up to 4 books to rent for free",
@@ -170,7 +171,9 @@
       "modifyReservation":"Modify your reservation how ever you want",
       "reserveAnotherBook":"Reserve another book",
       "reserveBookEmptyMsg":"You don’t have any book reserved yet. Find out the best option in your personal library now.",
-      "reserveBookBtn":"Reserve a book"
+      "reserveBookBtn":"Reserve a book",
+      "saveChangesBtn":"Save changes",
+      "resetBtn":"Reset"
     },
     "returnThanksPage":{
       "thanksForReturn1":"Thanks for return",

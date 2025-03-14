@@ -177,6 +177,6 @@ export interface ReservationItem{
 
 export interface ReservationBooksResponse{
   id:string
-  clientId:string;
+  createdAt:string;
   items:ReservationItem[]
 }
