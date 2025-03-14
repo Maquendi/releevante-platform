@@ -56,9 +56,8 @@ export default function useGetReservedBooks() {
 
   const getReservedBooksMap = useCallback(() => {
     if (!books || !reservedData) return [];
-    const allReservedItems = reservedData.flatMap((item) => item.items) || [];
 
-    return allReservedItems.map((cartItem) => ({
+    return reservedData.items.map((cartItem) => ({
       ...cartItem,
       ...((books[cartItem.isbn as keyof unknown] as any) || {}),
       id:cartItem.id,
@@ -78,9 +77,8 @@ export default function useGetReservedBooks() {
   ]);
 
   useEffect(() => {
-    const allReservedItems = reservedData?.flatMap((item) => item.items) || [];
     const modifiedItems= resevedBooks.filter(originalItem => {
-      const modifiedItem = allReservedItems.find(item => item.id === originalItem.id);
+      const modifiedItem = reservedData?.items.find(item => item.id === originalItem.id);
       if (!modifiedItem) return false;
       return (
         modifiedItem.transactionType !== originalItem.transactionType ||
@@ -114,7 +112,7 @@ export default function useGetReservedBooks() {
     setReservedBooks(items);
   };
 
-  const reservationId = reservedData?.length ? reservedData?.[0]?.id : null 
+  const reservationId = reservedData ? reservedData?.id : null 
 
   const handleClearModifyItems = () => {
     setModifiedBooks([]);

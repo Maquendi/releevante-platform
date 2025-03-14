@@ -39,7 +39,8 @@
     "findRightBook": "Encuentra el libro adecuado para ti",
     "helpMessage": "¿Aún no encuentras un libro? Estamos aquí para ayudarte. Vamos a encontrar el libro perfecto para alquilar gratis.",
     "startNow": "Comienza ahora",
-    "books": "libros"
+    "books": "libros",
+    "recommendBookBtn": "Recomiéndame un libro"
   },
   "SeeAllPage": {
     "subTitleBanner": "Excelente elección, selecciona hasta 4 libros para alquilar gratis",
@@ -170,7 +171,9 @@
     "modifyReservation": "Modifica tu reserva como quieras",
     "reserveAnotherBook": "Reserva otro libro",
     "reserveBookEmptyMsg": "Aún no tienes ningún libro reservado. Encuentra la mejor opción en tu biblioteca personal ahora.",
-    "reserveBookBtn": "Reservar un libro"
+    "reserveBookBtn": "Reservar un libro",
+    "saveChangesBtn": "Guardar cambios",
+    "resetBtn": "Restablecer"
   },
   "returnThanksPage": {
     "thanksForReturn1": "Gracias por devolver",

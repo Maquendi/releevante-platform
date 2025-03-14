@@ -46,7 +46,7 @@ export default async function CatalogPage() {
               </h1>
               <p>{t("subTitle")}</p>
               <Button className="w-fit rounded-3xl text-sm px-6 py-5 hover:text-primary">
-                Recommend me a book
+                {t('recommendBookBtn')}
               </Button>
             </div>
           </div>
