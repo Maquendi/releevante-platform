@@ -54,7 +54,6 @@ export async function FetchBookById(
       resource: `/books/${isbn}`,
       queryParams: { isbn, translationId },
     });
-    console.log('rest items',res?.context?.data )
 
     return res.context.data;
   } catch (error) {
@@ -138,9 +137,6 @@ export async function SaveModifyReservations({items,reservationId}:{items:Reserv
   if(!clientId){
     throw new Error('UNAUTHORIZED')
   }
-  console.log('reservaitonID',reservationId);
-  console.log('items',items)
-
   try {
     await executePut({ resource: `/clients/${clientId}/reservations/${reservationId}`, body: {items} })
   } catch (error) {
@@ -148,7 +144,7 @@ export async function SaveModifyReservations({items,reservationId}:{items:Reserv
   }
 }
 
-export async function FetchReservedBooks():Promise<ReservationBooksResponse[]> {
+export async function FetchReservedBooks():Promise<ReservationBooksResponse> {
   const accessId = API_COOKIE.CLIENT_ACCESS_ID();
   
   if(!accessId){
@@ -156,8 +152,8 @@ export async function FetchReservedBooks():Promise<ReservationBooksResponse[]> {
   }
   
   try {
-    const data = await executeGet<ReservationBooksResponse[]>({ resource: `/clients/${accessId}/reservations`});
-    return data?.context?.data 
+    const data = await executeGet<ReservationBooksResponse>({ resource: `/clients/${accessId}/reservations`});
+    return data?.context?.data?.[0 as keyof unknown]
   } catch (error) {
     throw new Error("Error saving servide request" + error);
   }
