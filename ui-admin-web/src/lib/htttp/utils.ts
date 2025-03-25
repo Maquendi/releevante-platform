@@ -19,8 +19,17 @@ export const API_COOKIE = {
     const client_cookie = getCookie(API_CONFIG.CLIENT_TOKEN!)?.value
     const payload = client_cookie ? extractPayload(client_cookie!):null;
     return payload ? payload : null
+  },
+  CLIENT_ACCESS_ID:()=>{
+    const client_cookie = getCookie(API_CONFIG.CLIENT_TOKEN!)?.value;
+
+    const access_id = getCookie(API_CONFIG.ACCESS_ID!)?.value
+    if(access_id)return access_id
+    const payload = client_cookie ? extractPayload(client_cookie!):null;
+    return payload ? payload?.sub : null
   }
 };
+
 
 export function buildHttpHeaders(request: ApiRequest): Record<string, string> {
   const headers: Record<string, string> = { ...API_CONFIG.DEFAULT_HEADERS };

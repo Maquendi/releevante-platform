@@ -45,6 +45,8 @@ export function useAddBookToCart(selectedBook:BookDetails) {
 
     
     return {
+      id:book.isbn,
+      translationId:book.translationId,
       isbn: book.isbn!,
       title: book.title,
       image: book?.image as string,

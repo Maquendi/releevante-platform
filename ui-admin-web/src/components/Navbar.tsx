@@ -5,9 +5,10 @@ import { useMediaQuery } from "react-responsive";
 import SelectLanguage from "./SelectLanguage";
 import { Link, usePathname } from "@/config/i18n/routing";
 import { Search } from "lucide-react";
-import { Button } from "./ui/button";
+import {  buttonVariants } from "./ui/button";
 import NavbarV2 from "./NavbarV2";
 import { CartSidebarTrigger,CartTrigger } from "./CartSidebarTrigger";
+import { cn } from "@/lib/utils";
 
 
 const navbarv2MobileRoutes = [
@@ -107,9 +108,9 @@ export default function Navbar({cartTriggerType = 'SIDEBAR'}:NavbarProps) {
         </div>
       </Link>
       <div className="flex gap-2 items-center">
-        <Button variant="outline" className="rounded-3xl px-4 py-2 bg-inherit border-gray-500">
+        <Link href="/auth/code" className={cn(buttonVariants({className:"rounded-3xl px-4 py-2 bg-inherit border-gray-500",variant:'outline'}))}>
           <span className="text-xs">Login</span>
-        </Button>
+        </Link>
         <SelectLanguage />
       </div>
       {cartTriggerType === 'SIDEBAR'?<CartSidebarTrigger/> :<CartTrigger/>}

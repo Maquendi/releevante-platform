@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type TransaccionType = "RENT" | "PURCHASE";
 
 export interface CartItemState {
+  id:string;
   title: string;
   image: string;
   isbn: string;
