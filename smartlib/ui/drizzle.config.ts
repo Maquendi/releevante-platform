@@ -5,7 +5,7 @@ const dbPath = path.resolve(__dirname, "../sqlite-dev.db");
 console.log("Using database at:", dbPath);
 
 export default defineConfig({
-  dialect: "sqlite", 
+  dialect: "sqlite",
   schema: "./src/config/drizzle/schemas/*",
   out: "./src/config/drizzle/migrations",
   dbCredentials: {
