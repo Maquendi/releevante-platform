@@ -47,7 +47,7 @@ export default function ReservedBooksContent() {
   return (
     <section>
       <MaxWithWrapper className="space-y-3 mt-7">
-        <RentItemsReview isReservedBooks bookCount={rentItems?.length || 0}>
+        <RentItemsReview isReservedBooks bookCount={rentItems?.length}>
           {rentItems.map((item) => {
             return (
               <CartItem
@@ -60,7 +60,7 @@ export default function ReservedBooksContent() {
             );
           })}
         </RentItemsReview>
-        <PurchaseItemsReview bookCount={purchaseItems?.length || 0}>
+        <PurchaseItemsReview bookCount={purchaseItems?.length}>
           <>
             {purchaseItems.map((item) => {
               return (

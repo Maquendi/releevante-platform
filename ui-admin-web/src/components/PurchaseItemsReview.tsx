@@ -10,7 +10,7 @@ interface PurchaseItemsReviewProps{
   bookCount:number
 }
 
-export default function PurchaseItemsReview({children,bookCount}:PurchaseItemsReviewProps) {
+export default function PurchaseItemsReview({children,bookCount=0}:PurchaseItemsReviewProps) {
       const settings = useAppSelector((state) => state.settings);
     const t = useTranslations("reviewMyCart");
     

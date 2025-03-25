@@ -34,7 +34,6 @@ export default  function HeaderBanner({
  const {filterBySubCategory}=useLibraryInventory()
   const {selected} = filterBySubCategory(categoryId,subCategoryId)  
 
-  console.log('selected',selected)
   return (
     <header className="text-center   py-12 bg-background  bg-white  rounded-b-3xl">
       <MaxWithWrapper>
