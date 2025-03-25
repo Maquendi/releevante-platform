@@ -13,6 +13,9 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ReservationDto.class)
 @JsonSerialize(as = ReservationDto.class)
 public abstract class AbstractReservationDto {
+
+  abstract String id();
+
   abstract ZonedDateTime createdAt();
 
   abstract List<ReservationItemDto> items();
@@ -21,6 +24,7 @@ public abstract class AbstractReservationDto {
     return ReservationDto.builder()
         .createdAt(reservation.createdAt())
         .items(reservation.items().stream().map(ReservationItemDto::fromDomain).toList())
+            .id(reservation.id())
         .build();
   }
 }

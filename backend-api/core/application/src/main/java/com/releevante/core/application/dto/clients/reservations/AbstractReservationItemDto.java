@@ -49,6 +49,7 @@ public abstract class AbstractReservationItemDto {
   public static ReservationItemDto fromDomain(BookReservationItem item) {
     return ReservationItemDto.builder()
         .transactionType(item.transactionType())
+            .id(item.id())
         .isbn(item.isbn().value())
         .qty(item.qty())
         .build();
