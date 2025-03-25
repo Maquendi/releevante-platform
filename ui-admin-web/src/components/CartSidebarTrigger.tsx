@@ -2,9 +2,9 @@
 import {
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Link } from "@/config/i18n/routing";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
-import Link from "next/link";
 
 function CartIndicator(){
   const numItemsInCart =

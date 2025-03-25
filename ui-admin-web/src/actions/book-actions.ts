@@ -1,5 +1,5 @@
 "use server";
-import { executeGet,executePost } from "@/lib/htttp/http-client";
+import { executeGet,executePost, executePut } from "@/lib/htttp/http-client";
 import { API_COOKIE } from "@/lib/htttp/utils";
 import {
   Book,
@@ -54,6 +54,8 @@ export async function FetchBookById(
       resource: `/books/${isbn}`,
       queryParams: { isbn, translationId },
     });
+    console.log('rest items',res?.context?.data )
+
     return res.context.data;
   } catch (error) {
     throw new Error("Error getting books" + error);
@@ -131,6 +133,21 @@ export async function SaveReservationBooks(items: ReservationItem[]): Promise<vo
   }
 }
 
+export async function SaveModifyReservations({items,reservationId}:{items:ReservationItem[],reservationId:string}): Promise<void> {
+  const clientId = API_COOKIE.CLIENT_ACCESS_ID();
+  if(!clientId){
+    throw new Error('UNAUTHORIZED')
+  }
+  console.log('reservaitonID',reservationId);
+  console.log('items',items)
+
+  try {
+    await executePut({ resource: `/clients/${clientId}/reservations/${reservationId}`, body: {items} })
+  } catch (error) {
+    throw new Error("Error saving servide request" + error);
+  }
+}
+
 export async function FetchReservedBooks():Promise<ReservationBooksResponse[]> {
   const accessId = API_COOKIE.CLIENT_ACCESS_ID();
   
@@ -139,7 +156,7 @@ export async function FetchReservedBooks():Promise<ReservationBooksResponse[]> {
   }
   
   try {
-    const data = await executeGet<ReservationBooksResponse[]>({ resource: `/clients/${accessId}/reservations`})
+    const data = await executeGet<ReservationBooksResponse[]>({ resource: `/clients/${accessId}/reservations`});
     return data?.context?.data 
   } catch (error) {
     throw new Error("Error saving servide request" + error);

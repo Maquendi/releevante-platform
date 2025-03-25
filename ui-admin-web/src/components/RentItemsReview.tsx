@@ -1,18 +1,16 @@
 'use client'
-import React, { useMemo } from 'react'
-import { CartItem } from './Cartitem'
+import React, { ReactNode, useMemo } from 'react'
 import { Link } from '@/config/i18n/routing'
 import { formatDateByRegion } from '@/lib/utils'
 import { useLocale, useTranslations } from 'next-intl';
 import { useAppSelector } from '@/redux/hooks';
-import { CartItemState } from '@/redux/features/cartSlice'
 
 interface RentItemsReviewProps{
     isReservedBooks?:boolean,
-    books:CartItemState[]
-
+    children:ReactNode;
+    bookCount:number;
 }
-export default function RentItemsReview({isReservedBooks,books}:RentItemsReviewProps) {
+export default function RentItemsReview({isReservedBooks,bookCount,children}:RentItemsReviewProps) {
 const translationPage = useMemo(()=>{
   return isReservedBooks ? 'reservedBooks':'reviewMyCart'
 },[isReservedBooks])
@@ -21,7 +19,7 @@ const t = useTranslations(translationPage);
 
   const locale = useLocale();  return (
     <div>
-        {books?.length > 0 && (
+        {bookCount > 0 && (
           <div className="pt-7 grid bg-white rounded-xl space-y-5">
             <div className="px-4 space-y-1 md:flex justify-between">
               <h3 className="space-x-1 text-xl font-medium flex">
@@ -29,7 +27,7 @@ const t = useTranslations(translationPage);
                   <span className="text-black">{t("readInHotel")} </span>
                 </p>
                 <p className="space-x-1 text-secondary-foreground">
-                  (<span>{books.length}</span>
+                  (<span>{bookCount}</span>
                   {settings?.data && (
                     <>
                       <span>{t("of")}</span>
@@ -45,14 +43,7 @@ const t = useTranslations(translationPage);
               </h3>
             </div>
             <div className="px-4 space-y-4">
-              {books.map((item) => (
-                <CartItem
-                  key={item.isbn}
-                  item={item}
-                  buttonTextTl="moveToBuy"
-                  itemType="RENT"
-                />
-              ))}
+              {children}
             </div>
             <div className="flex justify-center items-center border-t border-gray-200  py-3 px-5 bg-white">
               <Link
