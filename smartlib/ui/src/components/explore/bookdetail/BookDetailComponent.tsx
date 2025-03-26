@@ -15,6 +15,7 @@ import { CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { IBookDetail } from "@/book/domain/models";
 import { useLocale, useTranslations } from "next-intl";
+import { useGetBookDetails } from "@/hooks/useGetBookDetails";
 
 const BestSellerSlider = dynamic(
   () => import("@/components/search/BestSellerSlider"),
@@ -34,15 +35,8 @@ const AddBookToCartBanner = dynamic(
 
 export default function BookDetailComponent({ isbn, translationId }) {
   const queryClient = new QueryClient();
-  const { data: books = [] } = useQuery({
-    queryKey: ["BOOK_BY_TRANSLATION_ID", translationId],
-    queryFn: async () => {
-      console.log("LOADING BOOK DETAILS ****************");
-      return await loadBookDetail(translationId);
-    },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+
+  const { booksDetails: books } = useGetBookDetails(translationId)
 
   const t = useTranslations("bookById");
 
