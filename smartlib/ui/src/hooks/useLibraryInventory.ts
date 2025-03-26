@@ -5,14 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function useLibraryInventory() {
   const { data: libraryInventory, isPending } = useQuery({
-    queryKey: ["BOOK_INVENTORY", "All"],
+    queryKey: ["BOOK_INVENTORY"],
     queryFn: async () => {
-
       console.log("LOADING BOOK INVENTORY* ********************")
       return await loadLibraryInventory();
     },
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 
   const subCategoryFrom = ({ id, bookRelations }): SubCategory => {
