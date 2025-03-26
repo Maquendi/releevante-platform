@@ -5,11 +5,11 @@ import * as schema from "./schemas";
 const databaseLocation = process.env.DB_PATH;
 
 if (!databaseLocation) {
-  throw new Error("NEED TO SET DBPATH env variable");
+  throw new Error("NEED TO SET DB_PATH environment variable");
 }
 
 console.log(`CONNECTING TO DB IN LOCATION: ${databaseLocation}`);
 
 const sqlite = new Database(databaseLocation);
 
-export const db = drizzle({ client: sqlite, schema });
+export const db = drizzle(sqlite, { schema });
