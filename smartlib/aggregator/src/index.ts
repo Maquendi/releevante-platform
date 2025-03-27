@@ -3,8 +3,9 @@ import { synchronizeSettings } from "./sync/synchronize-settings";
 import { synchronizeLibraryAccess } from "./sync/synchronize-library-access";
 import { getCredential } from "./auth/authenticator";
 import { synchronizeTransactions } from "./sync/synchronize-transactions";
+import { isServerReachable } from "./htttp-client/http-client";
 
-const runAsync = async () => {
+const executeTasks = async () => {
   let token = await getCredential();
 
   await synchronizeTransactions(token);
@@ -16,8 +17,10 @@ const runAsync = async () => {
   await synchronizeSettings(token);
 };
 
-runAsync();
-
-setInterval(() => {
-  runAsync();
+setInterval(async () => {
+  if ((await isServerReachable())) {
+    executeTasks();
+  } else {
+    console.log("SERVER UNREACHABLE")
+  }
 }, 1 * 60 * 1000);

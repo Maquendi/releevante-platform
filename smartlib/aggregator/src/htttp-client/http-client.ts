@@ -65,3 +65,8 @@ export const executePut = async <T>(
   });
   return (await response.json()) as ApiResponse<T>;
 };
+
+
+export const isServerReachable = async (): Promise<boolean> => {
+  return false;
+}
