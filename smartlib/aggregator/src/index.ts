@@ -6,21 +6,28 @@ import { synchronizeTransactions } from "./sync/synchronize-transactions";
 import { isServerReachable } from "./htttp-client/http-client";
 
 const executeTasks = async () => {
-  let token = await getCredential();
 
-  await synchronizeTransactions(token);
+  try {
+    let token = await getCredential();
 
-  await synchronizeBooks(token);
+    await synchronizeTransactions(token);
+    await synchronizeBooks(token);
+    await synchronizeLibraryAccess(token);
+    await synchronizeSettings(token);
 
-  await synchronizeLibraryAccess(token);
-
-  await synchronizeSettings(token);
+  } catch (error) {
+    console.error("Error executing tasks:", error);
+  }
 };
 
 setInterval(async () => {
-  if ((await isServerReachable())) {
-    executeTasks();
-  } else {
-    console.log("SERVER UNREACHABLE")
+  try {
+    if (await isServerReachable()) {
+      await executeTasks();
+    } else {
+      console.log("SERVER UNREACHABLE");
+    }
+  } catch (error) {
+    console.error("Error in setInterval:", error);
   }
 }, 1 * 60 * 1000);
