@@ -1,33 +1,32 @@
 module.exports = {
   apps: [
     {
-      name: "smartlib-bridge-io",
-      script: "../.venv/bin/python3",
+      name: "bridge.io",
+      cwd: "/home/releevante/Documents/platform/releevante-platform/smartlib/bridge.io/",
+      script: "/home/releevante/Documents/platform/releevante-platform/.venv/bin/python3",
       args: "app.py",
-      cwd: "bridge.io/",
       env: {
         PYTHON_ENV: "production",
+        port: 7777
       }
     },
     {
       name: "smartlib-ui",
+      cwd: "/home/releevante/Documents/platform/releevante-platform/smartlib/ui/",
       script: "npm start",
-      cwd: "ui/",
-      //script: "node",
-      //args: "ui/.next/standalone/server.js",
       env: {
         NODE_ENV: "production",
-        PORT: 3000,
+        PORT: 3000
       }
     },
     {
-      name: "smartlib-aggregator",
-      script: "aggregator/dist/index.js",
-      instances: "1", // Run on all CPU cores
-      exec_mode: "cluster", // Cluster mode for better performance
+      name: "aggregator",
+      cwd: "/home/releevante/Documents/platform/releevante-platform/smartlib/aggregator/",
+      script: "/home/releevante/.nvm/versions/node/v20.18.3/bin/node",
+      args: "dist/index.js",
       env: {
-        NODE_ENV: "production",
+        NODE_ENV: "production"
       }
-    },
+    }
   ]
 };

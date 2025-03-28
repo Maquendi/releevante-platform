@@ -53,7 +53,7 @@ const writeCredentialFile = async (credentials: ApiCredential) => {
 };
 
 const credentialVerified = (credentials: ApiCredential): boolean => {
-  if (!credentials.token || credentials.slid !== slid) return false;
+  if (!credentials?.token || credentials.slid !== slid) return false;
   const expiresAt = new Date(credentials?.expiresAt as string); // 10:00 AM on December 1, 2024
   const now = new Date(); // 3:30 PM on December 1, 2024
 

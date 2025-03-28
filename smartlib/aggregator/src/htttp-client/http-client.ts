@@ -68,5 +68,5 @@ export const executePut = async <T>(
 
 
 export const isServerReachable = async (): Promise<boolean> => {
-  return false;
+  return true;
 }
