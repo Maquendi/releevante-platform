@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "bridge.io",
       cwd: "/home/releevante/Documents/platform/releevante-platform/smartlib/bridge.io/",
-      script: ".venv/bin/python3",
+      script: "/home/releevante/Documents/platform/releevante-platform/.venv/bin/python3",
       args: "app.py",
       env: {
         PYTHON_ENV: "production",
