@@ -23,7 +23,8 @@ sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.ta
 
 systemctl status sleep.target
 
+sudo chown releevante:releevante /home/releevante/.pm2/rpc.sock /home/releevante/.pm2/pub.sock
 
 # smartlib-aggregator
   - journalctl -u smartlib.service --no-pager --lines=50
-  - sudo systemctl restart smartlib-aggregator.service
+  - sudo systemctl restart pm2-releevante.service
