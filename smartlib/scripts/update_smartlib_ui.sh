@@ -34,6 +34,22 @@ npm run build || { echo "npm build failed"; exit 1; }
 
 echo "Update and build completed successfully!"
 
-# Optional: If you want to stash any local changes before pulling
+echo "Stashing any uncommitted changes..."
 git stash
 
+# restart the pm2 process
+echo "Restarting pm2 smartlib-ui process..."
+
+pm2 restart smartlib-ui
+
+#close chrome
+echo "Closing Chrome..."
+
+#open chrome with the smartlib url
+echo "executing open-smartlib.sh"
+
+/home/releevante/Documents/platform/releevante-platform/smartlib/scripts/open-smartlib.sh
+
+echo "Done!"
+# Optional: If you want to check the logs of the pm2 process
+pm2 logs smartlib-ui
