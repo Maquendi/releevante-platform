@@ -47,8 +47,8 @@ pm2 restart smartlib-ui
 echo "Closing Chrome..."
 
 #open chrome with the smartlib url
-echo "executing open-smartlib.sh"
+echo "executing open-smartlib-ui.sh"
 
-./open-smartlib.sh
+./open-smartlib-ui.sh
 
 echo "Done!"
