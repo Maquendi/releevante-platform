@@ -14,8 +14,9 @@
 REPO_PATH="/home/releevante/Documents/platform/releevante-platform"
 UI_PATH="$REPO_PATH/smartlib/ui"
 
-chown -R $USER:$USER "$UI_PATH/.next"
-rm -rf "$UI_PATH/.next"
+sudo chown -R $USER:$USER "$UI_PATH/.next"
+
+sudo rm -rf "$UI_PATH/.next"
 
 # Navigate to the repository
 cd "$REPO_PATH" || { echo "Failed to cd into repository"; exit 1; }
@@ -31,7 +32,7 @@ echo "Installing dependencies..."
 npm install || { echo "npm install failed"; exit 1; }
 
 echo "Building the UI..."
-npm run build || { echo "npm build failed"; exit 1; }
+sudo npm run build || { echo "npm build failed"; exit 1; }
 
 echo "Update and build completed successfully!"
 
