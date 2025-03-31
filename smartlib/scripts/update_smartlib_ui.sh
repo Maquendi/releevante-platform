@@ -21,7 +21,7 @@ rm -rf "$UI_PATH/.next"
 cd "$REPO_PATH" || { echo "Failed to cd into repository"; exit 1; }
 
 echo "Pulling latest changes from master branch..."
-git checkout smartlib/master && git pull origin develop || { echo "Git pull failed"; exit 1; }
+git checkout smartlib/master && git pull origin master || { echo "Git pull failed"; exit 1; }
 
 # Navigate to the UI directory
 cd "$UI_PATH" || { echo "Failed to cd into UI directory"; exit 1; }
