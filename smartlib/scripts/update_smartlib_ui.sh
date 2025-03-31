@@ -35,7 +35,8 @@ npm run build || { echo "npm build failed"; exit 1; }
 
 echo "Update and build completed successfully!"
 
-git commit -m "Auto commit before stash" || { echo "Git commit failed"; exit 1; }
+
+git add . && git commit -m "Auto commit before stash" || { echo "Git commit failed"; exit 1; }
 
 # restart the pm2 process
 echo "Restarting pm2 smartlib-ui process..."
