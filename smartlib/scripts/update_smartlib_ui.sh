@@ -41,6 +41,7 @@ git add .
 # Check if there are any changes to commit
 if ! git diff-index --quiet HEAD --; then
     echo "Changes detected, committing..."
+    git commit -m "Update smartlib UI" || { echo "Git commit failed"; exit 1; }
 else
     echo "No changes detected, skipping commit."
 fi
