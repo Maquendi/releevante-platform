@@ -49,8 +49,6 @@ echo "Closing Chrome..."
 #open chrome with the smartlib url
 echo "executing open-smartlib.sh"
 
-/home/releevante/Documents/platform/releevante-platform/smartlib/scripts/open-smartlib.sh
+./open-smartlib.sh
 
 echo "Done!"
-# Optional: If you want to check the logs of the pm2 process
-pm2 logs smartlib-ui
