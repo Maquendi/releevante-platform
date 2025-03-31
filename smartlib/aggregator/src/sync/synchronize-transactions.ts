@@ -29,7 +29,7 @@ export const synchronizeTransactions = async (token: string) => {
 
   console.log(
     "New Transaction Status/Item status synchronized " +
-      data.transactionStatusesCreated
+    data.transactionStatusesCreated
   );
 
   return data.transactionStatusesCreated + data.transactionsCreated;
@@ -46,7 +46,8 @@ async function createNewTransactionStatuses(token: string): Promise<number> {
          join book_transactions bt 
          on bt.id=bts.transaction_id 
        where bts.is_synced=0 
-       and bt.is_synced=1`
+       and bt.is_synced=1 
+       order by bts.created_at asc limit 100`
     )
     .all()
     .map((status) => status as TransactionStatus);
@@ -65,7 +66,8 @@ async function createNewTransactionStatuses(token: string): Promise<number> {
         join book_transactions bt 
         on bt.id = bti.transaction_id 
       where btis.is_synced=0
-      and bti.is_synced=1`
+      and bti.is_synced=1 
+      order by btis.created_at asc limit 100`
     )
     .all()
     .map((status) => status as TransactionItemStatus);
@@ -118,10 +120,6 @@ async function createNewTransactionStatuses(token: string): Promise<number> {
   console.log(
     "POSTING Transaction/item status " + transactionStatusSyncDto.length
   );
-
-  console.log("transactionStatusSyncDto   *****************************");
-
-  console.log(JSON.stringify(transactionStatusSyncDto));
 
   const apiResponse = await createTransactionStatusApi(
     token,
@@ -188,7 +186,8 @@ async function createNewTransactions(token: string): Promise<number> {
        transaction_type as transactionType, 
        created_at as createdAt 
        from book_transactions 
-       where is_synced=0;`
+       where is_synced=0 
+       order by created_at asc limit 50;`
     )
     .all();
 
@@ -210,10 +209,6 @@ async function createNewTransactions(token: string): Promise<number> {
   if (transactionDto.length == 0) {
     return 0;
   }
-
-  console.log("transactionDtoList*********************************");
-
-  console.log(JSON.stringify(transactionDto));
 
   const apiResponse = await createTransactionApi(token, transactionDto);
 

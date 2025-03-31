@@ -1,12 +1,15 @@
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import Database from "better-sqlite3";
 import * as schema from "./schemas";
-import path from "path";
 
-const dbUrl = process.env.DB_PATH!;
+const databaseLocation = process.env.DB_PATH;
 
-const dbPath = path.resolve(__dirname, dbUrl);
+if (!databaseLocation) {
+  throw new Error("NEED TO SET DB_PATH environment variable");
+}
 
-const sqlite = new Database(dbPath);
+console.log(`CONNECTING TO DB IN LOCATION: ${databaseLocation}`);
 
-export const db = drizzle({ client: sqlite, schema });
+const sqlite = new Database(databaseLocation);
+
+export const db = drizzle(sqlite, { schema });

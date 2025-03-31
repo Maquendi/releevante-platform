@@ -15,8 +15,6 @@ export default function SearchBooksPage() {
 
 const {searchTerm,books,isPending,handleSetSearchTerm} =useSearchBooks()
   
-  
-
 
   return (
     <>

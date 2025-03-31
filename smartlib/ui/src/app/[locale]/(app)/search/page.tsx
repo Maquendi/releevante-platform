@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Search, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -12,33 +12,31 @@ import { useDebounce } from "use-debounce";
 import VirtualKeyboard from "@/components/VirtualKeyboard";
 import NotFoundSearchBooks from "@/components/search/NotFound";
 import BestSellerSlider from "@/components/search/BestSellerSlider";
+import useLibraryInventory from "@/hooks/useLibraryInventory";
+import { PartialBook } from "@/book/domain/models";
 
 export default function SearchBooksPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [queryValue] = useDebounce(searchQuery, 400);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState<boolean>(false);
+  const [books, setBooks] = useState<PartialBook[]>([])
+  const { libraryInventory, isPending } = useLibraryInventory()
 
-  const {
-    data: books = [],
-    isPending,
-    isFetching,
-  } = useQuery({
-    queryKey: ["BOOK_INVENTORY", "All"],
-    queryFn: async () => {
-      const inventory = await loadLibraryInventory();
-      return Object.values(inventory.books);
-    },
-    refetchOnWindowFocus: false,
-  });
-
-  const handleInputChange = (val: string) => {
+  const handleInputChange = useCallback((val: string) => {
     setSearchQuery(val);
-  };
+  }, []);
+
 
   const handleInputFocus = () => {
     if (isKeyboardVisible) return;
     setIsKeyboardVisible(true);
-  };
+  }
+
+  useEffect(() => {
+    if (libraryInventory?.books) {
+      setBooks(Object.values(libraryInventory!.books))
+    }
+  }, [libraryInventory])
 
   return (
     <>
@@ -69,12 +67,12 @@ export default function SearchBooksPage() {
             <Input
               placeholder="Buscar..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleInputChange(e.target.value)}
               className="pr-10 py-6 w-full px-5 rounded-md transition duration-500"
             />
             <button
               className="absolute focus:bg-gray-500 bg-black text-white rounded-full px-0.5 py-0.5 right-5 top-1/2 -translate-y-1/2"
-              onClick={() => setSearchQuery("")}
+              onClick={() => handleInputChange("")}
             >
               <X className="font-bold" size={13} />
             </button>
@@ -86,7 +84,7 @@ export default function SearchBooksPage() {
             <p>loading...</p>
           </div>
         ) : null}
-        {!books?.length && !isFetching ? (
+        {!books?.length ? (
           <div className="space-y-10 px-7">
             <NotFoundSearchBooks />
             <Suspense>
@@ -121,7 +119,11 @@ export default function SearchBooksPage() {
         </div>
       </div>
       <VirtualKeyboard
-        setInputText={setSearchQuery}
+        setInputText={(val) => {
+          console.log("setting input text")
+          console.log(val)
+          handleInputChange(val.toString())
+        }}
         open={isKeyboardVisible}
         setOpen={setIsKeyboardVisible}
         state={searchQuery}

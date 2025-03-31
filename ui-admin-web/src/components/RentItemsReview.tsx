@@ -10,7 +10,7 @@ interface RentItemsReviewProps{
     children:ReactNode;
     bookCount:number;
 }
-export default function RentItemsReview({isReservedBooks,bookCount,children}:RentItemsReviewProps) {
+export default function RentItemsReview({isReservedBooks,bookCount=0,children}:RentItemsReviewProps) {
 const translationPage = useMemo(()=>{
   return isReservedBooks ? 'reservedBooks':'reviewMyCart'
 },[isReservedBooks])

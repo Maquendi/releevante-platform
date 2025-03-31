@@ -47,6 +47,7 @@
     "react-simple-keyboard": "^3.8.22",
     "react-slick": "^0.30.2",
     "react-tabs": "^6.1.0",
+    "sharp": "0.32.6",
     "slick-carousel": "^1.8.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.0",

@@ -14,8 +14,7 @@ class BackendPayload(BaseModel):
 
 
 class BackendCommService:
-    def __init__(self):
-        pass
+
 
     async def sendCommand(self, command: BackendCommand, payload: BackendPayload):
         await asyncio.sleep(5)
