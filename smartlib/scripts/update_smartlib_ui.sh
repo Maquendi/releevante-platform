@@ -48,6 +48,9 @@ else
     echo "No changes detected, skipping commit."
 fi
 
+
+sudo chown releevante:releevante /home/releevante/.pm2/rpc.sock /home/releevante/.pm2/pub.sock
+
 # restart the pm2 process
 echo "Restarting pm2 smartlib-ui process..."
 
