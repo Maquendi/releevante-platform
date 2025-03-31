@@ -51,12 +51,9 @@ echo "Restarting pm2 smartlib-ui process..."
 
 pm2 restart smartlib-ui
 
-#close chrome
-echo "Closing Chrome..."
-
 #open chrome with the smartlib url
 echo "executing open-smartlib-ui.sh"
 
-./open-smartlib-ui.sh
+/home/releevante/Documents/platform/releevante-platform/smartlib/scripts/open-smartlib-ui.sh
 
 echo "Done!"
