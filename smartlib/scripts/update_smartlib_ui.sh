@@ -51,7 +51,7 @@ fi
 # restart the pm2 process
 echo "Restarting pm2 smartlib-ui process..."
 
-sudo pm2 restart smartlib-ui
+pm2 restart smartlib-ui
 
 #open chrome with the smartlib url
 echo "executing open-smartlib-ui.sh"
