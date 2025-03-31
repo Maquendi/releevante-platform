@@ -23,6 +23,8 @@ cd "$REPO_PATH" || { echo "Failed to cd into repository"; exit 1; }
 echo "Pulling latest changes from master branch..."
 git checkout smartlib/master && git pull origin master || { echo "Git pull failed"; exit 1; }
 
+git commit -m "Auto commit before stash" || { echo "Git commit failed"; exit 1; }
+
 # Navigate to the UI directory
 cd "$UI_PATH" || { echo "Failed to cd into UI directory"; exit 1; }
 
@@ -33,9 +35,6 @@ echo "Building the UI..."
 npm run build || { echo "npm build failed"; exit 1; }
 
 echo "Update and build completed successfully!"
-
-echo "Stashing any uncommitted changes..."
-git stash
 
 # restart the pm2 process
 echo "Restarting pm2 smartlib-ui process..."
