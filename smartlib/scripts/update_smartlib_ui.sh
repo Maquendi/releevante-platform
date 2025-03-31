@@ -14,9 +14,9 @@
 REPO_PATH="/home/releevante/Documents/platform/releevante-platform"
 UI_PATH="$REPO_PATH/smartlib/ui"
 
-sudo chown -R $USER:$USER "$UI_PATH/.next"
+# sudo chown -R $USER:$USER "$UI_PATH/.next"
 
-sudo rm -rf "$UI_PATH/.next"
+sudo rm -r "$UI_PATH/.next"
 
 # Navigate to the repository
 cd "$REPO_PATH" || { echo "Failed to cd into repository"; exit 1; }
@@ -32,7 +32,8 @@ echo "Installing dependencies..."
 npm install || { echo "npm install failed"; exit 1; }
 
 echo "Building the UI..."
-sudo npm run build || { echo "npm build failed"; exit 1; }
+
+npm run build || { echo "npm build failed"; exit 1; }
 
 echo "Update and build completed successfully!"
 
@@ -50,7 +51,7 @@ fi
 # restart the pm2 process
 echo "Restarting pm2 smartlib-ui process..."
 
-pm2 restart smartlib-ui
+sudo pm2 restart smartlib-ui
 
 #open chrome with the smartlib url
 echo "executing open-smartlib-ui.sh"
