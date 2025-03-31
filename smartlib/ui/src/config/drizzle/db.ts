@@ -8,7 +8,7 @@ if (!databaseLocation) {
   throw new Error("NEED TO SET DB_PATH environment variable");
 }
 
-console.log(`CONNECTING TO DB IN LOCATION: ${databaseLocation}`);
+console.log(`CONNECTING TO DB AT LOCATION: ${databaseLocation}`);
 
 const sqlite = new Database(databaseLocation);
 
