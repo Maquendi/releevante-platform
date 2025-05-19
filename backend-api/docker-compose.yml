@@ -1,16 +1,26 @@
 services:
+  flyway_server:
+    image: flyway/flyway
+    command: ${FLYWAY_COMMAND}
+    volumes:
+      - src/main/resources/db/migration:/flyway/sql
+    networks:
+      - releevante
   backend-api:
     build: 
       context: .
       dockerfile: Dockerfile
     image: backend-api:${APP_VERSION}
+    env_file:
+      - .env
     environment:
-      DB_URL: ${DATABASE_URL}
-      DB_USER: ${DATABASE_USER}
-      DB_SECRET: ${DATABASE_SECRET}
-      PRIVATE_KEY_PATH: ${PRIVATE_KEY_PATH}
-      PUBLIC_KEY_PATH: ${PUBLIC_KEY_PATH}
+      - PRIVATE_KEY_PATH=/app/data/keys/private.pem
+      - PUBLIC_KEY_PATH=/app/data/keys/public.pem
+      - SERVER_PORT=8181
     ports:
-      - "8080:8080"
+      - "8080:8181"
+    volumes:
+      # Mount Windows PEM key directory to /app/keys in container
+      - C:\Users\LEGION\Documents\code\releevante-platform\data\keys:/app/data/keys
   
 

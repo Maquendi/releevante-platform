@@ -1,12 +1,26 @@
-import { resolve } from "path";
-
 import Database from "better-sqlite3";
 
-const dbPath = resolve(__dirname, "../../../sqlite-dev.db");
+let database: Database.Database | null = null;
 
-console.log(`DATABASE LOCATION AT ${dbPath}`)
+/**
+ * Gets the database connection, initializing it if it hasn't been initialized yet.
+ * This lazy initialization ensures the database is only connected when needed.
+ */
+export const getDbConnection = (): Database.Database => {
+  if (!database) {
+    const dbPath = process.env.DB_PATH;
+    console.log(`DATABASE LOCATION AT ${dbPath}`);
 
-const database = new Database(dbPath, { fileMustExist: true });
-database.pragma("journal_mode = WAL");
+    database = new Database(dbPath, { fileMustExist: true });
+    database.pragma("journal_mode = WAL");
+  }
 
-export const dbConnection = database;
+  return database;
+};
+
+// For backward compatibility with existing code
+export const dbConnection = new Proxy({} as Database.Database, {
+  get: (target, prop) => {
+    return getDbConnection()[prop as keyof Database.Database];
+  }
+});

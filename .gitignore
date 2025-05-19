@@ -2,6 +2,9 @@
 /server
 /releevante-docs
 /client
+/backend-api/.env
+/ui-admin-web/.env
+.idea
 
 /docker/.env
 private.pem

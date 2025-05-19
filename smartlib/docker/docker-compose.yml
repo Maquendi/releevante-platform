@@ -1,0 +1,25 @@
+services:
+  ui-smartlib-web:
+    extends:
+      file: ../ui/docker-compose.yml
+      service: ui-smartlib-web
+    networks:
+      - smartlib
+    depends_on:
+      - bridge-io
+  bridge-io:
+    extends:
+      file: ../bridge.io/docker-compose.yml
+      service: bridge-io
+    networks:
+      - smartlib
+  aggregator:
+    extends:
+      file: ../aggregator/docker-compose.yml
+      service: aggregator
+    networks:
+      - smartlib
+networks:
+  smartlib:
+    driver: bridge
+    external: false

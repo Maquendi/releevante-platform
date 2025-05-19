@@ -14,7 +14,7 @@
   "dependencies": {
     "better-sqlite3": "^8.7.0",
     "bindings": "^1.5.0",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.5.0",
     "drizzle-orm": "^0.16.1",
     "drizzle-orm-sqlite": "^0.16.1",
     "node-fetch": "^3.3.2"

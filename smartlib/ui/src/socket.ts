@@ -13,7 +13,6 @@ import {
 } from "./core/domain/loan.model";
 import {
   BookTransactionItemState,
-  onBookExchangeSuccess,
   setCurrentItem,
 } from "./redux/features/bookExchangeSlice";
 import { clearCart } from "./redux/features/cartSlice";
@@ -21,7 +20,7 @@ import { addUserId } from "./redux/features/contactLessLoginSlice";
 
 let socketClientInitialized = false;
 
-const SOCKET_URL = "http://localhost:7777";
+const SOCKET_URL = process.env.SOCKET_SERVER;
 
 const socket = io(SOCKET_URL, {
   autoConnect: false,

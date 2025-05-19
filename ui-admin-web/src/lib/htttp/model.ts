@@ -13,10 +13,10 @@ export interface ApiResponse<T> {
   };
 }
 
-export type HttpMethod =  "GET" | "POST" | "PUT" | "PATCH" | "DELETE" ;
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface FetchOptions {
-  method: HttpMethod
+  method: HttpMethod;
   headers: Record<string, string>;
   body?: string;
 }
@@ -28,3 +28,13 @@ export interface TokenPayload {
   sub: string;
   exp: number;
 }
+
+export const buildRequest = async (
+  resource: string,
+  request: any
+): Promise<ApiRequest> => {
+  return {
+    resource: resource,
+    body: request,
+  };
+};

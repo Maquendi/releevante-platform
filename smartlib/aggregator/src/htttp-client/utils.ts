@@ -1,5 +1,4 @@
 import { ApiRequest } from "./model";
-require("dotenv").config();
 
 const API_SERVER_URL = `${process.env.SERVER_URL}/api`;
 

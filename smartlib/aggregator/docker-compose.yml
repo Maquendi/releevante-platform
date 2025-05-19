@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - DB_PATH=/app/data/db/sqlite-dev.db
+      - SERVER_URL=http://backend-api:8181
+    volumes:
+      - ./credentials.json:/app/credentials.json
+      # Mount your SQLite DB to /app/data
+      - C:\Users\LEGION\Documents\code\releevante-platform\data\db:/app/data/db
+    restart: unless-stopped

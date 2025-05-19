@@ -39,3 +39,6 @@ private.pem
 public.pem
 
 /src/main/resources/releevante-google-sheets-client-secret.json
+
+## env file
+.env

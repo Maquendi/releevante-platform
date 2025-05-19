@@ -24,5 +24,8 @@ public abstract class AbstractTag {
 
   abstract TagValue value();
 
-  abstract ZonedDateTime createdAt();
+  @Value.Default
+  ZonedDateTime createdAt() {
+    return ZonedDateTime.now();
+  }
 }

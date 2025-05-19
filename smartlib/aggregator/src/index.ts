@@ -4,6 +4,8 @@ import { synchronizeLibraryAccess } from "./sync/synchronize-library-access";
 import { getCredential } from "./auth/authenticator";
 import { synchronizeTransactions } from "./sync/synchronize-transactions";
 import { isServerReachable } from "./htttp-client/http-client";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const executeTasks = async () => {
 

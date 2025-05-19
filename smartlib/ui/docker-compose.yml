@@ -1,0 +1,20 @@
+services:
+  ui-smartlib-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ui-smartlib-web:${APP_VERSION}
+    ports:
+      - "3000:3000"
+    restart: no
+    env_file:
+      - .env
+    environment:
+      - DB_PATH=/app/data/db/sqlite-dev.db
+      - PRIVATE_PEM_FILE_PATH=/app/data/keys/private.pem
+      - PUBLIC_PEM_FILE_PATH=/app/data/keys/public.pem
+    volumes:
+      # Mount Windows PEM key directory to /app/keys in container
+      - C:\Users\LEGION\Documents\code\releevante-platform\data\keys:/app/data/keys
+      # Mount your SQLite DB to /app/data
+      - C:\Users\LEGION\Documents\code\releevante-platform\data\db:/app/data/db

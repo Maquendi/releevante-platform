@@ -1,0 +1,56 @@
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_SECRET}
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - releevante
+    restart: always
+  ui-admin-web:
+    extends:
+      file: ../ui-admin-web/docker-compose.yml
+      service: ui-admin-web
+    networks:
+      - releevante
+  ui-smartlib-web:
+    extends:
+      file: ../smartlib/ui/docker-compose.yml
+      service: ui-smartlib-web
+    networks:
+      - releevante
+    depends_on:
+      - bridge-io
+  bridge-io:
+    extends:
+      file: ../smartlib/bridge.io/docker-compose.yml
+      service: bridge-io
+    networks:
+      - releevante
+  aggregator:
+    extends:
+      file: ../smartlib/aggregator/docker-compose.yml
+      service: aggregator
+    networks:
+      - releevante
+  backend-api:
+    extends:
+      file: ../backend-api/docker-compose.yml
+      service: backend-api
+    depends_on:
+      - postgres
+    networks:
+      - releevante
+networks:
+  releevante:
+    driver: bridge
+    external: false
+volumes:
+    postgres:
+    pgadmin:
