@@ -1,15 +1,46 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { BetterSQLite3Database, drizzle } from "drizzle-orm/better-sqlite3";
 import Database from "better-sqlite3";
 import * as schema from "./schemas";
 
-const databaseLocation = process.env.DB_PATH;
+let database:
+  | (BetterSQLite3Database<typeof schema> & {
+      $client: Database.Database;
+    })
+  | null = null;
 
-if (!databaseLocation) {
-  throw new Error("NEED TO SET DB_PATH environment variable");
-}
+export const getDbConnection = (): BetterSQLite3Database<typeof schema> & {
+  $client: Database.Database;
+} => {
+  if (!database) {
+    if (!process.env.DB_PATH) {
+      throw new Error("NEED TO SET DB_PATH environment variable");
+    }
 
-console.log(`CONNECTING TO DB IN LOCATION: ${databaseLocation}`);
+    const dbPath = process.env.DB_PATH;
 
-const sqlite = new Database(databaseLocation);
+    console.log(`CONNECTING TO DB IN LOCATION: ${dbPath}`);
 
-export const db = drizzle(sqlite, { schema });
+    const sqlite = new Database(dbPath, { fileMustExist: true });
+
+    sqlite.pragma("journal_mode = WAL");
+
+    database = drizzle(sqlite, { schema });
+  }
+
+  return database;
+};
+
+export const db = new Proxy(
+  {} as BetterSQLite3Database<typeof schema> & {
+    $client: Database.Database;
+  },
+  {
+    get: (target, prop) => {
+      return getDbConnection()[
+        prop as keyof (BetterSQLite3Database<typeof schema> & {
+          $client: Database.Database;
+        })
+      ];
+    },
+  }
+);
