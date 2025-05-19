@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.web.cors.CorsConfiguration;
@@ -45,5 +46,11 @@ public class ApplicationConfig {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
     return new CorsWebFilter(source);
+  }
+
+  @Bean
+  public ClassPathScanningCandidateComponentProvider classPathScanningCandidateComponentProvider() {
+    return new ClassPathScanningCandidateComponentProvider(
+        false); // or true if you want annotation filtering
   }
 }

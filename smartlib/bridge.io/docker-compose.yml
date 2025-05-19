@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  bridge-io:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7777:7777"
+    restart: unless-stopped
+    # If you need to connect to USB devices (for NFC reader)
+    # uncomment the following lines:
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    privileged: true

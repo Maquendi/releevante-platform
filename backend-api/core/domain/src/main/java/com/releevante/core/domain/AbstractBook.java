@@ -53,9 +53,15 @@ public abstract class AbstractBook {
 
   abstract Optional<String> bindingType();
 
-  abstract Float rating();
+  @Value.Default
+  Float rating() {
+    return 0.0f;
+  }
 
-  abstract Integer votes();
+  @Value.Default
+  Integer votes() {
+    return 0;
+  }
 
   abstract Optional<String> image();
 

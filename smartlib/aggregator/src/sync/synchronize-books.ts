@@ -23,7 +23,7 @@ export const synchronizeBooks = async (token: string) => {
   let totalBookRecords = 0;
   let totalBookCopies = 0;
   let completedNoError = false;
-  while (syncComplete == false) {
+  while (!syncComplete) {
     try {
       const request: ApiRequest = {
         token,

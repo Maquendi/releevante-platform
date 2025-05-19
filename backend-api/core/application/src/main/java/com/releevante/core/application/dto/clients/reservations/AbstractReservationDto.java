@@ -24,7 +24,7 @@ public abstract class AbstractReservationDto {
     return ReservationDto.builder()
         .createdAt(reservation.createdAt())
         .items(reservation.items().stream().map(ReservationItemDto::fromDomain).toList())
-            .id(reservation.id())
+        .id(reservation.id())
         .build();
   }
 }

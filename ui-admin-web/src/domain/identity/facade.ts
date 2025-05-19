@@ -10,19 +10,19 @@ class IdentityServiceFacade {
     async doLogin(username: string, password: string): Promise<AppSession> {
         return authenticateUser({ username, password })
             .then(response => {
-                const jwtPayload = extractPayload(response.data.token)
+                const jwtPayload = extractPayload(response.context.data.token)
                 return {
-                    token: response.data.token,
+                    token: response.context.data.token,
                     expiresAt: jwtPayload.expiresAt,
                     user: {
-                        fullName: response.data.fullName,
-                        id: response.data.userId,
-                        org: response.data.org,
-                        orgId: response.data.orgId,
+                        fullName: response.context.data.fullName,
+                        id: response.context.data.userId,
+                        org: response.context.data.org,
+                        orgId: response.context.data.orgId,
                         account: {
                             username,
-                            email: response.data.email,
-                            phone: response.data.phone,
+                            email: response.context.data.email,
+                            phone: response.context.data.phone,
                             role: {
                                 name: jwtPayload.role,
                                 permissions: jwtPayload.permissions

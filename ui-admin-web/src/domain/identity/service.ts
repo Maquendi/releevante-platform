@@ -1,6 +1,8 @@
-import { ApiResponse, buildRequest } from "@/lib/model";
-import { executePost } from "@/lib/http-client";
+//import { ApiResponse, buildRequest } from "@/lib/model";
+//import { executePost } from "@/lib/http-client";
+import { executePost } from "@/lib/htttp/http-client";
 import { CreateAccountRequestDto, CreateAccountResponseDto, CreateUserRequestDto, CreateUserResponseDto, UserLoginRequestDto, UserLoginResponseDto } from "./model";
+import { ApiResponse, buildRequest } from "@/lib/htttp/model";
 
 
 export async function createAccount(dto: CreateAccountRequestDto): Promise<ApiResponse<CreateAccountResponseDto>> {

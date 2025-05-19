@@ -35,7 +35,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-DROP TRIGGER transaction_item_status_insert_trigger ON core.transaction_item_status;
+--DROP TRIGGER transaction_item_status_insert_trigger ON core.transaction_item_status;
 CREATE TRIGGER transaction_item_status_insert_trigger
 AFTER INSERT
 ON core.transaction_item_status

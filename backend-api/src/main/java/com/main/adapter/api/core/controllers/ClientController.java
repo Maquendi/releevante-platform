@@ -45,15 +45,14 @@ public class ClientController {
   @PreAuthorize("hasRole('CLIENT')")
   @PostMapping("/{clientId}/reservations")
   public Mono<CustomApiResponse<String>> createReservation(
-          @PathVariable() ClientId clientId,
-      @RequestBody CreateReservationDto reservationDto) {
+      @PathVariable() ClientId clientId, @RequestBody CreateReservationDto reservationDto) {
     return clientService.createReservation(reservationDto).map(CustomApiResponse::from);
   }
 
   @PreAuthorize("hasRole('CLIENT')")
   @PutMapping("/{clientId}/reservations/{reservationId}")
   public Mono<CustomApiResponse<String>> createReservation(
-          @PathVariable() ClientId clientId,
+      @PathVariable() ClientId clientId,
       @PathVariable() String reservationId,
       @RequestBody UpdateReservationDto updateReservationDto) {
     return clientService

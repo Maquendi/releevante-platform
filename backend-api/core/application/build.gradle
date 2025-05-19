@@ -17,6 +17,12 @@ dependencies {
 
     implementation "io.projectreactor:reactor-core:${rootProject.reactorVersion}"
     implementation "org.reactivestreams:reactive-streams:${rootProject.reactiveStreamsVersion}"
+    
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation "org.slf4j:slf4j-api:${rootProject.slf4jVersion}"
+    implementation "ch.qos.logback:logback-classic:${rootProject.logbackVersion}"
+    compileOnly "org.projectlombok:lombok:${rootProject.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.lombokVersion}"
 }
 
 test {

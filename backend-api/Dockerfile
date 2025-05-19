@@ -1,15 +1,11 @@
-FROM openjdk:23 
+FROM openjdk:25
 
-WORKDIR /releevante-platform
+WORKDIR /app
 
-CMD ["./gradlew", "clean", "bootJar"]
-
+# Copy the pre-built jar file
+# Note: Build the jar locally first with: ./gradlew clean bootJar
 COPY build/libs/*.jar backend-api.jar
-
-COPY private.pem /releevante-platform/rsa_private_key.pem
-
-COPY public.pem /releevante-platform/rsa_public_key.pem
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/releevante-platform/backend-api.jar"]
+ENTRYPOINT ["java", "-jar", "/app/backend-api.jar"]

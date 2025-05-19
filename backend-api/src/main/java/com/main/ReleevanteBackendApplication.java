@@ -16,11 +16,7 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
       "com.releevante.core.adapter.persistence"
     })
 @OpenAPIDefinition
-@EnableR2dbcRepositories(
-    basePackages = {
-      "com.releevante.identity.adapter.persistence.repository.components",
-      "com.releevante.core.adapter.persistence.dao"
-    })
+@EnableR2dbcRepositories(basePackages = {"com.releevante.core.adapter.persistence.dao"})
 public class ReleevanteBackendApplication {
   public static void main(String[] args) {
     SpringApplication.run(ReleevanteBackendApplication.class, args);
