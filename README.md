@@ -28,3 +28,6 @@ sudo chown releevante:releevante /home/releevante/.pm2/rpc.sock /home/releevante
 # smartlib-aggregator
   - journalctl -u smartlib.service --no-pager --lines=50
   - sudo systemctl restart pm2-releevante.service
+
+
+sudo chown releevante:releevante /home/releevante/.pm2/rpc.sock
