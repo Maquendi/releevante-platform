@@ -3,9 +3,7 @@ services:
     image: flyway/flyway
     command: ${FLYWAY_COMMAND}
     volumes:
-      - src/main/resources/db/migration:/flyway/sql
-    networks:
-      - releevante
+      - ./src/main/resources/db/migration:/flyway/sql
   backend-api:
     build: 
       context: .

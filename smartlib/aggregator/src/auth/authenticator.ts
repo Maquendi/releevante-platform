@@ -1,83 +1,120 @@
-import { promises as fs } from "fs";
 import { executePost } from "../htttp-client/http-client";
 import { ApiCredential } from "../model/client";
-const slid = process.env.slid;
+import logger from "../logger";
 
-const credentialFileName = "./credentials.json";
+// In-memory cache for credentials
+let cachedCredential: ApiCredential | null = null;
 
-const loadFromFile = async (): Promise<ApiCredential> => {
-  try {
-    return JSON.parse(await fs.readFile(credentialFileName, "utf-8"));
-  } catch (error) {
-    console.log("Failed to load credential from file with error " + error);
+const loadFromCache = async (): Promise<ApiCredential> => {
+  // Check if credentials are cached in memory
+  if (!cachedCredential) {
+    logger.info('No cached credentials found');
+    // Get credentials from server and cache them
     return await loadFromServer();
   }
+
+  logger.debug('Using cached credentials');
+  return cachedCredential;
 };
 
 const loadFromServer = async (): Promise<ApiCredential> => {
-  console.log("loading credentials from server .... ");
+  const slid = process.env.slid;
+
+  logger.info('Loading credentials from server');
+
   const request = {
     resource: `auth/m2m/token`,
-    body: { clientId: slid },
+    body: { clientId: slid }
   };
+    logger.debug('Sending authentication request');
 
-  try {
-    
     const response = await executePost<string>(request);
 
-    const now = new Date();
+    if (response.statusCode == 200) {
+      const now = new Date();
+      now.setHours(now.getHours() + 24);
 
-    now.setHours(now.getHours() + 24)
+      const credentials = {
+        slid,
+        token: response?.context?.data,
+        expiresAt: now.toISOString(),
+      };
 
-    const credentials = {
-      slid,
-      token: response?.context?.data,
-      expiresAt: now.toISOString(),
-    };
-    await writeCredentialFile(credentials);
+      logger.debug('Received credentials from server', {
+        expiresAt: credentials.expiresAt
+      });
 
-    return credentials;
-  } catch (error: any) {
-    console.log("error loading credentials from server " + error.message);
-    return null as any;
-  }
-};
+      // Cache credentials in memory
+      cachedCredential = credentials;
+      logger.info('Successfully loaded and cached credentials from server');
 
-const writeCredentialFile = async (credentials: ApiCredential) => {
-  try {
-    const credentialString = JSON.stringify(credentials, null, 2);
-    await fs.writeFile(credentialFileName, credentialString);
-  } catch (err) {
-    console.error("Error writing file", err);
-  }
+      return credentials;
+    }
+
+   throw new Error(`Failed to load credentials from server with details: ${JSON.stringify(response.context?.data)}`);
 };
 
 const credentialVerified = (credentials: ApiCredential): boolean => {
-  if (!credentials?.token || credentials.slid !== slid) return false;
-  const expiresAt = new Date(credentials?.expiresAt as string); // 10:00 AM on December 1, 2024
-  const now = new Date(); // 3:30 PM on December 1, 2024
+  const slid = process.env.slid;
+  if (!credentials?.token || credentials.slid !== slid) {
+    logger.debug('Credentials invalid: missing token or incorrect slid');
+    return false;
+  }
 
+  const expiresAt = new Date(credentials?.expiresAt as string);
+  const now = new Date();
   const diffInHours = (expiresAt.getTime() - now.getTime()) / 3600000;
 
-  console.log("diffInHours " + diffInHours);
+  logger.debug('Checking credential expiration', { 
+    diffInHours, 
+    expiresAt: expiresAt.toISOString(), 
+    now: now.toISOString() 
+  });
 
-  return diffInHours > 2;
+  const isValid = diffInHours > 2;
+  logger.debug(`Credentials ${isValid ? 'valid' : 'expired'}`, { diffInHours });
+
+  return isValid;
 };
 
-export const getCredential = async (): Promise<string> => {
+const getCredential = async (): Promise<string> => {
+  logger.debug('Getting credentials');
+
   let credential = null;
   try {
-    credential = await loadFromFile();
+    credential = await loadFromCache();
+    logger.debug('Loaded credentials from cache');
   } catch (error) {
+    logger.error('Error loading credentials', { 
+      error: error instanceof Error ? error.message : String(error) 
+    });
     throw error;
   }
 
   const credentialIsVerified = credentialVerified(credential);
 
   if (!credentialIsVerified) {
-    console.log("reloading credentials " + credentialIsVerified);
+    logger.info('Credentials expired or invalid, reloading from server');
     credential = await loadFromServer();
+
+    // Verify the newly loaded credential
+    if (!credentialVerified(credential)) {
+      throw new Error('Failed to obtain valid credentials from server');
+    }
+  } else {
+    logger.debug('Using existing valid credentials');
   }
 
-  return credential?.token;
+  if (!credential?.token) {
+    throw new Error('No valid token found in credentials');
+  }
+
+  return credential.token;
 };
+
+// Function to reset the cache for testing purposes
+const resetCache = (): void => {
+  cachedCredential = null;
+};
+
+export { getCredential, credentialVerified, loadFromServer, loadFromCache, resetCache };

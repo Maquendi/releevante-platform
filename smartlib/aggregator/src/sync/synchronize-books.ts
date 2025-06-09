@@ -6,6 +6,7 @@ import {
 import { ApiRequest } from "../htttp-client/model.js";
 import { Book, BookCopy, BookImage, Tag } from "../model/client.js";
 import { arrayGroupinBy } from "../utils.js";
+import logger from "../logger";
 
 const slid = process.env.slid;
 
@@ -17,57 +18,82 @@ const tagNameMapper: any = {
 };
 
 export const synchronizeBooks = async (token: string) => {
+  logger.info('Starting book synchronization');
+
   let syncComplete = false;
   let page = 0;
   let totalTagsRecordsSynced = 0;
   let totalBookRecords = 0;
   let totalBookCopies = 0;
   let completedNoError = false;
+
   while (!syncComplete) {
     try {
+      logger.debug('Fetching books from server', { page });
+
       const request: ApiRequest = {
         token,
         resource: `sl/${slid}/books?page=${page}&size=2000&includeTags=true&status=not_synced&includeImages=true`,
       };
+
       const response = await executeGet<Book[]>(request);
       const books = response.context.data || [];
+
       page++;
       syncComplete = books?.length == 0 || response.statusCode !== 200;
+
       if (response.statusCode == 200) {
         if (books.length) {
+          logger.debug('Processing books', { count: books.length });
+
+          logger.debug('Inserting books');
           totalBookRecords += await insertBook(books);
+
+          logger.debug('Inserting tags');
           totalTagsRecordsSynced += await insertTags(books);
+
+          logger.debug('Inserting book copies');
           totalBookCopies += await insertBookCopies(books);
+
           completedNoError = true;
+        } else {
+          logger.debug('No books to process in this page');
         }
       } else {
-        console.log(
-          `failed to load data from server error: ${JSON.stringify(response)}`
-        );
+        logger.error('Failed to load data from server', { 
+          statusCode: response.statusCode,
+          response: JSON.stringify(response)
+        });
         completedNoError = false;
       }
     } catch (error) {
+      logger.error('Error during book synchronization', { 
+        error: error instanceof Error ? error.message : String(error)
+      });
       syncComplete = true;
       completedNoError = false;
     }
   }
 
-  console.log("TOTAL BOOK RECORDS SYNCHRONIZED: " + totalBookRecords);
-
-  console.log("TOTAL BOOK COPIES SYNCHRONIZED: " + totalBookCopies);
-
-  console.log("TOTAL BOOK TAGS SYNCHRONIZED: " + totalTagsRecordsSynced);
+  logger.info('Book synchronization completed', { 
+    totalBookRecords,
+    totalBookCopies,
+    totalTagsRecordsSynced
+  });
 
   if (completedNoError) {
+    logger.debug('Updating inventory status');
+
     const request: ApiRequest = {
       token,
       resource: `sl/${slid}/inventories`,
     };
+
     const response = await executePut<Boolean>(request);
 
-    console.log(
-      "Library inventory set synchronized " + response?.context?.data
-    );
+    logger.info('Library inventory set synchronized', { 
+      success: response?.context?.data 
+    });
   }
 
   return totalTagsRecordsSynced + totalBookCopies + totalBookRecords;
@@ -138,13 +164,17 @@ const insertCategories = async (books: Book[]): Promise<number> => {
 };
 
 const insertTags = async (books: Book[]): Promise<number> => {
+  logger.debug('Starting tag insertion');
+
   let bookTags: Tag[] = [];
 
   books.forEach((book) => {
     bookTags = [...bookTags, ...book.tags];
   });
 
+  logger.debug('Collected tags from books', { tagCount: bookTags.length });
   const fTags = arrayGroupinBy(bookTags, "id");
+  logger.debug('Grouped tags by ID', { uniqueTagCount: Object.keys(fTags).length });
 
   const create_stmt1 = dbConnection.prepare(
     "INSERT INTO ftags(id, tag_name, en_tag_value, fr_tag_value, es_tag_value) VALUES (@id, @tag_name, @en_tag_value, @fr_tag_value, @es_tag_value)"
@@ -155,7 +185,11 @@ const insertTags = async (books: Book[]): Promise<number> => {
   );
 
   let dbChanges = 0;
+  let insertCount = 0;
+  let updateCount = 0;
+  let errorCount = 0;
 
+  logger.debug('Processing tags');
   Object.keys(fTags).forEach((key) => {
     try {
       var tag = fTags[key][0];
@@ -166,6 +200,7 @@ const insertTags = async (books: Book[]): Promise<number> => {
         fr_tag_value: tag.value?.fr || tag.value?.en,
         es_tag_value: tag.value?.es || tag.value?.en,
       }).changes;
+      insertCount++;
     } catch (error: any) {
       try {
         dbChanges += update_stmt1.run(
@@ -175,10 +210,22 @@ const insertTags = async (books: Book[]): Promise<number> => {
           tag.value?.es || tag.value?.en,
           tag.id
         ).changes;
+        updateCount++;
       } catch (error: any) {
-        console.log("Failed updating tags: " + error.message);
+        logger.error('Failed updating tag', { 
+          tagId: tag.id,
+          tagName: tag.name,
+          error: error.message 
+        });
+        errorCount++;
       }
     }
+  });
+
+  logger.debug('Tag processing results', { 
+    inserted: insertCount, 
+    updated: updateCount, 
+    errors: errorCount 
   });
 
   const create_stmt2 = dbConnection.prepare(
@@ -189,6 +236,10 @@ const insertTags = async (books: Book[]): Promise<number> => {
     "UPDATE book_ftag SET book_isbn=?, ftag_id=? WHERE id=?"
   );
 
+  let bookTagInsertCount = 0;
+  let bookTagUpdateCount = 0;
+
+  logger.debug('Processing book-tag relationships', { count: bookTags.length });
   bookTags.forEach((tag) => {
     try {
       dbChanges += create_stmt2.run({
@@ -196,11 +247,19 @@ const insertTags = async (books: Book[]): Promise<number> => {
         book_isbn: tag.isbn,
         ftag_id: tag.id,
       }).changes;
+      bookTagInsertCount++;
     } catch (error: any) {
       dbChanges += update_stmt2.run(tag.isbn, tag.id, tag.bookTagId).changes;
+      bookTagUpdateCount++;
     }
   });
 
+  logger.debug('Book-tag relationship processing results', { 
+    inserted: bookTagInsertCount, 
+    updated: bookTagUpdateCount 
+  });
+
+  logger.info('Tag insertion completed', { totalChanges: dbChanges });
   return dbChanges;
 };
 

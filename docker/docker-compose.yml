@@ -1,3 +1,6 @@
+
+name: 'releevante-platform'
+
 services:
   postgres:
     container_name: postgres_container
@@ -19,6 +22,9 @@ services:
       service: ui-admin-web
     networks:
       - releevante
+    labels:
+     promtail.scrape: "true"
+     promtail.app: "ui-admin-web"
   ui-smartlib-web:
     extends:
       file: ../smartlib/ui/docker-compose.yml
@@ -27,22 +33,44 @@ services:
       - releevante
     depends_on:
       - bridge-io
+    labels:
+     promtail.scrape: "true"
+     promtail.app: "ui-smartlib-web"
   bridge-io:
     extends:
       file: ../smartlib/bridge.io/docker-compose.yml
       service: bridge-io
     networks:
       - releevante
+    labels:
+     promtail.scrape: "true"
+     promtail.app: "bridge-io"
   aggregator:
     extends:
       file: ../smartlib/aggregator/docker-compose.yml
       service: aggregator
     networks:
       - releevante
+    labels:
+     promtail.scrape: "true"
+     promtail.app: "aggregator"
+
   backend-api:
     extends:
       file: ../backend-api/docker-compose.yml
       service: backend-api
+    depends_on:
+      - postgres
+    networks:
+      - releevante
+    labels:
+     promtail.scrape: "true"
+     promtail.app: "backend-api"
+
+  flyway_server:
+    extends:
+      file: ../backend-api/docker-compose.yml
+      service: flyway_server
     depends_on:
       - postgres
     networks:

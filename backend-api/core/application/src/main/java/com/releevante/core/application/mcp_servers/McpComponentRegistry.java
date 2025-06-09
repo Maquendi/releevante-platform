@@ -14,7 +14,7 @@ public class McpComponentRegistry {
   private static McpComponentRegistry instance;
   private final Map<String, McpComponentMetadata> mcpComponents;
 
-  private McpComponentRegistry() {
+  public McpComponentRegistry() {
     mcpComponents = new HashMap<>();
   }
 

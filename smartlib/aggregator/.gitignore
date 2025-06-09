@@ -2,3 +2,5 @@
 dist
 .env
 credentials.json
+/logs
+/coverage

@@ -1,6 +1,6 @@
 import { defineConfig } from "drizzle-kit";
 
-const dbPath = "../sqlite-dev.db";
+const dbPath = "../../data/db/sqlite-dev.db";
 
 export default defineConfig({
   dialect: "sqlite",
